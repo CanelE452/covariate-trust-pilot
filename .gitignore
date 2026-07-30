@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.cache/huggingface/
+runs/*
+!runs/.gitkeep
+dist/
+build/
+*.egg-info/

@@ -1,0 +1,69 @@
+experiment:
+  name: imperfect_future_covariate_coarse_pilot
+  master_seed: 20260730
+  series_length: 1024
+  standardization_end: 512
+  primary_origin: 896
+  context_length: 512
+  frequency: "h"
+  quantile_levels:
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+
+grid:
+  nominal_covariate_share:
+    - 0.0
+    - 0.25
+    - 0.50
+    - 0.75
+  lambda_values:
+    - 0.0
+    - 0.5
+    - 1.0
+    - 1.5
+    - 2.0
+  horizons:
+    - 24
+    - 96
+  n_series_per_cell: 30
+
+dgp:
+  base_ar: 0.5
+  covariate_ar: 0.7
+  base_periods:
+    - 24
+    - 168
+  covariate_periods:
+    - 48
+    - 96
+  ar_innovation_std: 0.5
+  common_random_numbers: true
+
+model:
+  model_id: "amazon/chronos-2"
+  package_version: "2.3.1"
+  frozen: true
+  cross_learning: false
+  device: "cuda"
+  allow_cpu_smoke: true
+  allow_cpu_diagnostic: false
+  attention_implementation: "eager"
+
+bootstrap:
+  n_resamples: 2000
+  confidence_level: 0.95
+
+gates:
+  clean_gain_pass: 0.05
+  clean_gain_fail: 0.01
+  oracle_headroom_pass: 0.03
+  oracle_headroom_fail: 0.01
+  harm_relative_threshold: 0.05
+  high_noise_harm_rate: 0.20
