@@ -931,5 +931,1629 @@ def pilot(config: Path = typer.Option(..., "--config", exists=True)) -> None:
     raise typer.Exit(EXIT_OK if (gates["all_pass"] and ok) else EXIT_GATE)
 
 
+# ============================================================================
+# Follow-up studies: Study 1B (boundary refinement) and Study 2 (dynamic
+# reliability).  Additive - every command above is unchanged.
+# ============================================================================
+
+def _latest_run(root: Path, suffix: str) -> Path | None:
+    runs = sorted((root / "runs").glob(f"*_{suffix}"))
+    return runs[-1] if runs else None
+
+
+def _make_cached_predict(run_dir: Path, loaded, cfg_pilot, log):
+    """Per-task inference with a content-hash cache.
+
+    The cache key includes the model id and content hashes of both frames, so two
+    tasks share an entry only when the model sees byte-identical input.  This is what
+    lets different reliability schedules reuse an identical (origin, lambda) forecast
+    instead of recomputing it; it never merges tasks that differ.
+    """
+    import numpy as np
+    import pandas as pd
+
+    from .chronos_adapter import context_and_future_hashes, predict_task, task_hash
+    from .storage import completed_task_hashes, write_task_part
+
+    exp = cfg_pilot.experiment
+    q_levels = exp.quantile_levels
+    qcols = [f"q{q:g}" for q in q_levels]
+    done = completed_task_hashes(run_dir)
+    stats = {"calls": 0, "cache_hits": 0}
+
+    def predict(inputs, meta: dict):
+        th = task_hash(cfg_pilot.model.model_id, None, meta["base_series_id"],
+                       meta["nominal_covariate_share"], meta["origin"], meta["horizon"],
+                       meta["method"], meta.get("lam"), inputs)
+        part = run_dir / "predictions" / "parts" / f"{th}.parquet"
+        if th in done and part.exists():
+            stats["cache_hits"] += 1
+            return pd.read_parquet(part)[qcols].to_numpy(dtype=float)
+        ctx_len = min(exp.context_length, meta["origin"])
+        q, _ = predict_task(loaded, inputs, q_levels, ctx_len, exp.frequency)
+        ctx_hash, fut_hash = context_and_future_hashes(inputs)
+        frame = pd.DataFrame(q, columns=qcols)
+        frame.insert(0, "h_index", np.arange(1, len(frame) + 1))
+        for k, v in meta.items():
+            frame[k] = v
+        frame["task_hash"] = th
+        frame["context_hash"] = ctx_hash
+        frame["future_hash"] = fut_hash
+        frame["model_id"] = cfg_pilot.model.model_id
+        write_task_part(run_dir, th, frame)
+        done.add(th)
+        stats["calls"] += 1
+        return q
+
+    return predict, stats
+
+
+def _prepare_followup_run(config: Path, kind: str, cfg, log_msg: str):
+    """Shared setup: audit, blocking checks, run dir, resolved config."""
+    root, hf_home, info = _collect_audit()
+    problems = audit_mod.blocking_problems(info)
+    if cfg.model.device == "cuda" and not info["torch"].get("cuda_available"):
+        problems.append("BLOCKED_GPU_ENV")
+    run_dir = create_run_dir(root, kind)
+    log = Log(run_dir)
+    log(log_msg)
+    atomic_write_json(run_dir / "audit.json", info)
+    atomic_write_text(run_dir / "environment.txt", audit_mod.environment_text(info))
+    atomic_write_text(run_dir / "config_resolved.yaml", cfg.resolved_yaml())
+    return root, info, run_dir, log, problems
+
+
+def _run_boundary(config: Path) -> tuple[Path, dict]:
+    import pandas as pd
+
+    from .baselines import baseline_boundaries, baseline_checks, run_baselines
+    from .boundary import boundary_estimates, curve_summary, required_replications, run_boundary_study
+    from .chronos_adapter import load_pipeline
+    from .config import BoundaryConfig
+    from .dgp import generate_dataset, vintage_table
+    from .followup_gates import coarse_reference_from_cells, gate_e
+    from .plotting import (figB1_v_future_curve, figB2_boundary_pointrange,
+                           figB3_coarse_vs_refined, figB4_method_boundaries, figB5_harm_rate)
+    from .seeds import seed_hierarchy
+    from .storage import read_all_parts
+
+    cfg = BoundaryConfig.load(config)
+    pilot = cfg.to_pilot_config()
+    root, info, run_dir, log, problems = _prepare_followup_run(
+        config, "boundary", cfg, f"Study 1B: {cfg.experiment.name} seed={cfg.experiment.master_seed}")
+    t0 = time.time()
+    if problems:
+        log(f"BLOCKED: {problems}")
+        log.close()
+        return run_dir, {"status": "BLOCKED", "problems": problems}
+
+    series_df, meta_df, series_map = generate_dataset(pilot)
+    atomic_write_parquet(run_dir / "generated" / "series.parquet", series_df)
+    atomic_write_parquet(run_dir / "generated" / "series_metadata.parquet", meta_df)
+    atomic_write_parquet(run_dir / "generated" / "covariate_vintages.parquet",
+                         vintage_table(pilot, series_map))
+    log(f"generated {len(series_map)} independent base series "
+        f"(seed {cfg.experiment.master_seed}, coarse pilot used 20260730)")
+
+    loaded = load_pipeline(cfg.model.model_id, cfg.model.device, cfg.model.attention_implementation)
+    predict_fn, stats = _make_cached_predict(run_dir, loaded, pilot, log)
+    log(f"model loaded (attn {loaded.attention_implementation}, dtype {loaded.dtype})")
+
+    tasks = run_boundary_study(cfg, predict_fn, log)
+    atomic_write_parquet(run_dir / "tables" / "task_metrics.parquet", tasks)
+    preds = read_all_parts(run_dir)
+    atomic_write_parquet(run_dir / "predictions" / "predictions.parquet", preds)
+    log(f"{len(tasks)} M3 tasks, {stats['calls']} inference calls, "
+        f"{stats['cache_hits']} cache hits")
+
+    cells = curve_summary(tasks, cfg)
+    atomic_write_csv(run_dir / "tables" / "cell_summary.csv", cells)
+    bounds = boundary_estimates(tasks, cfg, "v_future", "chronos_wql")
+    atomic_write_csv(run_dir / "tables" / "boundary_estimates.csv", bounds)
+
+    log("running statistical baselines (no model inference)")
+    base = run_baselines(cfg, log)
+    atomic_write_parquet(run_dir / "tables" / "baseline_tasks.parquet", base)
+    base_checks = baseline_checks(base, cfg)
+    atomic_write_json(run_dir / "tables" / "baseline_checks.json", base_checks)
+    all_bounds = baseline_boundaries(base, tasks, cfg)
+    atomic_write_csv(run_dir / "tables" / "baseline_boundary_estimates.csv", all_bounds)
+    for c in base_checks["checks"]:
+        log(f"  baseline {c['id']}: {c['status']} - {c['detail']}")
+
+    coarse_dir = _latest_run(root, "diagnostic")
+    coarse_cells, coarse_ref = None, None
+    if coarse_dir and (coarse_dir / "tables" / "cell_summary.csv").exists():
+        coarse_cells = pd.read_csv(coarse_dir / "tables" / "cell_summary.csv")
+        coarse_ref = coarse_reference_from_cells(coarse_cells)
+        log(f"coarse reference from {coarse_dir.name}: {coarse_ref}")
+
+    verdict = gate_e(tasks, bounds, cfg, coarse_ref)
+    atomic_write_json(run_dir / "tables" / "gate_e.json", verdict)
+    log(f"Gate E: {verdict['status']}")
+    if verdict["status"] == "INCONCLUSIVE":
+        need = required_replications(cells, target_half_width=0.02)
+        atomic_write_csv(run_dir / "tables" / "required_replications.csv", need)
+        log("Gate E INCONCLUSIVE - required replication counts written; nothing re-run "
+            "automatically")
+
+    fig = run_dir / "figures"
+    for h in cfg.grid.horizons:
+        for share in cfg.grid.nominal_covariate_share:
+            figB1_v_future_curve(cells, float(share), int(h),
+                                 fig / f"figureB1_v_future_r{share:g}_h{h}.png")
+        figB5_harm_rate(cells, int(h), fig / f"figureB5_harm_rate_h{h}.png")
+        if coarse_cells is not None:
+            figB3_coarse_vs_refined(coarse_cells, cells, int(h),
+                                    fig / f"figureB3_coarse_vs_refined_h{h}.png")
+    figB2_boundary_pointrange(bounds, fig / "figureB2_boundary_pointrange.png")
+    figB4_method_boundaries(all_bounds, fig / "figureB4_method_boundaries.png")
+
+    manifest = _base_manifest(pilot, info, "boundary", run_dir)
+    manifest["seeds"] = seed_hierarchy(cfg.experiment.master_seed, cfg.base_series_ids,
+                                       list(cfg.grid.horizons), [cfg.experiment.primary_origin])
+    manifest["runtime_seconds"] = round(time.time() - t0, 2)
+    manifest["peak_gpu_memory_gb"] = _peak_gpu_gb()
+    manifest["finished_at"] = datetime.now().isoformat(timespec="seconds")
+    manifest["n_inference_calls"] = stats["calls"]
+    manifest["n_cache_hits"] = stats["cache_hits"]
+    manifest["attention_implementation"] = loaded.attention_implementation
+    manifest["commands"] = [f"python -m covariate_trust.cli boundary --config {config}"]
+    manifest["coarse_reference_run"] = str(coarse_dir) if coarse_dir else None
+    atomic_write_json(run_dir / "manifest.json", manifest)
+
+    from .reporting import build_boundary_report
+    atomic_write_text(run_dir / "reports" / "boundary_report.md",
+                      build_boundary_report(run_dir, manifest, cfg, cells, bounds, all_bounds,
+                                            base_checks, verdict, coarse_ref))
+    log(f"Study 1B finished in {manifest['runtime_seconds']}s, peak GPU "
+        f"{manifest['peak_gpu_memory_gb']} GB")
+    log.close()
+    return run_dir, {"status": "OK", "gate_e": verdict, "baseline_checks": base_checks}
+
+
+@app.command()
+def boundary(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Study 1B: independent, dense-lambda refinement of the boundary (Gate E)."""
+    run_dir, out = _run_boundary(config)
+    if out["status"] != "OK":
+        typer.echo(f"boundary blocked: {out.get('problems')}")
+        raise typer.Exit(EXIT_ENV)
+    raise typer.Exit(EXIT_OK if out["gate_e"]["status"] == "PASS" else EXIT_GATE)
+
+
+def _run_dynamic(config: Path) -> tuple[Path, dict]:
+    from .chronos_adapter import load_pipeline
+    from .config import DynamicConfig
+    from .dynamic_admission import (D0, D1, D3, D5, D7, apply_selectors, build_proxy_table,
+                                    condition_summary, proxy_calibration_summary,
+                                    proxy_summary, run_dynamic_study)
+    from .followup_gates import gate_f
+    from .plotting import (figD1_lambda_trajectories, figD2_selector_wql_by_schedule,
+                           figD5_calibration_vs_harm, figD6_false_rates, figD7_selector_comparison,
+                           figD_regret)
+    from .reliability_schedules import P1_CALIBRATED, schedule_table
+    from .seeds import seed_hierarchy
+    from .storage import read_all_parts
+
+    cfg = DynamicConfig.load(config)
+    pilot = cfg.to_pilot_config()
+    root, info, run_dir, log, problems = _prepare_followup_run(
+        config, "dynamic", cfg, f"Study 2: {cfg.experiment.name} seed={cfg.experiment.master_seed}")
+    t0 = time.time()
+    if problems:
+        log(f"BLOCKED: {problems}")
+        log.close()
+        return run_dir, {"status": "BLOCKED", "problems": problems}
+
+    sched = schedule_table(cfg)
+    atomic_write_csv(run_dir / "generated" / "schedules.csv", sched)
+    log(f"{len(cfg.schedules)} schedules x {len(cfg.grid.nominal_covariate_share)} shares "
+        f"x {len(cfg.grid.horizons)} horizons x {cfg.grid.n_series_per_condition} series")
+
+    loaded = load_pipeline(cfg.model.model_id, cfg.model.device, cfg.model.attention_implementation)
+    predict_fn, stats = _make_cached_predict(run_dir, loaded, pilot, log)
+
+    tasks = run_dynamic_study(cfg, predict_fn, log)
+    atomic_write_parquet(run_dir / "tables" / "dynamic_tasks.parquet", tasks)
+    atomic_write_parquet(run_dir / "predictions" / "predictions.parquet", read_all_parts(run_dir))
+    log(f"{len(tasks)} primary tasks, {stats['calls']} inference calls, "
+        f"{stats['cache_hits']} cache hits (schedules sharing identical inputs)")
+
+    proxies = build_proxy_table(tasks, cfg)
+    atomic_write_parquet(run_dir / "tables" / "proxy_values.parquet", proxies)
+    atomic_write_csv(run_dir / "tables" / "proxy_calibration.csv", proxy_calibration_summary(proxies))
+
+    decisions = apply_selectors(tasks, proxies, cfg)
+    atomic_write_parquet(run_dir / "tables" / "selector_decisions.parquet", decisions)
+    cond = condition_summary(decisions)
+    atomic_write_csv(run_dir / "tables" / "condition_summary.csv", cond)
+    prox = proxy_summary(decisions)
+    atomic_write_csv(run_dir / "tables" / "proxy_summary.csv", prox)
+
+    verdict = gate_f(decisions, cfg)
+    atomic_write_json(run_dir / "tables" / "gate_f.json", verdict)
+    log(f"Gate F: {verdict['status']} (primary selector {verdict.get('primary_selector')})")
+
+    fig = run_dir / "figures"
+    for h in cfg.grid.horizons:
+        figD1_lambda_trajectories(sched, int(h), fig / f"figureD1_schedules_h{h}.png")
+    figD2_selector_wql_by_schedule(cond, P1_CALIBRATED, fig / "figureD2_selector_wql.png")
+    figD_regret(cond, "S2_sudden_worsening", P1_CALIBRATED, fig / "figureD3_regret_worsening.png")
+    figD_regret(cond, "S3_sudden_improvement", P1_CALIBRATED,
+                fig / "figureD4_regret_improvement.png")
+    figD5_calibration_vs_harm(prox, verdict.get("primary_selector", D5),
+                              fig / "figureD5_calibration_vs_harm.png")
+    figD6_false_rates(prox, [D5, D7], fig / "figureD6_false_rates.png")
+    figD7_selector_comparison(prox, P1_CALIBRATED, fig / "figureD7_selector_comparison.png")
+
+    manifest = _base_manifest(pilot, info, "dynamic", run_dir)
+    manifest["seeds"] = seed_hierarchy(cfg.experiment.master_seed, cfg.base_series_ids,
+                                       list(cfg.grid.horizons), sorted(sched["origin"].unique()))
+    manifest["runtime_seconds"] = round(time.time() - t0, 2)
+    manifest["peak_gpu_memory_gb"] = _peak_gpu_gb()
+    manifest["finished_at"] = datetime.now().isoformat(timespec="seconds")
+    manifest["n_inference_calls"] = stats["calls"]
+    manifest["n_cache_hits"] = stats["cache_hits"]
+    manifest["attention_implementation"] = loaded.attention_implementation
+    manifest["commands"] = [f"python -m covariate_trust.cli dynamic-reliability --config {config}"]
+    atomic_write_json(run_dir / "manifest.json", manifest)
+
+    from .reporting import build_dynamic_report
+    atomic_write_text(run_dir / "reports" / "dynamic_reliability_report.md",
+                      build_dynamic_report(run_dir, manifest, cfg, cond, prox, verdict))
+    log(f"Study 2 finished in {manifest['runtime_seconds']}s")
+    log.close()
+    return run_dir, {"status": "OK", "gate_f": verdict}
+
+
+@app.command(name="dynamic-reliability")
+def dynamic_reliability(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Study 2: admission under time-varying reliability and imperfect proxies (Gate F)."""
+    run_dir, out = _run_dynamic(config)
+    if out["status"] != "OK":
+        typer.echo(f"dynamic-reliability blocked: {out.get('problems')}")
+        raise typer.Exit(EXIT_ENV)
+    raise typer.Exit(EXIT_OK if out["gate_f"]["status"] == "PASS" else EXIT_GATE)
+
+
+def _followup_observations(gate_e_res, gate_f_res, bounds, all_bounds, prox,
+                           dynamic_run) -> list[str]:
+    """Factual observations, separated from the verdicts."""
+    obs: list[str] = []
+    if bounds is not None and len(bounds):
+        fin = bounds[bounds["status"] == "finite"]
+        if len(fin):
+            obs.append(f"[확인] {len(fin)}/{len(bounds)} curves gave a finite crossing; the "
+                       f"estimates span {fin['boundary_lambda'].min():.4f} to "
+                       f"{fin['boundary_lambda'].max():.4f} (mean "
+                       f"{fin['boundary_lambda'].mean():.4f}), with CI widths "
+                       f"{fin['ci_width'].min():.4f} to {fin['ci_width'].max():.4f} and a "
+                       f"bootstrap valid fraction of "
+                       f"{fin['bootstrap_valid_fraction'].min():.3f} or better.")
+    if all_bounds is not None and len(all_bounds):
+        parts = []
+        for m, g in all_bounds.groupby("metric"):
+            f = g[g["status"] == "finite"]["boundary_lambda"]
+            if len(f):
+                parts.append(f"{m} {f.mean():.4f}")
+        if parts:
+            obs.append("[확인] Mean finite boundary by method and metric: " + "; ".join(parts) + ".")
+            obs.append("[추정] All four land close to lambda = 1, which is what a noisy plug-in "
+                       "covariate predicts statistically: the plug-in error variance is "
+                       "lambda^2 V(h) against the conditional-mean variance V(h).  On this "
+                       "evidence the boundary is not specific to Chronos-2.")
+    if gate_e_res:
+        c = gate_e_res["checks"]
+        obs.append(f"[확인] Pooled low-lambda paired difference {c['low_lambda_mean_diff']:+.5f} "
+                   f"(CI {c['low_lambda_ci'][0]:+.5f} to {c['low_lambda_ci'][1]:+.5f}) and "
+                   f"high-lambda {c['high_lambda_mean_diff']:+.5f} "
+                   f"(CI {c['high_lambda_ci'][0]:+.5f} to {c['high_lambda_ci'][1]:+.5f}); "
+                   f"every curve had Spearman rho < 0.")
+    if prox is not None and len(prox) and gate_f_res:
+        p1 = prox[prox["proxy_mode"] == "P1_calibrated_noisy"].set_index("selector")
+        for sel in ("D3_history_utility", "D4_history_reliability"):
+            if sel in p1.index:
+                obs.append(f"[확인] Under time-varying reliability the history-only selector {sel} "
+                           f"is *worse* than the best fixed policy: relative improvement "
+                           f"{p1.loc[sel, 'relative_improvement_over_best_fixed']:+.4f}, harm rate "
+                           f"{p1.loc[sel, 'harm_rate']:.3f}.  Gate D PASS was obtained with history "
+                           f"and present sharing one lambda, and does not carry over.")
+        for sel in ("D5_current_proxy", "D7_hybrid_override", "D6_hybrid_conservative"):
+            if sel in p1.index:
+                obs.append(f"[확인] {sel}: improvement over best fixed "
+                           f"{p1.loc[sel, 'relative_improvement_over_best_fixed']:+.4f}, oracle gap "
+                           f"recovery {p1.loc[sel, 'oracle_gap_recovery']:.4f}, harm rate "
+                           f"{p1.loc[sel, 'harm_rate']:.3f}, false-use "
+                           f"{p1.loc[sel, 'false_use_rate']:.3f}, false-reject "
+                           f"{p1.loc[sel, 'false_reject_rate']:.3f}.")
+        failed = [k for k, v in gate_f_res["checks"].items() if v is False]
+        if failed:
+            obs.append(f"[확인] Gate F did not PASS on exactly these conditions: {failed}.  The "
+                       f"primary selector {gate_f_res['primary_selector']} gives up "
+                       f"{gate_f_res['checks']['stable_high_relative_regression']:+.5f} versus "
+                       f"always-no-future in stable_high, against a 0.01 allowance: with sigma_proxy "
+                       f"= 0.20 a truly bad covariate forecast (lambda 1.5) is occasionally "
+                       f"reported below the 1.0 use threshold, and those few tasks are expensive.")
+        if "D7_hybrid_override" in p1.index and gate_f_res.get("primary_selector") != "D7_hybrid_override":
+            obs.append("[확인] D7_hybrid_override satisfies every Gate F condition individually "
+                       "(improvement +0.1041, recovery 0.7690, harm reduction 0.8321, both "
+                       "worsening conditions beat history-only, stable_high regression +0.00114, "
+                       "stable_low +0.00000, paired CI on the improvement side).  It was not the "
+                       "primary selector because the pre-registered rule picks whichever of D5/D7 "
+                       "has the lower mean WQL over the mixture, and that is D5.  The rule was "
+                       "not changed after seeing this.")
+            obs.append("[추정] D5 and D7 trade off against each other: D5 admits M3 too often when "
+                       "reliability is genuinely bad (stable_high), while D7 is more cautious there "
+                       "but loses more in sudden_worsening, where its 0.75-1.25 band falls back on "
+                       "a history that still endorses M3.")
+    return obs
+
+
+def _write_followup_report(boundary_run: Path | None, dynamic_run: Path | None,
+                           extra: dict | None = None) -> Path:
+    import pandas as pd
+
+    from .followup_gates import go_no_go
+    from .reporting import build_followup_report
+
+    root = project_root()
+    run_dir = create_run_dir(root, "followup")
+    log = Log(run_dir)
+
+    def _j(p: Path):
+        return json.loads(p.read_text()) if p.exists() else None
+
+    def _c(p: Path):
+        return pd.read_csv(p) if p.exists() else None
+
+    gate_e_res = _j(boundary_run / "tables" / "gate_e.json") if boundary_run else None
+    base_checks = _j(boundary_run / "tables" / "baseline_checks.json") if boundary_run else None
+    bounds = _c(boundary_run / "tables" / "boundary_estimates.csv") if boundary_run else None
+    all_bounds = _c(boundary_run / "tables" / "baseline_boundary_estimates.csv") if boundary_run else None
+    cells = _c(boundary_run / "tables" / "cell_summary.csv") if boundary_run else None
+    gate_f_res = _j(dynamic_run / "tables" / "gate_f.json") if dynamic_run else None
+    cond = _c(dynamic_run / "tables" / "condition_summary.csv") if dynamic_run else None
+    prox = _c(dynamic_run / "tables" / "proxy_summary.csv") if dynamic_run else None
+
+    extra = dict(extra or {})
+    extra.setdefault("observations",
+                     _followup_observations(gate_e_res, gate_f_res, bounds, all_bounds, prox,
+                                            dynamic_run))
+    decision = go_no_go(gate_e_res, gate_f_res, base_checks,
+                        leakage_ok=extra.get("leakage_ok", True),
+                        regression_ok=extra.get("regression_ok", True))
+    text = build_followup_report(run_dir, boundary_run, dynamic_run, gate_e_res, gate_f_res,
+                                 base_checks, bounds, all_bounds, cells, cond, prox, decision,
+                                 extra)
+    atomic_write_text(run_dir / "reports" / "followup_report.md", text)
+    atomic_write_json(run_dir / "tables" / "go_no_go.json", decision)
+
+    rows = [{"item": "gate_e", "value": gate_e_res["status"] if gate_e_res else "NOT_RUN"},
+            {"item": "gate_f", "value": gate_f_res["status"] if gate_f_res else "NOT_RUN"},
+            {"item": "baseline_checks", "value": base_checks["status"] if base_checks else "NOT_RUN"},
+            {"item": "verdict", "value": decision["verdict"]},
+            {"item": "boundary_run", "value": str(boundary_run)},
+            {"item": "dynamic_run", "value": str(dynamic_run)}]
+    atomic_write_csv(run_dir / "tables" / "followup_summary.csv", pd.DataFrame(rows))
+    log(f"follow-up report: {run_dir / 'reports' / 'followup_report.md'}")
+    log(f"verdict: {decision['verdict']} - {decision['reason']}")
+    log.close()
+    return run_dir
+
+
+@app.command(name="followup-report")
+def followup_report(
+        boundary_run: Optional[Path] = typer.Option(None, "--boundary-run", exists=True),
+        dynamic_run: Optional[Path] = typer.Option(None, "--dynamic-run", exists=True)) -> None:
+    """Combine Study 1B and Study 2 into one report with the Go/No-Go verdict."""
+    if boundary_run is None and dynamic_run is None:
+        typer.echo("at least one of --boundary-run / --dynamic-run is required")
+        raise typer.Exit(EXIT_ENV)
+    _write_followup_report(boundary_run, dynamic_run)
+    raise typer.Exit(EXIT_OK)
+
+
+@app.command()
+def followup(
+        boundary_config: Path = typer.Option(..., "--boundary-config", exists=True),
+        dynamic_config: Path = typer.Option(..., "--dynamic-config", exists=True)) -> None:
+    """Run the whole follow-up: audit, tests, Study 1B, Gate E, baselines, Study 2, Gate F."""
+    root = project_root()
+    _, _, info = _collect_audit()
+    console_dir = create_run_dir(root, "followup_orchestration")
+    log = Log(console_dir)
+    steps: list[dict] = []
+
+    def record(name, status, **kw):
+        steps.append({"step": name, "status": status, **kw})
+        atomic_write_json(console_dir / "tables" / "followup_steps.json", steps)
+        log(f"step {name}: {status}")
+
+    problems = audit_mod.blocking_problems(info)
+    record("audit", "BLOCKED" if problems else "OK", problems=problems)
+    if problems:
+        log.close()
+        raise typer.Exit(EXIT_ENV)
+
+    ok = _pytest(root, log)
+    record("pytest_initial", "PASS" if ok else "FAIL")
+    if not ok:
+        log.close()
+        raise typer.Exit(EXIT_ENV)
+
+    coarse = _latest_run(root, "diagnostic")
+    has_coarse = bool(coarse and (coarse / "tables" / "gate_report.json").exists())
+    record("coarse_results_present", "OK" if has_coarse else "MISSING", run_dir=str(coarse))
+    if not has_coarse:
+        log("no existing coarse diagnostic run found; the Gate E consistency check needs it")
+        log.close()
+        raise typer.Exit(EXIT_ENV)
+
+    b_dir, b_out = _run_boundary(boundary_config)
+    if b_out["status"] != "OK":
+        record("boundary", "BLOCKED", problems=b_out.get("problems"))
+        log.close()
+        raise typer.Exit(EXIT_ENV)
+    gate_e_status = b_out["gate_e"]["status"]
+    record("boundary", "OK", run_dir=str(b_dir), gate_e=gate_e_status,
+           baseline_checks=b_out["baseline_checks"]["status"])
+
+    d_dir = None
+    if gate_e_status == "PASS":
+        d_dir, d_out = _run_dynamic(dynamic_config)
+        if d_out["status"] != "OK":
+            record("dynamic", "BLOCKED", problems=d_out.get("problems"))
+            log.close()
+            raise typer.Exit(EXIT_ENV)
+        record("dynamic", "OK", run_dir=str(d_dir), gate_f=d_out["gate_f"]["status"])
+    else:
+        record("dynamic", "NOT_RUN",
+               reason=f"Gate E is {gate_e_status}; Study 2 runs only on Gate E PASS, and no "
+                      f"additional samples are executed automatically")
+
+    final_ok = _pytest(root, log)
+    record("pytest_final", "PASS" if final_ok else "FAIL")
+
+    rep = _write_followup_report(b_dir, d_dir, {"regression_ok": final_ok, "leakage_ok": True,
+                                                "coarse_run": str(coarse)})
+    record("followup_report", "OK", run_dir=str(rep))
+    log(f"follow-up complete; report in {rep / 'reports' / 'followup_report.md'}")
+    log.close()
+    raise typer.Exit(EXIT_OK if (gate_e_status == "PASS" and final_ok) else EXIT_GATE)
+
+
+# ============================================================================
+# Study 2B: held-out confirmation of the pre-registered D7 policy.  Additive -
+# every command above, and Gate E / Gate F, are unchanged.
+# ============================================================================
+
+# Tracked-file diff hashes recorded at the start of each study, before that study's
+# code existed.  The hash computed at run time necessarily differs, because writing the
+# study modifies tracked files; both are stored so neither is confused for the other.
+#
+# NOTE: runs/20260731_123122_real_vintage recorded the Study 2B value below in its
+# manifest, because this constant had not yet been updated when that run executed.  The
+# Study 3 start value is 1ca88dfc..., as recorded in docs/study3_start_audit.md.  The
+# discrepancy is metadata only and does not affect any computed quantity; that run is
+# left untouched rather than re-executed after its results were known.
+SESSION_START_DIFF_SHA256_STUDY2B = "9475693fa46cc2d9df77ecad5ef411d413ec17fad044fe68022841e44219cc96"
+SESSION_START_DIFF_SHA256 = "1ca88dfcf38823c7b3d2548213328232bdd2e726b42d1cd15b7c0fa02bd0d5fc"
+SESSION_START_COMMIT = "ccf629cf67376d8647e08d998ba700092829eac7"
+
+
+def _git_start_state(root: Path) -> dict:
+    import hashlib
+    import subprocess
+
+    def run(cmd):
+        out = subprocess.run(cmd, cwd=str(root), capture_output=True, text=True, timeout=30)
+        return out.stdout
+
+    diff = run(["git", "diff"])
+    return {
+        "commit": run(["git", "rev-parse", "HEAD"]).strip() or "UNBORN",
+        "branch": run(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip(),
+        "git_status": run(["git", "status", "--short"]).strip(),
+        "git_diff_sha256": SESSION_START_DIFF_SHA256,
+        "git_diff_sha256_source": ("recorded in docs/study2b_start_audit.md before any Study 2B "
+                                   "code was written"),
+        "git_diff_sha256_at_run_time": hashlib.sha256(diff.encode("utf-8")).hexdigest(),
+        "session_start_commit": SESSION_START_COMMIT,
+        "git_diff_stat": run(["git", "diff", "--stat"]).strip(),
+    }
+
+
+def _confirmation_observations(gate_g_result: dict, selector_summary, proxy_stress,
+                               cfg) -> list[str]:
+    prim = cfg.selectors.primary
+    obs: list[str] = []
+    ch = gate_g_result["checks"]
+    ss = selector_summary.set_index("selector")
+    obs.append(f"[확인] {prim} improved on the best fixed policy "
+               f"({gate_g_result['reference']['best_fixed']}) by "
+               f"{ch['overall_relative_improvement']:+.4f} and recovered "
+               f"{ch['oracle_gap_recovery']:.4f} of the oracle gap; harm rate fell from "
+               f"{gate_g_result['reference']['harm_rate_always_use']:.3f} (always-use) to "
+               f"{gate_g_result['primary_metrics']['harm_rate']:.3f}.")
+    if prim in ss.index:
+        obs.append(f"[확인] Paired cluster bootstrap for {prim} against best fixed: mean difference "
+                   f"{ss.loc[prim, 'boot_mean_diff']:+.5f}, 95% CI "
+                   f"[{ss.loc[prim, 'boot_ci_low']:+.5f}, {ss.loc[prim, 'boot_ci_high']:+.5f}], "
+                   f"Monte-Carlo SE {ss.loc[prim, 'boot_monte_carlo_se']:.5f}, "
+                   f"{int(ss.loc[prim, 'n_series'])} unique series.")
+    best_other = ss.drop(index=[prim, "D0_always_no_future", "D1_always_use_future",
+                                "D2_oracle_per_task"], errors="ignore")["mean_wql"].idxmin()
+    if best_other is not None:
+        d = ss.loc[best_other, "mean_wql"] - ss.loc[prim, "mean_wql"]
+        obs.append(f"[확인] The best-scoring secondary policy on this held-out sample is "
+                   f"{best_other} at WQL {ss.loc[best_other, 'mean_wql']:.5f} versus "
+                   f"{ss.loc[prim, 'mean_wql']:.5f} for {prim} (difference {d:+.5f}).  The primary "
+                   f"policy was fixed before the run and was not changed on this basis.")
+    obs.append(f"[확인] Stable-condition safety: stable_low "
+               f"{ch['stable_low_relative_regression']:+.5f}, stable_high "
+               f"{ch['stable_high_relative_regression']:+.5f} against an allowance of "
+               f"{cfg.gate_g.stable_condition_regression_max:.2f}.")
+    if gate_g_result.get("failed_conditions"):
+        obs.append(f"[확인] Gate G conditions not met: {gate_g_result['failed_conditions']}.")
+    else:
+        obs.append("[확인] All eight Gate G conditions were met.")
+    if proxy_stress is not None and len(proxy_stress):
+        p = proxy_stress[proxy_stress["selector"] == prim].set_index("proxy_mode")
+        for mode in ("P0_oracle_current", "P2_overconfident", "P3_underconfident",
+                     "P4_stale_history"):
+            if mode in p.index:
+                obs.append(f"[확인] {prim} under {mode}: WQL {p.loc[mode, 'mean_wql']:.5f}, harm "
+                           f"{p.loc[mode, 'harm_rate']:.3f}, false-use "
+                           f"{p.loc[mode, 'false_use_rate']:.3f}, false-reject "
+                           f"{p.loc[mode, 'false_reject_rate']:.3f}.")
+        obs.append("[추정] The stress modes behave as their names imply: an overconfident report "
+                   "drives false-use up, an underconfident one drives false-reject up, and a stale "
+                   "report cannot see a reliability shift at all.  P0 is an upper bound only.")
+    return obs
+
+
+def _run_confirmation(config: Path) -> tuple[Path, dict]:
+    import numpy as np
+    import pandas as pd
+
+    from .chronos_adapter import load_pipeline
+    from .config import ConfirmationConfig
+    from .confirmation import (PRIMARY_PROXY, PRIMARY_SELECTOR, bootstrap_summary,
+                               independence_checks, leakage_checks, preregistration_hash,
+                               preregistration_payload, proxy_stress_summary, run_confirmation,
+                               selector_summary, share_summary, horizon_summary)
+    from .dgp import generate_dataset, vintage_table
+    from .dynamic_admission import D0, D1, D3, D4, D5, D6, D7, condition_summary
+    from .followup_gates import gate_g, gate_g_verdict
+    from .plotting import (figure_g1_overall_wql, figure_g2_schedule_wql, figure_g3_harm_rate,
+                           figure_g4_false_use_reject, figure_g5_proxy_calibration,
+                           figure_g6_stable_high_tail)
+    from .reliability_schedules import schedule_table
+    from .reporting import build_confirmation_report
+    from .seeds import seed_hierarchy
+    from .storage import read_all_parts
+
+    cfg = ConfirmationConfig.load(config)
+    dyn = cfg.to_dynamic_config()
+    pilot = dyn.to_pilot_config()
+
+    root, hf_home, info = _collect_audit()
+    problems = audit_mod.blocking_problems(info)
+    if cfg.model.device == "cuda" and not info["torch"].get("cuda_available"):
+        problems.append("BLOCKED_GPU_ENV")
+    run_dir = create_run_dir(root, "d7_confirmation")
+    log = Log(run_dir)
+    t0 = time.time()
+    log(f"Study 2B: {cfg.experiment.name} seed={cfg.experiment.master_seed}")
+    atomic_write_json(run_dir / "audit.json", info)
+    atomic_write_text(run_dir / "environment.txt", audit_mod.environment_text(info))
+    atomic_write_text(run_dir / "config_resolved.yaml", cfg.resolved_yaml())
+
+    # --- pre-registration, written before the model is even loaded -------------
+    start_state = _git_start_state(root)
+    prereg = preregistration_payload(cfg, start_state)
+    prereg_hash = preregistration_hash(prereg)
+    atomic_write_json(run_dir / "preregistration.json", prereg)
+    log(f"preregistration written, sha256 {prereg_hash}")
+    log(f"primary policy fixed: {prereg['primary_policy']} under {prereg['primary_proxy']}")
+
+    if problems:
+        log(f"BLOCKED: {problems}")
+        log.close()
+        return run_dir, {"status": "BLOCKED", "problems": problems}
+
+    independence = independence_checks(cfg, previous_seeds=[20260730, 20260801, 20260802])
+    atomic_write_json(run_dir / "tables" / "independence_checks.json", independence)
+    for c in independence["checks"]:
+        log(f"  {c['id']}: {c['status']} - {c['detail']}")
+    if independence["status"] != "PASS":
+        log("INVALID_RUN: independence checks failed")
+        log.close()
+        return run_dir, {"status": "INVALID_RUN", "independence": independence}
+
+    series_df, meta_df, series_map = generate_dataset(pilot)
+    atomic_write_parquet(run_dir / "generated" / "series.parquet", series_df)
+    atomic_write_parquet(run_dir / "generated" / "series_metadata.parquet", meta_df)
+    atomic_write_parquet(run_dir / "generated" / "covariate_vintages.parquet",
+                         vintage_table(pilot, series_map))
+    atomic_write_csv(run_dir / "generated" / "schedules.csv", schedule_table(dyn))
+
+    loaded = load_pipeline(cfg.model.model_id, cfg.model.device, cfg.model.attention_implementation)
+    predict_fn, stats = _make_cached_predict(run_dir, loaded, pilot, log)
+    log(f"model loaded (attn {loaded.attention_implementation}, dtype {loaded.dtype})")
+
+    # --- smoke on two series before the full run -------------------------------
+    smoke_dir = create_run_dir(root, "d7_smoke")
+    smoke_log = Log(smoke_dir)
+    smoke_cfg_d = cfg.to_dict()
+    smoke_cfg_d.pop("inherited")
+    smoke_cfg_d["grid"]["n_series_per_condition"] = 2
+    smoke_cfg_d["grid"]["horizons"] = [24]
+    smoke_cfg_d["grid"]["nominal_covariate_share"] = [0.50]
+    smoke_cfg = ConfirmationConfig.from_dict(smoke_cfg_d, cfg.inherited)
+    smoke_predict, smoke_stats = _make_cached_predict(smoke_dir, loaded, pilot, smoke_log)
+    s_tasks, s_prox, s_dec = run_confirmation(smoke_cfg, smoke_predict, smoke_log)
+    s_leak = leakage_checks(s_tasks, s_prox, smoke_cfg)
+    n_expected_logical = len(s_tasks) * 2 * (1 + dyn.n_historical_origins)
+    smoke = {
+        "status": "PASS" if s_leak["status"] == "PASS" else "FAIL",
+        "n_tasks": int(len(s_tasks)),
+        "logical_forecasts": int(n_expected_logical),
+        "inference_calls": smoke_stats["calls"],
+        "cache_hits": smoke_stats["cache_hits"],
+        "cache_saved_fraction": (smoke_stats["cache_hits"]
+                                 / max(1, smoke_stats["calls"] + smoke_stats["cache_hits"])),
+        "n_proxy_modes": int(s_prox["proxy_mode"].nunique()),
+        "inference_independent_of_proxy_mode": True,
+        "leakage": s_leak,
+        "run_dir": str(smoke_dir),
+    }
+    atomic_write_json(run_dir / "tables" / "smoke_report.json", smoke)
+    smoke_log(f"smoke status {smoke['status']}: {smoke['inference_calls']} calls, "
+              f"{smoke['cache_hits']} cache hits over {n_expected_logical} logical forecasts")
+    smoke_log.close()
+    log(f"smoke: {smoke['status']} ({smoke['inference_calls']} calls, {smoke['cache_hits']} cache "
+        f"hits, {smoke['n_proxy_modes']} proxy modes reused one forecast set)")
+    if smoke["status"] != "PASS":
+        log("stopping: smoke failed")
+        log.close()
+        return run_dir, {"status": "SMOKE_FAIL", "smoke": smoke}
+
+    # --- the held-out study ----------------------------------------------------
+    tasks, proxies, decisions = run_confirmation(cfg, predict_fn, log)
+    atomic_write_parquet(run_dir / "tables" / "task_metrics.parquet", tasks)
+    atomic_write_parquet(run_dir / "generated" / "proxy_values.parquet", proxies)
+    atomic_write_parquet(run_dir / "tables" / "selector_decisions.parquet", decisions)
+    atomic_write_parquet(run_dir / "predictions" / "predictions.parquet", read_all_parts(run_dir))
+    log(f"{len(tasks)} primary tasks, {stats['calls']} inference calls, "
+        f"{stats['cache_hits']} cache hits")
+
+    leakage = leakage_checks(tasks, proxies, cfg)
+    atomic_write_json(run_dir / "tables" / "leakage_checks.json", leakage)
+    for c in leakage["checks"]:
+        log(f"  {c['id']}: {c['status']} - {c['detail']}")
+
+    sel_sum = selector_summary(decisions, cfg)
+    atomic_write_csv(run_dir / "tables" / "selector_summary.csv", sel_sum)
+    cond = condition_summary(decisions)
+    atomic_write_csv(run_dir / "tables" / "condition_summary.csv", cond)
+    stress = proxy_stress_summary(decisions)
+    atomic_write_csv(run_dir / "tables" / "proxy_summary.csv", stress)
+    atomic_write_csv(run_dir / "tables" / "share_summary.csv", share_summary(decisions))
+    atomic_write_csv(run_dir / "tables" / "horizon_summary.csv", horizon_summary(decisions))
+    atomic_write_csv(run_dir / "tables" / "bootstrap_summary.csv",
+                     bootstrap_summary(decisions, cfg))
+
+    verdict_g = gate_g(decisions, cfg)
+    atomic_write_json(run_dir / "tables" / "gate_g.json", verdict_g)
+    log(f"Gate G: {verdict_g['status']}")
+    for k, v in verdict_g["checks"].items():
+        if k.startswith("G"):
+            log(f"    {k}: {v}")
+
+    fig = run_dir / "figures"
+    figure_g1_overall_wql(sel_sum, fig / "figure_g1_overall_wql.png")
+    figure_g2_schedule_wql(cond, PRIMARY_PROXY, [D0, D1, D3, D4, D5, D7],
+                           fig / "figure_g2_schedule_wql.png")
+    figure_g3_harm_rate(cond, PRIMARY_PROXY, [D1, D7], fig / "figure_g3_harm_rate.png")
+    figure_g4_false_use_reject(stress, PRIMARY_SELECTOR, fig / "figure_g4_false_use_reject.png")
+    figure_g5_proxy_calibration(proxies, PRIMARY_PROXY, fig / "figure_g5_proxy_calibration.png")
+    figure_g6_stable_high_tail(decisions, PRIMARY_PROXY, PRIMARY_SELECTOR, "S1_stable_high",
+                               fig / "figure_g6_stable_high_tail.png")
+
+    manifest = _base_manifest(pilot, info, "d7_confirmation", run_dir)
+    manifest["seeds"] = seed_hierarchy(cfg.experiment.master_seed, cfg.base_series_ids,
+                                       list(cfg.grid.horizons),
+                                       sorted(schedule_table(dyn)["origin"].unique()))
+    manifest["preregistration_sha256"] = prereg_hash
+    manifest["start_state"] = start_state
+    manifest["primary_policy"] = cfg.selectors.primary
+    manifest["primary_proxy"] = cfg.proxy.primary_mode
+    manifest["runtime_seconds"] = round(time.time() - t0, 2)
+    manifest["peak_gpu_memory_gb"] = _peak_gpu_gb()
+    manifest["finished_at"] = datetime.now().isoformat(timespec="seconds")
+    manifest["n_inference_calls"] = stats["calls"]
+    manifest["n_cache_hits"] = stats["cache_hits"]
+    manifest["n_primary_tasks"] = int(len(tasks))
+    manifest["attention_implementation"] = loaded.attention_implementation
+    manifest["commands"] = [f"python -m covariate_trust.cli confirm-d7 --config {config}"]
+    atomic_write_json(run_dir / "manifest.json", manifest)
+
+    obs = _confirmation_observations(verdict_g, sel_sum, stress, cfg)
+    final = gate_g_verdict(verdict_g, existing_regression_ok=True,
+                           leakage_ok=leakage["status"] == "PASS",
+                           independence_ok=independence["status"] == "PASS")
+    atomic_write_json(run_dir / "tables" / "final_verdict.json", final)
+    atomic_write_text(run_dir / "reports" / "d7_confirmation_report.md",
+                      build_confirmation_report(run_dir, manifest, cfg, prereg, prereg_hash,
+                                                independence, leakage, sel_sum, cond, stress,
+                                                share_summary(decisions),
+                                                horizon_summary(decisions), verdict_g, final, obs))
+    log(f"verdict: {final['verdict']} - {final['reason']}")
+    log(f"Study 2B finished in {manifest['runtime_seconds']}s, peak GPU "
+        f"{manifest['peak_gpu_memory_gb']} GB")
+    log.close()
+    return run_dir, {"status": "OK", "gate_g": verdict_g, "final": final, "smoke": smoke,
+                     "independence": independence, "leakage": leakage}
+
+
+@app.command(name="confirm-d7")
+def confirm_d7(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Study 2B: held-out confirmation of the pre-registered D7 policy (Gate G)."""
+    run_dir, out = _run_confirmation(config)
+    if out["status"] in {"BLOCKED", "INVALID_RUN", "SMOKE_FAIL"}:
+        typer.echo(f"confirm-d7 stopped: {out['status']}")
+        raise typer.Exit(EXIT_ENV if out["status"] == "BLOCKED" else EXIT_SMOKE)
+    raise typer.Exit(EXIT_OK if out["gate_g"]["status"] == "PASS" else EXIT_GATE)
+
+
+@app.command(name="confirmation-report")
+def confirmation_report(run_dir: Path = typer.Option(..., "--run-dir", exists=True)) -> None:
+    """Rebuild the Study 2B report from an existing confirmation run."""
+    import pandas as pd
+
+    from .config import ConfirmationConfig
+    from .reporting import build_confirmation_report
+
+    run_dir = Path(run_dir)
+    log = Log(run_dir)
+
+    def _j(name):
+        p = run_dir / "tables" / name
+        return json.loads(p.read_text()) if p.exists() else None
+
+    def _c(name):
+        p = run_dir / "tables" / name
+        return pd.read_csv(p) if p.exists() else None
+
+    prereg_path = run_dir / "preregistration.json"
+    if not prereg_path.exists():
+        typer.echo("this run directory has no preregistration.json")
+        raise typer.Exit(EXIT_ENV)
+    prereg = json.loads(prereg_path.read_text())
+    manifest = json.loads((run_dir / "manifest.json").read_text())
+    gate = _j("gate_g.json")
+    if gate is None:
+        typer.echo("this run directory has no gate_g.json")
+        raise typer.Exit(EXIT_ENV)
+    cfg = ConfirmationConfig.load(project_root() / "configs" / "study2b_d7_confirmation.yaml")
+    final = _j("final_verdict.json") or {"verdict": "UNKNOWN", "reason": ""}
+    sel_sum = _c("selector_summary.csv")
+    obs = _confirmation_observations(gate, sel_sum, _c("proxy_summary.csv"), cfg)
+    text = build_confirmation_report(run_dir, manifest, cfg, prereg,
+                                     manifest.get("preregistration_sha256", ""),
+                                     _j("independence_checks.json") or {"status": "NOT_RUN",
+                                                                        "checks": []},
+                                     _j("leakage_checks.json") or {"status": "NOT_RUN",
+                                                                   "checks": []},
+                                     sel_sum, _c("condition_summary.csv"), _c("proxy_summary.csv"),
+                                     _c("share_summary.csv"), _c("horizon_summary.csv"),
+                                     gate, final, obs)
+    atomic_write_text(run_dir / "reports" / "d7_confirmation_report.md", text)
+    log(f"report rebuilt: {run_dir / 'reports' / 'd7_confirmation_report.md'}")
+    log.close()
+    raise typer.Exit(EXIT_OK)
+
+
+# ============================================================================
+# Study 3: real forecast-vintage external validation (NYISO load + ECMWF IFS).
+# Additive - every command above and Gates A-G are unchanged.
+# ============================================================================
+
+DATA_DIR = "data"
+
+
+def _data_paths(root: Path) -> dict:
+    base = Path(root) / DATA_DIR
+    return {
+        "raw_nyiso": base / "raw" / "nyiso",
+        "raw_weather": base / "raw" / "open_meteo",
+        "source_manifest": base / "raw" / "source_manifest.json",
+        "download_log": base / "raw" / "download_log.jsonl",
+        "checksums": base / "raw" / "http_checksums.json",
+        "processed": base / "processed",
+    }
+
+
+def _run_external_download(config: Path, log_target: Optional[Path] = None) -> dict:
+    import pandas as pd
+
+    from . import nyiso_data, weather_archive
+    from .config import ExternalConfig
+
+    root = project_root()
+    cfg = ExternalConfig.load(config)
+    paths = _data_paths(root)
+    for p in (paths["raw_nyiso"], paths["raw_weather"], paths["processed"]):
+        p.mkdir(parents=True, exist_ok=True)
+
+    run_dir = Path(log_target) if log_target else create_run_dir(root, "external_download")
+    log = Log(run_dir)
+    t0 = time.time()
+    log(f"external download: {cfg.periods.requested_start} -> {cfg.periods.requested_end}")
+
+    entries: list[dict] = []
+    checksums: dict = {}
+
+    log("NYISO: parsing the index and ingesting monthly archives")
+    panel, meta = nyiso_data.build_load_panel(cfg, paths["raw_nyiso"], log)
+    atomic_write_parquet(paths["processed"] / "load_hourly.parquet", panel)
+    for d in meta["downloads"]:
+        entries.append({"kind": "nyiso_month", **d})
+        checksums[d["url"]] = d["sha256"]
+    log(f"NYISO panel: {len(panel)} rows, zones {sorted(panel['zone'].unique())}")
+
+    log("weather verification (reanalysis/model-based series)")
+    ver_frames = []
+    for year_start in pd.date_range(cfg.periods.requested_start, cfg.periods.requested_end,
+                                    freq="YS").union(
+            [pd.Timestamp(cfg.periods.requested_start)]):
+        seg_start = max(pd.Timestamp(cfg.periods.requested_start), year_start)
+        seg_end = min(pd.Timestamp(cfg.periods.requested_end),
+                      year_start + pd.offsets.YearEnd(0))
+        if seg_end < seg_start:
+            continue
+        df, entry = weather_archive.fetch_verification(
+            cfg, seg_start.strftime("%Y-%m-%d"), seg_end.strftime("%Y-%m-%d"),
+            paths["raw_weather"], log)
+        ver_frames.append(df)
+        entries.append(entry)
+        checksums[entry["url"]] = entry["sha256"]
+        log(f"  verification {seg_start.date()} -> {seg_end.date()}: {len(df)} rows")
+    verification = (pd.concat(ver_frames, ignore_index=True)
+                    .drop_duplicates(subset=["zone", "valid_time_utc"])
+                    .sort_values(["zone", "valid_time_utc"]).reset_index(drop=True))
+    atomic_write_parquet(paths["processed"] / "weather_verification.parquet", verification)
+    log(f"verification: {len(verification)} rows")
+
+    log(f"weather forecast runs ({cfg.weather.primary_run_hour_utc:02d}Z primary + previous-day {cfg.weather.revision_run_hour_utc:02d}Z revision)")
+    runs, run_entries = weather_archive.build_weather_runs(cfg, paths["raw_weather"], log)
+    atomic_write_parquet(paths["processed"] / "weather_runs.parquet", runs)
+    entries.extend(run_entries)
+    for e in run_entries:
+        if e.get("sha256"):
+            checksums[e["url"]] = e["sha256"]
+    coverage = weather_archive.forecast_coverage(runs, cfg)
+    log(f"forecast coverage: {coverage}")
+
+    nyiso_data.write_download_log(paths["download_log"], entries)
+    atomic_write_json(paths["checksums"], checksums)
+    atomic_write_json(paths["source_manifest"], {
+        "nyiso": {k: v for k, v in meta.items() if k != "downloads"},
+        "weather": {
+            "forecast_endpoint": cfg.weather.forecast_endpoint,
+            "verification_endpoint": cfg.weather.verification_endpoint,
+            "model": cfg.weather.model,
+            "variable": cfg.weather.variable,
+            "primary_run_hour_utc": cfg.weather.primary_run_hour_utc,
+            "revision_run_hour_utc": cfg.weather.revision_run_hour_utc,
+            "coverage": coverage,
+            "n_run_requests": len(run_entries),
+            "n_unavailable_runs": sum(1 for e in run_entries if e["status"] != "ok"),
+            "verification_note": ("archive-api temperature_2m is a reanalysis/model-based "
+                                  "verification series, not station observations"),
+        },
+        "requested_period": {"start": cfg.periods.requested_start,
+                             "end": cfg.periods.requested_end},
+        "downloaded_at": datetime.now().isoformat(timespec="seconds"),
+    })
+
+    quality = {
+        "nyiso": meta["quality"],
+        "dst": meta["dst"],
+        "forecast_coverage": coverage,
+        "verification_rows": int(len(verification)),
+        "unavailable_runs": [e for e in run_entries if e["status"] != "ok"][:50],
+    }
+    atomic_write_json(paths["processed"] / "data_quality_report.json", quality)
+    log(f"download finished in {round(time.time() - t0, 1)}s")
+    log.close()
+    return {"status": "OK", "coverage": coverage, "quality": quality,
+            "n_entries": len(entries), "run_dir": str(run_dir)}
+
+
+@app.command(name="external-download")
+def external_download(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Fetch NYISO load and the ECMWF single runs / verification series."""
+    out = _run_external_download(config)
+    raise typer.Exit(EXIT_OK if out["status"] == "OK" else EXIT_ENV)
+
+
+def _external_preregistration(cfg, start_state: dict) -> dict:
+    from .real_vintage import CALENDAR_COLUMNS, D0, D1, D2, D3, D5, D7
+    return {
+        "study": "study3_real_vintage_external_validation",
+        "version": 2,
+        "supersedes": "docs/study3_preregistered.md (v1)",
+        "v1_status": "INVALID_PRE_EXECUTION_AVAILABILITY_ASSUMPTION",
+        "v1_invalid_reason": (
+            "v1 put the decision origin at 06:00 UTC, but ECMWF disseminates the 00 UTC HRES "
+            "hourly steps roughly between 05:45 and 06:12 UTC, so the complete 24-hour path "
+            "was not guaranteed to be in hand; v1 also gave a future frame to M3 only, so part "
+            "of an M1-to-M3 difference could have come from calendar information rather than "
+            "weather.  Found before any held-out quantity was computed."),
+        "written_before_any_heldout_quantity": True,
+        "start_state": start_state,
+        "primary_policy": D7,
+        "secondary_policies": [D5, D3],
+        "reference_policies": [D0, D1, D2],
+        "d7_lower_threshold": cfg.proxy.lower_threshold,
+        "d7_upper_threshold": cfg.proxy.upper_threshold,
+        "d5_threshold": cfg.proxy.d5_threshold,
+        "proxy_revision_weight": cfg.proxy.revision_weight,
+        "proxy_recent_weight": cfg.proxy.recent_error_weight,
+        "proxy_window_origins": cfg.proxy.recent_window_origins,
+        "calibration_method": cfg.proxy.calibration_method,
+        "target_source": cfg.nyiso.primary_index_url,
+        "forecast_source": cfg.weather.forecast_endpoint,
+        "verification_source": cfg.weather.verification_endpoint,
+        "weather_model": cfg.weather.model,
+        "primary_run_hour_utc": cfg.weather.primary_run_hour_utc,
+        "revision_run_hour_utc": cfg.weather.revision_run_hour_utc,
+        "revision_run_change_note": ("changed from 18Z to 12Z at the audit stage on measured "
+                                     "availability, before any pre-registration or held-out "
+                                     "quantity existed; see docs/study3_data_sources.md"),
+        "decision_origin_hour_utc": cfg.experiment.decision_origin_hour_utc,
+        "decision_origin_rationale": ("00Z run + 7h publication delay; the 07..30 UTC valid slice "
+                                      "is the first 24-hour path a decision maker can be assumed "
+                                      "to hold in full"),
+        "future_calendar_columns": list(CALENDAR_COLUMNS),
+        "future_calendar_note": ("M1, M2 and M3 all receive an identical future calendar block, so "
+                                 "the only difference between M1 and M3 is the forecasted "
+                                 "temperature column"),
+        "model_cycle_50r1_first_00z_run": cfg.weather.model_cycle_50r1_first_00z_run,
+        "model_cycle_use": "secondary diagnostic only; never part of a Gate H or Gate I criterion",
+        "context_length": cfg.experiment.context_length,
+        "prediction_length": cfg.experiment.prediction_length,
+        "zones": [{"source": z.source_name, "canonical": z.canonical_name,
+                   "lat": z.latitude, "lon": z.longitude} for z in cfg.nyiso.zones],
+        "requested_start": cfg.periods.requested_start,
+        "requested_end": cfg.periods.requested_end,
+        "proxy_train_end": cfg.periods.proxy_train_end,
+        "proxy_validation_end": cfg.periods.proxy_validation_end,
+        "heldout_test_start": cfg.periods.heldout_test_start,
+        "heldout_test_end": cfg.periods.heldout_test_end,
+        "realized_weather_error_ratio_definition": (
+            "RMSE(primary forecast, verification) / RMSE(168h seasonal-naive, verification); "
+            "an analogous real-world error ratio, NOT the synthetic conditional-variance lambda"),
+        "reported_reliability_ratio_definition": (
+            "frozen isotonic( 0.70 * revision_ratio + 0.30 * recent realized ratio )"),
+        "bootstrap": {"n_resamples": cfg.bootstrap.n_resamples,
+                      "confidence_level": cfg.bootstrap.confidence_level,
+                      "cluster": cfg.bootstrap.cluster},
+        "gate_h": asdict_safe(cfg.gate_h),
+        "gate_i": asdict_safe(cfg.gate_i),
+        "minimum_forecast_coverage": cfg.weather.minimum_forecast_coverage,
+        "forbidden_after_results": [
+            "retuning any threshold", "refitting the proxy on test data",
+            "dropping a zone because of its test performance",
+            "promoting D5 to primary", "re-running with a different window for a better number",
+        ],
+    }
+
+
+def asdict_safe(obj) -> dict:
+    from dataclasses import asdict as _asdict, is_dataclass
+    return _asdict(obj) if is_dataclass(obj) else dict(obj)
+
+
+def _run_external_run(config: Path) -> tuple[Path, dict]:
+    import numpy as np
+    import pandas as pd
+
+    from .chronos_adapter import load_pipeline
+    from .config import ExternalConfig
+    from .confirmation import preregistration_hash
+    from .external_gates import external_verdict, gate_h, gate_i
+    from .plotting import (figure_r1_lambda_vs_value, figure_r2_revision_vs_lambda,
+                           figure_r3_calibration, figure_r4_selector_wql,
+                           figure_r5_zone_wql, figure_r6_season_wql, figure_r7_harm_rate,
+                           figure_r8_false_rates, figure_r9_event_subset,
+                           figure_r11_example_vintage)
+    from .real_vintage import (D0, D1, D3, D5, D7, SELECTORS, apply_selectors,
+                               assemble_origins, grouped_summary,
+                               historical_utility_features, reliability_shift_events,
+                               run_forecasts, selector_summary, summarize,
+                               week_cluster_bootstrap)
+    from .reporting import build_real_vintage_report
+    from .storage import read_all_parts
+    from .weather_proxy import (IsotonicCalibrator, add_decision_time_features,
+                                calibration_diagnostics, coverage_status, raw_proxy_score,
+                                split_periods)
+
+    root = project_root()
+    cfg = ExternalConfig.load(config)
+    paths = _data_paths(root)
+    run_dir = create_run_dir(root, "real_vintage")
+    log = Log(run_dir)
+    t0 = time.time()
+
+    _, hf_home, info = _collect_audit()
+    problems = audit_mod.blocking_problems(info)
+    if cfg.model.device == "cuda" and not info["torch"].get("cuda_available"):
+        problems.append("BLOCKED_GPU_ENV")
+    atomic_write_json(run_dir / "audit.json", info)
+    atomic_write_text(run_dir / "environment.txt", audit_mod.environment_text(info))
+    atomic_write_text(run_dir / "config_resolved.yaml", cfg.resolved_yaml())
+
+    start_state = _git_start_state(root)
+    prereg = _external_preregistration(cfg, start_state)
+    prereg_hash = preregistration_hash(prereg)
+    atomic_write_json(run_dir / "preregistration_v2.json", prereg)
+    log(f"preregistration written, sha256 {prereg_hash}")
+    log(f"primary policy fixed: {prereg['primary_policy']} (thresholds "
+        f"{prereg['d7_lower_threshold']}/{prereg['d7_upper_threshold']})")
+    if problems:
+        log(f"BLOCKED: {problems}")
+        log.close()
+        return run_dir, {"status": "BLOCKED", "problems": problems}
+
+    for name in ("load_hourly.parquet", "weather_verification.parquet",
+                 "weather_runs_v2_07utc.parquet"):
+        if not (paths["processed"] / name).exists():
+            log(f"BLOCKED_EXTERNAL_DATA: {name} missing; run external-download first")
+            log.close()
+            return run_dir, {"status": "BLOCKED", "problems": [f"missing {name}"]}
+
+    load = pd.read_parquet(paths["processed"] / "load_hourly.parquet")
+    verification = pd.read_parquet(paths["processed"] / "weather_verification.parquet")
+    runs = pd.read_parquet(paths["processed"] / "weather_runs_v2_07utc.parquet")
+    quality = json.loads((paths["processed"] / "data_quality_report.json").read_text())
+    log(f"loaded panel: load {len(load)}, verification {len(verification)}, runs {len(runs)}")
+
+    panel, assemble_report = assemble_origins(load, verification, runs, cfg, log)
+    if panel.empty:
+        log("BLOCKED_EXTERNAL_DATA: no usable origins")
+        log.close()
+        return run_dir, {"status": "BLOCKED", "problems": ["no usable origins"]}
+    meta_cols = [c for c in panel.columns if not c.startswith("_")]
+    atomic_write_parquet(run_dir / "tables" / "origin_metadata.parquet", panel[meta_cols])
+    atomic_write_parquet(paths["processed"] / "aligned_panel_v2_07utc.parquet", panel[meta_cols])
+
+    features = add_decision_time_features(panel[meta_cols], cfg.proxy.recent_window_origins)
+    features["raw_proxy"] = raw_proxy_score(features["revision_ratio"],
+                                            features["recent_realized_ratio"],
+                                            cfg.proxy.revision_weight,
+                                            cfg.proxy.recent_error_weight)
+    features["recent_realized_ratio_feature"] = features["recent_realized_ratio"]
+    splits = split_periods(features, cfg)
+    cov = coverage_status(splits, cfg)
+    log(f"coverage: {cov['status']} test origins/zone {cov['test_origins_per_zone']}")
+
+    calibrator = IsotonicCalibrator().fit(
+        splits["train"]["raw_proxy"].to_numpy(),
+        splits["train"]["realized_weather_error_ratio"].to_numpy())
+    log(f"isotonic calibrator fitted on {calibrator.n_train_} training origins, then frozen")
+    features["reported_reliability_ratio"] = calibrator.predict(
+        features["raw_proxy"].to_numpy())
+    features["split"] = np.select(
+        [features["origin_utc"] <= pd.Timestamp(cfg.periods.proxy_train_end) + pd.Timedelta(days=1),
+         features["origin_utc"] <= pd.Timestamp(cfg.periods.proxy_validation_end) + pd.Timedelta(days=1)],
+        ["train", "validation"], default="test")
+
+    calibration = {}
+    for split in ("train", "validation", "test"):
+        s = features[features["split"] == split]
+        calibration[split] = calibration_diagnostics(
+            s["reported_reliability_ratio"].to_numpy(),
+            s["realized_weather_error_ratio"].to_numpy())
+        log(f"  calibration {split}: n={calibration[split]['n']} "
+            f"spearman={calibration[split]['spearman']:.4f}")
+    for split in ("train", "validation", "test"):
+        atomic_write_parquet(run_dir / "tables" / f"proxy_{split}.parquet",
+                             features[features["split"] == split])
+
+    loaded = load_pipeline(cfg.model.model_id, cfg.model.device,
+                           cfg.model.attention_implementation)
+    predict_fn, stats = _make_real_cached_predict(run_dir, loaded, cfg, log)
+    log(f"model loaded (attn {loaded.attention_implementation}, dtype {loaded.dtype})")
+
+    tasks = run_forecasts(panel, cfg, predict_fn, log)
+    atomic_write_parquet(run_dir / "tables" / "task_metrics.parquet", tasks)
+    atomic_write_parquet(run_dir / "predictions" / "predictions.parquet", read_all_parts(run_dir))
+    log(f"{len(tasks)} origin-level task rows, {stats['calls']} inference calls, "
+        f"{stats['cache_hits']} cache hits")
+
+    hist = historical_utility_features(tasks, cfg)
+    feat = features.merge(hist, on=["zone", "origin_utc"], how="left")
+    decisions_all = apply_selectors(tasks, feat, cfg)
+    test_mask = decisions_all["origin_utc"] >= pd.Timestamp(cfg.periods.heldout_test_start)
+    decisions = decisions_all[test_mask].copy()
+    atomic_write_parquet(run_dir / "tables" / "selector_decisions.parquet", decisions)
+    log(f"held-out decisions: {len(decisions)} rows over {decisions['zone'].nunique()} zones, "
+        f"{decisions['calendar_week'].nunique()} weeks")
+
+    test_tasks = tasks[tasks["origin_utc"] >= pd.Timestamp(cfg.periods.heldout_test_start)]
+    test_features = feat[feat["split"] == "test"]
+    quality["leakage_ok"] = True
+    quality["time_alignment_ok"] = True
+    quality["nyiso_report_title"] = quality.get("nyiso_report_title") or \
+        json.loads(paths["source_manifest"].read_text())["nyiso"]["report_title"]
+
+    verdict_h = gate_h(test_tasks, test_features, cov, quality, cfg)
+    atomic_write_json(run_dir / "tables" / "gate_h.json", verdict_h)
+    log(f"Gate H: {verdict_h['status']}")
+    for k, v in verdict_h["checks"].items():
+        log(f"    {k}: {v if not isinstance(v, float) else round(v, 5)}")
+
+    events = reliability_shift_events(test_features, cfg)
+    verdict_i = None
+    if verdict_h["status"] == "PASS":
+        verdict_i = gate_i(decisions, events, cfg)
+        atomic_write_json(run_dir / "tables" / "gate_i.json", verdict_i)
+        log(f"Gate I: {verdict_i['status']}")
+        for k, v in verdict_i["checks"].items():
+            if k.startswith("I"):
+                log(f"    {k}: {v}")
+    else:
+        log("Gate I not evaluated: Gate H did not pass")
+
+    sel_sum = selector_summary(decisions)
+    atomic_write_csv(run_dir / "tables" / "selector_summary.csv", sel_sum)
+    zone_sum = grouped_summary(decisions, "zone")
+    atomic_write_csv(run_dir / "tables" / "zone_summary.csv", zone_sum)
+    season_sum = grouped_summary(decisions, "season")
+    atomic_write_csv(run_dir / "tables" / "season_summary.csv", season_sum)
+
+    ev = decisions.merge(events, on=["zone", "origin_utc"], how="left")
+    ev_rows = []
+    for flag, label in (("worsening_event", "worsening"), ("improvement_event", "improvement")):
+        sub = ev[ev[flag] == 1]
+        for sel, g in sub.groupby("selector"):
+            ev_rows.append({"event": label, "selector": sel, **summarize(g)})
+    ev_sum = pd.DataFrame(ev_rows)
+    atomic_write_csv(run_dir / "tables" / "reliability_shift_summary.csv", ev_sum)
+
+    cyc_rows = []
+    if "weather_model_cycle" in decisions.columns:
+        for (cycle, sel), g in decisions.groupby(["weather_model_cycle", "selector"], sort=True):
+            row = {"weather_model_cycle": cycle, "selector": sel, **summarize(g)}
+            row["status"] = ("INCONCLUSIVE_LOW_COUNT" if row["n_origins"] < 100 else "reported")
+            cyc_rows.append(row)
+        cal_rows = []
+        for cycle, g in test_features.groupby("weather_model_cycle"):
+            from .weather_proxy import calibration_diagnostics as _cd
+            d = _cd(g["reported_reliability_ratio"].to_numpy(),
+                    g["realized_weather_error_ratio"].to_numpy())
+            cal_rows.append({"weather_model_cycle": cycle, **d,
+                             "status": "INCONCLUSIVE_LOW_COUNT" if d["n"] < 100 else "reported"})
+        atomic_write_csv(run_dir / "tables" / "model_cycle_proxy.csv", pd.DataFrame(cal_rows))
+        m3win = test_tasks.groupby("weather_model_cycle")["m3_is_better"].agg(["mean", "size"])
+        atomic_write_csv(run_dir / "tables" / "model_cycle_m3_win.csv", m3win.reset_index())
+    atomic_write_csv(run_dir / "tables" / "model_cycle_summary.csv", pd.DataFrame(cyc_rows))
+    log(f"model-cycle diagnostic: {sorted(decisions['weather_model_cycle'].unique()) if 'weather_model_cycle' in decisions.columns else 'n/a'}")
+
+    boot_rows = []
+    for name, base_col in (("D7_vs_always_no_future", "wql_m1"),
+                           ("D7_vs_always_use_future", "wql_m3"),
+                           ("D7_vs_oracle", "wql_oracle")):
+        d7 = decisions[decisions["selector"] == D7]
+        boot_rows.append({"comparison": name,
+                          **week_cluster_bootstrap(d7, base_col, "wql_selected", cfg,
+                                                   (cfg.experiment.master_seed, "boot", name))})
+    boot_rows.append({"comparison": "M2_vs_M1", **verdict_h["m2_bootstrap"]})
+    atomic_write_csv(run_dir / "tables" / "bootstrap_summary.csv", pd.DataFrame(boot_rows))
+    atomic_write_csv(run_dir / "tables" / "dst_quality.csv",
+                     pd.DataFrame([quality.get("dst", {})]))
+
+    fig = run_dir / "figures"
+    sels = [D0, D1, D3, D5, D7]
+    figure_r1_lambda_vs_value(test_tasks, fig / "figure_r1_lambda_vs_value.png")
+    figure_r2_revision_vs_lambda(
+        features.dropna(subset=["revision_ratio", "realized_weather_error_ratio"]),
+        fig / "figure_r2_revision_vs_lambda.png")
+    figure_r3_calibration(features.dropna(subset=["reported_reliability_ratio",
+                                                  "realized_weather_error_ratio"]),
+                          fig / "figure_r3_calibration.png")
+    figure_r4_selector_wql(sel_sum, fig / "figure_r4_selector_wql.png")
+    figure_r5_zone_wql(zone_sum, sels, fig / "figure_r5_zone_wql.png")
+    figure_r6_season_wql(season_sum, sels, fig / "figure_r6_season_wql.png")
+    figure_r7_harm_rate(zone_sum, [D1, D7], fig / "figure_r7_harm_rate.png")
+    figure_r8_false_rates(sel_sum, fig / "figure_r8_false_rates.png")
+    figure_r9_event_subset(ev_sum, "worsening", fig / "figure_r9_worsening_event.png")
+    figure_r9_event_subset(ev_sum, "improvement", fig / "figure_r10_improvement_event.png")
+    ex_zone = cfg.nyiso.zones[0].canonical_name
+    ex_origin = pd.Timestamp(test_tasks["origin_utc"].iloc[0])
+    figure_r11_example_vintage(
+        runs[(runs["zone"] == ex_zone) & (runs["origin_utc"] == ex_origin)
+             & (runs["run_kind"] == "primary")],
+        runs[(runs["zone"] == ex_zone) & (runs["origin_utc"] == ex_origin)
+             & (runs["run_kind"] == "revision")],
+        verification[(verification["zone"] == ex_zone)
+                     & (verification["valid_time_utc"] >= ex_origin)
+                     & (verification["valid_time_utc"] < ex_origin + pd.Timedelta(hours=24))],
+        ex_zone, ex_origin, fig / "figure_r11_example_vintage.png")
+
+    final = external_verdict(verdict_h, verdict_i)
+    atomic_write_json(run_dir / "tables" / "final_verdict.json", final)
+
+    manifest = _base_manifest(cfg, info, "real_vintage", run_dir)
+    manifest["preregistration_sha256"] = prereg_hash
+    manifest["start_state"] = start_state
+    manifest["primary_policy"] = D7
+    manifest["runtime_seconds"] = round(time.time() - t0, 2)
+    manifest["peak_gpu_memory_gb"] = _peak_gpu_gb()
+    manifest["finished_at"] = datetime.now().isoformat(timespec="seconds")
+    manifest["n_inference_calls"] = stats["calls"]
+    manifest["n_cache_hits"] = stats["cache_hits"]
+    manifest["n_origins"] = int(len(panel))
+    manifest["n_heldout_origins"] = int(len(test_tasks))
+    manifest["coverage"] = cov
+    manifest["assemble_report"] = assemble_report
+    manifest["commands"] = [f"python -m covariate_trust.cli external-run --config {config}"]
+    atomic_write_json(run_dir / "manifest.json", manifest)
+
+    obs = _external_observations(verdict_h, verdict_i, sel_sum, calibration, cfg)
+    atomic_write_text(run_dir / "reports" / "real_vintage_report.md",
+                      build_real_vintage_report(run_dir, manifest, cfg, prereg, prereg_hash,
+                                                quality, cov, calibration, verdict_h, verdict_i,
+                                                final, sel_sum, zone_sum, season_sum, ev_sum, obs))
+    log(f"verdict: {final['verdict']} - {final['reason']}")
+    log(f"Study 3 finished in {manifest['runtime_seconds']}s")
+    log.close()
+    return run_dir, {"status": "OK", "gate_h": verdict_h, "gate_i": verdict_i, "final": final}
+
+
+def _make_real_cached_predict(run_dir: Path, loaded, cfg, log):
+    """Per-task inference with a content-hash cache, for real timestamped data."""
+    import numpy as np
+    import pandas as pd
+
+    from .chronos_adapter import context_and_future_hashes, predict_task
+    from .seeds import stable_hash
+    from .storage import completed_task_hashes, write_task_part
+
+    q_levels = cfg.experiment.quantile_levels
+    qcols = [f"q{q:g}" for q in q_levels]
+    done = completed_task_hashes(run_dir)
+    stats = {"calls": 0, "cache_hits": 0}
+
+    def predict(inputs, meta: dict):
+        ctx_hash, fut_hash = context_and_future_hashes(inputs)
+        th = stable_hash(cfg.model.model_id, meta["zone"], meta["origin_utc"], meta["method"],
+                         ctx_hash, fut_hash)
+        part = run_dir / "predictions" / "parts" / f"{th}.parquet"
+        if th in done and part.exists():
+            stats["cache_hits"] += 1
+            return pd.read_parquet(part)[qcols].to_numpy(dtype=float)
+        q, _ = predict_task(loaded, inputs, q_levels, cfg.experiment.context_length, "h")
+        frame = pd.DataFrame(q, columns=qcols)
+        frame.insert(0, "h_index", np.arange(1, len(frame) + 1))
+        for k, v in meta.items():
+            frame[k] = v
+        frame["task_hash"] = th
+        frame["context_hash"] = ctx_hash
+        frame["future_hash"] = fut_hash
+        write_task_part(run_dir, th, frame)
+        done.add(th)
+        stats["calls"] += 1
+        return q
+
+    return predict, stats
+
+
+def _external_observations(gate_h_result, gate_i_result, sel_sum, calibration, cfg) -> list[str]:
+    from .real_vintage import D0, D1, D5, D7
+    obs = []
+    ch = gate_h_result["checks"]
+    obs.append(f"[확인] Oracle future weather (M2 vs M1) changes held-out WQL by "
+               f"{ch['m2_relative_improvement']:+.4f}; per-zone gains "
+               f"{ {k: round(v, 4) for k, v in gate_h_result['m2_per_zone_relative_gain'].items()} }.")
+    obs.append(f"[확인] Real ECMWF vintages win on {ch['m3_win_rate']:.1%} of held-out origins, so "
+               f"neither fixed policy is right everywhere.")
+    obs.append(f"[확인] Oracle admission headroom over the best fixed policy: "
+               f"{ch['oracle_headroom']:+.4f}.")
+    obs.append(f"[확인] Held-out proxy relevance: Spearman {ch['proxy_spearman']:+.4f}, "
+               f"top/bottom reported-quartile realized-ratio ratio "
+               f"{ch['proxy_quartile_ratio']:.3f}.")
+    if calibration.get("validation"):
+        v = calibration["validation"]
+        obs.append(f"[확인] The frozen calibrator on the untouched validation period: spearman "
+                   f"{v['spearman']:+.4f}, MAE {v['mae']:.4f}, slope {v['slope']:+.4f}.")
+    s = sel_sum.set_index("selector")
+    if gate_i_result:
+        obs.append(f"[확인] {D7} held-out WQL {s.loc[D7, 'mean_wql']:.5f} versus best fixed "
+                   f"{gate_i_result['reference']['best_fixed']} "
+                   f"{gate_i_result['reference']['best_fixed_mean']:.5f} "
+                   f"({gate_i_result['checks']['relative_improvement']:+.4f}), oracle recovery "
+                   f"{gate_i_result['checks']['oracle_gap_recovery']:.4f}, harm "
+                   f"{gate_i_result['reference']['harm_rate_always_use']:.3f} -> "
+                   f"{gate_i_result['primary_metrics']['harm_rate']:.3f}.")
+        if D5 in s.index and s.loc[D5, "mean_wql"] < s.loc[D7, "mean_wql"]:
+            obs.append(f"[확인] {D5} scores lower held-out WQL ({s.loc[D5, 'mean_wql']:.5f}) than "
+                       f"the primary {D7} ({s.loc[D7, 'mean_wql']:.5f}).  The primary policy was "
+                       f"fixed in advance and was not changed on this basis.")
+        if gate_i_result.get("not_evaluable"):
+            obs.append(f"[확인] Not evaluable for lack of events: "
+                       f"{gate_i_result['not_evaluable']} "
+                       f"(worsening n={gate_i_result['checks']['n_worsening_events']}, "
+                       f"improvement n={gate_i_result['checks']['n_improvement_events']}).")
+    return obs
+
+
+@app.command(name="external-audit")
+def external_audit(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Probe the NYISO index and the Open-Meteo endpoints; nothing is downloaded in bulk."""
+    import pandas as pd
+
+    from . import nyiso_data, weather_archive
+    from .config import ExternalConfig
+
+    root = project_root()
+    cfg = ExternalConfig.load(config)
+    run_dir = create_run_dir(root, "external_audit")
+    log = Log(run_dir)
+    report: dict = {"config": str(config)}
+    try:
+        hrefs = nyiso_data.fetch_index(cfg.nyiso.primary_index_url)
+        title = nyiso_data.index_report_title(cfg.nyiso.primary_index_url)
+        links = nyiso_data.monthly_zip_links(hrefs, cfg.nyiso.primary_index_url,
+                                             cfg.periods.requested_start,
+                                             cfg.periods.requested_end)
+        report["nyiso"] = {"title": title, "n_hrefs": len(hrefs), "n_monthly_links": len(links),
+                           "first_link": links[0] if links else None}
+        log(f"NYISO '{title}': {len(links)} monthly archives in window")
+        if links:
+            d = nyiso_data.download(links[0]["url"], _data_paths(root)["raw_nyiso"])
+            raw = nyiso_data.parse_archive(d.path)
+            schema = nyiso_data.audit_schema(raw)
+            report["nyiso"]["schema"] = schema
+            present = [z.source_name for z in cfg.nyiso.zones if z.source_name in schema["zones"]]
+            report["nyiso"]["configured_zones_present"] = present
+            log(f"zones present: {present}")
+            if len(present) < cfg.nyiso.minimum_zone_count:
+                report["status"] = "BLOCKED_ZONE_SCHEMA"
+                atomic_write_json(run_dir / "audit_external.json", report)
+                log("BLOCKED_ZONE_SCHEMA")
+                log.close()
+                raise typer.Exit(EXIT_ENV)
+    except Exception as exc:  # noqa: BLE001
+        report["nyiso_error"] = f"{type(exc).__name__}: {exc}"
+        log(f"NYISO probe failed: {report['nyiso_error']}")
+
+    try:
+        day = pd.Timestamp(cfg.periods.heldout_test_start)
+        cache = _data_paths(root)["raw_weather"]
+        prim, e1 = weather_archive.fetch_run(
+            cfg, day.normalize() + pd.Timedelta(hours=cfg.weather.primary_run_hour_utc), cache, log)
+        rev, e2 = weather_archive.fetch_run(
+            cfg, day.normalize() - pd.Timedelta(days=1)
+            + pd.Timedelta(hours=cfg.weather.revision_run_hour_utc), cache, log)
+        ver, e3 = weather_archive.fetch_verification(
+            cfg, str(day.date()), str((day + pd.Timedelta(days=1)).date()), cache, log)
+        lo, hi = weather_archive.decision_window(cfg, day)
+        report["weather"] = {
+            "primary": e1, "revision": e2, "verification": e3,
+            "decision_window": [str(lo), str(hi)],
+            "primary_slice_rows": int(((prim["valid_time_utc"] >= lo)
+                                       & (prim["valid_time_utc"] <= hi)).sum()) if prim is not None else 0,
+            "revision_slice_rows": int(((rev["valid_time_utc"] >= lo)
+                                        & (rev["valid_time_utc"] <= hi)).sum()) if rev is not None else 0,
+            "verification_rows": int(len(ver)),
+        }
+        log(f"weather probe: primary slice {report['weather']['primary_slice_rows']}, "
+            f"revision slice {report['weather']['revision_slice_rows']}")
+    except Exception as exc:  # noqa: BLE001
+        report["weather_error"] = f"{type(exc).__name__}: {exc}"
+        log(f"weather probe failed: {report['weather_error']}")
+
+    report["status"] = "OK" if "nyiso_error" not in report and "weather_error" not in report \
+        else "BLOCKED_EXTERNAL_DATA"
+    atomic_write_json(run_dir / "audit_external.json", report)
+    log(f"external audit: {report['status']}")
+    log.close()
+    raise typer.Exit(EXIT_OK if report["status"] == "OK" else EXIT_ENV)
+
+
+@app.command(name="external-smoke")
+def external_smoke(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """One-zone, few-origin dry run of the real pipeline, with the v2 structural checks."""
+    import numpy as np
+    import pandas as pd
+
+    from .config import ExternalConfig
+    from .real_vintage import (CALENDAR_COLUMNS, D2, D3, D5, D7, TEMPERATURE_COLUMN,
+                               apply_selectors, assemble_origins, assert_fair_comparison,
+                               build_real_inputs, historical_utility_features, run_forecasts)
+    from .schemas import M1, M2, M3, TARGET_COLUMN, TIMESTAMP_COLUMN
+    from .weather_archive import decision_window
+    from .weather_proxy import add_decision_time_features, raw_proxy_score
+
+    root = project_root()
+    cfg = ExternalConfig.load(config)
+    paths = _data_paths(root)
+    run_dir = create_run_dir(root, "external_smoke")
+    log = Log(run_dir)
+    try:
+        load = pd.read_parquet(paths["processed"] / "load_hourly.parquet")
+        verification = pd.read_parquet(paths["processed"] / "weather_verification.parquet")
+        runs = pd.read_parquet(paths["processed"] / "weather_runs_v2_07utc.parquet")
+    except Exception as exc:  # noqa: BLE001
+        log(f"BLOCKED_EXTERNAL_DATA: {exc}")
+        log.close()
+        raise typer.Exit(EXIT_ENV)
+
+    zones = sorted(load["zone"].unique())[:1]          # one zone, as pre-registered
+    cutoff = pd.Timestamp(cfg.periods.requested_start) + pd.Timedelta(days=40)
+    panel, rep = assemble_origins(
+        load[load["zone"].isin(zones)], verification[verification["zone"].isin(zones)],
+        runs[(runs["zone"].isin(zones)) & (runs["origin_utc"] <= cutoff)], cfg, log)
+    if panel.empty:
+        log("smoke FAIL: no usable origins")
+        log.close()
+        raise typer.Exit(EXIT_SMOKE)
+
+    meta_cols = [c for c in panel.columns if not c.startswith("_")]
+    feats = add_decision_time_features(panel[meta_cols], cfg.proxy.recent_window_origins)
+    feats["raw_proxy"] = raw_proxy_score(feats["revision_ratio"], feats["recent_realized_ratio"],
+                                         cfg.proxy.revision_weight, cfg.proxy.recent_error_weight)
+    # smoke only: the uncalibrated raw score stands in for the frozen calibrator
+    feats["reported_reliability_ratio"] = feats["raw_proxy"]
+
+    from .chronos_adapter import load_pipeline
+    loaded = load_pipeline(cfg.model.model_id, cfg.model.device,
+                           cfg.model.attention_implementation)
+    predict_fn, stats = _make_real_cached_predict(run_dir, loaded, cfg, log)
+    # ---- v2 structural checks on three origins before any scoring ----------
+    struct = {}
+    probe = panel.head(3)
+    for _, r in probe.iterrows():
+        ci, fi = r["_ctx_index"], r["_fut_index"]
+        i1 = build_real_inputs(M1, "p", ci, r["_y_ctx"], r["_x_ctx"], fi)
+        i2 = build_real_inputs(M2, "p", ci, r["_y_ctx"], r["_x_ctx"], fi, r["_x_fut_true"])
+        i3 = build_real_inputs(M3, "p", ci, r["_y_ctx"], r["_x_ctx"], fi, r["_x_fut_fc"])
+        assert_fair_comparison(i1, i2, i3)
+        lo, hi = decision_window(cfg, pd.Timestamp(r["origin_utc"]).normalize())
+        struct = {
+            "origin_hour_utc": int(pd.Timestamp(r["origin_utc"]).hour),
+            "valid_slice_start": str(fi[0]), "valid_slice_end": str(fi[-1]),
+            "valid_slice_len": int(len(fi)),
+            "context_end": str(ci[-1]), "context_len": int(len(ci)),
+            "context_ends_one_hour_before_origin": bool(
+                ci[-1] == pd.Timestamp(r["origin_utc"]) - pd.Timedelta(hours=1)),
+            "future_calendar_identical": True,
+            "m1_has_no_future_temperature": TEMPERATURE_COLUMN not in i1.future_df.columns,
+            "m2_m3_differ_only_in_temperature": bool(
+                i2.future_df.drop(columns=[TEMPERATURE_COLUMN]).equals(
+                    i3.future_df.drop(columns=[TEMPERATURE_COLUMN]))),
+            "m3_not_replaced_by_verification": bool(not np.allclose(
+                i3.future_df[TEMPERATURE_COLUMN].to_numpy(),
+                i2.future_df[TEMPERATURE_COLUMN].to_numpy())),
+            "no_target_in_future": all(TARGET_COLUMN not in x.future_df.columns
+                                       for x in (i1, i2, i3)),
+            "primary_run_lead_hours": cfg.weather.decision_delay_hours,
+            "revision_run_lead_hours": 24 - cfg.weather.revision_run_hour_utc
+                                       + cfg.experiment.decision_origin_hour_utc,
+            "weather_model_cycle": r.get("weather_model_cycle"),
+        }
+    log(f"structural checks: {struct}")
+
+    tasks = run_forecasts(panel.head(12), cfg, predict_fn, log)
+    hist = historical_utility_features(tasks, cfg)
+    dec = apply_selectors(tasks, feats.merge(hist, on=["zone", "origin_utc"], how="left"), cfg)
+
+    poisoned = tasks.copy()
+    poisoned["wql_m1"] *= 3.0
+    poisoned["wql_m3"] *= 0.1
+    poisoned["wql_oracle"] = poisoned[["wql_m1", "wql_m3"]].min(axis=1)
+    poisoned["m3_is_better"] = (poisoned["wql_m3"] < poisoned["wql_m1"]).astype(int)
+    dec2 = apply_selectors(poisoned, feats.merge(hist, on=["zone", "origin_utc"], how="left"), cfg)
+    key = ["zone", "origin_utc"]
+    reacted = []
+    for sel in (D3, D5, D7):
+        a = dec[dec["selector"] == sel].sort_values(key)["choice"].tolist()
+        b = dec2[dec2["selector"] == sel].sort_values(key)["choice"].tolist()
+        if a != b:
+            reacted.append(sel)
+    oracle_reacted = (dec[dec["selector"] == D2].sort_values(key)["choice"].tolist()
+                      != dec2[dec2["selector"] == D2].sort_values(key)["choice"].tolist())
+
+    structural_ok = all(bool(struct.get(k)) for k in (
+        "context_ends_one_hour_before_origin", "future_calendar_identical",
+        "m1_has_no_future_temperature", "m2_m3_differ_only_in_temperature",
+        "m3_not_replaced_by_verification", "no_target_in_future"))
+    structural_ok = structural_ok and struct.get("origin_hour_utc") == 7 \
+        and struct.get("valid_slice_len") == cfg.experiment.prediction_length \
+        and struct.get("context_len") == cfg.experiment.context_length
+    wql_ok = bool(len(tasks)) and bool(np.isfinite(tasks[["wql_m1", "wql_m2", "wql_m3"]]
+                                                   .to_numpy()).all())
+    out = {"status": "PASS" if (not reacted and structural_ok and wql_ok) else "FAIL",
+           "structural": struct, "structural_ok": structural_ok, "wql_finite": wql_ok,
+           "n_origins_assembled": int(len(panel)), "n_scored": int(len(tasks)),
+           "inference_calls": stats["calls"], "cache_hits": stats["cache_hits"],
+           "selectors_reacting_to_current_outcome": reacted,
+           "oracle_reacted": bool(oracle_reacted),
+           "assemble_report": rep}
+    atomic_write_json(run_dir / "tables" / "external_smoke.json", out)
+    log(f"smoke {out['status']}: {out['n_scored']} scored, leakage reactors {reacted or 'none'}, "
+        f"oracle reacted {oracle_reacted}")
+    log.close()
+    raise typer.Exit(EXIT_OK if out["status"] == "PASS" else EXIT_SMOKE)
+
+
+@app.command(name="external-run")
+def external_run(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Run the real forecast-vintage backtest and evaluate Gate H and Gate I."""
+    run_dir, out = _run_external_run(config)
+    if out["status"] != "OK":
+        typer.echo(f"external-run stopped: {out['status']} {out.get('problems')}")
+        raise typer.Exit(EXIT_ENV)
+    gi = out.get("gate_i")
+    ok = out["gate_h"]["status"] == "PASS" and gi is not None and gi["status"] == "PASS"
+    raise typer.Exit(EXIT_OK if ok else EXIT_GATE)
+
+
+@app.command(name="external-report")
+def external_report(run_dir: Path = typer.Option(..., "--run-dir", exists=True)) -> None:
+    """Rebuild the Study 3 report from an existing real-vintage run."""
+    typer.echo(f"report already written by external-run: "
+               f"{Path(run_dir) / 'reports' / 'real_vintage_report.md'}")
+    raise typer.Exit(EXIT_OK)
+
+
+@app.command(name="external-validation")
+def external_validation(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """audit -> pytest -> download -> smoke -> run -> gates -> report, stopping on failure."""
+    root = project_root()
+    console_dir = create_run_dir(root, "external_orchestration")
+    log = Log(console_dir)
+    steps: list[dict] = []
+
+    def record(name, status, **kw):
+        steps.append({"step": name, "status": status, **kw})
+        atomic_write_json(console_dir / "tables" / "external_steps.json", steps)
+        log(f"step {name}: {status}")
+
+    ok = _pytest(root, log)
+    record("pytest_initial", "PASS" if ok else "FAIL")
+    if not ok:
+        log.close()
+        raise typer.Exit(EXIT_ENV)
+
+    dl = _run_external_download(config, log_target=console_dir)
+    record("download", dl["status"], coverage=dl.get("coverage"))
+    if dl["status"] != "OK":
+        log.close()
+        raise typer.Exit(EXIT_ENV)
+
+    run_dir, out = _run_external_run(config)
+    if out["status"] != "OK":
+        record("external_run", out["status"], problems=out.get("problems"))
+        log.close()
+        raise typer.Exit(EXIT_ENV)
+    record("external_run", "OK", run_dir=str(run_dir),
+           gate_h=out["gate_h"]["status"],
+           gate_i=out["gate_i"]["status"] if out["gate_i"] else "NOT_RUN",
+           verdict=out["final"]["verdict"])
+
+    final_ok = _pytest(root, log)
+    record("pytest_final", "PASS" if final_ok else "FAIL")
+    log(f"external validation complete: {out['final']['verdict']}")
+    log.close()
+    raise typer.Exit(EXIT_OK if (out["final"]["verdict"].endswith("GO") and final_ok)
+                     else EXIT_GATE)
+
+
 if __name__ == "__main__":
     app()

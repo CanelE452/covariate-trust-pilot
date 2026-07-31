@@ -1,0 +1,90 @@
+# Study 2B - held-out confirmation of the pre-registered D7 admission policy.
+#
+# The six reliability schedules are inherited verbatim from
+# configs/study2_dynamic_reliability.yaml, and the `gates` block (harm threshold)
+# from configs/pilot.yaml, so neither can drift from what the earlier studies used.
+#
+# Everything in this file is fixed before any inference runs.  It is not retuned
+# after seeing a result.
+experiment:
+  name: d7_heldout_confirmation
+  master_seed: 20260803
+  series_length: 1024
+  standardization_end: 512
+  primary_origin: 896
+  context_length: 512
+  frequency: "h"
+  quantile_levels:
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+
+grid:
+  nominal_covariate_share:
+    - 0.25
+    - 0.50
+    - 0.75
+  horizons:
+    - 24
+    - 96
+  n_series_per_condition: 100
+
+dgp:
+  base_ar: 0.5
+  covariate_ar: 0.7
+  base_periods:
+    - 24
+    - 168
+  covariate_periods:
+    - 48
+    - 96
+  ar_innovation_std: 0.5
+  common_random_numbers: true
+
+model:
+  model_id: "amazon/chronos-2"
+  frozen: true
+  cross_learning: false
+  device: "cuda"
+  allow_cpu_diagnostic: false
+  attention_implementation: "eager"
+
+proxy:
+  primary_mode: "P1_calibrated_noisy"
+  sigma_proxy: 0.20
+  secondary_modes:
+    - "P0_oracle_current"
+    - "P2_overconfident"
+    - "P3_underconfident"
+    - "P4_stale_history"
+
+selectors:
+  primary: "D7_hybrid_override"
+  secondary:
+    - "D5_current_proxy"
+    - "D3_history_utility"
+    - "D4_history_reliability"
+    - "D6_hybrid_conservative"
+  d7_lower_threshold: 0.75
+  d7_upper_threshold: 1.25
+  d5_threshold: 1.00
+
+bootstrap:
+  n_resamples: 5000
+  confidence_level: 0.95
+
+gate_g:
+  overall_improvement_pass: 0.05
+  overall_improvement_fail: 0.01
+  oracle_recovery_pass: 0.50
+  oracle_recovery_fail: 0.20
+  harm_reduction_pass: 0.50
+  harm_reduction_fail: 0.25
+  stable_condition_regression_max: 0.01
+  stable_condition_fail: 0.02

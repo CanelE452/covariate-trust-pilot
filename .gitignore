@@ -8,3 +8,7 @@ runs/*
 dist/
 build/
 *.egg-info/
+
+# Study 3: external data is never committed
+data/
+!data/.gitkeep

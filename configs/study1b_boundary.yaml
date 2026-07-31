@@ -1,0 +1,65 @@
+# Study 1B - independent boundary refinement.
+#
+# The dgp: and gates: blocks are deliberately absent: they are inherited verbatim
+# from configs/pilot.yaml so that the generating equations are literally the ones
+# the coarse pilot used.  Only the seed, the grid and the sample size change.
+experiment:
+  name: imperfect_future_covariate_boundary_refinement
+  master_seed: 20260801
+  series_length: 1024
+  standardization_end: 512
+  primary_origin: 896
+  context_length: 512
+  frequency: "h"
+  quantile_levels:
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+
+grid:
+  nominal_covariate_share:
+    - 0.25
+    - 0.50
+    - 0.75
+  lambda_values:
+    - 0.70
+    - 0.85
+    - 1.00
+    - 1.15
+    - 1.30
+  horizons:
+    - 24
+    - 96
+  n_series_per_cell: 150
+
+model:
+  model_id: "amazon/chronos-2"
+  frozen: true
+  cross_learning: false
+  device: "cuda"
+  attention_implementation: "eager"
+
+bootstrap:
+  n_resamples: 5000
+  confidence_level: 0.95
+
+gate_e:
+  min_finite_crossings: 4
+  min_narrow_crossings: 4
+  max_ci_width: 0.35
+  fail_max_finite_crossings: 2
+  fail_min_non_decreasing_curves: 3
+
+baselines:
+  ridge_parameter: 0.0001
+  arx_seasonal_periods:
+    - 24
+    - 168
+    - 48
+    - 96

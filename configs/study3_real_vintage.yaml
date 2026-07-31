@@ -1,0 +1,126 @@
+# Study 3 - real forecast-vintage external validation (NYISO load + ECMWF IFS HRES).
+#
+# The D7 thresholds and the D5 threshold come from the synthetic studies and are fixed
+# here.  Nothing in this file is retuned on the held-out test period.
+experiment:
+  name: real_vintage_nyiso_weather
+  master_seed: 20260804
+  timezone_internal: "UTC"
+  # 07 UTC, not 06: ECMWF disseminates the 00 UTC HRES hourly steps between roughly
+  # 05:45 and 06:12 UTC, so the complete 24-hour path is not guaranteed at 06:00.
+  # Changed before any held-out quantity was computed; see
+  # docs/study3_preregistration_v1_status.md
+  decision_origin_hour_utc: 7
+  context_length: 512
+  prediction_length: 24
+  quantile_levels:
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+
+periods:
+  requested_start: "2024-04-01"
+  requested_end: "2026-06-30"
+  proxy_train_end: "2024-12-31"
+  proxy_validation_end: "2025-06-30"
+  heldout_test_start: "2025-07-01"
+  heldout_test_end: "2026-06-30"
+
+nyiso:
+  primary_index_url: "https://mis.nyiso.com/public/P-58Clist.htm"
+  fallback_index_url: "https://mis.nyiso.com/public/P-58Blist.htm"
+  target_frequency: "1h"
+  aggregation: "mean_mw"
+  minimum_zone_count: 3
+  zones:
+    - source_name: "N.Y.C."
+      canonical_name: "NYC"
+      latitude: 40.7128
+      longitude: -74.0060
+    - source_name: "LONGIL"
+      canonical_name: "LONG_ISLAND"
+      latitude: 40.7891
+      longitude: -73.1350
+    - source_name: "CAPITL"
+      canonical_name: "CAPITAL"
+      latitude: 42.6526
+      longitude: -73.7562
+    - source_name: "WEST"
+      canonical_name: "WEST"
+      latitude: 42.8864
+      longitude: -78.8784
+
+weather:
+  forecast_endpoint: "https://single-runs-api.open-meteo.com/v1/forecast"
+  verification_endpoint: "https://archive-api.open-meteo.com/v1/archive"
+  model: "ecmwf_ifs"
+  variable: "temperature_2m"
+  primary_run_hour_utc: 0
+  # Changed from 18 to 12 at the audit stage, before any pre-registration was written
+  # and before any held-out result existed.  Measured availability of the previous-day
+  # run's complete 24-hour decision slice, over 11 dates spanning the whole window:
+  #   18Z  7/11   (absent entirely in 2024 H1, which is the proxy-training period)
+  #   12Z 11/11
+  # The 12Z run initialises 19 hours before the 07Z decision origin, so it is still
+  # strictly a past vintage, and it is still a genuine run-to-run revision against the
+  # 00Z primary (12 hours apart).
+  revision_run_hour_utc: 12
+  decision_delay_hours: 7
+  request_timeout_seconds: 120
+  max_retries: 5
+  retry_backoff_seconds: 5
+  minimum_forecast_coverage: 0.95
+  # ECMWF IFS Cycle 50r1 became operational with the 06 UTC run on 12 May 2026, so the
+  # first 00 UTC run on the new cycle is 13 May 2026.  Used for a secondary diagnostic
+  # only; it never enters a Gate H or Gate I criterion.
+  # source: https://forum.ecmwf.int/t/confirmation-ifs-cycle-50r1-and-aifs-v2-joint-implementation-on-12-may-2026/14937
+  model_cycle_50r1_first_00z_run: "2026-05-13"
+
+model:
+  model_id: "amazon/chronos-2"
+  frozen: true
+  cross_learning: false
+  device: "cuda"
+  attention_implementation: "eager"
+  allow_cpu_full_run: false
+
+proxy:
+  calibration_method: "isotonic"
+  revision_weight: 0.70
+  recent_error_weight: 0.30
+  recent_window_origins: 28
+  lower_threshold: 0.75
+  upper_threshold: 1.25
+  d5_threshold: 1.00
+
+historical_utility:
+  window_origins: 28
+  minimum_origins: 14
+
+bootstrap:
+  n_resamples: 5000
+  confidence_level: 0.95
+  cluster: "calendar_week"
+
+gate_h:
+  minimum_test_origins_per_zone: 180
+  oracle_gain_pass: 0.01
+  oracle_gain_fail: 0.00
+  minimum_m3_win_rate: 0.20
+  maximum_m3_win_rate: 0.80
+  oracle_headroom_pass: 0.01
+  proxy_spearman_pass: 0.20
+
+gate_i:
+  improvement_pass: 0.015
+  improvement_fail: 0.00
+  oracle_recovery_pass: 0.20
+  oracle_recovery_fail: 0.05
+  harm_reduction_pass: 0.25
+  maximum_subset_regression: 0.02
