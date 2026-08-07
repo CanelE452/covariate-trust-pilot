@@ -1,0 +1,165 @@
+{
+  "analysis": "convex-mixture oracle diagnostic, OOF only",
+  "test_used": false,
+  "flat_threshold": 1e-08,
+  "computed_at_utc": "2026-08-07T14:27:09.036591+00:00",
+  "datasets": {
+    "m5": {
+      "n_origins": 10776,
+      "n_series": 1200,
+      "global_alpha": 0.5,
+      "best_static": "fifty",
+      "losses": {
+        "point": 1.022588737676744,
+        "hurdle": 1.021389691446874,
+        "fifty": 1.0087177635178386,
+        "global_alpha": 1.0087177635178386,
+        "oracle_series_hard": 0.9993749914846991,
+        "oracle_origin_hard": 0.968914634229234,
+        "oracle_origin_convex": 0.9672866689648124
+      },
+      "hard_gain": 0.03945913389072655,
+      "convex_gain": 0.04107302959406395,
+      "extra_soft_potential": 0.001613895703337398,
+      "g_star_distribution": {
+        "flat_share": 0.0,
+        "at_zero_share": 0.29630660727542685,
+        "interior_share": 0.3005753526354863,
+        "at_one_share": 0.40311804008908686,
+        "INTERIOR_RATE_given_non_flat": 0.3005753526354863,
+        "mean": 0.5604580497543417,
+        "median": 0.7061343814217537,
+        "p10": 0.0,
+        "p25": 0.0,
+        "p75": 1.0,
+        "p90": 1.0,
+        "per_series_mean_sd": 0.19409676210933996,
+        "within_series_sd": 0.4076012050967654
+      },
+      "diversity": {
+        "disagreement_bins": {
+          "(0.0512, 0.134]": {
+            "n": 2694,
+            "mean_abs_disagreement": 0.10320880343482498,
+            "mse_fifty": 1.0686570354247498,
+            "hard_gain": 0.021341356466593724,
+            "convex_gain": 0.021592417253238242,
+            "hurdle_win_share": 0.5163325909428359,
+            "interior_share": 0.21343726800296955
+          },
+          "(0.134, 0.178]": {
+            "n": 2695,
+            "mean_abs_disagreement": 0.1562052591361493,
+            "mse_fifty": 0.8720139824432496,
+            "hard_gain": 0.038221062172449354,
+            "convex_gain": 0.03884782425916373,
+            "hurdle_win_share": 0.5996289424860853,
+            "interior_share": 0.22374768089053804
+          },
+          "(0.178, 0.229]": {
+            "n": 2693,
+            "mean_abs_disagreement": 0.2023428208978576,
+            "mse_fifty": 0.8089269365854659,
+            "hard_gain": 0.04335790465127338,
+            "convex_gain": 0.044976604508938076,
+            "hurdle_win_share": 0.5569996286669142,
+            "interior_share": 0.34236910508726326
+          },
+          "(0.229, 2.071]": {
+            "n": 2694,
+            "mean_abs_disagreement": 0.2920834142219148,
+            "mse_fifty": 1.2852496820062123,
+            "hard_gain": 0.05291103910880681,
+            "convex_gain": 0.056325077014808586,
+            "hurdle_win_share": 0.5805493689680772,
+            "interior_share": 0.42279138827023016
+          }
+        },
+        "mean_corr_point_hurdle": 0.8024207835010877,
+        "median_corr_point_hurdle": 0.8281620004287438,
+        "per_series_winner_flip_rate": 0.4556577380952381,
+        "mean_origin_winner_entropy": 0.5790336029258589,
+        "share_series_always_same_winner": 0.0625
+      }
+    },
+    "favorita": {
+      "n_origins": 10800,
+      "n_series": 1200,
+      "global_alpha": 0.45,
+      "best_static": "global_alpha",
+      "losses": {
+        "point": 2.435741433920913,
+        "hurdle": 2.443200151520192,
+        "fifty": 2.415661864580215,
+        "global_alpha": 2.415527017981655,
+        "oracle_series_hard": 2.400387041374267,
+        "oracle_origin_hard": 2.362552328775242,
+        "oracle_origin_convex": 2.3592109301210082
+      },
+      "hard_gain": 0.021930903199201976,
+      "convex_gain": 0.023314203253128038,
+      "extra_soft_potential": 0.0013833000539260627,
+      "g_star_distribution": {
+        "flat_share": 0.0,
+        "at_zero_share": 0.2851851851851852,
+        "interior_share": 0.3921296296296296,
+        "at_one_share": 0.3226851851851852,
+        "INTERIOR_RATE_given_non_flat": 0.3921296296296296,
+        "mean": 0.5209239361657895,
+        "median": 0.5496380270797018,
+        "p10": 0.0,
+        "p25": 0.0,
+        "p75": 1.0,
+        "p90": 1.0,
+        "per_series_mean_sd": 0.2123010284920249,
+        "within_series_sd": 0.37827223026119416
+      },
+      "diversity": {
+        "disagreement_bins": {
+          "(0.0401, 0.165]": {
+            "n": 2700,
+            "mean_abs_disagreement": 0.1370683543570263,
+            "mse_fifty": 2.979063402665748,
+            "hard_gain": 0.009649828153523011,
+            "convex_gain": 0.009899263492234628,
+            "hurdle_win_share": 0.5825925925925926,
+            "interior_share": 0.2803703703703704
+          },
+          "(0.165, 0.198]": {
+            "n": 2700,
+            "mean_abs_disagreement": 0.18099734780336685,
+            "mse_fifty": 2.2656282791098166,
+            "hard_gain": 0.014287828056201836,
+            "convex_gain": 0.015038030487660467,
+            "hurdle_win_share": 0.4988888888888889,
+            "interior_share": 0.387037037037037
+          },
+          "(0.198, 0.237]": {
+            "n": 2700,
+            "mean_abs_disagreement": 0.21530134112268276,
+            "mse_fifty": 0.9972273570842062,
+            "hard_gain": 0.03566580376246963,
+            "convex_gain": 0.03833510005893454,
+            "hurdle_win_share": 0.49592592592592594,
+            "interior_share": 0.44925925925925925
+          },
+          "(0.237, 4.423]": {
+            "n": 2700,
+            "mean_abs_disagreement": 0.338404493741572,
+            "mse_fifty": 3.4207284194610894,
+            "hard_gain": 0.03383866142417456,
+            "convex_gain": 0.03625362536760917,
+            "hurdle_win_share": 0.5074074074074074,
+            "interior_share": 0.45185185185185184
+          }
+        },
+        "mean_corr_point_hurdle": 0.6037826443046279,
+        "median_corr_point_hurdle": 0.6369501213723225,
+        "per_series_winner_flip_rate": 0.413125,
+        "mean_origin_winner_entropy": 0.5617954235977095,
+        "share_series_always_same_winner": 0.06666666666666667
+      }
+    }
+  },
+  "git_commit": "a542ca5b45ca25eee5437a64a979c62e896f8490"
+}

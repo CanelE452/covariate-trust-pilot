@@ -1,0 +1,46 @@
+{
+  "analysis": "fresh-holdout exposure audit",
+  "audited_at_utc": "2026-08-07T14:33:30.895935+00:00",
+  "datasets": {
+    "m5": {
+      "n_exposed": 6893,
+      "by_source": {
+        "stage_a": 1200,
+        "classical_benchmark": 1200,
+        "gate_v1_test": 1200,
+        "h2_independent_m5": 5693,
+        "gate_v1_test_weights": 1200
+      },
+      "n_total": 30490,
+      "n_eligible": 30406,
+      "n_fresh": 23513,
+      "fresh_available": true,
+      "selection_inputs": [
+        "descriptor eligibility (n_positive_train >= 20)",
+        "exposure to any previously computed test metric"
+      ],
+      "fresh_id_sha256": "b6d3fed1e66a876b13abe79b03aaf71035f180148451dac5ff7b91299b4a9f52"
+    },
+    "favorita": {
+      "n_exposed": 6605,
+      "by_source": {
+        "stage_a": 1200,
+        "classical_benchmark": 1200,
+        "gate_v1_test": 1200,
+        "favorita_transfer_and_independent": 5540,
+        "gate_v1_test_weights": 1200
+      },
+      "n_total": 56918,
+      "n_eligible": 56767,
+      "n_fresh": 50167,
+      "fresh_available": true,
+      "selection_inputs": [
+        "descriptor eligibility (n_positive_train >= 20)",
+        "exposure to any previously computed test metric"
+      ],
+      "fresh_id_sha256": "d334def333c3f77c6e9735517009f3081f0fe482a92c55be5072b151e3ababa4"
+    }
+  },
+  "verdict": "FRESH_HOLDOUT_AVAILABLE",
+  "git_commit": "a542ca5b45ca25eee5437a64a979c62e896f8490"
+}
