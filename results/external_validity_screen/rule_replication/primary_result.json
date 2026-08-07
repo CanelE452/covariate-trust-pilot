@@ -1,0 +1,57 @@
+{
+  "verdict": "H2_RULE_PARTIAL_REPLICATION",
+  "analysis": "PRIMARY, unmatched, frozen rule",
+  "matching_applied": false,
+  "candidate": {
+    "n": 675,
+    "n_finite": 675,
+    "mean_delta_relative": 0.0012770810083178065,
+    "median_delta_relative": -0.00974831474159876,
+    "mean_delta_raw": -0.045502925038147506,
+    "median_delta_raw": -0.022880927319659516,
+    "point_win_rate": 0.5896296296296296,
+    "hurdle_win_rate": 0.4103703703703704,
+    "mean_ci": [
+      -0.004474790693924289,
+      0.007624707022889913
+    ]
+  },
+  "control": {
+    "n": 5018,
+    "n_finite": 5018,
+    "mean_delta_relative": 0.02431560719903206,
+    "median_delta_relative": 0.00287081209077715,
+    "mean_delta_raw": 0.0037058446452030614,
+    "median_delta_raw": 0.0038161179893894115,
+    "point_win_rate": 0.4709047429254683,
+    "hurdle_win_rate": 0.5290952570745316,
+    "mean_ci": [
+      0.02226769812009029,
+      0.026511699780188188
+    ]
+  },
+  "H2_rule_effect": -0.023038526190714254,
+  "H2_rule_effect_ci": [
+    -0.029420044008396352,
+    -0.01633998575950969
+  ],
+  "effect_ci_excludes_zero": true,
+  "point_win_rate_difference": 0.11872488670416131,
+  "point_win_rate_difference_ci": [
+    0.07853243139512575,
+    0.1581296665338116
+  ],
+  "bootstrap": {
+    "unit": "series",
+    "draws": 2000,
+    "seed": 20260807,
+    "note": "time rows are never resampled as if independent"
+  },
+  "n_degenerate_rmse_point": 0,
+  "scored_at_utc": "2026-08-07T12:01:55.833972+00:00",
+  "finished_at_utc": "2026-08-07T12:02:01.516324+00:00",
+  "spec_frozen_at_utc": "2026-08-07T12:01:48.131957+00:00",
+  "device": "cuda",
+  "torch": "2.13.0+cu126",
+  "git_commit": "5dc21ac4531b10d29f12db771897faa18e8ef83f"
+}

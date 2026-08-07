@@ -1,0 +1,97 @@
+{
+  "study": "H2 frozen-rule external validation on unseen M5 series",
+  "frozen_at_utc": "2026-08-07T12:01:48.131957+00:00",
+  "frozen_before_any_independent_prediction": true,
+  "frozen_h2_cutoffs": {
+    "HIGH_ADI_min": 1.3036350677120456,
+    "LOW_OCC_max": 0.0074430844292528,
+    "MAG_PERSISTENT_min": 0.290998278399666,
+    "source": "results\\external_validity_screen\\posthoc_diagnostic\\posthoc_diagnostic.json",
+    "recomputed_on_full_pool": false
+  },
+  "population": {
+    "threshold": 20,
+    "n_total_source": 30490,
+    "n_descriptor_eligible": 30406,
+    "n_after_stage_a_removal": 29206,
+    "n_stage_a_removed": 1200,
+    "n_candidate": 675,
+    "n_control_pool": 5018,
+    "stage_a_overlap": 0,
+    "n_control_pool_nan_rho_magnitude": 1
+  },
+  "population_audit": {
+    "expected": {
+      "candidate": 675,
+      "control_pool": 5018,
+      "stage_a_overlap": 0
+    },
+    "observed": {
+      "candidate": 675,
+      "control_pool": 5018,
+      "stage_a_overlap": 0
+    },
+    "match": true
+  },
+  "sampling_rule": "none; every candidate and every control is evaluated",
+  "candidate_id_sha256": "f21c615bd1fc3a408aec086a93439b25577566af64516127fd363da3d3c3152b",
+  "n_candidate": 675,
+  "control_id_sha256": "69485fe2bc0a08a273ccdcf3f2603ba7a679ec9b790889b66ee13e26fd8f4ea5",
+  "n_control": 5018,
+  "stage_a_excluded_id_sha256": "c73bb7506b56c76b7fbebdf67a20e0e08f48894976da7a05adfad749bba9334e",
+  "n_stage_a_excluded": 1200,
+  "models": {
+    "provenance": "retrained on Stage A's 1200 series, verified against stage_a_results.json, then frozen",
+    "point": "M0PM_point_mse_param_matched",
+    "hurdle": "M1_factorized_mean",
+    "model_seed": 0,
+    "independent_series_in_training": false
+  },
+  "training": {
+    "max_epochs": 30,
+    "patience": 5,
+    "batch_size": 256,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "checkpoint_rule": "validation MSE of the final mean prediction, identical for every DLinear variant",
+    "lambda_factorized": 1.0,
+    "hyperparameter_rule": "no per-cell tuning; one setting for every cell and every model; TSB alpha/beta chosen on a fixed grid using the validation split only"
+  },
+  "split": {
+    "length": 1941,
+    "train_end": 1829,
+    "val_end": 1857,
+    "horizon": 28,
+    "lookback": 96,
+    "test_origin_stride": 28,
+    "source": "src/rcoi/data/prepare_m5.py rolling origin 1"
+  },
+  "primary": {
+    "population": "unmatched candidate vs unmatched control",
+    "metric": "delta_relative = (RMSE_Point - RMSE_Hurdle) / RMSE_Point",
+    "contrast": "mean(delta_relative | candidate) - mean(delta_relative | control)",
+    "expected_sign": "negative",
+    "matching_applied": false
+  },
+  "secondary": {
+    "name": "OVERLAP_ADJUSTED_ASSOCIATION",
+    "method": "logistic propensity on train-only covariates, overlap (ATO) weights",
+    "covariates": [
+      "log_ADI",
+      "CV2_positive",
+      "log_train_scale",
+      "abs_rho_interval"
+    ],
+    "excluded_covariate": "rho_magnitude_train defines the contrast",
+    "not_a_causal_effect": true,
+    "balance_requirement": "all weighted |SMD| <= 0.1"
+  },
+  "bootstrap": {
+    "unit": "series",
+    "draws": 2000,
+    "seed": 20260807,
+    "note": "time rows are never resampled as if independent"
+  },
+  "git_commit": "5dc21ac4531b10d29f12db771897faa18e8ef83f"
+}
