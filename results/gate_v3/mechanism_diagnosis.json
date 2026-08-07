@@ -1,0 +1,74 @@
+{
+  "DIRECT_LOSS_SUPPORTED": {
+    "supported": true,
+    "loss_under_neutral_pp": [
+      0.294,
+      0.204,
+      0.478,
+      0.047
+    ],
+    "evidence": "direct mixture loss beats regret BCE under the neutral parameterization in every dataset"
+  },
+  "ALPHA_ANCHOR_SUPPORTED": {
+    "supported": false,
+    "anchor_under_regret_pp": [
+      -0.373,
+      -0.556,
+      1.682,
+      0.021
+    ],
+    "anchor_under_direct_pp": [
+      0.027,
+      -0.158,
+      0.368,
+      -0.099
+    ],
+    "evidence": "anchor effect changes sign across datasets under both losses"
+  },
+  "ANCHOR_LOSS_INTERACTION_SUPPORTED": {
+    "supported": false,
+    "interaction_pp": [
+      0.4,
+      0.398,
+      -1.315,
+      -0.119
+    ]
+  },
+  "REGRET_SURROGATE_MISMATCH_SUPPORTED": {
+    "supported": false,
+    "E_q_vs_E_alpha_relative": {
+      "m5": -0.0598,
+      "favorita": -0.0517,
+      "freshretailnet": -0.1469,
+      "uci": -0.2612
+    },
+    "pearson_q_gstar": {
+      "m5": 0.842,
+      "favorita": 0.853,
+      "freshretailnet": 0.864,
+      "uci": 0.841
+    },
+    "evidence": "E_q < E_alpha in every dataset and corr(q,g*) is 0.84-0.86, so the target tracks the convex optimum; the surrogate is not misaligned"
+  },
+  "FEATURE_ROUTING_LIMITED": {
+    "supported": true,
+    "P1L1_oracle_recovery": {
+      "m5": 0.12619954477756443,
+      "favorita": 0.35211587488604185,
+      "freshretailnet": 0.05113332481081029,
+      "uci": 0.9974164025443465
+    },
+    "evidence": "recovery below 0.2 on M5 and FreshRetailNet despite a usable convex gap"
+  },
+  "STATIC_MIXTURE_SUFFICIENT": {
+    "supported": false,
+    "epoch0_selected_folds": {
+      "m5": [],
+      "favorita": [],
+      "freshretailnet": [
+        1
+      ],
+      "uci": []
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "note": "every local dataset has had test outcomes read in earlier stages",
+  "datasets": {
+    "m5": "EXPOSED",
+    "favorita": "EXPOSED",
+    "freshretailnet": "EXPOSED",
+    "uci_online_retail_ii": "EXPOSED",
+    "retail_transactions_stocks": "STRUCTURALLY_INELIGIBLE (never scored, but cannot carry the 236-day protocol)"
+  },
+  "clean_confirmation_dataset_available": false,
+  "status": "NEW_DATASET_REQUIRED_FOR_GATE_V3_CONFIRMATION"
+}

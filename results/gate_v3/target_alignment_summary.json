@@ -1,0 +1,310 @@
+{
+  "analysis": "regret-surrogate alignment, OOF only",
+  "test_used": false,
+  "existing_test_scored": false,
+  "eps_alpha": 0.0001,
+  "computed_at_utc": "2026-08-07T17:30:02.495780+00:00",
+  "datasets": {
+    "m5": {
+      "n_origins": 10776,
+      "tau": 0.1972774846777501,
+      "alpha_full_oof": 0.0,
+      "alpha_by_validation_fold": {
+        "1": {
+          "alpha_train": 0.05,
+          "alpha_safe": 0.05,
+          "anchor_logit": -2.9444389791664403,
+          "n_train_rows": 3578,
+          "n_validation_rows": 3598,
+          "validation_alpha_loss": 1.0617533857093002
+        },
+        "2": {
+          "alpha_train": 0.0,
+          "alpha_safe": 0.0001,
+          "anchor_logit": -9.21024036697585,
+          "n_train_rows": 7176,
+          "n_validation_rows": 3600,
+          "validation_alpha_loss": 1.0168535550877267
+        }
+      },
+      "alignment": {
+        "tau": 0.1972774846777501,
+        "q": {
+          "mean": 0.33262931581475397,
+          "median": 0.3488063602134964,
+          "std": 0.26804910224359213
+        },
+        "g_star": {
+          "mean": 0.3387772467586195,
+          "median": 0.15293625030845204,
+          "std": 0.38783488179343384
+        },
+        "pearson_q_gstar": 0.842497691725228,
+        "spearman_q_gstar": 0.8274039778449459,
+        "mae_q_gstar": 0.1591502173486927,
+        "rmse_q_gstar": 0.217103499307273,
+        "g_star_distribution": {
+          "flat_share": 0.0,
+          "at_zero_share": 0.39931328878990346,
+          "interior_share": 0.4437639198218263,
+          "at_one_share": 0.15692279138827023
+        },
+        "g_star_by_regret_sign": {
+          "regret_negative": {
+            "n": 6788,
+            "mean_g_star": 0.07528607083078492,
+            "median_g_star": 0.0,
+            "mean_q": 0.16330124964595336
+          },
+          "regret_near_zero": {
+            "n": 1078,
+            "mean_g_star": 0.5091080590558394,
+            "median_g_star": 0.4998042826245267,
+            "mean_q": 0.49989697182097104
+          },
+          "regret_positive": {
+            "n": 2910,
+            "mean_g_star": 0.8903104036458146,
+            "median_g_star": 1.0,
+            "mean_q": 0.6656480030928009
+          }
+        }
+      },
+      "target_as_predictor": {
+        "E_q": 0.9653916434043194,
+        "E_alpha": 1.026810139338467,
+        "E_gstar": 0.948345989772829,
+        "alpha_used": 0.0,
+        "q_worse_than_alpha": false,
+        "q_vs_alpha_relative": -0.05981485143272651,
+        "note": "q is computed from the true OOF regret, so it is an upper bound on what a regret-BCE gate could learn, not a deployable predictor"
+      }
+    },
+    "favorita": {
+      "n_origins": 10800,
+      "tau": 0.17651459584154805,
+      "alpha_full_oof": 0.15000000000000002,
+      "alpha_by_validation_fold": {
+        "1": {
+          "alpha_train": 0.15000000000000002,
+          "alpha_safe": 0.15000000000000002,
+          "anchor_logit": -1.7346010553881062,
+          "n_train_rows": 3600,
+          "n_validation_rows": 3600,
+          "validation_alpha_loss": 4.244828487548101
+        },
+        "2": {
+          "alpha_train": 0.15000000000000002,
+          "alpha_safe": 0.15000000000000002,
+          "anchor_logit": -1.7346010553881062,
+          "n_train_rows": 7200,
+          "n_validation_rows": 3600,
+          "validation_alpha_loss": 2.0012004060473267
+        }
+      },
+      "alignment": {
+        "tau": 0.17651459584154805,
+        "q": {
+          "mean": 0.36324093038935645,
+          "median": 0.38282339257281695,
+          "std": 0.28119505852276
+        },
+        "g_star": {
+          "mean": 0.38003495020318767,
+          "median": 0.2681270149249556,
+          "std": 0.3781039003984009
+        },
+        "pearson_q_gstar": 0.8531319377360963,
+        "spearman_q_gstar": 0.8622977255698167,
+        "mae_q_gstar": 0.14567811246787923,
+        "rmse_q_gstar": 0.20224654774404557,
+        "g_star_distribution": {
+          "flat_share": 0.0,
+          "at_zero_share": 0.2873148148148148,
+          "interior_share": 0.5565740740740741,
+          "at_one_share": 0.15611111111111112
+        },
+        "g_star_by_regret_sign": {
+          "regret_negative": {
+            "n": 6568,
+            "mean_g_star": 0.11088166180984615,
+            "median_g_star": 0.024011355269937758,
+            "mean_q": 0.1790637640122609
+          },
+          "regret_near_zero": {
+            "n": 1130,
+            "mean_g_star": 0.5986310465835323,
+            "median_g_star": 0.5213157798593739,
+            "mean_q": 0.5053712518329264
+          },
+          "regret_positive": {
+            "n": 3102,
+            "mean_g_star": 0.8702945276556953,
+            "median_g_star": 0.9679548506305032,
+            "mean_q": 0.7014318928437501
+          }
+        }
+      },
+      "target_as_predictor": {
+        "E_q": 2.3098414527546014,
+        "E_alpha": 2.4356633457254935,
+        "E_gstar": 2.2944905786821472,
+        "alpha_used": 0.15000000000000002,
+        "q_worse_than_alpha": false,
+        "q_vs_alpha_relative": -0.051658162525500595,
+        "note": "q is computed from the true OOF regret, so it is an upper bound on what a regret-BCE gate could learn, not a deployable predictor"
+      }
+    },
+    "freshretailnet": {
+      "n_origins": 65599,
+      "tau": 0.0826978388794479,
+      "alpha_full_oof": 0.1,
+      "alpha_by_validation_fold": {
+        "1": {
+          "alpha_train": 0.15000000000000002,
+          "alpha_safe": 0.15000000000000002,
+          "anchor_logit": -1.7346010553881062,
+          "n_train_rows": 20705,
+          "n_validation_rows": 22340,
+          "validation_alpha_loss": 0.4130557603661663
+        },
+        "2": {
+          "alpha_train": 0.05,
+          "alpha_safe": 0.05,
+          "anchor_logit": -2.9444389791664403,
+          "n_train_rows": 43045,
+          "n_validation_rows": 22554,
+          "validation_alpha_loss": 0.1856849480328815
+        }
+      },
+      "alignment": {
+        "tau": 0.0826978388794479,
+        "q": {
+          "mean": 0.41794625327293006,
+          "median": 0.46517954561303676,
+          "std": 0.2988612248416506
+        },
+        "g_star": {
+          "mean": 0.45689809503826456,
+          "median": 0.370229504786454,
+          "std": 0.4281876039964164
+        },
+        "pearson_q_gstar": 0.8640871503439541,
+        "spearman_q_gstar": 0.8736531755927293,
+        "mae_q_gstar": 0.1751164551037776,
+        "rmse_q_gstar": 0.23027751089109266,
+        "g_star_distribution": {
+          "flat_share": 0.0,
+          "at_zero_share": 0.33352642570770896,
+          "interior_share": 0.38778030152898674,
+          "at_one_share": 0.2786932727633043
+        },
+        "g_star_by_regret_sign": {
+          "regret_negative": {
+            "n": 33257,
+            "mean_g_star": 0.07370759611970676,
+            "median_g_star": 0.0,
+            "mean_q": 0.1698030764005694
+          },
+          "regret_near_zero": {
+            "n": 6560,
+            "mean_g_star": 0.5477078177520233,
+            "median_g_star": 0.5180222973431545,
+            "mean_q": 0.5022593038197735
+          },
+          "regret_positive": {
+            "n": 25782,
+            "mean_g_star": 0.9280816588243255,
+            "median_g_star": 1.0,
+            "mean_q": 0.716581115644228
+          }
+        }
+      },
+      "target_as_predictor": {
+        "E_q": 0.34132548622948694,
+        "E_alpha": 0.40012336464729403,
+        "E_gstar": 0.3330809097747768,
+        "alpha_used": 0.1,
+        "q_worse_than_alpha": false,
+        "q_vs_alpha_relative": -0.14694937514992912,
+        "note": "q is computed from the true OOF regret, so it is an upper bound on what a regret-BCE gate could learn, not a deployable predictor"
+      }
+    },
+    "uci": {
+      "n_origins": 19004,
+      "tau": 0.651140873562553,
+      "alpha_full_oof": 0.9500000000000001,
+      "alpha_by_validation_fold": {
+        "1": {
+          "alpha_train": 0.4,
+          "alpha_safe": 0.4,
+          "anchor_logit": -0.4054651081081643,
+          "n_train_rows": 6140,
+          "n_validation_rows": 6390,
+          "validation_alpha_loss": 1203.9418245754323
+        },
+        "2": {
+          "alpha_train": 0.9500000000000001,
+          "alpha_safe": 0.9500000000000001,
+          "anchor_logit": 2.944438979166442,
+          "n_train_rows": 12530,
+          "n_validation_rows": 6474,
+          "validation_alpha_loss": 60.632489684383344
+        }
+      },
+      "alignment": {
+        "tau": 0.651140873562553,
+        "q": {
+          "mean": 0.5203037295703324,
+          "median": 0.5394548832222958,
+          "std": 0.32224646307603566
+        },
+        "g_star": {
+          "mean": 0.5730122536516051,
+          "median": 0.6823483451936274,
+          "std": 0.387489564394952
+        },
+        "pearson_q_gstar": 0.840666083529382,
+        "spearman_q_gstar": 0.8284871778291324,
+        "mae_q_gstar": 0.1601503192959096,
+        "rmse_q_gstar": 0.21639314268574925,
+        "g_star_distribution": {
+          "flat_share": 0.0,
+          "at_zero_share": 0.18317196379709536,
+          "interior_share": 0.6156072405809303,
+          "at_one_share": 0.2012207956219743
+        },
+        "g_star_by_regret_sign": {
+          "regret_negative": {
+            "n": 6843,
+            "mean_g_star": 0.11165074848114893,
+            "median_g_star": 0.0,
+            "mean_q": 0.16930669217157238
+          },
+          "regret_near_zero": {
+            "n": 1901,
+            "mean_g_star": 0.5603740499104474,
+            "median_g_star": 0.5252105694830274,
+            "mean_q": 0.5039989810479306
+          },
+          "regret_positive": {
+            "n": 10260,
+            "mean_g_star": 0.8830631313507644,
+            "median_g_star": 0.9382699371496522,
+            "mean_q": 0.7574253722468238
+          }
+        }
+      },
+      "target_as_predictor": {
+        "E_q": 85.11468784251728,
+        "E_alpha": 115.2006154364995,
+        "E_gstar": 84.0336168260466,
+        "alpha_used": 0.9500000000000001,
+        "q_worse_than_alpha": false,
+        "q_vs_alpha_relative": -0.2611611707106381,
+        "note": "q is computed from the true OOF regret, so it is an upper bound on what a regret-BCE gate could learn, not a deployable predictor"
+      }
+    }
+  },
+  "git_commit": "056a52461ec55a9a57143a6caf881569419eeb30"
+}

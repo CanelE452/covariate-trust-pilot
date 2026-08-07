@@ -1,0 +1,29 @@
+{
+  "warn": [
+    {
+      "code": "UCI_ALPHA_INSTABILITY",
+      "detail": "UCI fold-1 alpha fitted on fold 0 is 0.40 while fold 2 fits 0.95; the resulting E_alpha on fold 1 is so poor that all four conditions gain about 96%. UCI's aggregate +91.8% therefore measures static-alpha instability, not gate quality. All four cells are within 0.1pp of each other there, so UCI contributes almost nothing to the factorial contrast."
+    },
+    {
+      "code": "P1L1_NOT_UNIFORMLY_BEST",
+      "detail": "P0L1 beats P1L1 on favorita (2.636 vs 2.478) and P1L0 beats it on freshretailnet (2.202 vs 1.366). The pre-registered primary candidate is reported as such, but the anchor is not what carries the improvement."
+    },
+    {
+      "code": "ANCHOR_NOT_HELD_ON_UCI",
+      "detail": "P1L1 mean |g - alpha| is 0.436 on UCI against P0L0's 0.357, so the anchored gate moves further from the static optimum than the neutral one there."
+    },
+    {
+      "code": "EARLIER_DIAGNOSIS_CORRECTED",
+      "detail": "The multi-dataset report attributed the external failure to the regret target sitting at 0.5. That is refuted here: mean q tracks mean g*, corr(q,g*) is 0.84-0.86, and E_q < E_alpha in all four datasets. The target is well aligned; what fails is the fit, not the aim."
+    },
+    {
+      "code": "TWO_VALIDATION_FOLDS_ONLY",
+      "detail": "The frozen fold geometry gives three OOF folds, and expanding time leaves only two of them usable as validation, so every mean is over two points."
+    },
+    {
+      "code": "NO_TEST_SCORED",
+      "detail": "No existing TEST was scored with Gate-v3. The external failure result stands unchanged."
+    }
+  ],
+  "fail": []
+}
