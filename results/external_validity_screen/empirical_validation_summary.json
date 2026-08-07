@@ -1,0 +1,111 @@
+{
+  "state": "EMPIRICAL_VALIDATION_3PRIORITIES_READY_FOR_REVIEW",
+  "generated_at_utc": "2026-08-07T12:54:33.017372+00:00",
+  "overall": "EMPIRICAL_VALIDATION_PARTIAL",
+  "overall_reason": "M5 seed robustness holds (P1 ROBUST); Favorita could not be tested as specified because no full pool exists locally, and the reduced check returns LOW_SUPPORT. Per the decision rule that is PARTIAL, not STRONG and not WEAK.",
+  "priority_1": {
+    "verdict": "H2_SEED_ROBUST",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "seed_effects": [
+      -0.023038526190714254,
+      -0.021086340930262244,
+      -0.027686509186571596
+    ],
+    "aggregate_effect": -0.023937125435849364,
+    "aggregate_ci": [
+      -0.030453687488816737,
+      -0.017207365774053174
+    ],
+    "artifacts": [
+      "seed_robustness/seed_spec.json",
+      "seed_robustness/seed_robustness.json",
+      "seed_robustness/per_series_by_seed.csv",
+      "seed_robustness/model_provenance.json"
+    ]
+  },
+  "priority_2": {
+    "verdict": "FAVORITA_RULE_LOW_SUPPORT",
+    "secondary": "OVERLAP_DIAGNOSTIC_INCONCLUSIVE",
+    "blocked": "Favorita full pool is not materialised in this repository",
+    "design_deviation": {
+      "specified": "M5-frozen rule on the Favorita FULL pool with Stage A 1200 removed",
+      "executed": "M5-frozen rule on the Favorita Stage A 1200, the only Favorita series present in the repository",
+      "reason": "no raw Favorita source; data/processed/favorita_series.parquet contains exactly the Stage A sample",
+      "independence_from_stage_a_sample": false,
+      "cutoffs_refitted_to_favorita": false,
+      "not_the_specified_external_replication": true
+    },
+    "n_candidate": 18,
+    "n_control": 117,
+    "effect": -0.03739405330566479,
+    "effect_ci": [
+      -0.0853215704415522,
+      0.015358844472629552
+    ],
+    "point_win_rate_difference": -0.14529914529914534,
+    "direction_agrees_with_m5_on_mean": true,
+    "direction_agrees_with_m5_on_win_rate": false,
+    "artifacts": [
+      "favorita_transfer/favorita_stage_a_reproduction.json",
+      "favorita_transfer/primary_transfer.json",
+      "favorita_transfer/secondary_overlap.json",
+      "favorita_transfer/occurrence_diagnostic.json",
+      "favorita_transfer/transfer_raw_predictions.parquet"
+    ]
+  },
+  "priority_3": {
+    "verdict": "CLASSICAL_BENCHMARK_COMPLETE",
+    "iets": "IETS_NOT_AVAILABLE -- no verified implementation in the repository or the environment; not written from scratch",
+    "hand_check_passed": true,
+    "best_by_mean_per_series_rmse": {
+      "m5": "tsb",
+      "favorita": "dlinear_point"
+    },
+    "best_by_mean_rank": {
+      "m5": "sba",
+      "favorita": "sba"
+    },
+    "artifacts": [
+      "classical_benchmark/benchmark.json",
+      "classical_benchmark/implementation_audit.json"
+    ]
+  },
+  "context_carried_forward": {
+    "h1_regime": {
+      "verdict": "H1_TARGET_REGIME_DIRECTION_SUPPORTED",
+      "intermittent_relative_rho": 0.15286480960899565,
+      "lumpy_relative_rho": 0.03228346981633129,
+      "wording": "reproduced in intermittent; inconclusive in lumpy"
+    },
+    "h2_single_seed": {
+      "verdict": "H2_RULE_PARTIAL_REPLICATION",
+      "effect": -0.023038526190714254
+    },
+    "h2_overlap_adjusted": {
+      "verdict": "OVERLAP_ADJUSTED_ASSOCIATION_COMPUTED",
+      "association": 0.0031849974024959074,
+      "ci": [
+        -0.003288935572347664,
+        0.009384154780202037
+      ]
+    }
+  },
+  "commands": [
+    "python -m experiments.external_validity_screen.seed_robustness freeze|train|evaluate",
+    "python -m experiments.external_validity_screen.favorita_transfer reproduce|transfer|secondary|occurrence",
+    "python -m experiments.external_validity_screen.classical_benchmark hand-check|run"
+  ],
+  "fail_and_warn": [
+    "FAIL  P2 as specified: Favorita full pool absent; only the Stage A 1200 exist locally",
+    "WARN  P2 reduced check is not independent of the Stage A sample",
+    "WARN  P2 candidate n=18 (<100) -> LOW_SUPPORT; its secondary overlap is INCONCLUSIVE",
+    "WARN  P2 mean effect and Point win-rate difference point in opposite directions",
+    "WARN  P3 iETS unavailable; not implemented from scratch",
+    "WARN  P3 classical methods beat both learned models on M5 mean per-series RMSE",
+    "NOTE  earlier 1:2 matching attempt remains at h2_confirmatory/matching_failed.json"
+  ]
+}

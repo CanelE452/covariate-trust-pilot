@@ -1,0 +1,16 @@
+{
+  "analysis": "SECONDARY -- OVERLAP_ADJUSTED_ASSOCIATION (Favorita)",
+  "not_a_causal_effect": true,
+  "separate_from_primary": true,
+  "n_used": 135,
+  "n_candidate": 18,
+  "n_control": 117,
+  "unweighted_smd": {
+    "log_ADI": -0.320825509818796,
+    "CV2_positive": 0.26343876785526776,
+    "log_train_scale": 0.980791713028964,
+    "abs_rho_interval": -0.7207556768703425
+  },
+  "verdict": "OVERLAP_DIAGNOSTIC_INCONCLUSIVE",
+  "reason": "only 18 candidates; a propensity model on 4 covariates is not identifiable here"
+}

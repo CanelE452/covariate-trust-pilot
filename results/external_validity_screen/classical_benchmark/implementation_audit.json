@@ -1,0 +1,79 @@
+{
+  "hand_check": {
+    "passed": true,
+    "checks": {
+      "z": {
+        "expected": 3.25,
+        "got": 3.25,
+        "ok": "True"
+      },
+      "x": {
+        "expected": 2.75,
+        "got": 2.75,
+        "ok": true
+      },
+      "croston": {
+        "expected": 1.1818181818181819,
+        "got": 1.1818181818181819,
+        "ok": "True"
+      },
+      "sba": {
+        "expected": 0.8863636363636364,
+        "got": 0.8863636363636364,
+        "ok": "True"
+      },
+      "sba_is_scaled_croston": {
+        "expected": 0.75,
+        "got": 0.75,
+        "ok": "True"
+      },
+      "flat_over_horizon": {
+        "expected": true,
+        "got": true,
+        "ok": true
+      },
+      "empty_window_is_zero": {
+        "expected": 0.0,
+        "got": 0.0,
+        "ok": "True"
+      }
+    }
+  },
+  "reused_from_repository": {
+    "tsb": "om_factorization_killtest.models.tsb_state / tsb_forecast",
+    "seasonal_naive": "om_factorization_killtest.models.seasonal_naive",
+    "tsb_grid": {
+      "alpha": [
+        0.05,
+        0.1,
+        0.2,
+        0.3
+      ],
+      "beta": [
+        0.05,
+        0.1,
+        0.2,
+        0.3
+      ]
+    }
+  },
+  "implemented_here": {
+    "croston": "SES on demand size and interval, forecast z/x",
+    "sba": "Croston scaled by 1 - alpha/2",
+    "ses": "SES on the raw series",
+    "naive": "last observed value"
+  },
+  "packages_available": {
+    "statsforecast": false,
+    "sktime": false,
+    "darts": false
+  },
+  "iets": "IETS_NOT_AVAILABLE -- no verified implementation in the repository or the environment; not written from scratch",
+  "alpha_grid": [
+    0.05,
+    0.1,
+    0.2,
+    0.3
+  ],
+  "tuning": "validation split only; test never used for selection"
+}

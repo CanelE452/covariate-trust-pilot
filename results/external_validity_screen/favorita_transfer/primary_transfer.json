@@ -1,0 +1,71 @@
+{
+  "verdict": "FAVORITA_RULE_LOW_SUPPORT",
+  "design_deviation": {
+    "specified": "M5-frozen rule on the Favorita FULL pool with Stage A 1200 removed",
+    "executed": "M5-frozen rule on the Favorita Stage A 1200, the only Favorita series present in the repository",
+    "reason": "no raw Favorita source; data/processed/favorita_series.parquet contains exactly the Stage A sample",
+    "independence_from_stage_a_sample": false,
+    "cutoffs_refitted_to_favorita": false,
+    "not_the_specified_external_replication": true
+  },
+  "frozen_cutoffs_used": {
+    "HIGH_ADI_min": 1.3036350677120456,
+    "LOW_OCC_max": 0.0074430844292528,
+    "MAG_PERSISTENT_min": 0.290998278399666,
+    "source": "results\\external_validity_screen\\posthoc_diagnostic\\posthoc_diagnostic.json",
+    "recomputed_on_full_pool": false
+  },
+  "favorita_own_quantiles_for_reference_only": {
+    "ADI_median": 1.316624895572264,
+    "abs_rho_interval_lower_tertile": 0.0087894717331533,
+    "rho_magnitude_upper_tertile": 0.2276180883263491,
+    "note": "reported to show the transfer is not vacuous; never used as a cutoff"
+  },
+  "population": {
+    "pool": 1195,
+    "high_adi": 610,
+    "low_occ": 353,
+    "mag_persistent": 282,
+    "candidate": 18,
+    "control": 117,
+    "min_candidates_for_conclusion": 100
+  },
+  "candidate": {
+    "n": 18,
+    "mean_delta_relative": 0.031227525509965208,
+    "median_delta_relative": 0.016925278269624332,
+    "mean_ci": [
+      -0.0048799475568275545,
+      0.07232372120954969
+    ],
+    "point_win_rate": 0.3333333333333333,
+    "mean_delta_raw": 0.04113660808961625
+  },
+  "control": {
+    "n": 117,
+    "mean_delta_relative": 0.06862157881563,
+    "median_delta_relative": 0.006050841599956379,
+    "mean_ci": [
+      0.03748694744135599,
+      0.1000887781870361
+    ],
+    "point_win_rate": 0.47863247863247865,
+    "mean_delta_raw": 0.06597077306678141
+  },
+  "H2_FAVORITA_rule_effect": -0.03739405330566479,
+  "effect_ci": [
+    -0.0853215704415522,
+    0.015358844472629552
+  ],
+  "effect_ci_excludes_zero": false,
+  "point_win_rate_difference": -0.14529914529914534,
+  "bootstrap": {
+    "unit": "series",
+    "draws": 2000,
+    "seed": 20260807,
+    "note": "time rows are never resampled as if independent"
+  },
+  "pooled_with_m5": false,
+  "transferred_at_utc": "2026-08-07T12:50:48.253926+00:00",
+  "git_commit": "12b35d2a220bfd2f1819802138932f97ecd6a365"
+}
