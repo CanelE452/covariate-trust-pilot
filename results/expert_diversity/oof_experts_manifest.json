@@ -1,0 +1,311 @@
+{
+  "built_at_utc": "2026-08-07T15:07:46.896526+00:00",
+  "device": "cuda",
+  "model_seed": 0,
+  "fold_geometry": "reused from structure_gate.oof",
+  "test_used": false,
+  "training": {
+    "max_epochs": 30,
+    "patience": 5,
+    "batch_size": 256,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "checkpoint_rule": "validation MSE of the final mean prediction, identical for every DLinear variant",
+    "lambda_factorized": 1.0,
+    "hyperparameter_rule": "no per-cell tuning; one setting for every cell and every model; TSB alpha/beta chosen on a fixed grid using the validation split only"
+  },
+  "datasets": {
+    "m5": {
+      "n_rows": 302400,
+      "folds": [
+        1493,
+        1605,
+        1717
+      ],
+      "experts": [
+        "dlinear_point",
+        "dlinear_hurdle",
+        "dlinear_point_plain",
+        "dlinear_hurdle_ztnb",
+        "croston",
+        "sba",
+        "ses",
+        "tsb",
+        "seasonal_naive",
+        "naive"
+      ],
+      "reference_pair": [
+        "dlinear_point",
+        "dlinear_hurdle"
+      ],
+      "reused_from_gate_v2": [
+        "dlinear_point",
+        "dlinear_hurdle"
+      ],
+      "expert_config": {
+        "dlinear_point_plain": {
+          "fold0": {
+            "train_seconds": 47.820045709609985,
+            "n_parameters": 5432
+          },
+          "fold1": {
+            "train_seconds": 105.05858373641968,
+            "n_parameters": 5432
+          },
+          "fold2": {
+            "train_seconds": 67.83781147003174,
+            "n_parameters": 5432
+          }
+        },
+        "dlinear_hurdle_ztnb": {
+          "fold0": {
+            "train_seconds": 206.9262044429779,
+            "n_parameters": 7057
+          },
+          "fold1": {
+            "train_seconds": 129.70709228515625,
+            "n_parameters": 7057
+          },
+          "fold2": {
+            "train_seconds": 187.86940479278564,
+            "n_parameters": 7057
+          }
+        },
+        "croston": {
+          "fold0": {
+            "alpha": 0.05,
+            "validation_mse": 19.45018702471519,
+            "selected_on": "fold validation split"
+          },
+          "fold1": {
+            "alpha": 0.2,
+            "validation_mse": 25.21681444402073,
+            "selected_on": "fold validation split"
+          },
+          "fold2": {
+            "alpha": 0.05,
+            "validation_mse": 23.441464401324914,
+            "selected_on": "fold validation split"
+          }
+        },
+        "sba": {
+          "fold0": {
+            "alpha": 0.05,
+            "validation_mse": 19.398528697117953,
+            "selected_on": "fold validation split"
+          },
+          "fold1": {
+            "alpha": 0.2,
+            "validation_mse": 25.013224759441982,
+            "selected_on": "fold validation split"
+          },
+          "fold2": {
+            "alpha": 0.3,
+            "validation_mse": 21.997084490196986,
+            "selected_on": "fold validation split"
+          }
+        },
+        "ses": {
+          "fold0": {
+            "alpha": 0.05,
+            "validation_mse": 18.875970111226152,
+            "selected_on": "fold validation split"
+          },
+          "fold1": {
+            "alpha": 0.1,
+            "validation_mse": 24.250000316162414,
+            "selected_on": "fold validation split"
+          },
+          "fold2": {
+            "alpha": 0.1,
+            "validation_mse": 19.12046688703511,
+            "selected_on": "fold validation split"
+          }
+        },
+        "tsb": {
+          "fold0": {
+            "alpha": 0.05,
+            "beta": 0.05,
+            "validation_mse": 18.878676941182555,
+            "selected_on": "fold validation split"
+          },
+          "fold1": {
+            "alpha": 0.1,
+            "beta": 0.1,
+            "validation_mse": 24.22383078561468,
+            "selected_on": "fold validation split"
+          },
+          "fold2": {
+            "alpha": 0.3,
+            "beta": 0.05,
+            "validation_mse": 16.56929885382464,
+            "selected_on": "fold validation split"
+          }
+        },
+        "seasonal_naive": {
+          "fold0": {
+            "period": 28
+          },
+          "fold1": {
+            "period": 28
+          },
+          "fold2": {
+            "period": 28
+          }
+        },
+        "naive": {
+          "fold0": {},
+          "fold1": {},
+          "fold2": {}
+        }
+      }
+    },
+    "favorita": {
+      "n_rows": 302400,
+      "folds": [
+        1240,
+        1352,
+        1464
+      ],
+      "experts": [
+        "dlinear_point",
+        "dlinear_hurdle",
+        "dlinear_point_plain",
+        "dlinear_hurdle_ztnb",
+        "croston",
+        "sba",
+        "ses",
+        "tsb",
+        "seasonal_naive",
+        "naive"
+      ],
+      "reference_pair": [
+        "dlinear_point",
+        "dlinear_hurdle"
+      ],
+      "reused_from_gate_v2": [
+        "dlinear_point",
+        "dlinear_hurdle"
+      ],
+      "expert_config": {
+        "dlinear_point_plain": {
+          "fold0": {
+            "train_seconds": 38.433085203170776,
+            "n_parameters": 5432
+          },
+          "fold1": {
+            "train_seconds": 54.587218046188354,
+            "n_parameters": 5432
+          },
+          "fold2": {
+            "train_seconds": 41.52616882324219,
+            "n_parameters": 5432
+          }
+        },
+        "dlinear_hurdle_ztnb": {
+          "fold0": {
+            "train_seconds": 105.51290726661682,
+            "n_parameters": 7057
+          },
+          "fold1": {
+            "train_seconds": 128.89509177207947,
+            "n_parameters": 7057
+          },
+          "fold2": {
+            "train_seconds": 107.94339489936829,
+            "n_parameters": 7057
+          }
+        },
+        "croston": {
+          "fold0": {
+            "alpha": 0.1,
+            "validation_mse": 96.30442052529094,
+            "selected_on": "fold validation split"
+          },
+          "fold1": {
+            "alpha": 0.2,
+            "validation_mse": 64.44595724955568,
+            "selected_on": "fold validation split"
+          },
+          "fold2": {
+            "alpha": 0.05,
+            "validation_mse": 146.29851765254077,
+            "selected_on": "fold validation split"
+          }
+        },
+        "sba": {
+          "fold0": {
+            "alpha": 0.1,
+            "validation_mse": 96.13260667549667,
+            "selected_on": "fold validation split"
+          },
+          "fold1": {
+            "alpha": 0.1,
+            "validation_mse": 64.80618507777427,
+            "selected_on": "fold validation split"
+          },
+          "fold2": {
+            "alpha": 0.05,
+            "validation_mse": 144.56616168645994,
+            "selected_on": "fold validation split"
+          }
+        },
+        "ses": {
+          "fold0": {
+            "alpha": 0.1,
+            "validation_mse": 94.14445410727507,
+            "selected_on": "fold validation split"
+          },
+          "fold1": {
+            "alpha": 0.1,
+            "validation_mse": 63.55996348044942,
+            "selected_on": "fold validation split"
+          },
+          "fold2": {
+            "alpha": 0.05,
+            "validation_mse": 147.2649404416753,
+            "selected_on": "fold validation split"
+          }
+        },
+        "tsb": {
+          "fold0": {
+            "alpha": 0.1,
+            "beta": 0.1,
+            "validation_mse": 94.31385627432364,
+            "selected_on": "fold validation split"
+          },
+          "fold1": {
+            "alpha": 0.05,
+            "beta": 0.2,
+            "validation_mse": 63.237491029839894,
+            "selected_on": "fold validation split"
+          },
+          "fold2": {
+            "alpha": 0.2,
+            "beta": 0.05,
+            "validation_mse": 144.48792692283186,
+            "selected_on": "fold validation split"
+          }
+        },
+        "seasonal_naive": {
+          "fold0": {
+            "period": 28
+          },
+          "fold1": {
+            "period": 28
+          },
+          "fold2": {
+            "period": 28
+          }
+        },
+        "naive": {
+          "fold0": {},
+          "fold1": {},
+          "fold2": {}
+        }
+      }
+    }
+  },
+  "git_commit": "03d88670af95c88f90b590a999a427453f0319fc"
+}

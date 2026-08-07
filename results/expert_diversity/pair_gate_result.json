@@ -1,0 +1,194 @@
+{
+  "analysis": "frozen Gate-v2 applied to the selected diverse pair, OOF only",
+  "test_used": false,
+  "fresh_holdout_used": false,
+  "expert_set_frozen_at_utc": "2026-08-07T15:39:30.499867+00:00",
+  "gate_evaluated_at_utc": "2026-08-07T15:42:50.690056+00:00",
+  "pair": [
+    "dlinear_point_plain",
+    "naive"
+  ],
+  "gate_design": {
+    "variant": "G-NOSCALE",
+    "architecture": "mlp",
+    "loss": "regret_bce",
+    "key": "G-NOSCALE|mlp|regret_bce"
+  },
+  "gate_design_source": "results\\structure_gate\\gate_v2_spec.json",
+  "experts_frozen": true,
+  "gate_retuned": false,
+  "datasets": {
+    "m5": {
+      "n_origins": 7198,
+      "n_series": 1200,
+      "means": {
+        "expert_a": 1.036552766717644,
+        "expert_b": 2.111955084133748,
+        "fifty": 1.3025694371186065,
+        "global_alpha": 1.036552766717644,
+        "gate": 1.0320774965422865,
+        "oracle_hard": 0.9756857753424062,
+        "oracle_convex": 0.9552768341884956
+      },
+      "best_static": "expert_a",
+      "global_alpha": 0.0,
+      "fold_improvement": {
+        "1": 0.0019027822772255873,
+        "2": 0.006824318262293397
+      },
+      "folds_positive": 2,
+      "paired_bootstrap": {
+        "gate_vs_expert_a": {
+          "relative_improvement": 0.004290653547410239,
+          "ci": [
+            0.0005566894856185448,
+            0.00810602796923701
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_vs_expert_b": {
+          "relative_improvement": 0.5113067674521273,
+          "ci": [
+            0.4797047534495918,
+            0.5457372545760211
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_vs_fifty": {
+          "relative_improvement": 0.20765067783885735,
+          "ci": [
+            0.1841858252171434,
+            0.23585275160846156
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_vs_global_alpha": {
+          "relative_improvement": 0.004290653547410239,
+          "ci": [
+            0.0005566894856185448,
+            0.00810602796923701
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_vs_best_static": {
+          "relative_improvement": 0.004290653547410239,
+          "ci": [
+            0.0005566894856185448,
+            0.00810602796923701
+          ],
+          "ci_excludes_zero": true
+        }
+      },
+      "convex_oracle_recovery": 0.05506267398103912,
+      "gate_weight": {
+        "mean": 0.32378462694193266,
+        "sd": 0.18110587809373702,
+        "extreme_share": 0.10238955265351486
+      },
+      "reference_pair": {
+        "convex_gain": 0.04107302959406395,
+        "best_static_loss": 1.0087177635178386,
+        "convex_oracle_loss": 0.9672866689648124,
+        "pair_convex_oracle_loss_same_rows": 0.948345989772829,
+        "pair_best_static_loss_same_rows": 1.026810139338467,
+        "gate_v2_oof_improvement": 0.0028388234375786602,
+        "gate_v2_oof_recovery": 0.06779414615997714
+      }
+    },
+    "favorita": {
+      "n_origins": 7200,
+      "n_series": 1200,
+      "means": {
+        "expert_a": 3.1503537083976916,
+        "expert_b": 3.74294255930235,
+        "fifty": 3.2187509000545758,
+        "global_alpha": 3.123014446797713,
+        "gate": 3.067778432663577,
+        "oracle_hard": 2.980428042870997,
+        "oracle_convex": 2.9556025553042233
+      },
+      "best_static": "global_alpha",
+      "global_alpha": 0.15,
+      "fold_improvement": {
+        "1": 0.010943401131835522,
+        "2": 0.05820019242756706
+      },
+      "folds_positive": 2,
+      "paired_bootstrap": {
+        "gate_vs_expert_a": {
+          "relative_improvement": 0.026211430009906323,
+          "ci": [
+            0.014380544289232947,
+            0.037266805411305996
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_vs_expert_b": {
+          "relative_improvement": 0.18038324551916643,
+          "ci": [
+            0.13599859959436236,
+            0.23636639651860916
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_vs_fifty": {
+          "relative_improvement": 0.04690405442323569,
+          "ci": [
+            0.03451631636511389,
+            0.0649537368500484
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_vs_global_alpha": {
+          "relative_improvement": 0.01768676228532176,
+          "ci": [
+            0.007882708855052973,
+            0.02657971881446336
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_vs_best_static": {
+          "relative_improvement": 0.01768676228532176,
+          "ci": [
+            0.007882708855052973,
+            0.02657971881446336
+          ],
+          "ci_excludes_zero": true
+        }
+      },
+      "convex_oracle_recovery": 0.32994080433219375,
+      "gate_weight": {
+        "mean": 0.37298523813916895,
+        "sd": 0.18122720666912412,
+        "extreme_share": 0.03166666666666667
+      },
+      "reference_pair": {
+        "convex_gain": 0.023314203253128038,
+        "best_static_loss": 2.415527017981655,
+        "convex_oracle_loss": 2.3592109301210082,
+        "pair_convex_oracle_loss_same_rows": 2.2944905786821472,
+        "pair_best_static_loss_same_rows": 2.4356633457254935,
+        "gate_v2_oof_improvement": 0.003296244899869861,
+        "gate_v2_oof_recovery": 0.1593813170943744
+      }
+    }
+  },
+  "verdict": "DIVERSE_GATE_GREEN",
+  "ceiling_increased": {
+    "m5": true,
+    "favorita": true
+  },
+  "direction_positive": {
+    "m5": true,
+    "favorita": true
+  },
+  "ci_excludes_zero": {
+    "m5": true,
+    "favorita": true
+  },
+  "better_than_reference_gate": {
+    "m5": true,
+    "favorita": true
+  },
+  "git_commit": "03d88670af95c88f90b590a999a427453f0319fc"
+}

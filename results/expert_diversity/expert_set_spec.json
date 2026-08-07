@@ -1,0 +1,367 @@
+{
+  "study": "expert diversity screen, selection frozen before any gate",
+  "frozen_at_utc": "2026-08-07T15:39:30.499867+00:00",
+  "test_used": false,
+  "fresh_holdout_used": false,
+  "selection_formula": "geometric mean of the convex-oracle ceiling multiplier across datasets, then the worse dataset, then residual correlation, then static loss; pairs whose best static is more than 2% worse than the reference are excluded",
+  "reference_pair": [
+    "dlinear_point",
+    "dlinear_hurdle"
+  ],
+  "reference_convex_gain": {
+    "m5": 0.04107302959406395,
+    "favorita": 0.023314203253128038
+  },
+  "top_pair": [
+    "dlinear_point_plain",
+    "naive"
+  ],
+  "top_pair_metrics": {
+    "pair": "dlinear_point_plain|naive",
+    "geometric_ceiling_multiplier": 2.1506450403482917,
+    "worst_ceiling_multiplier": 1.860477342467629,
+    "max_residual_correlation": 0.8550807225074597,
+    "max_static_degradation": 0.01793601389305599,
+    "convex_gain": {
+      "m5": 0.07641544094625838,
+      "favorita": 0.05796070597814746
+    },
+    "convex_oracle_loss": {
+      "m5": 0.948345989772829,
+      "favorita": 2.2944905786821472
+    },
+    "best_static_loss": {
+      "m5": 1.026810139338467,
+      "favorita": 2.4356633457254935
+    },
+    "residual_correlation": {
+      "m5": 0.7068829465907268,
+      "favorita": 0.8550807225074597
+    }
+  },
+  "ranking_top10": [
+    {
+      "pair": "dlinear_point_plain|naive",
+      "geometric_ceiling_multiplier": 2.1506450403482917,
+      "worst_ceiling_multiplier": 1.860477342467629,
+      "max_residual_correlation": 0.8550807225074597,
+      "max_static_degradation": 0.01793601389305599,
+      "convex_gain": {
+        "m5": 0.07641544094625838,
+        "favorita": 0.05796070597814746
+      },
+      "convex_oracle_loss": {
+        "m5": 0.948345989772829,
+        "favorita": 2.2944905786821472
+      },
+      "best_static_loss": {
+        "m5": 1.026810139338467,
+        "favorita": 2.4356633457254935
+      },
+      "residual_correlation": {
+        "m5": 0.7068829465907268,
+        "favorita": 0.8550807225074597
+      }
+    },
+    {
+      "pair": "dlinear_point|naive",
+      "geometric_ceiling_multiplier": 2.051318470949256,
+      "worst_ceiling_multiplier": 1.85726462193647,
+      "max_residual_correlation": 0.858891383482462,
+      "max_static_degradation": 0.013751095361433041,
+      "convex_gain": {
+        "m5": 0.07628348478080461,
+        "favorita": 0.052821772864191735
+      },
+      "convex_oracle_loss": {
+        "m5": 0.9445821052691579,
+        "favorita": 2.2914218769875863
+      },
+      "best_static_loss": {
+        "m5": 1.022588737676744,
+        "favorita": 2.41920877332312
+      },
+      "residual_correlation": {
+        "m5": 0.7054365219087785,
+        "favorita": 0.858891383482462
+      }
+    },
+    {
+      "pair": "dlinear_hurdle|naive",
+      "geometric_ceiling_multiplier": 1.9109088961968712,
+      "worst_ceiling_multiplier": 1.6891468368765499,
+      "max_residual_correlation": 0.8720083298199743,
+      "max_static_degradation": 0.012562411793803463,
+      "convex_gain": {
+        "m5": 0.06937837801975004,
+        "favorita": 0.05040030198511443
+      },
+      "convex_oracle_loss": {
+        "m5": 0.950527331328197,
+        "favorita": 2.311394635296505
+      },
+      "best_static_loss": {
+        "m5": 1.021389691446874,
+        "favorita": 2.4340726309500917
+      },
+      "residual_correlation": {
+        "m5": 0.7188395221840748,
+        "favorita": 0.8720083298199743
+      }
+    },
+    {
+      "pair": "ses|naive",
+      "geometric_ceiling_multiplier": 1.7961118468676371,
+      "worst_ceiling_multiplier": 1.4531304665999654,
+      "max_residual_correlation": 0.8802087504322748,
+      "max_static_degradation": 0.008364677706465873,
+      "convex_gain": {
+        "m5": 0.05968447065869633,
+        "favorita": 0.05175862431774035
+      },
+      "convex_oracle_loss": {
+        "m5": 0.953544978247941,
+        "favorita": 2.3096619790864445
+      },
+      "best_static_loss": {
+        "m5": 1.014069159227759,
+        "favorita": 2.435732122978332
+      },
+      "residual_correlation": {
+        "m5": 0.7279489191560685,
+        "favorita": 0.8802087504322748
+      }
+    },
+    {
+      "pair": "dlinear_point_plain|croston",
+      "geometric_ceiling_multiplier": 1.7305839379546804,
+      "worst_ceiling_multiplier": 1.562993197178031,
+      "max_residual_correlation": 0.9380991377818697,
+      "max_static_degradation": 0.006702907879543973,
+      "convex_gain": {
+        "m5": 0.0641968658430139,
+        "favorita": 0.04467338155966126
+      },
+      "convex_oracle_loss": {
+        "m5": 0.9502885298440971,
+        "favorita": 2.3204403450876243
+      },
+      "best_static_loss": {
+        "m5": 1.0154791057631583,
+        "favorita": 2.4289497437807848
+      },
+      "residual_correlation": {
+        "m5": 0.9346356768666358,
+        "favorita": 0.9380991377818697
+      }
+    },
+    {
+      "pair": "dlinear_point|croston",
+      "geometric_ceiling_multiplier": 1.6853813656135297,
+      "worst_ceiling_multiplier": 1.5519332128334637,
+      "max_residual_correlation": 0.9371364946228111,
+      "max_static_degradation": 0.004402339273111844,
+      "convex_gain": {
+        "m5": 0.0637425987787196,
+        "favorita": 0.0426720911943466
+      },
+      "convex_oracle_loss": {
+        "m5": 0.948577126768113,
+        "favorita": 2.3088133072789665
+      },
+      "best_static_loss": {
+        "m5": 1.0131584813436587,
+        "favorita": 2.4117267302479504
+      },
+      "residual_correlation": {
+        "m5": 0.936311435788863,
+        "favorita": 0.9371364946228111
+      }
+    },
+    {
+      "pair": "dlinear_hurdle|croston",
+      "geometric_ceiling_multiplier": 1.671915144425175,
+      "worst_ceiling_multiplier": 1.4284809740704785,
+      "max_residual_correlation": 0.9488380237256223,
+      "max_static_degradation": 0.0048016792766683025,
+      "convex_gain": {
+        "m5": 0.05867204132255406,
+        "favorita": 0.04562202743240303
+      },
+      "convex_oracle_loss": {
+        "m5": 0.9540935920640361,
+        "favorita": 2.308501031010144
+      },
+      "best_static_loss": {
+        "m5": 1.0135613026989294,
+        "favorita": 2.4188540571609187
+      },
+      "residual_correlation": {
+        "m5": 0.9488380237256223,
+        "favorita": 0.9464958632323673
+      }
+    },
+    {
+      "pair": "dlinear_point_plain|sba",
+      "geometric_ceiling_multiplier": 1.5282587041386833,
+      "worst_ceiling_multiplier": 1.4939933847525466,
+      "max_residual_correlation": 0.9530515507016389,
+      "max_static_degradation": 0.004530701653233216,
+      "convex_gain": {
+        "m5": 0.06136283450527711,
+        "favorita": 0.036447325034898496
+      },
+      "convex_oracle_loss": {
+        "m5": 0.9511097411918287,
+        "favorita": 2.325247153413299
+      },
+      "best_static_loss": {
+        "m5": 1.0132879627566547,
+        "favorita": 2.413201907718762
+      },
+      "residual_correlation": {
+        "m5": 0.9426766407483478,
+        "favorita": 0.9530515507016389
+      }
+    },
+    {
+      "pair": "dlinear_hurdle_ztnb|sba",
+      "geometric_ceiling_multiplier": 1.5086113339929552,
+      "worst_ceiling_multiplier": 1.3431287810291386,
+      "max_residual_correlation": 0.9714640485568395,
+      "max_static_degradation": 0.01848625953935934,
+      "convex_gain": {
+        "m5": 0.0695975281062349,
+        "favorita": 0.03131397739603944
+      },
+      "convex_oracle_loss": {
+        "m5": 0.9558631047738042,
+        "favorita": 2.3387437371042776
+      },
+      "best_static_loss": {
+        "m5": 1.0273651818961915,
+        "favorita": 2.414346529763498
+      },
+      "residual_correlation": {
+        "m5": 0.942096150372144,
+        "favorita": 0.9714640485568395
+      }
+    },
+    {
+      "pair": "dlinear_point|sba",
+      "geometric_ceiling_multiplier": 1.5009271324895956,
+      "worst_ceiling_multiplier": 1.4668323777756858,
+      "max_residual_correlation": 0.9541641375837232,
+      "max_static_degradation": 0.002943117987558086,
+      "convex_gain": {
+        "m5": 0.06024724966191193,
+        "favorita": 0.03580628858588173
+      },
+      "convex_oracle_loss": {
+        "m5": 0.9507352074225894,
+        "favorita": 2.315333462106857
+      },
+      "best_static_loss": {
+        "m5": 1.0116865389120173,
+        "favorita": 2.4013156637488464
+      },
+      "residual_correlation": {
+        "m5": 0.9454831535551242,
+        "favorita": 0.9541641375837232
+      }
+    }
+  ],
+  "triple_screen": {
+    "m5": {
+      "dlinear_point": {
+        "simplex_oracle": 0.9354750806199049,
+        "improvement_over_pair": 0.013866574510735728
+      },
+      "dlinear_hurdle": {
+        "simplex_oracle": 0.9196109756838112,
+        "improvement_over_pair": 0.030589760907731394
+      },
+      "dlinear_hurdle_ztnb": {
+        "simplex_oracle": 0.9194859462991818,
+        "improvement_over_pair": 0.03072156095019724
+      },
+      "croston": {
+        "simplex_oracle": 0.8992965314967811,
+        "improvement_over_pair": 0.052004283697361986
+      },
+      "sba": {
+        "simplex_oracle": 0.9022944688561045,
+        "improvement_over_pair": 0.048844000437232
+      },
+      "ses": {
+        "simplex_oracle": 0.9141967696816109,
+        "improvement_over_pair": 0.036297159877371823
+      },
+      "tsb": {
+        "simplex_oracle": 0.9143279975988332,
+        "improvement_over_pair": 0.036158825636074345
+      },
+      "seasonal_naive": {
+        "simplex_oracle": 0.9191379356248618,
+        "improvement_over_pair": 0.031088417283929394
+      },
+      "_pair_simplex_oracle": 0.9486293197655018,
+      "_best_third": "croston",
+      "_best_improvement": 0.052004283697361986
+    },
+    "favorita": {
+      "dlinear_point": {
+        "simplex_oracle": 2.2745662762152663,
+        "improvement_over_pair": 0.008825509529095495
+      },
+      "dlinear_hurdle": {
+        "simplex_oracle": 2.2615146254914134,
+        "improvement_over_pair": 0.014512951302629837
+      },
+      "dlinear_hurdle_ztnb": {
+        "simplex_oracle": 2.24638330318511,
+        "improvement_over_pair": 0.021106639441740238
+      },
+      "croston": {
+        "simplex_oracle": 2.2363464810493165,
+        "improvement_over_pair": 0.025480326931271457
+      },
+      "sba": {
+        "simplex_oracle": 2.239513632087109,
+        "improvement_over_pair": 0.024100195981052796
+      },
+      "ses": {
+        "simplex_oracle": 2.244913104925892,
+        "improvement_over_pair": 0.021747299169139596
+      },
+      "tsb": {
+        "simplex_oracle": 2.2463107104276276,
+        "improvement_over_pair": 0.02113827276461238
+      },
+      "seasonal_naive": {
+        "simplex_oracle": 2.2356990825809544,
+        "improvement_over_pair": 0.02576243998892138
+      },
+      "_pair_simplex_oracle": 2.294819225154418,
+      "_best_third": "seasonal_naive",
+      "_best_improvement": 0.02576243998892138
+    }
+  },
+  "triple_min_increment": 0.01,
+  "use_triple": false,
+  "expert_pool": [
+    "dlinear_point",
+    "dlinear_hurdle",
+    "dlinear_point_plain",
+    "dlinear_hurdle_ztnb",
+    "croston",
+    "sba",
+    "ses",
+    "tsb",
+    "seasonal_naive",
+    "naive"
+  ],
+  "oof_manifest_sha256": "0fc5d218711aa896dec6830dfd29330171a369e40937f35dc738697f5ddf1a9b",
+  "gate_reused_from": "results\\structure_gate\\gate_spec.json",
+  "git_commit": "03d88670af95c88f90b590a999a427453f0319fc"
+}
