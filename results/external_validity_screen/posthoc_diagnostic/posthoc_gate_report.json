@@ -1,0 +1,59 @@
+{
+  "gates": {
+    "G1_artifact_integrity": {
+      "status": "PASS",
+      "evidence": "sha256 of all four Stage A json/csv identical before and after (stage_a_unmodified=True)"
+    },
+    "G2_no_retraining": {
+      "status": "PASS",
+      "evidence": "0 checkpoints and 0 predictions created; only deterministic data transforms (train_scale, descriptors) were recomputed"
+    },
+    "G3_h1_metric_integrity": {
+      "status": "PASS",
+      "evidence": "raw delta remains the primary; relative and scaled are reported alongside and tagged POSTHOC_DIAGNOSTIC"
+    },
+    "G4_no_test_leakage": {
+      "status": "PASS",
+      "evidence": "train_scale, ADI, CV2, rho descriptors and p_const are all computed on y[:, :train_end]; H2 assignment uses train descriptors with Stage A's frozen cutoffs; test y enters only as the outcome"
+    },
+    "G5_statistical_unit": {
+      "status": "PASS",
+      "evidence": "every CI resamples series indices, 2000 draws, seed 20260807"
+    },
+    "G6_h3_honesty": {
+      "status": "PASS",
+      "evidence": "Stage A's H3 reversal is retained unchanged; support was judged separately and the synthetic-band comparison is tagged POSTHOC_SENSITIVITY"
+    },
+    "G7_gate_interpretation": {
+      "status": "PASS",
+      "evidence": "the constant train-prevalence baseline was computed before any statement about gate strength; the diagnostic confirms and sharpens the Stage A observation rather than assuming it"
+    },
+    "G8_h2_freeze": {
+      "status": "PASS",
+      "evidence": "Stage A's numeric cutoffs were recovered deterministically from per_series_metrics.csv and applied unchanged to the full pool; no quantile was recomputed on the larger pool"
+    }
+  },
+  "warnings": [
+    "WARN_FAVORITA_FULL_POOL_NOT_MATERIALISED: the Favorita 'full pool' figure uses the already-subsampled 1,200-series parquet. prepare_favorita metadata records 56,918 eligible series, but their rho descriptors would require materialising the raw Favorita grid, which this task's no-new-pipeline scope does not cover. The Favorita H2_EXPANSION_LOW_YIELD verdict is therefore a floor, not the true yield.",
+    "ROC-AUC, PR-AUC and the Hurdle log loss are UNAVAILABLE: Stage A persisted per-series aggregates only, and regenerating per-observation p_hat needs retraining.",
+    "H1 adjusted coefficient CI includes zero in both datasets (exploratory linear model; the rank-based primary is unaffected).",
+    "POSTHOC_SENSITIVITY: inside the synthetic-corresponding ADI bands the H1 correlation is ~0 in both datasets (M5 -0.008 at ADI>=8 vs -0.005 at ADI 3-5; Favorita -0.041 vs -0.040), so H1's positive signal comes from the near-dense series, not the intermittent range the synthetic study modelled.",
+    "n at ADI>=8 is thin (M5 52, Favorita 45); the synthetic-band comparison is noisy."
+  ],
+  "verdict": "RECOMMEND_STAGE_B_H1",
+  "verdict_basis": [
+    "G1-G8 all PASS",
+    "raw H1 > 0 in both datasets",
+    "relative H1 > 0 in both",
+    "scaled H1 > 0 in both",
+    "no sign reversal in any of the six"
+  ],
+  "commands": [
+    "python -m experiments.external_validity_screen.posthoc"
+  ],
+  "artifacts": [
+    "h3_synthetic_like_sensitivity.json",
+    "posthoc_diagnostic.json",
+    "posthoc_diagnostic_spec.json"
+  ]
+}

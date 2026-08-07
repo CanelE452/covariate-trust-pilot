@@ -1,0 +1,25 @@
+{
+  "purpose": "post-hoc diagnostics for Stage A; no retraining, no prediction, no primary replacement",
+  "tag_on_every_new_metric": "POSTHOC_DIAGNOSTIC",
+  "relative_floor": 1e-06,
+  "synthetic_low_band": [
+    3.0,
+    5.0
+  ],
+  "synthetic_high_band": 8.0,
+  "bootstrap": {
+    "unit": "series",
+    "draws": 2000,
+    "seed": 20260807
+  },
+  "prohibitions_honoured": [
+    "no retraining",
+    "no new predictions",
+    "pre_analysis_spec untouched",
+    "stage_a artifacts untouched (sha256 before == after)",
+    "H1/H2/H3 definitions and cutoffs unchanged",
+    "raw delta remains primary",
+    "test prevalence never used for the constant baseline",
+    "no new quantile cutoff computed on the full pool"
+  ]
+}

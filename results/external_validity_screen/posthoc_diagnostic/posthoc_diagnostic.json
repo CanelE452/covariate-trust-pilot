@@ -1,0 +1,450 @@
+{
+  "stage_a_integrity_before": {
+    "gate_report.json": {
+      "sha256": "6942e81f3cee2452d9d1473bbaac78b2c7295058d70c81bdbec70bd95d18c94e",
+      "bytes": 4607
+    },
+    "per_series_metrics.csv": {
+      "sha256": "ff8252e867af18a9243e88876bd7fdd1723184c08b7139541d7032614ac6247b",
+      "bytes": 905746
+    },
+    "pre_analysis_spec.json": {
+      "sha256": "4e2d7bcb63e1fc0775a68c43dff4b9d10a1cdff3afe7a2a0df72cbb2cde54a84",
+      "bytes": 4921
+    },
+    "stage_a_results.json": {
+      "sha256": "071c5836b1aae19ce5c510aa6267ccdd0f3321ab6dd059980901d952696ad249",
+      "bytes": 13453
+    }
+  },
+  "threshold": 20,
+  "datasets": {
+    "m5": {
+      "n_pool": 1200,
+      "h1_scale_robustness": {
+        "n": 1200,
+        "n_excluded_from_relative": 0,
+        "relative_exclusion_reason": "RMSE_Point <= 1e-06; excluded rather than epsilon-padded",
+        "raw": {
+          "spearman": 0.10645816734905524,
+          "ci": [
+            0.04371982918286347,
+            0.16530138681619416
+          ],
+          "n_finite": 1200,
+          "sign": "positive"
+        },
+        "relative": {
+          "spearman": 0.12308621758151522,
+          "ci": [
+            0.06970650840419389,
+            0.17754115832836406
+          ],
+          "n_finite": 1200,
+          "sign": "positive"
+        },
+        "scaled": {
+          "spearman": 0.09661666369643886,
+          "ci": [
+            0.03904670735184218,
+            0.15356829546552342
+          ],
+          "n_finite": 1200,
+          "sign": "positive"
+        }
+      },
+      "h1_confound": {
+        "n": 1200,
+        "pairwise_spearman": {
+          "abs_rho_interval": {
+            "abs_rho_interval": 1.0,
+            "log_ADI": 0.1705,
+            "CV2_positive": -0.0186,
+            "log_scale": -0.1943,
+            "zero_ratio": 0.1705
+          },
+          "log_ADI": {
+            "abs_rho_interval": 0.1705,
+            "log_ADI": 1.0,
+            "CV2_positive": -0.0521,
+            "log_scale": -0.8645,
+            "zero_ratio": 1.0
+          },
+          "CV2_positive": {
+            "abs_rho_interval": -0.0186,
+            "log_ADI": -0.0521,
+            "CV2_positive": 1.0,
+            "log_scale": 0.1795,
+            "zero_ratio": -0.0521
+          },
+          "log_scale": {
+            "abs_rho_interval": -0.1943,
+            "log_ADI": -0.8645,
+            "CV2_positive": 0.1795,
+            "log_scale": 1.0,
+            "zero_ratio": -0.8645
+          },
+          "zero_ratio": {
+            "abs_rho_interval": 0.1705,
+            "log_ADI": 1.0,
+            "CV2_positive": -0.0521,
+            "log_scale": -0.8645,
+            "zero_ratio": 1.0
+          }
+        },
+        "coefficients": {
+          "abs_rho_interval": {
+            "coefficient": 0.3407259176147082,
+            "standardized": 0.03167509746872119,
+            "ci": [
+              -0.02112180183711536,
+              0.7626821184234603
+            ]
+          },
+          "log_ADI": {
+            "coefficient": 0.07212332723776534,
+            "standardized": 0.04740293115192617,
+            "ci": [
+              0.015654177134608333,
+              0.1371471943976203
+            ]
+          },
+          "CV2_positive": {
+            "coefficient": 0.028301378085254035,
+            "standardized": 0.014902576581439356,
+            "ci": [
+              -0.010480913250049809,
+              0.17750680664913282
+            ]
+          },
+          "log_scale": {
+            "coefficient": 0.036799852930502315,
+            "standardized": 0.03409336476058785,
+            "ci": [
+              -0.05377073440058774,
+              0.12909980592803166
+            ]
+          }
+        },
+        "design_condition_number": 2.331928803898962,
+        "unstable": false,
+        "tag": "POSTHOC_DIAGNOSTIC / exploratory; not an H1 primary test"
+      },
+      "h3_adi_support": {
+        "quantiles": {
+          "p0": 1.001642935377875,
+          "p10": 1.088690476190476,
+          "p25": 1.178645594001271,
+          "p50": 1.3036350677120456,
+          "p75": 2.395484293193717,
+          "p90": 4.931026602601666,
+          "p95": 7.071134327765301,
+          "p100": 32.410714285714285
+        },
+        "n_ge_4": 171,
+        "n_ge_6": 91,
+        "n_ge_8": 52,
+        "LOW_SYNTHETIC_LIKE_3_to_5": 127,
+        "HIGH_SYNTHETIC_LIKE_ge_8": 52,
+        "verdict": "H3_EXTERNAL_SUPPORT_AVAILABLE",
+        "note": "descriptive support check only; these groups are not a new hypothesis and do not replace H3"
+      },
+      "occurrence_gate_skill": {
+        "p_const_definition": "mean(z) over the train split, per series",
+        "mean_p_const_train": 0.5889816880226135,
+        "mean_test_positive_rate": 0.6619741916656494,
+        "brier_constant": 0.1801738291978836,
+        "brier_hurdle": 0.18169521675424966,
+        "brier_skill_score_pooled": -0.0084439985714857,
+        "brier_skill_score_ci": [
+          -0.04112106754651746,
+          0.02414611928093613
+        ],
+        "median_per_series_bss": -0.08977252883183817,
+        "pct_series_bss_positive": 36.833333333333336,
+        "logloss_constant": 0.5454216003417969,
+        "logloss_hurdle": null,
+        "roc_auc": null,
+        "pr_auc": null,
+        "unavailable_reason": "Stage A stored per-series aggregates only; ROC-AUC, PR-AUC and the Hurdle log loss need per-observation p_hat, and regenerating it would require retraining, which this task forbids",
+        "mean_p_hat_on_zero": 0.5615385780098504,
+        "mean_p_hat_on_positive": 0.6318000582202487,
+        "discrimination_gap": 0.07026148021039824,
+        "verdict": "OCCURRENCE_GATE_WEAK_SKILL",
+        "aggregation": "Brier averaged over series after averaging within a series; the pooled BSS uses the ratio of those means"
+      },
+      "frozen_cutoffs_recovered": {
+        "HIGH_ADI_min": 1.3036350677120456,
+        "LOW_OCC_max": 0.0074430844292528,
+        "MAG_PERSISTENT_min": 0.290998278399666,
+        "recovered_from": "reports/external_validity_screen/per_series_metrics.csv",
+        "recomputed_on_full_pool": false
+      },
+      "h2_full_pool": {
+        "total_series_in_source": 30490,
+        "descriptor_eligible": 30406,
+        "point_candidate": 714,
+        "control": 5142,
+        "candidate_descriptors": {
+          "ADI_train": {
+            "median": 1.6367277612450866,
+            "p25": 1.4278854947869033,
+            "p75": 2.065873015873016
+          },
+          "rho_interval_abs_train": {
+            "median": 0.0029803641551065896,
+            "p25": 0.001705290137983534,
+            "p75": 0.00455548578098954
+          },
+          "rho_magnitude_train": {
+            "median": 0.4144156177137672,
+            "p25": 0.34670953792185616,
+            "p75": 0.5021109093583934
+          }
+        },
+        "control_descriptors": {
+          "ADI_train": {
+            "median": 2.43218085106383,
+            "p25": 1.79339657721528,
+            "p75": 3.8257357835678967
+          },
+          "rho_interval_abs_train": {
+            "median": 0.0035156864151870723,
+            "p25": 0.001814565727496787,
+            "p75": 0.00534139443192448
+          },
+          "rho_magnitude_train": {
+            "median": 0.041570479225006625,
+            "p25": -0.005497243750981703,
+            "p75": 0.10815030014538508
+          }
+        },
+        "verdict": "H2_EXPANSION_HIGH_VALUE",
+        "note": "operational thresholds for sizing the next run, not a scientific cutoff; no test metric was computed here"
+      }
+    },
+    "favorita": {
+      "n_pool": 1195,
+      "h1_scale_robustness": {
+        "n": 1195,
+        "n_excluded_from_relative": 0,
+        "relative_exclusion_reason": "RMSE_Point <= 1e-06; excluded rather than epsilon-padded",
+        "raw": {
+          "spearman": 0.07891335260963367,
+          "ci": [
+            0.020421892623821936,
+            0.14045375974914479
+          ],
+          "n_finite": 1195,
+          "sign": "positive"
+        },
+        "relative": {
+          "spearman": 0.11782415597915766,
+          "ci": [
+            0.06026629517626878,
+            0.1726648533457624
+          ],
+          "n_finite": 1195,
+          "sign": "positive"
+        },
+        "scaled": {
+          "spearman": 0.09280692529777612,
+          "ci": [
+            0.038744893621284485,
+            0.14733893596126632
+          ],
+          "n_finite": 1195,
+          "sign": "positive"
+        }
+      },
+      "h1_confound": {
+        "n": 1195,
+        "pairwise_spearman": {
+          "abs_rho_interval": {
+            "abs_rho_interval": 1.0,
+            "log_ADI": 0.2011,
+            "CV2_positive": 0.0629,
+            "log_scale": -0.2136,
+            "zero_ratio": 0.2011
+          },
+          "log_ADI": {
+            "abs_rho_interval": 0.2011,
+            "log_ADI": 1.0,
+            "CV2_positive": 0.0441,
+            "log_scale": -0.8941,
+            "zero_ratio": 1.0
+          },
+          "CV2_positive": {
+            "abs_rho_interval": 0.0629,
+            "log_ADI": 0.0441,
+            "CV2_positive": 1.0,
+            "log_scale": 0.0602,
+            "zero_ratio": 0.0441
+          },
+          "log_scale": {
+            "abs_rho_interval": -0.2136,
+            "log_ADI": -0.8941,
+            "CV2_positive": 0.0602,
+            "log_scale": 1.0,
+            "zero_ratio": -0.8941
+          },
+          "zero_ratio": {
+            "abs_rho_interval": 0.2011,
+            "log_ADI": 1.0,
+            "CV2_positive": 0.0441,
+            "log_scale": -0.8941,
+            "zero_ratio": 1.0
+          }
+        },
+        "coefficients": {
+          "abs_rho_interval": {
+            "coefficient": 0.22478629423519356,
+            "standardized": 0.016750746101480835,
+            "ci": [
+              -0.3507346815700038,
+              0.9050089474670254
+            ]
+          },
+          "log_ADI": {
+            "coefficient": -0.10717352969747945,
+            "standardized": -0.06915080718004894,
+            "ci": [
+              -0.32012608586295976,
+              0.053007832590750814
+            ]
+          },
+          "CV2_positive": {
+            "coefficient": 0.015180639799248115,
+            "standardized": 0.05742088060405909,
+            "ci": [
+              -0.0007844975508036253,
+              0.043261099405080945
+            ]
+          },
+          "log_scale": {
+            "coefficient": -0.2117137847393849,
+            "standardized": -0.20692867631095932,
+            "ci": [
+              -0.4598128826919496,
+              -0.008599692177213281
+            ]
+          }
+        },
+        "design_condition_number": 2.126098748109663,
+        "unstable": false,
+        "tag": "POSTHOC_DIAGNOSTIC / exploratory; not an H1 primary test"
+      },
+      "h3_adi_support": {
+        "quantiles": {
+          "p0": 1.005743458838545,
+          "p10": 1.0426039729812067,
+          "p25": 1.1106412966878083,
+          "p50": 1.316624895572264,
+          "p75": 1.9149481491980251,
+          "p90": 3.9620832546130202,
+          "p95": 6.244139646945811,
+          "p100": 75.04761904761905
+        },
+        "n_ge_4": 119,
+        "n_ge_6": 63,
+        "n_ge_8": 45,
+        "LOW_SYNTHETIC_LIKE_3_to_5": 84,
+        "HIGH_SYNTHETIC_LIKE_ge_8": 45,
+        "verdict": "H3_EXTERNAL_SUPPORT_AVAILABLE",
+        "note": "descriptive support check only; these groups are not a new hypothesis and do not replace H3"
+      },
+      "occurrence_gate_skill": {
+        "p_const_definition": "mean(z) over the train split, per series",
+        "mean_p_const_train": 0.6823296546936035,
+        "mean_test_positive_rate": 0.6557581424713135,
+        "brier_constant": 0.16398152709007263,
+        "brier_hurdle": 0.17886820375977341,
+        "brier_skill_score_pooled": -0.09078264444704032,
+        "brier_skill_score_ci": [
+          -0.1400787827245614,
+          -0.043805290644429895
+        ],
+        "median_per_series_bss": -0.13806398598624225,
+        "pct_series_bss_positive": 30.794979079497907,
+        "logloss_constant": 0.4972526431083679,
+        "logloss_hurdle": null,
+        "roc_auc": null,
+        "pr_auc": null,
+        "unavailable_reason": "Stage A stored per-series aggregates only; ROC-AUC, PR-AUC and the Hurdle log loss need per-observation p_hat, and regenerating it would require retraining, which this task forbids",
+        "mean_p_hat_on_zero": 0.5267162465651802,
+        "mean_p_hat_on_positive": 0.5791998364011229,
+        "discrimination_gap": 0.0524835898359427,
+        "verdict": "OCCURRENCE_GATE_WORSE_THAN_CONSTANT",
+        "aggregation": "Brier averaged over series after averaging within a series; the pooled BSS uses the ratio of those means"
+      },
+      "frozen_cutoffs_recovered": {
+        "HIGH_ADI_min": 1.316624895572264,
+        "LOW_OCC_max": 0.0087894717331533,
+        "MAG_PERSISTENT_min": 0.2276180883263491,
+        "recovered_from": "reports/external_validity_screen/per_series_metrics.csv",
+        "recomputed_on_full_pool": false
+      },
+      "h2_full_pool": {
+        "total_series_in_source": 1200,
+        "descriptor_eligible": 1195,
+        "point_candidate": 35,
+        "control": 115,
+        "candidate_descriptors": {
+          "ADI_train": {
+            "median": 1.5887096774193548,
+            "p25": 1.4452332298998463,
+            "p75": 1.9556992525191874
+          },
+          "rho_interval_abs_train": {
+            "median": 0.00368121698662899,
+            "p25": 0.0013840995416078768,
+            "p75": 0.006334412564608569
+          },
+          "rho_magnitude_train": {
+            "median": 0.3375920192872875,
+            "p25": 0.27042660532429363,
+            "p75": 0.3951230488667671
+          }
+        },
+        "control_descriptors": {
+          "ADI_train": {
+            "median": 1.809414466130884,
+            "p25": 1.4791441683476179,
+            "p75": 3.0667166388412515
+          },
+          "rho_interval_abs_train": {
+            "median": 0.004305685986143854,
+            "p25": 0.002385824104811853,
+            "p75": 0.006182941195722678
+          },
+          "rho_magnitude_train": {
+            "median": 0.07998972679036254,
+            "p25": 0.020621430438015224,
+            "p75": 0.1310515398019865
+          }
+        },
+        "verdict": "H2_EXPANSION_LOW_YIELD",
+        "note": "operational thresholds for sizing the next run, not a scientific cutoff; no test metric was computed here"
+      }
+    }
+  },
+  "stage_a_integrity_after": {
+    "gate_report.json": {
+      "sha256": "6942e81f3cee2452d9d1473bbaac78b2c7295058d70c81bdbec70bd95d18c94e",
+      "bytes": 4607
+    },
+    "per_series_metrics.csv": {
+      "sha256": "ff8252e867af18a9243e88876bd7fdd1723184c08b7139541d7032614ac6247b",
+      "bytes": 905746
+    },
+    "pre_analysis_spec.json": {
+      "sha256": "4e2d7bcb63e1fc0775a68c43dff4b9d10a1cdff3afe7a2a0df72cbb2cde54a84",
+      "bytes": 4921
+    },
+    "stage_a_results.json": {
+      "sha256": "071c5836b1aae19ce5c510aa6267ccdd0f3321ab6dd059980901d952696ad249",
+      "bytes": 13453
+    }
+  },
+  "stage_a_unmodified": true
+}

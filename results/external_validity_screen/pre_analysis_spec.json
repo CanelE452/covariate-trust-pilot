@@ -1,0 +1,116 @@
+{
+  "estimand": {
+    "definition": "delta_rmse_i = RMSE_Point,i - RMSE_Hurdle,i",
+    "target": "realized y on the test window",
+    "sign": "delta > 0 favours Hurdle, delta < 0 favours Point",
+    "not_comparable_with": "synthetic rmse_mean_truth (oracle-based); compare direction only, never magnitude or effect size"
+  },
+  "hypotheses": {
+    "H1": {
+      "statement": "stronger inter-arrival dependence moves the comparison towards Hurdle",
+      "test": "Spearman(abs(rho_interval_train), delta_rmse_test)",
+      "predicted_direction": "> 0"
+    },
+    "H2": {
+      "statement": "high sparsity + weak occurrence signal + persistent positive magnitude moves the comparison towards Point",
+      "test": "mean(delta | POINT_CANDIDATE) < mean(delta | CONTROL); stronger replication if mean(delta | POINT_CANDIDATE) < 0",
+      "predicted_direction": "< 0 relative to control"
+    },
+    "H3": {
+      "statement": "the occurrence-dependence effect is stronger in sparser series",
+      "test": "Spearman(abs(rho_interval), delta) computed inside HIGH_ADI versus inside LOW_ADI",
+      "predicted_direction": "corr_high_ADI > corr_low_ADI"
+    }
+  },
+  "subgroups": {
+    "HIGH_ADI": "ADI_train >= dataset median ADI_train",
+    "LOW_ADI": "ADI_train <  dataset median ADI_train",
+    "LOW_OCC_SIGNAL": "abs(rho_interval_train) <= dataset lower tertile",
+    "MAG_PERSISTENT": "rho_magnitude_train >= dataset upper tertile (signed)",
+    "POINT_CANDIDATE": "HIGH_ADI and LOW_OCC_SIGNAL and MAG_PERSISTENT",
+    "CONTROL": "HIGH_ADI and LOW_OCC_SIGNAL and not MAG_PERSISTENT"
+  },
+  "descriptor_rules": {
+    "window": "train split only, never validation or test",
+    "rho_interval_train": "lag-1 autocorrelation of the inter-arrival gap sequence between consecutive positive events",
+    "rho_magnitude_train": "lag-1 autocorrelation of the positive magnitude sequence in event order, SIGNED",
+    "ADI_train": "segment length / number of positive events",
+    "CV2_positive_train": "(std(positive) / mean(positive)) ** 2, ddof=1",
+    "nan_policy": "NaN correlations stay NaN; they are never filled with zero"
+  },
+  "eligibility": {
+    "primary_threshold": 20,
+    "sensitivity_thresholds": [
+      15,
+      20,
+      30
+    ],
+    "rule": "n_positive_train >= threshold",
+    "note": "operational threshold for a cheap SCREEN, not a scientific cutoff; a sign flip across thresholds is reported as WARN_DESCRIPTOR_INSTABILITY"
+  },
+  "leading_zero_policy": {
+    "m5_primary": "availability_aware",
+    "m5_availability_definition": "first day of the first wm_yr_wk in which sell_prices.csv carries a row for that (store_id, item_id)",
+    "favorita_primary": "raw",
+    "favorita_reason": "prepare_favorita.py already restricts the pool to series whose first activity is within 90 days, so pre-introduction padding is bounded by construction",
+    "sensitivity_variants": [
+      "raw",
+      "availability_aware",
+      "first_positive"
+    ],
+    "prohibition": "a zero observed while the item was available is real zero demand and is never removed"
+  },
+  "bootstrap": {
+    "unit": "series",
+    "draws": 2000,
+    "seed": 20260807,
+    "note": "time rows are never resampled as if independent"
+  },
+  "models": {
+    "point": "M0PM_point_mse_param_matched",
+    "hurdle": "M1_factorized_mean",
+    "source": "experiments.om_factorization_killtest.train.train_one, imported unchanged from the synthetic study",
+    "canonical_model_seed": 0
+  },
+  "splits": {
+    "m5": {
+      "length": 1941,
+      "train_end": 1829,
+      "val_end": 1857,
+      "horizon": 28,
+      "lookback": 96,
+      "test_origin_stride": 28,
+      "source": "src/rcoi/data/prepare_m5.py rolling origin 1"
+    },
+    "favorita": {
+      "length": 1688,
+      "train_end": 1576,
+      "val_end": 1604,
+      "horizon": 28,
+      "lookback": 96,
+      "test_origin_stride": 28,
+      "source": "src/rcoi/data/prepare_favorita.py rolling origin 1"
+    },
+    "single_origin_note": "a SCREEN uses one pre-fixed origin; a confirmatory run would need every rolling origin",
+    "train_origin_stride": 7,
+    "train_origin_stride_reason": "SCREEN compute budget; a confirmatory run should use dense origins"
+  },
+  "stop_rules": {
+    "mechanism_eligible_min": 100,
+    "point_candidate_min": 30,
+    "on_violation": "report INSUFFICIENT_GROUP_N and draw no conclusion"
+  },
+  "training": {
+    "max_epochs": 30,
+    "patience": 5,
+    "batch_size": 256,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "checkpoint_rule": "validation MSE of the final mean prediction, identical for every DLinear variant",
+    "lambda_factorized": 1.0,
+    "hyperparameter_rule": "no per-cell tuning; one setting for every cell and every model; TSB alpha/beta chosen on a fixed grid using the validation split only"
+  },
+  "git_commit": "03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+  "frozen_before_any_prediction": true
+}

@@ -1,0 +1,23 @@
+{
+  "tag": "POSTHOC_SENSITIVITY \u2014 not a replacement for primary H3",
+  "rows": [
+    {
+      "dataset": "favorita",
+      "median_split_diff": -0.0426766608819044,
+      "synthetic_like_diff": -0.0006817964402520554,
+      "n_high": 45,
+      "n_low": 84,
+      "corr_high_ge8": -0.040877001373164856,
+      "corr_low_3to5": -0.0401952049329128
+    },
+    {
+      "dataset": "m5",
+      "median_split_diff": -0.03056211590390133,
+      "synthetic_like_diff": -0.003132454626365591,
+      "n_high": 52,
+      "n_low": 127,
+      "corr_high_ge8": -0.007854520618116622,
+      "corr_low_3to5": -0.004722065991751031
+    }
+  ]
+}

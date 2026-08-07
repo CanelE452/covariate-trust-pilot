@@ -1,0 +1,99 @@
+{
+  "gates": {
+    "G1_data_validity": {
+      "status": "PASS",
+      "evidence": [
+        "y = daily units sold; 0 NaN and 0 negative in both prepared parquets (asserted in load_dataset)",
+        "M5 pre-availability days are separated from real zero demand via sell_prices.csv; 1200/1200 series matched",
+        "first_positive - first_availability: median 0, p90 5, max 22 days, never negative",
+        "series_id x timestamp pivot is unique and sorted; both datasets are a complete rectangular grid"
+      ]
+    },
+    "G2_no_leakage": {
+      "status": "PASS",
+      "evidence": [
+        "every descriptor is computed on y[start:train_end]; validation and test are never touched",
+        "HIGH_ADI / LOW_OCC_SIGNAL / MAG_PERSISTENT cutoffs are quantiles of train-only descriptors",
+        "test y enters only the per-series RMSE that defines the estimand"
+      ]
+    },
+    "G3_fair_comparison": {
+      "status": "PASS",
+      "evidence": [
+        "Point and Hurdle consume the same Split object: same series, split, windows, scale, availability mask",
+        "same optimizer/lr/weight decay/batch/epoch budget/patience/checkpoint criterion (km prereg.TRAINING)",
+        "same canonical model seed 0; seeding order copied from train_one",
+        "parameter-matched point head (M0PM_point_mse_param_matched)"
+      ]
+    },
+    "G4_descriptor_validity": {
+      "status": "PASS",
+      "evidence": [
+        "primary eligibility n_positive_train >= 20; sensitivity at 15 and 30",
+        "eligible counts barely move (M5 1200/1200/1197, Favorita 1196/1195/1191)",
+        "NaN correlations remain NaN and are dropped pairwise, never zero-filled"
+      ]
+    },
+    "G5_numerical_to_real_mapping": {
+      "status": "PASS",
+      "evidence": [
+        "rho_interval = lag-1 autocorrelation of np.diff(positive event indices) -> the event-gap sequence, matching synthetic rho_I",
+        "rho_magnitude = lag-1 autocorrelation of the positive magnitudes in event order, signed, matching synthetic rho_M"
+      ]
+    },
+    "G6_statistical_unit": {
+      "status": "PASS",
+      "evidence": [
+        "every CI resamples series indices, 2000 draws, seed 20260807",
+        "no time row is treated as an independent unit"
+      ]
+    },
+    "G7_hypothesis_freeze": {
+      "status": "PASS",
+      "evidence": [
+        "pre_analysis_spec.json written 18:06:38, stage_a_results.json written 18:11:16",
+        "freeze refuses to overwrite an existing spec; stage-a refuses to run without one"
+      ]
+    },
+    "G8_repository_regression": {
+      "status": "PASS_NO_NEW_FAILURES",
+      "evidence": [
+        "baseline before the change: 2 failed, 412 passed",
+        "after the change: 2 failed, 412 passed - the same two unified_temporal_27_v3 tests"
+      ],
+      "warn": "WARN_EXISTING_FAILURES: unified_temporal_27_v3 test_loss_comparison_one_sided_prequential_goal{,_v4}"
+    }
+  },
+  "warnings": [
+    "WARN_EXISTING_FAILURES (G8, pre-existing, unrelated to this SCREEN)",
+    "H3 direction NOT reproduced in either dataset (both differences negative)",
+    "H2 difference CI includes zero in both datasets",
+    "Favorita PointCandidate Point-win-rate (0.400) is BELOW its control (0.474), opposite to the H2 story even though the mean difference has the predicted sign",
+    "validation split holds a single origin (28 days = one horizon) in both datasets; early stopping is thin",
+    "SCREEN uses a weekly training origin stride (7) and one test origin set; a confirmatory run needs dense origins and all rolling origins"
+  ],
+  "not_triggered": [
+    "WARN_DESCRIPTOR_INSTABILITY not raised: H1/H2/H3 signs identical at thresholds 15/20/30",
+    "WARN_LEADING_ZERO_SENSITIVITY not raised: H1/H2/H3 signs identical across raw / availability_aware / first_positive"
+  ],
+  "verdict": "GREEN by the preregistered criteria; H3 is a separate negative finding not covered by them",
+  "commands": [
+    "python -m experiments.external_validity_screen.cli freeze",
+    "python -m experiments.external_validity_screen.cli stage-a",
+    "python -m experiments.external_validity_screen.figures"
+  ],
+  "artifacts": [
+    "figA_H1_rho_interval_vs_delta.pdf",
+    "figA_H1_rho_interval_vs_delta.png",
+    "figA_H1_rho_interval_vs_delta.svg",
+    "figB_H2_point_candidate_vs_control.pdf",
+    "figB_H2_point_candidate_vs_control.png",
+    "figB_H2_point_candidate_vs_control.svg",
+    "figC_H3_sparsity_interaction.pdf",
+    "figC_H3_sparsity_interaction.png",
+    "figC_H3_sparsity_interaction.svg",
+    "per_series_metrics.csv",
+    "pre_analysis_spec.json",
+    "stage_a_results.json"
+  ]
+}
