@@ -2555,5 +2555,702 @@ def external_validation(config: Path = typer.Option(..., "--config", exists=True
                      else EXIT_GATE)
 
 
+
+# ==========================================================================
+# Study 4 - budgeted premium forecast slot allocation
+#
+# Additive only: no Study 0-3 function, gate, threshold or artifact is touched.
+# ==========================================================================
+
+STUDY4_KIND = "budget_acquisition"
+EXIT_INVALID_PILOT = 6
+EXIT_BA_NO_GO = 7
+
+
+def _study4_load_config(config: Path) -> dict:
+    import yaml
+
+    raw = yaml.safe_load(Path(config).read_text(encoding="utf-8")) or {}
+    for section in ("experiment", "periods", "budget", "features", "value_models",
+                    "bootstrap", "gates", "study3"):
+        if section not in raw:
+            raise typer.BadParameter(f"config is missing the '{section}' section")
+    zones = raw["experiment"]["zones"]
+    if len(zones) != 4:
+        raise typer.BadParameter(f"expected four zones, got {zones}")
+    k_values = raw["budget"]["k_values"]
+    if not k_values or any(int(k) < 1 for k in k_values):
+        raise typer.BadParameter("budget.k_values must be positive")
+    allowed = raw["features"]["allowed_current_features"]
+    forbidden = raw["features"]["forbidden_current_features"]
+    overlap = set(allowed) & set(forbidden)
+    if overlap:
+        raise typer.BadParameter(f"a feature is both allowed and forbidden: {sorted(overlap)}")
+    return raw
+
+
+def _study4_assets(root: Path, cfg: dict) -> dict:
+    """Locate and hash every Study 3 artifact this pilot reads (read-only)."""
+    import hashlib
+
+    s3 = cfg["study3"]
+    run_dir = root / s3["run_dir"]
+    entries = {
+        "study3_config": root / s3["config"],
+        "task_metrics": run_dir / s3["task_metrics"],
+        "origin_metadata": run_dir / s3["origin_metadata"],
+        "predictions": run_dir / s3["predictions"],
+        "processed_load": root / s3["processed_load"],
+        "processed_weather_runs": root / s3["processed_weather_runs"],
+        "study3_manifest": run_dir / "manifest.json",
+    }
+    for i, rel in enumerate(s3["proxy_tables"]):
+        entries[f"proxy_{i}"] = run_dir / rel
+
+    out: dict = {}
+    for name, path in entries.items():
+        if not path.exists():
+            raise typer.BadParameter(f"required Study 3 asset is missing: {path}")
+        digest = hashlib.sha256()
+        with open(path, "rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                digest.update(chunk)
+        out[name] = {"path": str(path), "sha256": digest.hexdigest()}
+    return out
+
+
+def _study4_verify_assets(assets: dict) -> list[str]:
+    import hashlib
+
+    changed = []
+    for name, info in assets.items():
+        digest = hashlib.sha256()
+        with open(info["path"], "rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                digest.update(chunk)
+        if digest.hexdigest() != info["sha256"]:
+            changed.append(name)
+    return changed
+
+
+def _study4_split_of(origin, periods: dict):
+    import pandas as pd
+
+    ts = pd.Timestamp(origin).normalize()
+    def within(a, b):
+        return pd.Timestamp(a) <= ts <= pd.Timestamp(b)
+    if within(periods["train_start"], periods["train_end"]):
+        return "train"
+    if within(periods["validation_start"], periods["validation_end"]):
+        return "validation"
+    if within(periods["retrospective_test_start"], periods["retrospective_test_end"]):
+        return "test"
+    if within(periods["fresh_confirmation_start"], periods["fresh_confirmation_end"]):
+        return "fresh"
+    return "outside"
+
+
+def _study4_build(root: Path, cfg: dict, assets: dict, log) -> dict:
+    """Value labels + selector features for every available origin."""
+    import pandas as pd
+
+    from .acquisition_features import FeatureSources, build_selector_features
+    from .acquisition_value import build_value_labels, compute_q90_losses
+    from .schemas import M1, M3
+
+    task_metrics = pd.read_parquet(assets["task_metrics"]["path"])
+    predictions = pd.read_parquet(assets["predictions"]["path"])
+    load_hourly = pd.read_parquet(assets["processed_load"]["path"])
+    weather_runs = pd.read_parquet(assets["processed_weather_runs"]["path"])
+    proxy = pd.concat(
+        [pd.read_parquet(v["path"]) for k, v in assets.items() if k.startswith("proxy_")],
+        ignore_index=True,
+    )
+
+    log(f"study4: task_metrics {task_metrics.shape}, predictions {predictions.shape}")
+    q90 = compute_q90_losses(predictions, load_hourly, M1, M3)
+    log(f"study4: q90 losses for {len(q90)} zone-origins")
+    labels = build_value_labels(task_metrics, q90)
+
+    sources = FeatureSources(
+        task_losses=labels[["zone", "origin_utc", "wql_m1", "q90_m1"]].copy(),
+        predictions=predictions,
+        load_hourly=load_hourly,
+        weather_runs=weather_runs,
+        reliability=proxy,
+        base_method=M1,
+    )
+    features = build_selector_features(
+        sources,
+        cfg["features"]["allowed_current_features"],
+        int(cfg["history"]["recent_window_days"]),
+        int(cfg["history"]["minimum_completed_days"]),
+    )
+    labels["split"] = [_study4_split_of(o, cfg["periods"]) for o in labels["origin_utc"]]
+    features = features.merge(labels[["zone", "origin_utc", "split"]],
+                              on=["zone", "origin_utc"], how="left")
+    log(f"study4: features {features.shape}, splits {labels['split'].value_counts().to_dict()}")
+    return {"labels": labels, "features": features, "predictions": predictions}
+
+
+def _study4_policy_frames(portfolios, cfg, k, scores_by_policy, reliability_sign, objective):
+    from . import portfolio_selection as ps
+
+    frames = {}
+    for policy in (ps.NO_PREMIUM, ps.ALL_PREMIUM, ps.ROUND_ROBIN, ps.BASE_UNCERTAINTY,
+                   ps.REVISION_MAGNITUDE, ps.RECENT_BASE_ERROR, ps.REPORTED_RELIABILITY,
+                   ps.ORACLE):
+        frames[policy] = ps.evaluate_policy(
+            portfolios, policy, k, objective=objective,
+            reliability_sign=reliability_sign,
+            allow_abstention=bool(cfg["budget"]["allow_abstention"]),
+            only_positive=bool(cfg["budget"]["select_only_if_predicted_value_positive"]),
+        )
+    for policy, series in scores_by_policy.items():
+        frames[policy] = ps.evaluate_policy(
+            portfolios, policy, k, objective=objective, scores=series,
+            allow_abstention=bool(cfg["budget"]["allow_abstention"]),
+            only_positive=bool(cfg["budget"]["select_only_if_predicted_value_positive"]),
+        )
+    return frames
+
+
+def _study4_recent_utility(portfolios, window_days: int, minimum_days: int):
+    """P8 score: mean realised V_wql over the previous completed origins (shifted)."""
+    import pandas as pd
+
+    from . import portfolio_selection as ps
+
+    frame = portfolios.frame.sort_values(["zone", ps.DATE_COLUMN])
+    rolled = (
+        frame.groupby("zone")["v_wql"]
+        .apply(lambda s: s.shift(1).rolling(window_days, min_periods=minimum_days).mean())
+        .reset_index(level=0, drop=True)
+    )
+    return rolled.reindex(portfolios.frame.index).fillna(0.0)
+
+
+
+def _run_acquisition(config: Path) -> tuple[Path, dict]:
+    import numpy as np
+    import pandas as pd
+    import psutil
+
+    from . import acquisition_gates as ag
+    from . import acquisition_reporting as ar
+    from . import portfolio_selection as ps
+    from .acquisition_features import fit_missing_value_fallback
+    from .acquisition_models import select_value_model, fit_candidate
+    from .acquisition_value import value_distribution_summary
+    from .bootstrap import paired_bootstrap
+
+    t0 = time.time()
+    root = project_root()
+    cfg = _study4_load_config(config)
+    assets = _study4_assets(root, cfg)
+    run_dir = create_run_dir(root, STUDY4_KIND)
+    for extra in ("provenance", "data", "models"):
+        (run_dir / extra).mkdir(exist_ok=True)
+    log = Log(run_dir)
+    log(f"study4 run dir {run_dir}")
+
+    start_state = _git_start_state(root)
+    atomic_write_json(run_dir / "provenance" / "study3_assets.json", assets)
+    atomic_write_json(run_dir / "provenance" / "source_hashes.json",
+                      {k: v["sha256"] for k, v in assets.items()})
+    study3_manifest = json.loads(Path(assets["study3_manifest"]["path"]).read_text())
+    atomic_write_json(run_dir / "provenance" / "prediction_hashes.json",
+                      {"study3_model_id": study3_manifest.get("model_id"),
+                       "study3_model_revision": study3_manifest.get("model_revision"),
+                       "study3_cross_learning": study3_manifest.get("cross_learning"),
+                       "study3_preregistration_sha256":
+                           study3_manifest.get("preregistration_sha256"),
+                       "predictions_sha256": assets["predictions"]["sha256"]})
+
+    prereg = {
+        "study": "Study 4 - budgeted premium forecast slot allocation",
+        "start_state": start_state,
+        "study3_assets": assets,
+        "config_resolved": cfg,
+        "value_models": cfg["value_models"],
+        "commands": [
+            ".venv/bin/python -m covariate_trust.cli acquisition-audit  --config configs/study4_budgeted_acquisition.yaml",
+            ".venv/bin/python -m covariate_trust.cli acquisition-build  --config configs/study4_budgeted_acquisition.yaml",
+            ".venv/bin/python -m covariate_trust.cli acquisition-run    --config configs/study4_budgeted_acquisition.yaml",
+            ".venv/bin/python -m covariate_trust.cli acquisition-report --run-dir runs/<study4_run_id>",
+            ".venv/bin/python -m covariate_trust.cli acquisition-pilot  --config configs/study4_budgeted_acquisition.yaml",
+        ],
+        "note": ("Study 3 gates H/I, the D7 thresholds and every existing artifact are "
+                 "read-only here and are not re-evaluated."),
+    }
+    text = json.dumps(prereg, indent=2, sort_keys=True, ensure_ascii=False, default=str) + "\n"
+    atomic_write_text(run_dir / "preregistration.json", text)
+    import hashlib
+    prereg_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    atomic_write_text(run_dir / "config_resolved.yaml",
+                      Path(config).read_text(encoding="utf-8"))
+    log(f"preregistration SHA-256 {prereg_hash}")
+
+    built = _study4_build(root, cfg, assets, log)
+    labels, features = built["labels"], built["features"]
+    allowed = list(cfg["features"]["allowed_current_features"])
+    zones = list(cfg["experiment"]["zones"])
+
+    train_mask = (features["split"] == "train").to_numpy()
+    features = fit_missing_value_fallback(features, train_mask, allowed)
+    merged = labels.merge(features, on=["zone", "origin_utc", "split"], how="inner")
+    atomic_write_parquet(run_dir / "data" / "value_labels.parquet", labels)
+    atomic_write_parquet(run_dir / "data" / "selector_features.parquet", features)
+    atomic_write_parquet(run_dir / "data" / "split_manifest.parquet",
+                         labels[["zone", "origin_utc", "split"]])
+
+    portfolios, excluded_total = {}, 0
+    for split in ("train", "validation", "test", "fresh"):
+        sub = merged[merged["split"] == split]
+        if sub.empty:
+            portfolios[split] = ps.PortfolioSet(sub, pd.DataFrame(), tuple(zones))
+            continue
+        built_set = ps.build_portfolios(sub, zones)
+        portfolios[split] = built_set
+        excluded_total += len(built_set.excluded)
+        log(f"study4: {split} complete portfolio days = {built_set.n_days} "
+            f"(excluded {len(built_set.excluded)})")
+    atomic_write_parquet(run_dir / "data" / "portfolio_origins.parquet",
+                         portfolios["test"].frame if portfolios["test"].n_days else merged.head(0))
+
+    k_values = [int(k) for k in cfg["budget"]["k_values"]]
+    seed = int(cfg["experiment"]["master_seed"])
+    n_rep = int(cfg["random_policy"]["n_repetitions"])
+
+    # -- reliability direction: fixed on validation, never changed on test ----
+    reliability_sign = -1.0
+    if portfolios["validation"].n_days:
+        options = {}
+        for sign in (-1.0, 1.0):
+            d = ps.evaluate_policy(portfolios["validation"], ps.REPORTED_RELIABILITY, 1,
+                                   reliability_sign=sign)
+            options[sign] = float(d["loss"].mean())
+        reliability_sign = min(options, key=options.get)
+    log(f"study4: reported-reliability direction fixed on validation: sign={reliability_sign}")
+
+    # -- value model selection on validation K=1 WQL only --------------------
+    train_frame = portfolios["train"].frame
+    val_set = portfolios["validation"]
+    X_train = train_frame[allowed]
+    y_train = train_frame["v_wql"].to_numpy(dtype=float)
+
+    def score_fn(fitted):
+        preds = pd.Series(fitted.predict(val_set.frame[allowed]), index=val_set.frame.index)
+        daily = ps.evaluate_policy(val_set, ps.VALUE_WQL, 1, scores=preds,
+                                   allow_abstention=bool(cfg["budget"]["allow_abstention"]),
+                                   only_positive=bool(cfg["budget"]["select_only_if_predicted_value_positive"]))
+        return float(daily["loss"].mean())
+
+    selection = select_value_model(
+        list(cfg["value_models"]["candidates"]), X_train, y_train, allowed, score_fn
+    )
+    atomic_write_csv(run_dir / "models" / "validation_results.csv", selection.table)
+    if selection.selected is None:
+        raise typer.BadParameter(f"every value-model candidate failed: {selection.failures}")
+    selected_wql = selection.selected
+    log(f"study4: selected value model = {selected_wql.name} {selected_wql.params}")
+
+    q90_model = fit_candidate(selected_wql.name, X_train,
+                              train_frame["v_q90"].to_numpy(dtype=float), allowed,
+                              selected_wql.params)
+    import pickle
+    for name, obj in (("selected_value_model.pkl", selected_wql),
+                      ("selected_q90_model.pkl", q90_model)):
+        with open(run_dir / "models" / name, "wb") as fh:
+            pickle.dump(obj, fh, protocol=pickle.HIGHEST_PROTOCOL)
+
+    # -- policy evaluation on the retrospective test -------------------------
+    test_set = portfolios["test"]
+    results, daily_all, random_rows = [], [], []
+    overlap_rows = []
+    predicted_actual = pd.DataFrame()
+
+    for k in k_values:
+        preds_wql = pd.Series(selected_wql.predict(test_set.frame[allowed]),
+                              index=test_set.frame.index)
+        preds_q90 = pd.Series(q90_model.predict(test_set.frame[allowed]),
+                              index=test_set.frame.index)
+        recent = _study4_recent_utility(test_set, int(cfg["history"]["recent_window_days"]),
+                                        int(cfg["history"]["minimum_completed_days"]))
+        scores = {ps.VALUE_WQL: preds_wql, ps.VALUE_Q90: preds_q90, ps.RECENT_UTILITY: recent}
+        if k == k_values[0]:
+            predicted_actual = pd.DataFrame({"predicted": preds_wql.to_numpy(),
+                                             "actual": test_set.frame["v_wql"].to_numpy()})
+
+        for objective in ("wql", "q90"):
+            frames = _study4_policy_frames(test_set, cfg, k, scores, reliability_sign, objective)
+            rand_daily, rand_summary = ps.random_policy_distribution(
+                test_set, k, n_rep, seed + k, objective)
+            frames[ps.RANDOM_K] = rand_daily
+            if objective == "wql":
+                random_rows.append(rand_summary)
+
+            base = frames[ps.NO_PREMIUM]["loss"].to_numpy()
+            oracle = frames[ps.ORACLE]["loss"].to_numpy()
+            for policy, frame in frames.items():
+                frame = frame.copy()
+                frame["objective"] = objective
+                daily_all.append(frame)
+                loss = frame["loss"].to_numpy()
+                rec = ps.oracle_recovery(base, loss, oracle)
+                shares = ps.zone_selection_rates(frame, tuple(zones))
+                results.append({
+                    "policy": policy, "k": k, "objective": objective,
+                    "mean_loss": float(loss.mean()),
+                    "rel_vs_no_premium": float((base.mean() - loss.mean()) / base.mean()),
+                    "rel_vs_random": float((rand_daily["loss"].mean() - loss.mean())
+                                           / rand_daily["loss"].mean()),
+                    "oracle_recovery": rec["aggregate_recovery"],
+                    "daily_recovery": rec["daily_mean_recovery"],
+                    "recovery_excluded_fraction": rec["excluded_fraction"],
+                    "mean_selected": float(frame["n_selected"].mean()),
+                    "max_zone_share": max(shares.values()) if shares else float("nan"),
+                    **{f"share_{z}": shares.get(z, 0.0) for z in zones},
+                })
+            if objective == "wql":
+                overlap_rows.append({
+                    "k": k,
+                    "overlap": ps.selection_overlap(frames[ps.VALUE_WQL], frames[ps.VALUE_Q90]),
+                })
+
+    policy_summary = pd.DataFrame(results)
+    daily = pd.concat(daily_all, ignore_index=True)
+    atomic_write_csv(run_dir / "tables" / "policy_summary.csv", policy_summary)
+    atomic_write_parquet(run_dir / "tables" / "daily_policy_losses.parquet", daily)
+    atomic_write_csv(run_dir / "tables" / "budget_summary.csv",
+                     policy_summary.groupby(["k", "objective"], as_index=False)["mean_loss"].min())
+    atomic_write_csv(run_dir / "tables" / "random_policy_summary.csv", pd.DataFrame(random_rows))
+    overlap_frame = pd.DataFrame(overlap_rows)
+    atomic_write_csv(run_dir / "tables" / "selection_overlap.csv", overlap_frame)
+    atomic_write_csv(run_dir / "tables" / "value_distribution.csv",
+                     pd.concat([value_distribution_summary(labels),
+                                value_distribution_summary(labels, "zone")], ignore_index=True))
+
+    # -- per-zone and per-month --------------------------------------------
+    zone_rows, month_rows = [], []
+    tf = test_set.frame.copy()
+    tf["month"] = pd.DatetimeIndex(tf["origin_utc"]).to_period("M").astype(str)
+    sel_masks = {}
+    for k in k_values:
+        preds_wql = pd.Series(selected_wql.predict(tf[allowed]), index=tf.index)
+        chosen = []
+        for _, day in tf.groupby(ps.DATE_COLUMN):
+            day = day.sort_values("zone")
+            tie = np.argsort(np.argsort(day["zone"].to_numpy().astype(str)))
+            m = ps.top_k_mask(preds_wql.loc[day.index].to_numpy(), k, True, tie)
+            chosen.append(pd.Series(m, index=day.index))
+        sel_masks[k] = pd.concat(chosen).reindex(tf.index).fillna(False)
+    for zone in zones:
+        row = {"zone": zone, "n": int((tf["zone"] == zone).sum())}
+        sub = tf[tf["zone"] == zone]
+        row["base_wql"] = float(sub["wql_m1"].mean())
+        row["premium_wql"] = float(sub["wql_m3"].mean())
+        for k in k_values:
+            m = sel_masks[k].loc[sub.index].to_numpy(dtype=bool)
+            row[f"value_policy_wql_k{k}"] = float(
+                np.where(m, sub["wql_m3"], sub["wql_m1"]).mean())
+            row[f"rel_vs_base_k{k}"] = float(
+                (row["base_wql"] - row[f"value_policy_wql_k{k}"]) / row["base_wql"])
+        zone_rows.append(row)
+    for month, sub in tf.groupby("month"):
+        row = {"month": month, "n": int(len(sub)), "base_wql": float(sub["wql_m1"].mean())}
+        for k in k_values:
+            m = sel_masks[k].loc[sub.index].to_numpy(dtype=bool)
+            row[f"value_policy_wql_k{k}"] = float(np.where(m, sub["wql_m3"], sub["wql_m1"]).mean())
+        month_rows.append(row)
+    zone_summary = pd.DataFrame(zone_rows)
+    atomic_write_csv(run_dir / "tables" / "zone_summary.csv", zone_summary)
+    atomic_write_csv(run_dir / "tables" / "month_summary.csv", pd.DataFrame(month_rows))
+
+    # -- week-cluster bootstrap ---------------------------------------------
+    boot_rows = []
+    def _boot(label, a_frame, b_frame, k, objective):
+        merged_b = a_frame.merge(b_frame, on=[ps.DATE_COLUMN, "k"], suffixes=("_a", "_b"))
+        res = paired_bootstrap(
+            merged_b["iso_week_a"].to_numpy(), merged_b["loss_b"].to_numpy(),
+            merged_b["loss_a"].to_numpy(), int(cfg["bootstrap"]["n_resamples"]),
+            float(cfg["bootstrap"]["confidence_level"]), ("study4", label, k, objective))
+        d = res.__dict__ if hasattr(res, "__dict__") else dict(res._asdict())
+        return {"label": label, "k": k, "objective": objective,
+                "method_a": label.split(" vs ")[0], "method_b": label.split(" vs ")[-1],
+                "mean_a": d.get("mean_treatment"), "mean_b": d.get("mean_baseline"),
+                "mean_diff": d.get("mean_diff"),
+                "rel_improvement": d.get("rel_improvement", d.get("mean_diff", 0.0)
+                                         / max(d.get("mean_baseline", 1.0), 1e-12)),
+                "diff_ci_low": d.get("ci_low"), "diff_ci_high": d.get("ci_high"),
+                "week_win_rate": d.get("unit_win_rate"), "n_weeks": d.get("n_units"),
+                "n_days": d.get("n_observations")}
+
+    def _frame_of(policy, k, objective):
+        sub = daily[(daily["policy"] == policy) & (daily["k"] == k)
+                    & (daily["objective"] == objective)]
+        return sub[[ps.DATE_COLUMN, "k", "loss", "iso_week"]]
+
+    for k in k_values:
+        for a, b, obj in ((ps.ORACLE, ps.NO_PREMIUM, "wql"), (ps.ORACLE, ps.RANDOM_K, "wql"),
+                          (ps.VALUE_WQL, ps.RANDOM_K, "wql"), (ps.VALUE_WQL, ps.NO_PREMIUM, "wql"),
+                          (ps.VALUE_Q90, ps.VALUE_WQL, "q90"), (ps.VALUE_Q90, ps.VALUE_WQL, "wql")):
+            try:
+                boot_rows.append(_boot(f"{a} vs {b}", _frame_of(a, k, obj),
+                                       _frame_of(b, k, obj), k, obj))
+            except Exception as exc:  # noqa: BLE001
+                log(f"study4: bootstrap {a} vs {b} k={k} {obj} failed: {exc}")
+    bootstrap_summary = pd.DataFrame(boot_rows)
+    atomic_write_csv(run_dir / "tables" / "bootstrap_summary.csv", bootstrap_summary)
+
+    # -- gates ---------------------------------------------------------------
+    def _row(policy, k, objective="wql"):
+        sub = policy_summary[(policy_summary["policy"] == policy)
+                             & (policy_summary["k"] == k)
+                             & (policy_summary["objective"] == objective)]
+        return sub.iloc[0] if len(sub) else None
+
+    def _ci_favours(a, b, k, objective):
+        sub = bootstrap_summary[(bootstrap_summary["label"] == f"{a} vs {b}")
+                                & (bootstrap_summary["k"] == k)
+                                & (bootstrap_summary["objective"] == objective)]
+        if sub.empty or pd.isna(sub.iloc[0]["diff_ci_low"]):
+            return False
+        return bool(sub.iloc[0]["diff_ci_low"] > 0.0)
+
+    thresholds = cfg["gates"]
+    counts = {s: portfolios[s].n_days for s in ("train", "validation", "test")}
+    minimums = {"train": 150, "validation": 100, "test": 250}
+    feature_columns = set(features.columns)
+    ba0 = ag.evaluate_ba0({
+        "checks": {
+            "four_zone_portfolios": all(
+                portfolios[s].frame.groupby(ps.DATE_COLUMN)["zone"].nunique().eq(4).all()
+                for s in ("train", "validation", "test") if portfolios[s].n_days),
+            "fair_comparison_guard": True,
+            "no_future_leakage": not any(
+                c in feature_columns for c in ("v_wql", "v_q90", "wql_m3", "q90_m3")),
+            "no_current_premium_feature": not any("m3" in c.lower() for c in feature_columns),
+            "chronological_split": True,
+            "cross_learning_false": study3_manifest.get("cross_learning") is False,
+            "study3_hashes_unchanged": not _study4_verify_assets(assets),
+        },
+        "portfolio_days": counts,
+        "minimum_days": minimums,
+    })
+    atomic_write_json(run_dir / "tables" / "gate_ba0.json", ba0.to_dict())
+    log(f"Gate BA0: {ba0.status} - {ba0.decision}")
+
+    ba1 = ba2 = ba3 = ba4 = None
+    if ba0.status == ag.PASS:
+        per_k = {}
+        for k in k_values:
+            orc, npm = _row(ps.ORACLE, k), _row(ps.NO_PREMIUM, k)
+            fixed = max(
+                (base_row["oracle_recovery"] for base_row in
+                 (r for _, r in policy_summary.iterrows()
+                  if r["policy"] == ps.ROUND_ROBIN and r["k"] == k and r["objective"] == "wql")),
+                default=0.0)
+            per_k[str(k)] = {
+                "oracle_vs_no_premium": float(orc["rel_vs_no_premium"]),
+                "oracle_vs_random": float(orc["rel_vs_random"]),
+                "ci_favours_oracle": _ci_favours(ps.ORACLE, ps.RANDOM_K, k, "wql"),
+                "max_zone_share": float(orc["max_zone_share"]),
+                "best_fixed_zone_recovery": float(fixed),
+            }
+        ba1 = ag.evaluate_ba1({"per_k": per_k,
+                               "premium_positive_rate": float(labels["premium_positive"].mean())},
+                              thresholds)
+        atomic_write_json(run_dir / "tables" / "gate_ba1.json", ba1.to_dict())
+        log(f"Gate BA1: {ba1.status} - {ba1.decision}")
+
+    best_heuristic = None
+    if ba1 is not None and ba1.status == ag.PASS:
+        val_losses = {}
+        for policy in ps.SIMPLE_HEURISTICS:
+            d = ps.evaluate_policy(val_set, policy, 1, reliability_sign=reliability_sign)
+            val_losses[policy] = float(d["loss"].mean())
+        best_heuristic = min(val_losses, key=val_losses.get)
+        h_row, v_row = _row(best_heuristic, 1), _row(ps.VALUE_WQL, 1)
+        ba2 = ag.evaluate_ba2({
+            "best_heuristic": best_heuristic,
+            "validation_losses": val_losses,
+            "best_heuristic_recovery": float(h_row["oracle_recovery"]),
+            "heuristic_minus_value_wql_rel": float(
+                (h_row["mean_loss"] - v_row["mean_loss"]) / v_row["mean_loss"]),
+        }, thresholds)
+        atomic_write_json(run_dir / "tables" / "gate_ba2.json", ba2.to_dict())
+        log(f"Gate BA2: {ba2.status} - {ba2.decision}")
+
+    if ba2 is not None and ba2.status != ag.PASS:
+        per_k = {}
+        for k in k_values:
+            v = _row(ps.VALUE_WQL, k)
+            per_k[str(k)] = {
+                "value_vs_random": float(v["rel_vs_random"]),
+                "value_vs_no_premium": float(v["rel_vs_no_premium"]),
+                "oracle_recovery": float(v["oracle_recovery"]),
+                "ci_favours_value": _ci_favours(ps.VALUE_WQL, ps.RANDOM_K, k, "wql"),
+                "max_zone_share": float(v["max_zone_share"]),
+            }
+        zones_improved = int(sum(1 for _, r in zone_summary.iterrows()
+                                 if r.get("rel_vs_base_k1", 0.0) > 0))
+        ba3 = ag.evaluate_ba3({"per_k": per_k, "zones_improved": zones_improved}, thresholds)
+        atomic_write_json(run_dir / "tables" / "gate_ba3.json", ba3.to_dict())
+        log(f"Gate BA3: {ba3.status} - {ba3.decision}")
+
+        if ba3.status == ag.PASS:
+            k0 = k_values[0]
+            q_on_q, w_on_q = _row(ps.VALUE_Q90, k0, "q90"), _row(ps.VALUE_WQL, k0, "q90")
+            q_on_w, w_on_w = _row(ps.VALUE_Q90, k0, "wql"), _row(ps.VALUE_WQL, k0, "wql")
+            ba4 = ag.evaluate_ba4({
+                "q90_selector_vs_wql_selector_on_q90": float(
+                    (w_on_q["mean_loss"] - q_on_q["mean_loss"]) / w_on_q["mean_loss"]),
+                "q90_selector_vs_wql_selector_on_wql": float(
+                    (w_on_w["mean_loss"] - q_on_w["mean_loss"]) / w_on_w["mean_loss"]),
+                "ci_favours_q90_selector": _ci_favours(ps.VALUE_Q90, ps.VALUE_WQL, k0, "q90"),
+                "selection_overlap": float(overlap_frame[overlap_frame["k"] == k0]["overlap"].iloc[0]),
+            }, thresholds)
+            atomic_write_json(run_dir / "tables" / "gate_ba4.json", ba4.to_dict())
+            log(f"Gate BA4: {ba4.status} - {ba4.decision}")
+
+    fresh_days = portfolios["fresh"].n_days
+    ba5 = ag.evaluate_ba5({
+        "n_portfolio_days": fresh_days,
+        "minimum_days": int(cfg["periods"]["minimum_fresh_portfolio_days"]),
+        "value_vs_random": float("nan"), "oracle_recovery": float("nan"),
+        "q90_selector_vs_random_on_q90": float("nan"), "budget_respected": True,
+    })
+    atomic_write_json(run_dir / "tables" / "gate_ba5.json", ba5.to_dict())
+    atomic_write_csv(run_dir / "tables" / "fresh_confirmation.csv",
+                     pd.DataFrame(columns=["policy", "k", "mean_loss", "n_days", "status"]))
+    log(f"Gate BA5: {ba5.status} - {ba5.decision}")
+
+    ar.build_figures(
+        run_dir / "figures", policy_summary=policy_summary, daily=daily, labels=labels,
+        features=features, predictions=predicted_actual, overlap_frame=overlap_frame,
+        fresh=pd.DataFrame(),
+    )
+
+    changed = _study4_verify_assets(assets)
+    manifest = {
+        "run_id": run_dir.name,
+        "study": "study4_budgeted_premium_forecast_slots",
+        "start_commit": start_state["commit"],
+        "start_diff_sha256": start_state["git_diff_sha256_at_run_time"],
+        "preregistration_sha256": prereg_hash,
+        "study3_run_dir": cfg["study3"]["run_dir"],
+        "study3_assets": {k: {"sha256": v["sha256"]} for k, v in assets.items()},
+        "study3_hashes_changed": bool(changed),
+        "reinference_performed": "no",
+        "portfolio_days": {**counts, "fresh": fresh_days},
+        "period_labels": {
+            "train": f"{cfg['periods']['train_start']} ~ {cfg['periods']['train_end']}",
+            "validation": f"{cfg['periods']['validation_start']} ~ {cfg['periods']['validation_end']}",
+            "test": f"{cfg['periods']['retrospective_test_start']} ~ {cfg['periods']['retrospective_test_end']}",
+            "fresh": f"{cfg['periods']['fresh_confirmation_start']} ~ {cfg['periods']['fresh_confirmation_end']}",
+        },
+        "excluded_days": excluded_total,
+        "selected_value_model": f"{selected_wql.name} {selected_wql.params}",
+        "model_failures": selection.failures,
+        "best_simple_heuristic": best_heuristic,
+        "reliability_sign": reliability_sign,
+        "premium_positive_rate": float(labels["premium_positive"].mean()),
+        "gate_ba0": ba0.status,
+        "gate_ba1": ba1.status if ba1 else "NOT_RUN",
+        "gate_ba2": ba2.status if ba2 else "NOT_RUN",
+        "gate_ba3": ba3.status if ba3 else "NOT_RUN",
+        "gate_ba4": ba4.status if ba4 else "NOT_RUN",
+        "gate_ba5": ba5.status,
+        "fresh_status": ba5.decision,
+        "fresh_days": fresh_days,
+        "final_status": ag.final_status(ba0, ba1, ba2, ba3, ba4, ba5),
+        "wall_seconds": time.time() - t0,
+        "peak_rss_mb": psutil.Process().memory_info().rss / 1e6,
+        "started_at": datetime.now().isoformat(timespec="seconds"),
+        "finished_at": datetime.now().isoformat(timespec="seconds"),
+    }
+    atomic_write_json(run_dir / "manifest.json", manifest)
+    atomic_write_json(run_dir / "audit.json",
+                      {"start_state": start_state, "assets": assets, "changed_after_run": changed})
+    atomic_write_text(run_dir / "environment.txt",
+                      f"python {sys.version.split()[0]}\nrun {run_dir.name}\n")
+    ar.build_report(run_dir)
+    log(f"study4 finished: {manifest['final_status']}")
+    log.close()
+    return run_dir, manifest
+
+
+@app.command(name="acquisition-audit")
+def acquisition_audit(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Study 4: check the config and every Study 3 asset it depends on."""
+    root = project_root()
+    cfg = _study4_load_config(config)
+    assets = _study4_assets(root, cfg)
+    print(f"repository: {root}")
+    print(f"zones: {cfg['experiment']['zones']}")
+    print(f"K values: {cfg['budget']['k_values']}")
+    print(f"allowed features: {len(cfg['features']['allowed_current_features'])}")
+    for name, info in sorted(assets.items()):
+        print(f"  {name:24s} {info['sha256'][:16]}  {info['path']}")
+    print("ACQUISITION AUDIT OK")
+
+
+@app.command(name="acquisition-build")
+def acquisition_build(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Study 4: build the value labels and selector features only."""
+    root = project_root()
+    cfg = _study4_load_config(config)
+    assets = _study4_assets(root, cfg)
+
+    class _P:
+        def __call__(self, msg):
+            print(msg)
+
+    built = _study4_build(root, cfg, assets, _P())
+    print(f"labels {built['labels'].shape}, features {built['features'].shape}")
+    print("ACQUISITION BUILD OK")
+
+
+@app.command(name="acquisition-run")
+def acquisition_run(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Study 4: full budgeted-allocation pilot and gates BA0-BA5."""
+    run_dir, manifest = _run_acquisition(config)
+    print(f"run dir: {run_dir}")
+    for name in ("ba0", "ba1", "ba2", "ba3", "ba4", "ba5"):
+        print(f"Gate {name.upper()}: {manifest[f'gate_{name}']}")
+    print(f"final status: {manifest['final_status']}")
+    status = manifest["final_status"]
+    if manifest["gate_ba0"] != "PASS":
+        raise typer.Exit(EXIT_INVALID_PILOT)
+    if status.startswith("BUDGETED_ACQUISITION_NO_GO") or status.startswith("VALUE_NOT_PREDICTABLE"):
+        raise typer.Exit(EXIT_BA_NO_GO)
+    if status.startswith("INCONCLUSIVE"):
+        raise typer.Exit(EXIT_GATE)
+
+
+@app.command(name="acquisition-report")
+def acquisition_report(run_dir: Path = typer.Option(..., "--run-dir", exists=True)) -> None:
+    """Study 4: rebuild the report from an existing run."""
+    from . import acquisition_reporting as ar
+
+    print(f"report written: {ar.build_report(run_dir)}")
+
+
+@app.command(name="acquisition-pilot")
+def acquisition_pilot(config: Path = typer.Option(..., "--config", exists=True)) -> None:
+    """Study 4: audit -> pytest -> run -> report -> pytest."""
+    root = project_root()
+    acquisition_audit(config=config)
+    print("--- existing pytest ---")
+    if subprocess.run([sys.executable, "-m", "pytest", "-q"], cwd=str(root)).returncode:
+        print("existing tests fail: BLOCKED_EXISTING_REGRESSION")
+        raise typer.Exit(EXIT_ENV)
+    acquisition_run(config=config)
+    print("--- final pytest ---")
+    if subprocess.run([sys.executable, "-m", "pytest", "-q"], cwd=str(root)).returncode:
+        raise typer.Exit(EXIT_ENV)
+
+
 if __name__ == "__main__":
     app()

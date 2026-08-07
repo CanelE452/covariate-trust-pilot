@@ -1,0 +1,132 @@
+# Study 4 - budgeted premium forecast slot allocation.
+#
+# Independent of Study 3's D7 selector: no absolute reliability threshold is used
+# and no Study 3 gate, threshold or artifact is modified.  The question here is a
+# daily portfolio one: with at most K premium slots across four NYISO zones, can we
+# pick which zones get the weather-conditioned forecast before seeing the future load?
+experiment:
+  name: budgeted_premium_forecast_slots
+  master_seed: 20260801
+  selection_unit: "daily_zone_portfolio"
+  origin_hour_utc: 7
+  prediction_length: 24
+  zones:
+    - "NYC"
+    - "LONG_ISLAND"
+    - "CAPITAL"
+    - "WEST"
+
+periods:
+  train_start: "2024-04-01"
+  train_end: "2024-12-31"
+  validation_start: "2025-01-01"
+  validation_end: "2025-06-30"
+  retrospective_test_start: "2025-07-01"
+  retrospective_test_end: "2026-06-30"
+
+  fresh_confirmation_requested: true
+  fresh_confirmation_start: "2026-07-01"
+  fresh_confirmation_end: "2026-07-31"
+  minimum_fresh_portfolio_days: 20
+
+forecast_methods:
+  base: "M1_past_covariate_future_calendar"
+  premium: "M3_primary_00z_future_temperature"
+
+budget:
+  type: "at_most_k"
+  premium_slot_cost: 1
+  k_values:
+    - 1
+    - 2
+  allow_abstention: true
+  select_only_if_predicted_value_positive: true
+
+objectives:
+  primary: "wql"
+  secondary:
+    - "q90_pinball"
+    - "median_nmae"
+
+features:
+  allowed_current_features:
+    - "zone"
+    - "month_sin"
+    - "month_cos"
+    - "day_of_week_sin"
+    - "day_of_week_cos"
+    - "recent_load_mean_24"
+    - "recent_load_std_24"
+    - "recent_load_mean_168"
+    - "recent_load_std_168"
+    - "recent_load_trend_24"
+    - "recent_load_max_24"
+    - "recent_load_acf24"
+    - "base_interval_width_mean"
+    - "base_interval_width_max"
+    - "base_forecast_level_mean"
+    - "base_forecast_peak"
+    - "primary_weather_mean"
+    - "primary_weather_min"
+    - "primary_weather_max"
+    - "primary_weather_range"
+    - "revision_rms"
+    - "revision_mean"
+    - "revision_bias"
+    - "reported_reliability_ratio"
+    - "recent_base_wql_28"
+    - "recent_base_q90_loss_28"
+
+  forbidden_current_features:
+    - "current_M3_prediction"
+    - "current_M3_quantiles"
+    - "current_realized_load"
+    - "current_M3_loss"
+    - "current_ex_post_gain"
+    - "current_realized_weather_error_ratio"
+
+history:
+  recent_window_days: 28
+  minimum_completed_days: 14
+  missing_history_fallback: "train_zone_month_median"
+
+value_models:
+  candidates:
+    - "ridge"
+    - "huber"
+    - "hist_gradient_boosting"
+    - "two_part_expected_gain"
+  selection_metric: "validation_portfolio_wql_k1"
+  choose_on_validation_only: true
+  target_clipping: false
+
+random_policy:
+  n_repetitions: 2000
+
+bootstrap:
+  n_resamples: 5000
+  confidence_level: 0.95
+  cluster: "iso_calendar_week"
+
+gates:
+  ba1_oracle_vs_no_premium: 0.02
+  ba1_oracle_vs_random: 0.01
+  ba2_simple_heuristic_oracle_recovery_sufficient: 0.90
+  ba3_value_vs_random: 0.015
+  ba3_value_oracle_recovery: 0.35
+  ba4_q90_value_vs_wql_selector: 0.01
+  maximum_zone_regression: 0.02
+
+# Read-only provenance: Study 4 reuses these and never writes to them.
+study3:
+  run_dir: "runs/20260731_123122_real_vintage"
+  config: "configs/study3_real_vintage.yaml"
+  task_metrics: "tables/task_metrics.parquet"
+  origin_metadata: "tables/origin_metadata.parquet"
+  predictions: "predictions/predictions.parquet"
+  proxy_tables:
+    - "tables/proxy_train.parquet"
+    - "tables/proxy_validation.parquet"
+    - "tables/proxy_test.parquet"
+  processed_load: "data/processed/load_hourly.parquet"
+  processed_weather_runs: "data/processed/weather_runs_v2_07utc.parquet"
