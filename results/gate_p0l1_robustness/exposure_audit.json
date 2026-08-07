@@ -1,0 +1,12 @@
+{
+  "checked_at": "artifact",
+  "datasets": {
+    "m5": "DEVELOPMENT_EXPOSED",
+    "favorita": "DEVELOPMENT_EXPOSED",
+    "freshretailnet": "DEVELOPMENT_EXPOSED",
+    "uci_online_retail_ii": "DEVELOPMENT_EXPOSED",
+    "retail_transactions_stocks": "STRUCTURALLY_INELIGIBLE"
+  },
+  "outcome_unseen_dataset_available": false,
+  "status": "NEW_DATASET_REQUIRED_FOR_P0L1_CONFIRMATION"
+}

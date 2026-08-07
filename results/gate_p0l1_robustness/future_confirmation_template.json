@@ -1,0 +1,54 @@
+{
+  "name": "P0L1_EXTERNAL_CONFIRMATION_TEMPLATE_V1",
+  "method_sha256": "c57f81f27101af45b621bec94f6ee85459c90c863db7ed0e2e5cb0fb7bfe74df",
+  "method": {
+    "name": "FINAL_GATE_CANDIDATE_V1",
+    "frozen_at_utc": "2026-08-07T17:52:54.591997+00:00",
+    "expert_a": "dlinear_point_plain",
+    "expert_b": "naive",
+    "expert_source": "results/expert_diversity/expert_set_spec.json",
+    "experts_frozen_during_gate_fitting": true,
+    "feature_variant": "G-NOSCALE",
+    "feature_policy": "as-of-origin only; structure recomputed per origin",
+    "architecture": "small MLP, hidden 16",
+    "output": "g = sigmoid(f(x))  (neutral parameterization)",
+    "mixture": "y = (1 - g) * A + g * B",
+    "loss": "direct normalized mixture MSE",
+    "normalization": "per-series train-window mean (train_scale), train only",
+    "gate_training": "TRAIN-internal OOF only, expanding time",
+    "global_alpha": "grid over [0,1] step 0.05, fitted on strictly earlier folds",
+    "optimizer": {
+      "epochs": 400,
+      "lr": 0.01,
+      "seed": 0
+    },
+    "candidate_search": "none; P0L1 is the only condition run",
+    "spec_sha256": "c57f81f27101af45b621bec94f6ee85459c90c863db7ed0e2e5cb0fb7bfe74df"
+  },
+  "order": [
+    "audit raw schema",
+    "freeze split by date",
+    "fit experts on TRAIN",
+    "fit gate and global alpha on TRAIN-internal OOF only",
+    "VALIDATION for pipeline integrity and early stopping only",
+    "score TEST exactly once"
+  ],
+  "methods_to_report": [
+    "expert A",
+    "expert B",
+    "equal static",
+    "global alpha",
+    "P0L1 gate",
+    "verified classical baselines",
+    "hard oracle [UB]",
+    "convex oracle [UB]"
+  ],
+  "primary": "P0L1 vs best static",
+  "secondary": "P0L1 vs best classical",
+  "statistics": "paired series bootstrap, 2000 draws, unit = series, per dataset, never pooled",
+  "prohibited_after_seeing_test": [
+    "any method change",
+    "any feature change",
+    "any split change"
+  ]
+}
