@@ -1,0 +1,23 @@
+{
+  "built_at_utc": "2026-08-07T13:25:03.214108+00:00",
+  "source": "data\\train.csv",
+  "target_transform_check": {
+    "n_series_checked": 1200,
+    "n_cells": 2025600,
+    "n_mismatched_cells": 0,
+    "reproduced": true,
+    "rule": "clip(unit_sales, 0, None) -> rint; absent row = 0"
+  },
+  "eligibility_check": {
+    "n_series_in_raw": 174685,
+    "n_full_life": 56966,
+    "n_eligible": 56918,
+    "documented_eligible": 56918,
+    "matches_documented": true,
+    "first_day_max": 90,
+    "min_positive_train": 2,
+    "min_train_length": 184
+  },
+  "calendar_start": "2013-01-01",
+  "length": 1688
+}

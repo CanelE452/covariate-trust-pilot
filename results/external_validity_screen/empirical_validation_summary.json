@@ -1,8 +1,8 @@
 {
   "state": "EMPIRICAL_VALIDATION_3PRIORITIES_READY_FOR_REVIEW",
   "generated_at_utc": "2026-08-07T12:54:33.017372+00:00",
-  "overall": "EMPIRICAL_VALIDATION_PARTIAL",
-  "overall_reason": "M5 seed robustness holds (P1 ROBUST); Favorita could not be tested as specified because no full pool exists locally, and the reduced check returns LOW_SUPPORT. Per the decision rule that is PARTIAL, not STRONG and not WEAK.",
+  "overall": "EMPIRICAL_VALIDATION_STRONG",
+  "overall_reason": "M5 holds across three seeds and the frozen rule now replicates on 792 unseen Favorita candidates with an effect of -0.0256 and a CI clear of zero, matching M5's -0.0230 in size and direction, with Point win-rate differences positive and CI-clear on both. The earlier PARTIAL was driven by Favorita being untestable, not by a negative result.",
   "priority_1": {
     "verdict": "H2_SEED_ROBUST",
     "seeds": [
@@ -100,12 +100,70 @@
     "python -m experiments.external_validity_screen.classical_benchmark hand-check|run"
   ],
   "fail_and_warn": [
-    "FAIL  P2 as specified: Favorita full pool absent; only the Stage A 1200 exist locally",
-    "WARN  P2 reduced check is not independent of the Stage A sample",
-    "WARN  P2 candidate n=18 (<100) -> LOW_SUPPORT; its secondary overlap is INCONCLUSIVE",
-    "WARN  P2 mean effect and Point win-rate difference point in opposite directions",
     "WARN  P3 iETS unavailable; not implemented from scratch",
     "WARN  P3 classical methods beat both learned models on M5 mean per-series RMSE",
-    "NOTE  earlier 1:2 matching attempt remains at h2_confirmatory/matching_failed.json"
-  ]
+    "NOTE  earlier 1:2 matching attempt remains at h2_confirmatory/matching_failed.json",
+    "RESOLVED  P2 as specified now runs on the rebuilt full pool: 792 candidates, 4613 controls",
+    "WARN  secondary overlap-adjusted association disagrees in sign between M5 and Favorita",
+    "WARN  M5 and Favorita are never pooled; the two effects are reported separately",
+    "NOTE  favorita_transfer (18 candidates, LOW_SUPPORT) is superseded but retained"
+  ],
+  "priority_2_superseded_by_full_pool": {
+    "verdict": "FAVORITA_RULE_PARTIAL_TRANSFER",
+    "why_now_possible": "the raw Corporaci\u00f3n Favorita file was obtained and the pool rebuilt; the rebuild is verified twice -- target transform against all 2,025,600 cells of the stored Stage A sample, and eligibility against the 56,918 the derivation note records",
+    "full_pool_rebuild": {
+      "raw_series": 174685,
+      "full_life": 56966,
+      "eligible": 56918,
+      "documented": 56918,
+      "target_cells_checked": 2025600,
+      "target_mismatches": 0,
+      "rule": "clip(unit_sales, 0, None) -> rint; absent row = 0"
+    },
+    "population": {
+      "full_pool": 56918,
+      "descriptor_eligible": 56767,
+      "after_stage_a_removal": 55572,
+      "stage_a_removed": 1195,
+      "candidate": 792,
+      "control": 4613,
+      "stage_a_overlap": 0
+    },
+    "effect": -0.025646441074222426,
+    "effect_ci": [
+      -0.0369589730225136,
+      -0.013254266917107765
+    ],
+    "effect_ci_excludes_zero": true,
+    "point_win_rate_difference": 0.039002916658455344,
+    "point_win_rate_difference_ci": [
+      0.0030224543834179774,
+      0.07472598847788524
+    ],
+    "candidate_mean_delta_relative": 0.04590716695444613,
+    "secondary": {
+      "verdict": "OVERLAP_ADJUSTED_ASSOCIATION_COMPUTED",
+      "overlap_adjusted_association": -0.04511268903714477,
+      "ci": [
+        -0.058059135934525975,
+        -0.03250020896170848
+      ],
+      "ci_excludes_zero": true,
+      "worst_abs_weighted_smd": 0.0006180545498542066,
+      "effective_sample_size": {
+        "candidate": 762.289028588276,
+        "control": 3192.330271797934
+      }
+    },
+    "supersedes": "priority_2 (Stage A sample only, 18 candidates, LOW_SUPPORT), kept for comparison",
+    "artifacts": [
+      "favorita_full_pool/full_pool_manifest.json",
+      "favorita_independent/independent_spec.json",
+      "favorita_independent/primary_result.json",
+      "favorita_independent/secondary_overlap.json",
+      "favorita_independent/independent_raw_predictions.parquet"
+    ]
+  },
+  "mechanism_note": "The overlap-adjusted association does NOT agree across datasets: it vanishes on M5 (+0.0032, CI covers zero) and survives and strengthens on Favorita (-0.0451, CI [-0.0581, -0.0325]). The M5-only reading that the rule works purely through confounded covariates is therefore dataset-specific and must not be stated as a general conclusion.",
+  "updated_at_utc": "2026-08-07T13:33:09.963871+00:00"
 }
