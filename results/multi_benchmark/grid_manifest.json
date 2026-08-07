@@ -1,0 +1,35 @@
+{
+  "built_at_utc": "2026-08-07T16:33:13.632294+00:00",
+  "spec_sha256": "7ccb743c5dc79af29a82fa90682c945ffd82afe514135adfbf4acf0022cc3a5c",
+  "test_outcome_computed": false,
+  "datasets": {
+    "freshretailnet": {
+      "n_series": 7528,
+      "n_days": 770,
+      "calendar": [
+        "2023-06-05",
+        "2025-07-13"
+      ],
+      "eligible_rule": "n_positive over the train window >= 20",
+      "observed_share": 0.8585540389472377,
+      "zero_share_observed": 0.109246964831835,
+      "censored_share": 0.024956193261849724,
+      "has_stockout_signal": true
+    },
+    "uci": {
+      "n_series": 2158,
+      "n_days": 739,
+      "calendar": [
+        "2009-12-01",
+        "2011-12-09"
+      ],
+      "eligible_rule": "n_positive over the train window >= 20",
+      "observed_share": 0.8866457816276033,
+      "zero_share_observed": 0.7299696107961235,
+      "censored_share": null,
+      "has_stockout_signal": false,
+      "series_key": "StockCode x Country"
+    }
+  },
+  "git_commit": "94f5029b83af766af14635362595f2982d6d6887"
+}

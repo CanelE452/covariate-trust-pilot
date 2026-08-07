@@ -1,0 +1,203 @@
+{
+  "analysis": "external benchmark, all admitted datasets in one locked pass",
+  "spec_sha256": "7ccb743c5dc79af29a82fa90682c945ffd82afe514135adfbf4acf0022cc3a5c",
+  "spec_frozen_at_utc": "2026-08-07T16:29:27.504540+00:00",
+  "first_external_test_scoring_utc": "2026-08-07T16:38:04.274462+00:00",
+  "pooled_across_datasets": false,
+  "datasets": {
+    "freshretailnet": {
+      "n_series": 7528,
+      "n_origins": 22576,
+      "config": {
+        "length": 770,
+        "train_end": 658,
+        "val_end": 686,
+        "lookback": 96,
+        "horizon": 28,
+        "test_origins": [
+          686,
+          714,
+          742
+        ]
+      },
+      "global_alpha": 0.1,
+      "reference_alpha": 0.0,
+      "means": {
+        "croston": 0.3432066394823763,
+        "dlinear_hurdle": 0.32784947612157783,
+        "dlinear_hurdle_ztnb": 0.384884964428662,
+        "dlinear_point": 0.32233917418579283,
+        "dlinear_point_plain": 0.32322871327351765,
+        "naive": 0.5789217097676642,
+        "sba": 0.34956332487526814,
+        "seasonal_naive": 0.48677877844240897,
+        "ses": 0.33337544495176225,
+        "tsb": 0.333968571526926,
+        "proposed_gate": 0.3301654447990719,
+        "proposed_equal": 0.3961247484853786,
+        "proposed_alpha": 0.32901584623025587,
+        "reference_equal": 0.3237267088028725,
+        "reference_alpha": 0.32233917418579283,
+        "oracle_convex": 0.292478608402,
+        "oracle_hard": 0.29764955435708873,
+        "reference_oracle_convex": 0.31346045885938784
+      },
+      "best_static": "reference_alpha",
+      "best_classical": "ses",
+      "best_single_neural": "dlinear_point",
+      "paired_bootstrap": {
+        "proposed_vs_dlinear_point": {
+          "relative_improvement": -0.024279613649342183,
+          "ci": [
+            -0.027386654627180495,
+            -0.02132442633764927
+          ],
+          "ci_excludes_zero": true
+        },
+        "proposed_vs_reference_alpha": {
+          "relative_improvement": -0.024279613649342183,
+          "ci": [
+            -0.027386654627180495,
+            -0.0213244263376491
+          ],
+          "ci_excludes_zero": true
+        },
+        "proposed_vs_proposed_equal": {
+          "relative_improvement": 0.16651144352507258,
+          "ci": [
+            0.157949718921629,
+            0.17532586377058476
+          ],
+          "ci_excludes_zero": true
+        },
+        "proposed_vs_ses": {
+          "relative_improvement": 0.009628784007036937,
+          "ci": [
+            0.005284814573471926,
+            0.013921229821387495
+          ],
+          "ci_excludes_zero": true
+        },
+        "proposed_vs_proposed_alpha": {
+          "relative_improvement": -0.0034940522834620486,
+          "ci": [
+            -0.006250120400311766,
+            -0.0005672722426739379
+          ],
+          "ci_excludes_zero": true
+        }
+      },
+      "convex_oracle_recovery": -0.2620938487885875,
+      "diversity": {
+        "proposed_residual_correlation": 0.7904825555400984,
+        "reference_residual_correlation": 0.9914800161503664,
+        "proposed_convex_ceiling": 0.292478608402,
+        "reference_convex_ceiling": 0.31346045885938784
+      },
+      "gate_weight": {
+        "mean": 0.3617067491800276,
+        "sd": 0.203172373488963,
+        "extreme_share": 0.07299787384833452
+      },
+      "per_series_path": "external_per_series_freshretailnet.csv"
+    },
+    "uci": {
+      "n_series": 2158,
+      "n_origins": 6474,
+      "config": {
+        "length": 739,
+        "train_end": 627,
+        "val_end": 655,
+        "lookback": 96,
+        "horizon": 28,
+        "test_origins": [
+          655,
+          683,
+          711
+        ]
+      },
+      "global_alpha": 0.9500000000000001,
+      "reference_alpha": 0.8,
+      "means": {
+        "croston": 272.7429777882206,
+        "dlinear_hurdle": 273.9353050923727,
+        "dlinear_hurdle_ztnb": 272.9918352135401,
+        "dlinear_point": 275.33616935489823,
+        "dlinear_point_plain": 275.6566154791083,
+        "naive": 295.5010830670493,
+        "sba": 272.75911912418246,
+        "seasonal_naive": 331.5672539088748,
+        "ses": 272.4692337629955,
+        "tsb": 272.33639633427174,
+        "proposed_gate": 273.46512426286347,
+        "proposed_equal": 277.87061493322454,
+        "proposed_alpha": 293.04429516307977,
+        "reference_equal": 274.03885242402737,
+        "reference_alpha": 273.83347167312854,
+        "oracle_convex": 271.7336263947316,
+        "oracle_hard": 272.53641666342855,
+        "reference_oracle_convex": 272.8847083521283
+      },
+      "best_static": "dlinear_hurdle_ztnb",
+      "best_classical": "tsb",
+      "best_single_neural": "dlinear_hurdle_ztnb",
+      "paired_bootstrap": {
+        "proposed_vs_reference_alpha": {
+          "relative_improvement": 0.0013451511534162083,
+          "ci": [
+            -0.0006444646252948598,
+            0.011336725691444694
+          ],
+          "ci_excludes_zero": false
+        },
+        "proposed_vs_dlinear_hurdle_ztnb": {
+          "relative_improvement": -0.0017337113725512132,
+          "ci": [
+            -0.015158423091788895,
+            0.00014486488269564474
+          ],
+          "ci_excludes_zero": false
+        },
+        "proposed_vs_proposed_equal": {
+          "relative_improvement": 0.01585446763206597,
+          "ci": [
+            0.004866205850866486,
+            0.09808789178765746
+          ],
+          "ci_excludes_zero": true
+        },
+        "proposed_vs_proposed_alpha": {
+          "relative_improvement": 0.06681300821543189,
+          "ci": [
+            0.02251891665508548,
+            0.3175470056763846
+          ],
+          "ci_excludes_zero": true
+        },
+        "proposed_vs_tsb": {
+          "relative_improvement": -0.004144609181089051,
+          "ci": [
+            -0.03363142126320878,
+            -0.0005206333211273393
+          ],
+          "ci_excludes_zero": true
+        }
+      },
+      "convex_oracle_recovery": -0.3761609696644126,
+      "diversity": {
+        "proposed_residual_correlation": 0.9454441989459438,
+        "reference_residual_correlation": 0.9959630185553662,
+        "proposed_convex_ceiling": 271.7336263947316,
+        "reference_convex_ceiling": 272.8847083521283
+      },
+      "gate_weight": {
+        "mean": 0.4825285591591581,
+        "sd": 0.18719679510563914,
+        "extreme_share": 0.053907939450108126
+      },
+      "per_series_path": "external_per_series_uci.csv"
+    }
+  },
+  "finished_at_utc": "2026-08-07T17:06:15.865474+00:00",
+  "git_commit": "94f5029b83af766af14635362595f2982d6d6887"
+}
