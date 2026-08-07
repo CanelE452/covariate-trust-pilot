@@ -149,3 +149,11 @@ inventory cost, Study 1B boundary refinement, and neural selectors.
 
 The report states outcomes as measured. Nothing about the result is asserted here in
 advance.
+
+## External-validity SCREEN (M5 / Favorita)
+
+`experiments/external_validity_screen/` — 합성 study의 Point 대 Hurdle 상대우위 조건이
+두 공개 소매 벤치마크에서 재현되는지 확인하는 SCREEN.
+
+**진행 상태·결과·다음 단계는 [`docs/external_validity_STATUS.md`](docs/external_validity_STATUS.md)
+를 먼저 읽으세요.** 데이터 유도 과정은 [`docs/m5_favorita_data_derivation.md`](docs/m5_favorita_data_derivation.md).
