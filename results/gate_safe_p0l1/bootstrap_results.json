@@ -1,0 +1,74 @@
+{
+  "m5": {
+    "safe_vs_alpha": {
+      "relative_improvement": 0.006072216198277734,
+      "ci": [
+        0.004599969923601245,
+        0.007546259598621745
+      ],
+      "ci_excludes_zero": true
+    },
+    "safe_vs_raw": {
+      "relative_improvement": -0.0016833637770227975,
+      "ci": [
+        -0.0023288863344196977,
+        -0.0010466585419622173
+      ],
+      "ci_excludes_zero": true
+    }
+  },
+  "favorita": {
+    "safe_vs_alpha": {
+      "relative_improvement": 0.006499972426871631,
+      "ci": [
+        -0.00883112608142328,
+        0.017189919776105407
+      ],
+      "ci_excludes_zero": false
+    },
+    "safe_vs_raw": {
+      "relative_improvement": -0.007092663623266742,
+      "ci": [
+        -0.013669112751955348,
+        -0.001004146591143577
+      ],
+      "ci_excludes_zero": true
+    }
+  },
+  "freshretailnet": {
+    "safe_vs_alpha": {
+      "relative_improvement": -0.008091915375405849,
+      "ci": [
+        -0.010163584357883249,
+        -0.00569636709420249
+      ],
+      "ci_excludes_zero": true
+    },
+    "safe_vs_raw": {
+      "relative_improvement": -0.0030187256596571894,
+      "ci": [
+        -0.008276386412015557,
+        0.0018618685973591288
+      ],
+      "ci_excludes_zero": false
+    }
+  },
+  "uci": {
+    "safe_vs_alpha": {
+      "relative_improvement": 0.6248832745556868,
+      "ci": [
+        0.06153211671983108,
+        0.816509540180392
+      ],
+      "ci_excludes_zero": true
+    },
+    "safe_vs_raw": {
+      "relative_improvement": -0.1694713054688506,
+      "ci": [
+        -0.48556909675880505,
+        -0.027837149663335586
+      ],
+      "ci_excludes_zero": true
+    }
+  }
+}

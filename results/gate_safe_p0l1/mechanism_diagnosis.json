@@ -1,0 +1,47 @@
+{
+  "SHRINKAGE_SUPPORTED": {
+    "supported": true,
+    "scope": "downside only",
+    "evidence": "\uac19\uc740 CALIBRATED fold \ub85c \ube44\uad50\ud558\uba74 SAFE \uac00 RAW \ub97c \uc774\uae30\ub294 \uac83\uc740 10\uac1c \uc911 6\uac1c\uc778\ub370, RAW \uac00 \uc74c\uc218\uc600\ub358 2\uac1c fold \ub294 2/2 \ubaa8\ub450 \uc644\ud654\ud55c\ub2e4 (favorita -3.676->-3.171, fresh -6.822->-3.817, m5 \uc740 \uc74c\uc218 fold \uc5c6\uc74c). \ub300\uc2e0 RAW \uac00 \ud06c\uac8c \uc591\uc218\uc600\ub358 fold \ub294 \uc190\ud574\ub2e4 (uci f2 90.0->84.4, fresh f3 5.35->2.72). origin \ub2e8\uc704 p95 \uc5f4\ud654\ub3c4 4/4 \uc5d0\uc11c SAFE \uac00 \ub0ae\ub2e4. \ub2e4\ub9cc cold start fold \ub97c \ud3ec\ud568\ud55c \uc804\uccb4 worst \ub85c \ubcf4\uba74 m5(+0.675->0.000)\uacfc uci(+6.893->0.000)\ub294 SAFE \uac00 \ub354 \ub098\uc058\ub2e4 \u2014 lambda=0 \uc774 \uadf8 fold \uc758 \uc774\ub4dd\uc744 \ubc84\ub9ac\uae30 \ub54c\ubb38.",
+    "tail_p95": {
+      "m5": {
+        "raw": 0.020942450503454453,
+        "safe": 0.015396289521689262
+      },
+      "favorita": {
+        "raw": 0.03875009011004254,
+        "safe": 0.018612631825785143
+      },
+      "freshretailnet": {
+        "raw": 0.1823991368127052,
+        "safe": 0.08999531366699524
+      },
+      "uci": {
+        "raw": 0.053904747476201616,
+        "safe": 0.016475511846376356
+      }
+    }
+  },
+  "STATIC_FALLBACK_DOMINANT": {
+    "supported": false,
+    "lambda_means": {
+      "m5": 0.8545858858956256,
+      "favorita": 0.7407181895432356,
+      "freshretailnet": 0.513414590643694,
+      "uci": 0.8666291051036812
+    },
+    "evidence": "lambda \ud3c9\uade0\uc774 0.51~0.87 \ub85c 0 \uadfc\ucc98\uac00 \uc544\ub2c8\ub2e4"
+  },
+  "RAW_GATE_STABLE_ENOUGH": {
+    "supported": false,
+    "evidence": "FreshRetailNet \uc5d0\uc11c RAW \ub3c4 aggregate \uc74c\uc218(-0.506%)\uc774\ubbc0\ub85c \uc548\uc815\uc801\uc774\uc9c0 \uc54a\ub2e4"
+  },
+  "TEMPORAL_CALIBRATION_UNSTABLE": {
+    "supported": false,
+    "evidence": "lambda sd 0.007~0.201, WARN \uc5c6\uc74c"
+  },
+  "LOCAL_ROUTING_NOT_ROBUST": {
+    "supported": true,
+    "evidence": "FreshRetailNet \uc740 RAW -0.506%, SAFE -0.809% \ub85c \ub458 \ub2e4 alpha \uc5d0 \uc9c4\ub2e4"
+  }
+}

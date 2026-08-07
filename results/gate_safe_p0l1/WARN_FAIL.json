@@ -1,0 +1,33 @@
+{
+  "warn": [
+    {
+      "code": "COLD_START_COSTS_THE_FIRST_FOLD",
+      "detail": "lambda=0 on the first evaluation fold discards raw's gain there: favorita +4.160% -> 0.000%, uci +6.893% -> 0.000%, fresh +1.844% -> 0.000%. Much of SAFE losing to RAW is this rule, which was frozen before the run."
+    },
+    {
+      "code": "SAFE_LOSES_TO_RAW_EVERYWHERE",
+      "detail": "safe_vs_raw is negative on all four datasets, with CI clear of zero on M5, Favorita and UCI. Shrinkage buys tail safety and pays mean accuracy."
+    },
+    {
+      "code": "FRESH_NOT_RECOVERED_AND_WORSE",
+      "detail": "FreshRetailNet aggregate goes from -0.506% (RAW) to -0.809% (SAFE); all three scale variants agree it is negative. RQ2 is answered no."
+    },
+    {
+      "code": "UCI_STILL_COLLAPSE_DEPENDENT",
+      "detail": "Removing the pre-identified collapse fold drops SAFE from +62.488% to +4.802% and RAW from +67.924% to +9.680%. The direction survives, the magnitude does not."
+    },
+    {
+      "code": "ONLY_TWO_TO_THREE_CALIBRATED_FOLDS",
+      "detail": "Each dataset gives 2-3 calibrated folds after the cold start, so the lambda-instability WARN (range > 0.8 with >= 3 folds) can only fire on M5 and Favorita."
+    },
+    {
+      "code": "EXTERNAL_WRITER_TOUCHED_A_SEALED_FILE",
+      "detail": "results/external_validity_screen/poster_stage2/poster_stage2.json changed during this run. It is untracked, was created outside this work stream, and is read by none of these modules; no artifact this task depends on changed."
+    },
+    {
+      "code": "NO_TEST_SCORED",
+      "detail": "No existing TEST was scored and no new dataset was used."
+    }
+  ],
+  "fail": []
+}

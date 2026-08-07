@@ -1,0 +1,33 @@
+{
+  "name": "SAFE_P0L1_V1",
+  "frozen_at_utc": "2026-08-07T18:33:47.095037+00:00",
+  "expert_a": "dlinear_point_plain",
+  "expert_b": "naive",
+  "expert_source": "results/expert_diversity/expert_set_spec.json",
+  "experts_frozen_during_gate_fitting": true,
+  "feature_variant": "G-NOSCALE",
+  "feature_policy": "as-of-origin only; structure recomputed per origin",
+  "architecture": "small MLP, hidden 16",
+  "output": "g = sigmoid(f(x))  (neutral parameterization)",
+  "mixture": "y = (1 - g) * A + g * B",
+  "loss": "direct normalized mixture MSE",
+  "normalization": "per-series train-window mean (train_scale), train only",
+  "gate_training": "TRAIN-internal OOF only, expanding time",
+  "global_alpha": "grid over [0,1] step 0.05, fitted on strictly earlier folds",
+  "optimizer": {
+    "epochs": 400,
+    "lr": 0.01,
+    "seed": 0
+  },
+  "candidate_search": "none; P0L1 is the only condition run",
+  "spec_sha256": "7ca4a177792c39625c1b3b4ed6213e1aa0c563063b3dfa027e281a80ac890a9d",
+  "base_method": "FINAL_GATE_CANDIDATE_V1",
+  "base_method_sha256": "7ca4a177792c39625c1b3b4ed6213e1aa0c563063b3dfa027e281a80ac890a9d",
+  "addition": "g_safe = alpha + lambda * (g_raw - alpha), lambda in [0,1]",
+  "lambda_fitting": "weighted least squares in closed form under the direct loss's own mask and train-scale weighting; never a grid search",
+  "lambda_information_boundary": "cross-fitted folds strictly earlier than the evaluation fold",
+  "cold_start_rule": "lambda = 0 when no earlier cross-fitted fold exists",
+  "denominator_floor": 1e-08,
+  "no_signal_rule": "lambda = 0 (SAFE_GATE_NO_CALIBRATION_SIGNAL)",
+  "safe_spec_sha256": "bc8a3771e307f632f0b4e47d511c5bce1f658e5ad4a71c0a2b5d21ccfdc96e26"
+}

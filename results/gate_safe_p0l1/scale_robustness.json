@@ -1,0 +1,22 @@
+{
+  "m5": {
+    "normalized_mse": 0.006072216198277734,
+    "mean_per_series_relative": 0.020549020245340225,
+    "rmse_of_normalized": 0.006249560324156572
+  },
+  "favorita": {
+    "normalized_mse": 0.006499972426871631,
+    "mean_per_series_relative": 0.016881905997303544,
+    "rmse_of_normalized": 0.004290894587227876
+  },
+  "freshretailnet": {
+    "normalized_mse": -0.008091915375405849,
+    "mean_per_series_relative": -0.008916611195427424,
+    "rmse_of_normalized": -0.004624012295478937
+  },
+  "uci": {
+    "normalized_mse": 0.6248832745556868,
+    "mean_per_series_relative": 0.07120048370232258,
+    "rmse_of_normalized": 0.08738821616681994
+  }
+}

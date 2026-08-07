@@ -1,0 +1,14 @@
+{
+  "PRIMARY_ALL_FOLDS": {
+    "n_series": 2158,
+    "safe_vs_alpha": 0.6248832745556868,
+    "raw_vs_alpha": 0.6792424716278731
+  },
+  "SENSITIVITY_PREIDENTIFIED_COLLAPSE_REMOVED": {
+    "n_series": 2158,
+    "safe_vs_alpha": 0.04801741821101139,
+    "raw_vs_alpha": 0.09679615829995279
+  },
+  "preidentified_collapse_fold": 2,
+  "identified_from": "results/gate_p0l1_robustness (largest E_alpha), recorded before this run"
+}
