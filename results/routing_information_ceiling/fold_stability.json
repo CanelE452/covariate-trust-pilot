@@ -1,0 +1,129 @@
+{
+  "m5": {
+    "n_validation_folds": 4,
+    "hgb_beats_mlp_folds": 3,
+    "hgb_beats_alpha_folds": 4,
+    "mlp_beats_alpha_folds": 4,
+    "hgb_vs_alpha": {
+      "mean": 0.010712726556201925,
+      "median": 0.010064458133635702,
+      "worst": 0.0053589985958782,
+      "best": 0.0173629913616581,
+      "std": 0.0043006068786441195
+    },
+    "hgb_vs_mlp": {
+      "mean": 0.002939162719703475,
+      "median": 0.00239610073305975,
+      "worst": -0.0014009865763875,
+      "best": 0.0083654359890819,
+      "std": 0.0034973746664634085
+    },
+    "fold_gain_contribution": {
+      "1": 35.90278514377614,
+      "2": 21.014884340665922,
+      "3": 42.405526985767345,
+      "4": 66.23715582093536
+    },
+    "total_gain": 165.56035229114477,
+    "dominant_fold": {
+      "fold": 4,
+      "share": 0.4000786112393296
+    },
+    "WARN_SINGLE_FOLD_DOMINANCE": false
+  },
+  "favorita": {
+    "n_validation_folds": 4,
+    "hgb_beats_mlp_folds": 2,
+    "hgb_beats_alpha_folds": 3,
+    "mlp_beats_alpha_folds": 3,
+    "hgb_vs_alpha": {
+      "mean": 0.00330513128467825,
+      "median": 0.0059016989940996,
+      "worst": -0.0113062303967672,
+      "best": 0.012723357547281,
+      "std": 0.009287681188547146
+    },
+    "hgb_vs_mlp": {
+      "mean": -0.008315252633560276,
+      "median": -0.008285826066036901,
+      "worst": -0.0412411829234408,
+      "best": 0.0245518245212735,
+      "std": 0.025098871539994367
+    },
+    "fold_gain_contribution": {
+      "1": 13.993075402714283,
+      "2": -49.90924343855434,
+      "3": 237.4082766652818,
+      "4": 79.13060398540992
+    },
+    "total_gain": 280.62271261485165,
+    "dominant_fold": {
+      "fold": 3,
+      "share": 0.8460052091047929
+    },
+    "WARN_SINGLE_FOLD_DOMINANCE": true
+  },
+  "freshretailnet": {
+    "n_validation_folds": 3,
+    "hgb_beats_mlp_folds": 1,
+    "hgb_beats_alpha_folds": 1,
+    "mlp_beats_alpha_folds": 2,
+    "hgb_vs_alpha": {
+      "mean": -0.0037069323667813675,
+      "median": -0.0050008657757034,
+      "worst": -0.0549491811141874,
+      "best": 0.0488292497895467,
+      "std": 0.04237724529320204
+    },
+    "hgb_vs_mlp": {
+      "mean": -0.005452856618460833,
+      "median": -0.0049047228391187,
+      "worst": -0.0238815393045763,
+      "best": 0.0124276922883125,
+      "std": 0.014828248102783426
+    },
+    "fold_gain_contribution": {
+      "1": -66.01066491227056,
+      "2": -514.7499130300287,
+      "3": 202.45731683460258
+    },
+    "total_gain": -378.3032611076967,
+    "dominant_fold": null,
+    "WARN_SINGLE_FOLD_DOMINANCE": false
+  },
+  "uci": {
+    "n_validation_folds": 3,
+    "hgb_beats_mlp_folds": 0,
+    "hgb_beats_alpha_folds": 3,
+    "mlp_beats_alpha_folds": 3,
+    "hgb_vs_alpha": {
+      "mean": 0.3623581245232759,
+      "median": 0.1608003688386327,
+      "worst": 0.0503100888978216,
+      "best": 0.8759639158333735,
+      "std": 0.36596466782172954
+    },
+    "hgb_vs_mlp": {
+      "mean": -0.08971720901779456,
+      "median": -0.0200018258996789,
+      "worst": -0.2440299704246681,
+      "best": -0.0051198307290367,
+      "std": 0.10928461219777089
+    },
+    "fold_gain_contribution": {
+      "1": 57529.87265262706,
+      "2": 2540990.2152706934,
+      "3": 63119.73068722108
+    },
+    "total_gain": 2661639.8186105415,
+    "dominant_fold": {
+      "fold": 2,
+      "share": 0.9546709504057423
+    },
+    "WARN_SINGLE_FOLD_DOMINANCE": true
+  },
+  "_criterion": {
+    "definition": "per dataset, contribution of fold k is the summed origin-level gain sum_j (E_alpha_j - E_HGB_j) over that fold's validation origins; the dataset total is the sum over folds.  WARN when the total is positive and the largest single fold contributes more than the threshold share.",
+    "threshold_share": 0.7
+  }
+}

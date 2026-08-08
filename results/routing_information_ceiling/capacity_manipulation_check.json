@@ -1,0 +1,25 @@
+{
+  "m5": {
+    "train_fit_gain": 0.03019495326622472,
+    "validation_alpha_to_oracle_headroom": 0.07731541946557725,
+    "train_gain_relative_to_headroom": 0.3905424490346103
+  },
+  "favorita": {
+    "train_fit_gain": 0.013151020390154908,
+    "validation_alpha_to_oracle_headroom": 0.05950465609689333,
+    "train_gain_relative_to_headroom": 0.22100825805531388
+  },
+  "freshretailnet": {
+    "train_fit_gain": 0.04376838957087062,
+    "validation_alpha_to_oracle_headroom": 0.17868387622897453,
+    "train_gain_relative_to_headroom": 0.24494873569220985
+  },
+  "uci": {
+    "train_fit_gain": 0.0007130398223623113,
+    "validation_alpha_to_oracle_headroom": 0.6945604764614105,
+    "train_gain_relative_to_headroom": 0.0010266058126357086
+  },
+  "_threshold": 0.1,
+  "_met": false,
+  "_note": "the frozen 'clearly better' threshold is 10% on the direct-mixture scale and no dataset reaches it; the capacity manipulation is therefore only weakly established, and no sweep was run to strengthen it because G9 forbids it. The headroom column is the validation-side alpha-to-oracle gap, given so the training gain can be read against the size of the effect that exists at all."
+}

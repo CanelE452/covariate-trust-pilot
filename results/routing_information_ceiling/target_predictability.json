@@ -1,0 +1,59 @@
+{
+  "m5": {
+    "pooled_corr_mlp_gstar": 0.3459356289537848,
+    "pooled_corr_hgb_gstar": 0.4303433080175324,
+    "pooled_spearman_mlp_gstar": 0.33979391504273465,
+    "pooled_spearman_hgb_gstar": 0.39864429454854117,
+    "origin_weighted_wrmse_mlp_u": 0.3847451759149849,
+    "origin_weighted_wrmse_hgb_u": 0.38081227118603156,
+    "origin_weighted_wrmse_mlp_gstar": 0.22697044372550151,
+    "origin_weighted_wrmse_hgb_gstar": 0.21457946040587078,
+    "mean_g_mlp": 0.14402365015796054,
+    "mean_g_hgb": 0.2160321256462135,
+    "std_g_mlp": 0.21163267088645696,
+    "std_g_hgb": 0.24175682547620714
+  },
+  "favorita": {
+    "pooled_corr_mlp_gstar": 0.3700267158490361,
+    "pooled_corr_hgb_gstar": 0.3670007185092564,
+    "pooled_spearman_mlp_gstar": 0.3125088394273843,
+    "pooled_spearman_hgb_gstar": 0.3172213081055095,
+    "origin_weighted_wrmse_mlp_u": 0.5547996297568517,
+    "origin_weighted_wrmse_hgb_u": 0.5693350277402205,
+    "origin_weighted_wrmse_mlp_gstar": 0.2601494252918568,
+    "origin_weighted_wrmse_hgb_gstar": 0.2825230167840081,
+    "mean_g_mlp": 0.23387155717033703,
+    "mean_g_hgb": 0.28569259738827635,
+    "std_g_mlp": 0.20447874412766573,
+    "std_g_hgb": 0.24253841591917796
+  },
+  "freshretailnet": {
+    "pooled_corr_mlp_gstar": 0.22462551730968291,
+    "pooled_corr_hgb_gstar": 0.3697511240654439,
+    "pooled_spearman_mlp_gstar": 0.21861059492474927,
+    "pooled_spearman_hgb_gstar": 0.36525483100469996,
+    "origin_weighted_wrmse_mlp_u": 0.7221917439419409,
+    "origin_weighted_wrmse_hgb_u": 0.7280106404832408,
+    "origin_weighted_wrmse_mlp_gstar": 0.38064981073172804,
+    "origin_weighted_wrmse_hgb_gstar": 0.378093892024282,
+    "mean_g_mlp": 0.34699232775095734,
+    "mean_g_hgb": 0.4988726912454524,
+    "std_g_mlp": 0.2858213585597439,
+    "std_g_hgb": 0.35937736777881163
+  },
+  "uci": {
+    "pooled_corr_mlp_gstar": 0.34414078594407543,
+    "pooled_corr_hgb_gstar": 0.2513792481870125,
+    "pooled_spearman_mlp_gstar": 0.32378576172190776,
+    "pooled_spearman_hgb_gstar": 0.24755831501381184,
+    "origin_weighted_wrmse_mlp_u": 0.36272364259181084,
+    "origin_weighted_wrmse_hgb_u": 0.3914758561312173,
+    "origin_weighted_wrmse_mlp_gstar": 0.1886753910075666,
+    "origin_weighted_wrmse_hgb_gstar": 0.22846338084482568,
+    "mean_g_mlp": 0.5508133086300241,
+    "mean_g_hgb": 0.4596304916390916,
+    "std_g_mlp": 0.2536469218581302,
+    "std_g_hgb": 0.2606921242267143
+  },
+  "_note": "diagnostic only; a better fit to g* or u does not override the forecast-error comparison, which stays primary"
+}

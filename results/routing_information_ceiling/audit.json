@@ -1,0 +1,21 @@
+{
+  "historical_preserved": {
+    "gate_v2_external": "EXTERNAL_VALIDATION_NOT_REPLICATED",
+    "gate_v3": "DIRECT_LOSS_SUPPORTED; ALPHA_ANCHOR_SUPPORTED=False; FEATURE_ROUTING_LIMITED=True",
+    "p0l1": "P0L1_TEMPORAL_STRONG by the operational rule, interpretation B",
+    "safe_p0l1": "SAFE_P0L1_TEMPORAL_MIXED"
+  },
+  "what_changed": "only the routing function approximator",
+  "hgb_config": {
+    "loss": "squared_error",
+    "learning_rate": 0.05,
+    "max_iter": 200,
+    "max_leaf_nodes": 31,
+    "min_samples_leaf": 20,
+    "l2_regularization": 1.0,
+    "early_stopping": false,
+    "random_state": 0
+  },
+  "flat_policy": "excluded_from_fitting_kept_in_evaluation",
+  "git_commit": "5fc0536972ec1e528d018fdfb280c33a93b5adc8"
+}

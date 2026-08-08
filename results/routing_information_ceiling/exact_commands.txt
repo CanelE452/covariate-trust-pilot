@@ -1,0 +1,2 @@
+python -m experiments.routing_information_ceiling.run run
+python -m experiments.routing_information_ceiling.analyze run

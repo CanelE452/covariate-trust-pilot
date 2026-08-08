@@ -1,0 +1,22 @@
+{
+  "E_alpha": 0.41631064243133575,
+  "E_mlp": 0.41841630887176073,
+  "E_hgb": 0.42175804201243366,
+  "mlp_vs_alpha": -0.005057921239119604,
+  "hgb_vs_alpha": -0.013084939528050569,
+  "hgb_vs_mlp": -0.007986622580949945,
+  "ci_hgb_vs_alpha": [
+    -0.021025662884720117,
+    -0.0058137585238352135
+  ],
+  "ci_hgb_vs_mlp": [
+    -0.01973243280211793,
+    0.002288918841573428
+  ],
+  "ci_mlp_vs_alpha": [
+    -0.010731885379620611,
+    0.0008526953362832989
+  ],
+  "verdict": "FRESH_ROUTING_NOT_RECOVERED",
+  "note": "the dataset that was the primary external confirmation; it is reported whatever it says and is never dropped"
+}

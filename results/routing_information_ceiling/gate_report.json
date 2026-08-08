@@ -1,0 +1,36 @@
+{
+  "G0a_scientific_dependency_seal": true,
+  "G0b_repository_change_warning_promoted": false,
+  "G1_existing_test_untouched": true,
+  "G2_no_new_dataset": true,
+  "G3_expert_pair_frozen": [
+    "dlinear_point_plain",
+    "naive"
+  ],
+  "G4_features_frozen": true,
+  "G5_feature_matrix_parity": true,
+  "G6_objective_equivalent": true,
+  "G7_quadratic_identity": true,
+  "G8_single_fixed_hgb_config": true,
+  "G9_no_hyperparameter_sweep": true,
+  "G10_expanding_time_causality": true,
+  "G11_same_validation_rows": true,
+  "G12_no_future_leakage": true,
+  "G13_primary_is_crossfitted_aggregate": true,
+  "G14_bootstrap_unit_series": true,
+  "G15_uci_collapse_sensitivity_only": true,
+  "G16_fresh_negative_not_excluded": true,
+  "G17_no_selection_from_results": true,
+  "G18_no_temporal_encoder": true,
+  "G19_no_stronger_backbone": true,
+  "G20_repository_regression": "272 passed, 5 skipped",
+  "fold_boundary_match": true,
+  "mlp_reference_reproduced": {
+    "m5": true,
+    "favorita": true,
+    "freshretailnet": true,
+    "uci": true
+  },
+  "primary_diagnosis": "CURRENT_FEATURE_INFORMATION_LIMITED",
+  "secondary": []
+}

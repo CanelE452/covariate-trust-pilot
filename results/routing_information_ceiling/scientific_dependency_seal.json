@@ -1,0 +1,91 @@
+{
+  "sealed_at_utc": "2026-08-08T01:21:44.093708+00:00",
+  "n_artifacts": 21,
+  "missing": [],
+  "artifacts": {
+    "results/expert_diversity/expert_set_spec.json": {
+      "sha256": "16c1e141b7ba7cff6d42b66e96894f0f20aced151523ea30df1f1262607ad2ac",
+      "bytes": 11731
+    },
+    "results/structure_gate/gate_v2_spec.json": {
+      "sha256": "b0961dc3ecb608d981da1d116730767ce21f7e1d6f871ce6127b0aefb233dd99",
+      "bytes": 8646
+    },
+    "results/gate_p0l1_robustness/expanded_fold_manifest.json": {
+      "sha256": "1e5e99efcabf06ab4e2998a8d7774ffd48740a19f15cdbf603fcb1aa3212c508",
+      "bytes": 6629
+    },
+    "results/gate_p0l1_robustness/final_candidate_spec.json": {
+      "sha256": "c66f362dee672cb5e6b9e3a20deb1b522f9494a9c36dbbf576273e5af7d01d68",
+      "bytes": 1023
+    },
+    "results/gate_p0l1_robustness/aggregate_result.json": {
+      "sha256": "f11c659e970390e104172667eca6b76a9ccbcfc69a4483eeb6226d5a87ca4a1f",
+      "bytes": 17190
+    },
+    "results/gate_safe_p0l1/uci_sensitivity.json": {
+      "sha256": "07e7e27a140f5067da778a80da312c64984724a2493f9d80b11bb7b900375a34",
+      "bytes": 439
+    },
+    "data/processed/series.parquet": {
+      "sha256": "aa8d96ecd6ed6eaa91274087b4b90880b5da4ec3954962d94d57e37947f13aba",
+      "bytes": 2421954
+    },
+    "data/processed/favorita_series.parquet": {
+      "sha256": "2764b5d2b34e8d78fe473f06571971a88f3c9ec04db44ef6c86e86ec543fad58",
+      "bytes": 2079313
+    },
+    "data/processed/freshretailnet_grid.npz": {
+      "sha256": "589d1f05a5e59c4f040c80268b7a558ab13350aaa96124cba20b51f9a0f80483",
+      "bytes": 6032759
+    },
+    "data/processed/uci_grid.npz": {
+      "sha256": "8159ffea8801a7d13aea278eed7f40035ac82961183cf2960ba326b58c073d9f",
+      "bytes": 676962
+    },
+    "data/calendar.csv": {
+      "sha256": "d12b5914ef03e66649adf5dd9e996e6602251c22b7a6af8f1f7e3aa12f8860f5",
+      "bytes": 103469
+    },
+    "data/sell_prices.csv": {
+      "sha256": "9da3ad1f8b8ccacdbdc70612191dd375ec24a4ac6625c24b75b3bc60b0bed2ef",
+      "bytes": 203395785
+    },
+    "experiments/p0l1_robustness/run.py": {
+      "sha256": "53466c9117e2a8789be4e60dd968089fb97d6d85e055d03d0f8962ab8f6d0554",
+      "bytes": 14373
+    },
+    "experiments/p0l1_robustness/folds.py": {
+      "sha256": "76657a3ce640360f16dc6719cd431cf45f8c5f658daa505d45725dc5eb3c7d0c",
+      "bytes": 4864
+    },
+    "experiments/structure_gate/features.py": {
+      "sha256": "4cc704a0691db7e0745ae7a0bef5e26df69fce4bcd969ba37b118013cb8face2",
+      "bytes": 5787
+    },
+    "experiments/structure_gate/gate.py": {
+      "sha256": "c2c28199111e3b5ae8e2fa69e9676587ea0a4264545e107deef38cfd6a4fba2a",
+      "bytes": 16590
+    },
+    "experiments/structure_gate/gate_v2.py": {
+      "sha256": "0c783061fd27af67a90c37d050f4026b1d97d623db9314eb46003f351c3fa2de",
+      "bytes": 20364
+    },
+    "experiments/structure_gate/convex_oracle.py": {
+      "sha256": "65afcda147cbce8f6211774aee05f23339ab026cf0520ce54ebdd45247d28318",
+      "bytes": 11195
+    },
+    "experiments/gate_v3/oof.py": {
+      "sha256": "4df204d3f3f894cd0ea29ca924cd0a212e7ecbddcbe7f93a541596369416f94d",
+      "bytes": 8423
+    },
+    "experiments/gate_v3/diagnose.py": {
+      "sha256": "1dc4235a1d69414ace4776085bd24e05528a4ebe2c657e24fa27f6a70aac9c7c",
+      "bytes": 6979
+    },
+    "experiments/multi_benchmark/run.py": {
+      "sha256": "7efb70fc43ca4fcdb492a871baf3b3932662e221fd212dba510f18d318554538",
+      "bytes": 17649
+    }
+  }
+}

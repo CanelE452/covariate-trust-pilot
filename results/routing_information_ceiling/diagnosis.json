@@ -1,0 +1,120 @@
+{
+  "capacity_criteria": {
+    "1_hgb_beats_mlp_on_3_of_4": {
+      "value": 1,
+      "datasets": [
+        "m5"
+      ],
+      "passed": false
+    },
+    "2_fresh_hgb_beats_mlp_and_alpha": {
+      "hgb_vs_mlp": -0.007986622580949945,
+      "hgb_vs_alpha": -0.013084939528050569,
+      "passed": false
+    },
+    "3_non_uci_ci_excludes_zero": {
+      "datasets": [],
+      "passed": false
+    },
+    "4_recovery_increases_on_3_of_4": {
+      "datasets": [
+        "m5"
+      ],
+      "passed": false
+    },
+    "5_no_catastrophic_tail": {
+      "warn_datasets": [
+        "uci"
+      ],
+      "passed": false
+    }
+  },
+  "capacity_criteria_passed": 0,
+  "information_criteria": {
+    "1_training_fit_clearly_better": {
+      "train_fit_gain": {
+        "m5": 0.03019495326622472,
+        "favorita": 0.013151020390154908,
+        "freshretailnet": 0.04376838957087062,
+        "uci": 0.0007130398223623113
+      },
+      "datasets": [],
+      "passed": false
+    },
+    "2_no_consistent_validation_win": {
+      "hgb_vs_mlp": {
+        "m5": 0.0028570954140435586,
+        "favorita": -0.006188518604328232,
+        "freshretailnet": -0.007986622580949945,
+        "uci": -0.06935071568667349
+      },
+      "passed": true
+    },
+    "3_fresh_still_negative_vs_alpha": {
+      "hgb_vs_alpha": -0.013084939528050569,
+      "passed": true
+    },
+    "4_recovery_increase_small": {
+      "differences": {
+        "m5": 0.03666764326799914,
+        "favorita": -0.10259689147920988,
+        "freshretailnet": -0.04492301408687116,
+        "uci": -0.03202710909757833
+      },
+      "passed": true
+    }
+  },
+  "nonstationary_criteria": {
+    "1_training_fit_improves": {
+      "train_fit_gain": {
+        "m5": 0.03019495326622472,
+        "favorita": 0.013151020390154908,
+        "freshretailnet": 0.04376838957087062,
+        "uci": 0.0007130398223623113
+      },
+      "passed": true
+    },
+    "2_large_fold_reversal": {
+      "sign_flip": {
+        "m5": false,
+        "favorita": false,
+        "freshretailnet": true,
+        "uci": false
+      },
+      "worst_by_dataset": {
+        "m5": 0.0053589985958782,
+        "favorita": -0.0113062303967672,
+        "freshretailnet": -0.0549491811141874,
+        "uci": 0.0503100888978216
+      },
+      "passed": false
+    },
+    "3_unstable_signs": {
+      "positive_fold_fraction": {
+        "m5": 1.0,
+        "favorita": 0.75,
+        "freshretailnet": 0.3333333333333333,
+        "uci": 1.0
+      },
+      "passed": true
+    }
+  },
+  "strong_refutation_of_capacity_hypothesis": false,
+  "verdicts": {
+    "MLP_CAPACITY_LIMITED": false,
+    "CURRENT_FEATURE_INFORMATION_LIMITED": true,
+    "FEATURE_SIGNAL_NONSTATIONARY": false
+  },
+  "primary": "CURRENT_FEATURE_INFORMATION_LIMITED",
+  "secondary": [],
+  "rule": {
+    "capacity_min_datasets_hgb_beats_mlp": 3,
+    "capacity_min_datasets_recovery_up": 3,
+    "train_fit_clearly_better": 0.1,
+    "train_fit_min_datasets": 3,
+    "small_validation_gain": 0.005,
+    "small_recovery_increase": 0.05,
+    "nonstationary_fold_reversal": 0.02
+  },
+  "rule_status": "unvalidated operational diagnostic rule, frozen before the run"
+}

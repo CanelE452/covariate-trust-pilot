@@ -1,0 +1,22 @@
+{
+  "PRIMARY_ALL_FOLDS": {
+    "n_series": 2158,
+    "hgb_vs_alpha": 0.6569977074733776,
+    "mlp_vs_alpha": 0.6792424716278731,
+    "hgb_vs_mlp": -0.06935071568667349
+  },
+  "SENSITIVITY_PREIDENTIFIED_COLLAPSE_REMOVED": {
+    "n_series": 2158,
+    "hgb_vs_alpha": 0.08140963443545211,
+    "mlp_vs_alpha": 0.09679615829995279,
+    "hgb_vs_mlp": -0.017035494263996417
+  },
+  "FOLD_BALANCED_MEDIAN": {
+    "hgb_vs_alpha": 0.1608003688386327,
+    "mlp_vs_alpha": 0.1650750432884442,
+    "hgb_vs_mlp": -0.0200018258996789
+  },
+  "preidentified_collapse_fold": 2,
+  "identified_from": "results/gate_p0l1_robustness (largest E_alpha); recorded before this run",
+  "note": "the collapse fold stays in the primary; removal is sensitivity only"
+}

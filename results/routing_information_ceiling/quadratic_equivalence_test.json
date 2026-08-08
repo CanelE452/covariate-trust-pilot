@@ -1,0 +1,205 @@
+{
+  "rows": [
+    {
+      "dataset": "m5",
+      "g": 0.0,
+      "n_rows": 17831,
+      "max_abs_error": 7.105427357601002e-15,
+      "max_rel_error": 4.110101130867495e-16
+    },
+    {
+      "dataset": "m5",
+      "g": 0.1,
+      "n_rows": 17831,
+      "max_abs_error": 1.4210854715202004e-14,
+      "max_rel_error": 4.896856643480276e-16
+    },
+    {
+      "dataset": "m5",
+      "g": 0.25,
+      "n_rows": 17831,
+      "max_abs_error": 1.4210854715202004e-14,
+      "max_rel_error": 5.690400063886125e-16
+    },
+    {
+      "dataset": "m5",
+      "g": 0.5,
+      "n_rows": 17831,
+      "max_abs_error": 1.4210854715202004e-14,
+      "max_rel_error": 8.856375602260802e-16
+    },
+    {
+      "dataset": "m5",
+      "g": 0.75,
+      "n_rows": 17831,
+      "max_abs_error": 2.842170943040401e-14,
+      "max_rel_error": 5.346221803899453e-15
+    },
+    {
+      "dataset": "m5",
+      "g": 0.9,
+      "n_rows": 17831,
+      "max_abs_error": 5.684341886080802e-14,
+      "max_rel_error": 3.7843075638258966e-14
+    },
+    {
+      "dataset": "m5",
+      "g": 1.0,
+      "n_rows": 17831,
+      "max_abs_error": 1.1368683772161603e-13,
+      "max_rel_error": 0.00025376526277146434
+    },
+    {
+      "dataset": "favorita",
+      "g": 0.0,
+      "n_rows": 18000,
+      "max_abs_error": 4.547473508864641e-13,
+      "max_rel_error": 4.3061704200781274e-16
+    },
+    {
+      "dataset": "favorita",
+      "g": 0.1,
+      "n_rows": 18000,
+      "max_abs_error": 4.547473508864641e-13,
+      "max_rel_error": 5.666491336361124e-16
+    },
+    {
+      "dataset": "favorita",
+      "g": 0.25,
+      "n_rows": 18000,
+      "max_abs_error": 2.2737367544323206e-13,
+      "max_rel_error": 4.97851946202069e-16
+    },
+    {
+      "dataset": "favorita",
+      "g": 0.5,
+      "n_rows": 18000,
+      "max_abs_error": 2.2737367544323206e-13,
+      "max_rel_error": 7.139642577875155e-16
+    },
+    {
+      "dataset": "favorita",
+      "g": 0.75,
+      "n_rows": 18000,
+      "max_abs_error": 4.547473508864641e-13,
+      "max_rel_error": 5.118500946692304e-15
+    },
+    {
+      "dataset": "favorita",
+      "g": 0.9,
+      "n_rows": 18000,
+      "max_abs_error": 4.547473508864641e-13,
+      "max_rel_error": 3.204600704509621e-14
+    },
+    {
+      "dataset": "favorita",
+      "g": 1.0,
+      "n_rows": 18000,
+      "max_abs_error": 4.547473508864641e-13,
+      "max_rel_error": 0.0005075305255429287
+    },
+    {
+      "dataset": "freshretailnet",
+      "g": 0.0,
+      "n_rows": 84660,
+      "max_abs_error": 5.684341886080802e-14,
+      "max_rel_error": 5.047495223692415e-16
+    },
+    {
+      "dataset": "freshretailnet",
+      "g": 0.1,
+      "n_rows": 84660,
+      "max_abs_error": 1.4210854715202004e-14,
+      "max_rel_error": 6.217033991849188e-16
+    },
+    {
+      "dataset": "freshretailnet",
+      "g": 0.25,
+      "n_rows": 84660,
+      "max_abs_error": 5.684341886080802e-14,
+      "max_rel_error": 6.575697128740857e-16
+    },
+    {
+      "dataset": "freshretailnet",
+      "g": 0.5,
+      "n_rows": 84660,
+      "max_abs_error": 5.684341886080802e-14,
+      "max_rel_error": 3.095756037005127e-14
+    },
+    {
+      "dataset": "freshretailnet",
+      "g": 0.75,
+      "n_rows": 84660,
+      "max_abs_error": 5.684341886080802e-14,
+      "max_rel_error": 5.057471091260904e-14
+    },
+    {
+      "dataset": "freshretailnet",
+      "g": 0.9,
+      "n_rows": 84660,
+      "max_abs_error": 5.684341886080802e-14,
+      "max_rel_error": 3.5667703809061637e-14
+    },
+    {
+      "dataset": "freshretailnet",
+      "g": 1.0,
+      "n_rows": 84660,
+      "max_abs_error": 5.684341886080802e-14,
+      "max_rel_error": 6.344131569286609e-05
+    },
+    {
+      "dataset": "uci",
+      "g": 0.0,
+      "n_rows": 24573,
+      "max_abs_error": 5.820766091346741e-11,
+      "max_rel_error": 4.820172537848574e-16
+    },
+    {
+      "dataset": "uci",
+      "g": 0.1,
+      "n_rows": 24573,
+      "max_abs_error": 1.862645149230957e-09,
+      "max_rel_error": 7.04104164433688e-16
+    },
+    {
+      "dataset": "uci",
+      "g": 0.25,
+      "n_rows": 24573,
+      "max_abs_error": 9.313225746154785e-10,
+      "max_rel_error": 5.973292875573653e-16
+    },
+    {
+      "dataset": "uci",
+      "g": 0.5,
+      "n_rows": 24573,
+      "max_abs_error": 9.313225746154785e-10,
+      "max_rel_error": 9.586927643894614e-16
+    },
+    {
+      "dataset": "uci",
+      "g": 0.75,
+      "n_rows": 24573,
+      "max_abs_error": 3.4924596548080444e-10,
+      "max_rel_error": 6.000073483814104e-15
+    },
+    {
+      "dataset": "uci",
+      "g": 0.9,
+      "n_rows": 24573,
+      "max_abs_error": 1.2223608791828156e-09,
+      "max_rel_error": 6.596549244647961e-14
+    },
+    {
+      "dataset": "uci",
+      "g": 1.0,
+      "n_rows": 24573,
+      "max_abs_error": 1.1641532182693481e-10,
+      "max_rel_error": 0.06496390726949487
+    }
+  ],
+  "max_abs_error": 1.862645149230957e-09,
+  "n_comparisons": 1015448,
+  "tolerance": 1e-06,
+  "passed": true,
+  "note": "absolute tolerance rather than bit equality: the two expressions differ in floating-point association, and the errors scale with the size of the loss itself"
+}
