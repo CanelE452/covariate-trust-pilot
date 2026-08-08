@@ -1,0 +1,2 @@
+python -m experiments.temporal_routing_encoder.run run
+python -m experiments.temporal_routing_encoder.analyze run

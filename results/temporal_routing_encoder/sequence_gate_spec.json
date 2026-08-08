@@ -1,0 +1,105 @@
+{
+  "name": "RAW_HISTORY_SEQUENCE_GATE_V1",
+  "role": "final representation experiment on the gate axis",
+  "encoder": {
+    "type": "GRU",
+    "input_size": 3,
+    "hidden_size": 16,
+    "num_layers": 1,
+    "batch_first": true,
+    "dropout": 0,
+    "bidirectional": false
+  },
+  "head": {
+    "context": "concat(h_t, A_norm, B_norm)",
+    "layers": "single Linear(hidden + 2*horizon, 1) then sigmoid",
+    "hidden_mlp": null,
+    "attention": false,
+    "layer_norm": false
+  },
+  "channels": [
+    {
+      "name": "y_norm",
+      "definition": "y_tau / scale_t, zeroed where unobserved"
+    },
+    {
+      "name": "occurrence",
+      "definition": "1[y_tau > 0] and observed, zeroed where unobserved"
+    },
+    {
+      "name": "observed_mask",
+      "definition": "1 where the step is observable at the origin"
+    }
+  ],
+  "excluded_inputs": [
+    "ADI",
+    "CV2",
+    "rho_interval",
+    "rho_magnitude",
+    "zero_ratio",
+    "age_since_last_event",
+    "recent_occurrence_rate",
+    "train_scale_as_feature",
+    "SBC_regime",
+    "every G-NOSCALE descriptor",
+    "mean(A)",
+    "mean(B)",
+    "disagreement summaries",
+    "any hand-engineered forecast statistic"
+  ],
+  "expert_context": "raw A_norm and B_norm vectors of length horizon, no summaries",
+  "mixture": "y = (1 - g) * A + g * B",
+  "loss": "direct normalized mixture MSE, identical to P0L1",
+  "training": {
+    "optimizer": "Adam",
+    "lr": 0.01,
+    "epochs": 400,
+    "seed": 0,
+    "batching": "full batch, accumulated in chunks of 8192 rows for memory only",
+    "chunk_rows": 8192,
+    "patience": null,
+    "search": "none"
+  },
+  "seed_policy": {
+    "mode": "canonical_seed_primary_plus_reproducibility_rerun",
+    "primary_seed": 0,
+    "reproducibility_rerun": true,
+    "additional_diagnostic_seeds": [],
+    "post_hoc_seed_retry": "forbidden"
+  },
+  "experts_receive_gradient": false,
+  "folds": "P0L1 expanded temporal fold manifest, unchanged",
+  "test_used": false,
+  "new_dataset_used": false,
+  "stop_rule": {
+    "green": {
+      "1_seq_beats_alpha_datasets": 3,
+      "2_fresh_seq_vs_alpha_positive": true,
+      "3_fresh_positive_folds_min": 2,
+      "3_fresh_folds_total": 3,
+      "4_seq_beats_p0l1_datasets": 3,
+      "5_non_uci_ci_excludes_zero": 1,
+      "6_overall_positive_fold_rate": 0.8,
+      "7_worst_fold_floor": -0.02,
+      "8_no_scale_sign_contradiction": true,
+      "9_no_critical_integrity_failure": true
+    },
+    "red_any_of": [
+      "fresh aggregate <= 0",
+      "two or more datasets worse than alpha in aggregate",
+      "fails to beat P0L1 on at least 3 of 4",
+      "severe temporal fold reversal",
+      "catastrophic tail worsening"
+    ],
+    "severe_fold_reversal": {
+      "datasets": 2,
+      "worst_below": -0.02
+    },
+    "catastrophic_tail": {
+      "absolute_floor": 0.05,
+      "ratio_over_p0l1": 1.5
+    },
+    "frozen_before_results": true
+  },
+  "spec_sha256": "3c972cbf8bba2c90873615fc6fd396a28963594684ee02951dc058a4a85f11ad"
+}

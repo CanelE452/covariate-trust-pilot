@@ -1,0 +1,21 @@
+{
+  "E_alpha": 0.41631064243133575,
+  "E_p0l1": 0.41841630887176073,
+  "E_seq": 0.40528751797892204,
+  "seq_vs_alpha": 0.026478123134293433,
+  "seq_vs_p0l1": 0.031377340257696555,
+  "p0l1_vs_alpha": -0.005057921239119604,
+  "ci_seq_vs_alpha": [
+    0.020680818734861463,
+    0.03286603848739897
+  ],
+  "ci_seq_vs_alpha_excludes_zero": true,
+  "ci_seq_vs_p0l1": [
+    0.02556880953006714,
+    0.037304972015692134
+  ],
+  "positive_folds": 2,
+  "n_folds": 3,
+  "verdict": "FRESH_SEQUENCE_RECOVERED_STRONG",
+  "note": "never averaged away with the other datasets"
+}

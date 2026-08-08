@@ -1,0 +1,123 @@
+{
+  "m5": {
+    "available": true,
+    "cutoffs": "train-only ADI quartiles from the P0L1 artifact",
+    "quartiles": [
+      {
+        "quartile": 1,
+        "n_series": 352,
+        "seq_vs_alpha": 0.009536255707921212,
+        "seq_vs_p0l1": 0.0011819127501124962
+      },
+      {
+        "quartile": 2,
+        "n_series": 398,
+        "seq_vs_alpha": 0.004231458119102857,
+        "seq_vs_p0l1": -0.00225542376828555
+      },
+      {
+        "quartile": 3,
+        "n_series": 368,
+        "seq_vs_alpha": -0.0014058326559212393,
+        "seq_vs_p0l1": -0.0012356543791813058
+      },
+      {
+        "quartile": 4,
+        "n_series": 329,
+        "seq_vs_alpha": 0.011552000164926827,
+        "seq_vs_p0l1": -0.005658192892747609
+      }
+    ]
+  },
+  "favorita": {
+    "available": true,
+    "cutoffs": "train-only ADI quartiles from the P0L1 artifact",
+    "quartiles": [
+      {
+        "quartile": 1,
+        "n_series": 329,
+        "seq_vs_alpha": 0.028884298828424027,
+        "seq_vs_p0l1": -0.001560803480236199
+      },
+      {
+        "quartile": 2,
+        "n_series": 364,
+        "seq_vs_alpha": 0.0245926370913141,
+        "seq_vs_p0l1": -0.0035170796534598793
+      },
+      {
+        "quartile": 3,
+        "n_series": 348,
+        "seq_vs_alpha": 0.026444216367585045,
+        "seq_vs_p0l1": 0.0014142309227200603
+      },
+      {
+        "quartile": 4,
+        "n_series": 315,
+        "seq_vs_alpha": 0.012166706438866007,
+        "seq_vs_p0l1": 0.0017983023669574246
+      }
+    ]
+  },
+  "freshretailnet": {
+    "available": true,
+    "cutoffs": "train-only ADI quartiles from the P0L1 artifact",
+    "quartiles": [
+      {
+        "quartile": 1,
+        "n_series": 2064,
+        "seq_vs_alpha": 0.014980433578221486,
+        "seq_vs_p0l1": 0.03984411927826806
+      },
+      {
+        "quartile": 2,
+        "n_series": 2355,
+        "seq_vs_alpha": 0.034634745153123606,
+        "seq_vs_p0l1": 0.004008861159750484
+      },
+      {
+        "quartile": 3,
+        "n_series": 2724,
+        "seq_vs_alpha": 0.004844658257590253,
+        "seq_vs_p0l1": 0.028356952445670183
+      },
+      {
+        "quartile": 4,
+        "n_series": 2426,
+        "seq_vs_alpha": 0.006331667273613404,
+        "seq_vs_p0l1": 0.04171655617944961
+      }
+    ]
+  },
+  "uci": {
+    "available": true,
+    "cutoffs": "train-only ADI quartiles from the P0L1 artifact",
+    "quartiles": [
+      {
+        "quartile": 1,
+        "n_series": 591,
+        "seq_vs_alpha": 0.19297533888819574,
+        "seq_vs_p0l1": -0.05283238519964069
+      },
+      {
+        "quartile": 2,
+        "n_series": 735,
+        "seq_vs_alpha": 0.1697816128299482,
+        "seq_vs_p0l1": -0.06113290427859631
+      },
+      {
+        "quartile": 3,
+        "n_series": 849,
+        "seq_vs_alpha": -0.000852961959116213,
+        "seq_vs_p0l1": -0.023581168208090655
+      },
+      {
+        "quartile": 4,
+        "n_series": 819,
+        "seq_vs_alpha": -1.8344240774481697,
+        "seq_vs_p0l1": -7.012682324131121
+      }
+    ]
+  },
+  "_note": "secondary analysis only"
+}

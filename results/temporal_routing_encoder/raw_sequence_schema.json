@@ -1,0 +1,124 @@
+{
+  "per_dataset": {
+    "m5": {
+      "lookback": 96,
+      "horizon": 28,
+      "channels": [
+        "y_norm",
+        "occurrence",
+        "observed_mask"
+      ],
+      "context_dim": 56,
+      "sequence_shape_example": [
+        3510,
+        96,
+        3
+      ],
+      "scale_source_end_by_fold": {
+        "0": 1269,
+        "1": 1381,
+        "2": 1493,
+        "3": 1605,
+        "4": 1717
+      },
+      "max_history_timestamp_below_origin": true
+    },
+    "favorita": {
+      "lookback": 96,
+      "horizon": 28,
+      "channels": [
+        "y_norm",
+        "occurrence",
+        "observed_mask"
+      ],
+      "context_dim": 56,
+      "sequence_shape_example": [
+        3600,
+        96,
+        3
+      ],
+      "scale_source_end_by_fold": {
+        "0": 1016,
+        "1": 1128,
+        "2": 1240,
+        "3": 1352,
+        "4": 1464
+      },
+      "max_history_timestamp_below_origin": true
+    },
+    "freshretailnet": {
+      "lookback": 96,
+      "horizon": 28,
+      "channels": [
+        "y_norm",
+        "occurrence",
+        "observed_mask"
+      ],
+      "context_dim": 56,
+      "sequence_shape_example": [
+        19061,
+        96,
+        3
+      ],
+      "scale_source_end_by_fold": {
+        "0": 210,
+        "1": 322,
+        "2": 434,
+        "3": 546
+      },
+      "max_history_timestamp_below_origin": true
+    },
+    "uci": {
+      "lookback": 96,
+      "horizon": 28,
+      "channels": [
+        "y_norm",
+        "occurrence",
+        "observed_mask"
+      ],
+      "context_dim": 56,
+      "sequence_shape_example": [
+        5569,
+        96,
+        3
+      ],
+      "scale_source_end_by_fold": {
+        "0": 179,
+        "1": 291,
+        "2": 403,
+        "3": 515
+      },
+      "max_history_timestamp_below_origin": true
+    }
+  },
+  "channels": [
+    {
+      "name": "y_norm",
+      "definition": "y_tau / scale_t, zeroed where unobserved"
+    },
+    {
+      "name": "occurrence",
+      "definition": "1[y_tau > 0] and observed, zeroed where unobserved"
+    },
+    {
+      "name": "observed_mask",
+      "definition": "1 where the step is observable at the origin"
+    }
+  ],
+  "excluded_inputs": [
+    "ADI",
+    "CV2",
+    "rho_interval",
+    "rho_magnitude",
+    "zero_ratio",
+    "age_since_last_event",
+    "recent_occurrence_rate",
+    "train_scale_as_feature",
+    "SBC_regime",
+    "every G-NOSCALE descriptor",
+    "mean(A)",
+    "mean(B)",
+    "disagreement summaries",
+    "any hand-engineered forecast statistic"
+  ]
+}

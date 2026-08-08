@@ -1,0 +1,33 @@
+{
+  "available": true,
+  "n_entries": 5,
+  "n_unrelated": 5,
+  "entries": [
+    {
+      "status": "??",
+      "path": "experiments/external_validity_screen/poster_stage2.py",
+      "is_scientific_dependency": false
+    },
+    {
+      "status": "??",
+      "path": "experiments/temporal_routing_encoder/",
+      "is_scientific_dependency": false
+    },
+    {
+      "status": "??",
+      "path": "results/external_validity_screen/poster_stage2/",
+      "is_scientific_dependency": false
+    },
+    {
+      "status": "??",
+      "path": "results/temporal_routing_encoder/",
+      "is_scientific_dependency": false
+    },
+    {
+      "status": "??",
+      "path": "tests/test_temporal_routing_encoder.py",
+      "is_scientific_dependency": false
+    }
+  ],
+  "note": "unrelated paths are recorded but never promote to a dependency failure"
+}

@@ -1,0 +1,74 @@
+{
+  "m5": {
+    "seq_vs_alpha": {
+      "relative_improvement": 0.005564032446873859,
+      "ci": [
+        0.00418966432374125,
+        0.007137878003720594
+      ],
+      "ci_excludes_zero": true
+    },
+    "seq_vs_p0l1": {
+      "relative_improvement": -0.002195512866543176,
+      "ci": [
+        -0.003679430723863718,
+        -0.0007765960384388616
+      ],
+      "ci_excludes_zero": true
+    }
+  },
+  "favorita": {
+    "seq_vs_alpha": {
+      "relative_improvement": 0.014167143024753437,
+      "ci": [
+        -0.0030881518890655034,
+        0.02791777171410556
+      ],
+      "ci_excludes_zero": false
+    },
+    "seq_vs_p0l1": {
+      "relative_improvement": 0.0006794058740402664,
+      "ci": [
+        -0.002818062676819253,
+        0.004171944621916129
+      ],
+      "ci_excludes_zero": false
+    }
+  },
+  "freshretailnet": {
+    "seq_vs_alpha": {
+      "relative_improvement": 0.026478123134293433,
+      "ci": [
+        0.020680818734861463,
+        0.03286603848739897
+      ],
+      "ci_excludes_zero": true
+    },
+    "seq_vs_p0l1": {
+      "relative_improvement": 0.031377340257696555,
+      "ci": [
+        0.02556880953006714,
+        0.037304972015692134
+      ],
+      "ci_excludes_zero": true
+    }
+  },
+  "uci": {
+    "seq_vs_alpha": {
+      "relative_improvement": -1.9390063167877682,
+      "ci": [
+        -2.6436524137843835,
+        0.1260956114676452
+      ],
+      "ci_excludes_zero": false
+    },
+    "seq_vs_p0l1": {
+      "relative_improvement": -8.162704088984247,
+      "ci": [
+        -28.374441643131025,
+        -0.021607534616364037
+      ],
+      "ci_excludes_zero": true
+    }
+  }
+}
