@@ -1,0 +1,17 @@
+policy,family,macro_improve,worst_improve,macro_capture
+ORACLE convex origin,convex,3.1666489,2.7454793,100.0
+ORACLE hard origin,hard,2.9940312,2.5580618,100.0
+D3 expw eta=8.0 norm=per_series_scale,convex,0.5532202,0.017757272,17.613945
+D3 expw eta=8.0 norm=raw,convex,0.4096893,0.017757272,12.983231
+D3 expw eta=8.0 norm=per_origin_scale,convex,0.3966299,0.017757272,12.6256
+D3 expw eta=2.0 norm=raw,convex,0.35743025,0.017757272,11.463013
+P4 train-domain convex w=0.85,convex,0.34227657,0.28053933,11.594108
+D3 expw eta=2.0 norm=per_series_scale,convex,0.33736977,0.006764,11.062454
+D3 expw eta=2.0 norm=per_origin_scale,convex,0.24380457,-0.22755063,8.06503
+P3 50:50 average,convex,0.041601315,-0.74815637,2.181034
+D1 discounted selector g=0.9,hard,0.03283609,-0.26851147,0.82541364
+D1 discounted selector g=0.5,hard,0.032522254,-0.15296876,0.7796826
+P1 always Hurdle,hard,0.0,0.0,0.0
+P2 train-domain global choice,hard,0.0,0.0,0.0
+P4 train-domain convex w=0.60,convex,-0.20309635,-0.42708862,-6.2659354
+P0 always Point,hard,-1.8282195,-3.5927277,-59.500713

@@ -1,0 +1,7 @@
+dataset,artifact,paired_series,origins,horizon,primary_metric,raw_predictions,head_predictions,train_only_features,natural_sample
+m5,rule_replication/independent_raw_predictions.parquet,5693,3,28,RMSE on realized y,yes,"yes (p_hat, mu_hat)",yes (independent_population.csv),"independent eligible population, not regime-balanced"
+favorita,favorita_independent/independent_raw_predictions.parquet,5405,3,28,RMSE on realized y,yes,"yes (p_hat, mu_hat)",yes (independent_population.csv),"independent eligible population, not regime-balanced"
+m5+favorita (Stage A),per_series_metrics.csv,2400,0,28,RMSE on realized y,no,"brier / magnitude rmse only, aggregated",yes,"NO - SBC regime-balanced, 300 per regime"
+favorita (transfer),favorita_transfer/transfer_raw_predictions.parquet,135,3,28,RMSE on realized y,yes,yes,yes,candidate/control subset only
+FreshRetailNet-LT,results/multi_benchmark (routing only),0,0,0,"routing gain, not paired RMSE",not in this schema,no,no,n/a - stress test
+UCI Online Retail II,results/temporal_routing_encoder (routing only),0,0,0,"routing gain, not paired RMSE",not in this schema,no,no,n/a - stress test

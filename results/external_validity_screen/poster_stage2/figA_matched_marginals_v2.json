@@ -1,0 +1,59 @@
+{
+  "figure": "figA_matched_marginals_v2.png",
+  "data": "hand-chosen toy sequences, not sampled from the DGP",
+  "window_length": 40,
+  "n_events": 10,
+  "gaps": {
+    "alternating": [
+      3,
+      5,
+      3,
+      5,
+      3,
+      5,
+      3,
+      5,
+      3
+    ],
+    "independent": [
+      3,
+      3,
+      3,
+      5,
+      3,
+      5,
+      5,
+      5,
+      3
+    ],
+    "multiset_identical": true
+  },
+  "event_sizes": [
+    7,
+    12,
+    11,
+    5,
+    17,
+    19,
+    3,
+    4,
+    6,
+    16
+  ],
+  "series_a": {
+    "ADI": 4.0,
+    "CV2": 0.3400000000000001,
+    "regime": "intermittent",
+    "mean_gap": 3.888888888888889,
+    "rho_interval": -0.9999999999999998,
+    "rho_magnitude": 0.0
+  },
+  "series_b": {
+    "ADI": 4.0,
+    "CV2": 0.3400000000000001,
+    "regime": "intermittent",
+    "mean_gap": 3.888888888888889,
+    "rho_interval": 0.0,
+    "rho_magnitude": 0.0
+  }
+}
