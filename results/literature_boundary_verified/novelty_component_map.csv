@@ -1,0 +1,12 @@
+id,component,evidence_status,novelty_policy,closest_precedent,matrix_key,matrix_column,matrix_expected
+1,ADI / CV^2 intermittency classification,PRIOR,NOT_CLAIMED,SBC05; KH06,,,
+2,temporal dependence manipulated as an experimental factor,PRIOR,NOT_CLAIMED,ALR12,ALR12,temporal_dependence_manipulated,Y
+3,controlled marginal / intermittency characteristics + dependence variation,UNKNOWN,EXCLUDED_FROM_NOVELTY,ALR12,ALR12,marginal_characteristics_controlled,U
+4,occurrence / magnitude decomposition as a forecasting representation,PRIOR,NOT_CLAIMED,Cro72; SB05; TSB11,Cro72,croston_style_dual_ratio,Y
+4b,the occurrence-PROBABILITY parameterization specifically,PRIOR,NOT_CLAIMED,TSB11,TSB11,occurrence_probability_magnitude_product,Y
+5,neural direct prediction vs a decomposed neural representation,PRIOR,NOT_CLAIMED,Kou13,Kou13,direct_vs_decomposed_comparison,Y
+6a,"direct / single-stage vs hurdle / two-stage PRODUCT form, identical features",PRIOR,NOT_CLAIMED,NAR26,NAR26,direct_vs_hurdle_product_comparison,Y
+6b,"the same comparison under matched capacity and matched training, representation isolated as the only varied factor",NOT_FOUND_IN_AUDIT,CLAIM_ONLY_IN_CONJUNCTION,NAR26 (match status UNKNOWN),NAR26,matched_parameter_budget,U
+7,"occurrence and magnitude dependence on SEPARATE axes, CROSSED with representation choice",NOT_FOUND_IN_AUDIT,CLAIMED_IN_CONJUNCTION,ALR12 / Kou13 on opposite sides,ALR12,representation_x_dependence_interaction,N
+8,finite-sample relative inductive-bias characterization at a fixed budget,NOT_FOUND_IN_AUDIT,CLAIMED_IN_CONJUNCTION,Kou13,Kou13,matched_parameter_budget,N
+9,controlled synthetic condition followed to a real-data transfer boundary,NOT_FOUND_IN_AUDIT,CLAIMED_IN_CONJUNCTION,TJWC21,TJWC21,synthetic_to_real_transfer_boundary,N

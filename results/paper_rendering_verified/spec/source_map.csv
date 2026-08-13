@@ -1,0 +1,89 @@
+figure_or_table,panel_or_row,displayed_quantity,source_file,source_field_or_columns,aggregation,uncertainty_source,verified_value
+Figure1,a,toy sequences,(schematic),-,-,-,not data
+Figure1,c,parameter count,point_hurdle_fairness.md / prereg,PARAMETER_MATCH_RULE,-,-,5856 = 5856
+Figure2,a d=4 rI=-0.8 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+10.5695
+Figure2,a d=4 rI=-0.8 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+15.9184
+Figure2,a d=4 rI=-0.8 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+11.7852
+Figure2,a d=4 rI=+0.0 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+14.3563
+Figure2,a d=4 rI=+0.0 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+7.8075
+Figure2,a d=4 rI=+0.0 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+7.4785
+Figure2,a d=4 rI=+0.8 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+19.0049
+Figure2,a d=4 rI=+0.8 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+12.1660
+Figure2,a d=4 rI=+0.8 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+9.2548
+Figure2,a d=8 rI=-0.8 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+8.6641
+Figure2,a d=8 rI=-0.8 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+11.7397
+Figure2,a d=8 rI=-0.8 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+13.9363
+Figure2,a d=8 rI=+0.0 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+9.1978
+Figure2,a d=8 rI=+0.0 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+2.3614
+Figure2,a d=8 rI=+0.0 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",-19.7643
+Figure2,a d=8 rI=+0.8 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+22.8073
+Figure2,a d=8 rI=+0.8 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+21.6559
+Figure2,a d=8 rI=+0.8 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+13.9462
+Figure2,b rI=-0.8,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+12.1022
+Figure2,b rI=+0.0,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+3.5729
+Figure2,b rI=+0.8,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+16.4725
+Figure2,c rM=-0.8,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+14.1000
+Figure2,c rM=+0.0,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+11.9415
+Figure2,c rM=+0.8,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+6.1061
+Figure2,b/c annotation,factor coefficient abs_rho_I,stage2_verified_factor_effects.csv,estimate,factor model,ci_low/ci_high,+0.1904
+Figure2,b/c annotation,factor coefficient rho_I,stage2_verified_factor_effects.csv,estimate,factor model,ci_low/ci_high,+0.0667
+Figure2,b/c annotation,factor coefficient rho_M,stage2_verified_factor_effects.csv,estimate,factor model,ci_low/ci_high,-0.0711
+Figure2,b/c annotation,factor coefficient abs_rho_M,stage2_verified_factor_effects.csv,estimate,factor model,ci_low/ci_high,-0.0228
+Figure2,a d=4 rI=-0.8 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+10.5695
+Figure2,a d=4 rI=-0.8 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+15.9184
+Figure2,a d=4 rI=-0.8 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+11.7852
+Figure2,a d=4 rI=+0.0 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+14.3563
+Figure2,a d=4 rI=+0.0 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+7.8075
+Figure2,a d=4 rI=+0.0 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+7.4785
+Figure2,a d=4 rI=+0.8 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+19.0049
+Figure2,a d=4 rI=+0.8 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+12.1660
+Figure2,a d=4 rI=+0.8 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+9.2548
+Figure2,a d=8 rI=-0.8 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+8.6641
+Figure2,a d=8 rI=-0.8 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+11.7397
+Figure2,a d=8 rI=-0.8 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+13.9363
+Figure2,a d=8 rI=+0.0 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+9.1978
+Figure2,a d=8 rI=+0.0 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+2.3614
+Figure2,a d=8 rI=+0.0 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",-19.7643
+Figure2,a d=8 rI=+0.8 rM=-0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+22.8073
+Figure2,a d=8 rI=+0.8 rM=+0.0,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+21.6559
+Figure2,a d=8 rI=+0.8 rM=+0.8,G (pp),stage2_verified_cells.csv,gain*100,per-cell,"gain_ci_low/high (bootstrap 2000, series)",+13.9462
+Figure2,b rI=-0.8,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+12.1022
+Figure2,b rI=+0.0,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+3.5729
+Figure2,b rI=+0.8,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+16.4725
+Figure2,c rM=-0.8,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+14.1000
+Figure2,c rM=+0.0,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+11.9415
+Figure2,c rM=+0.8,mean G over 6 cells,stage2_verified_cells.csv,gain*100,mean of 6 cells,"NONE - cell spread shown, no marginal CI exists",+6.1061
+Figure2,b/c annotation,factor coefficient abs_rho_I,stage2_verified_factor_effects.csv,estimate,factor model,ci_low/ci_high,+0.1904
+Figure2,b/c annotation,factor coefficient rho_I,stage2_verified_factor_effects.csv,estimate,factor model,ci_low/ci_high,+0.0667
+Figure2,b/c annotation,factor coefficient rho_M,stage2_verified_factor_effects.csv,estimate,factor model,ci_low/ci_high,-0.0711
+Figure2,b/c annotation,factor coefficient abs_rho_M,stage2_verified_factor_effects.csv,estimate,factor model,ci_low/ci_high,-0.0228
+Figure3,a M5,"Spearman(|rho_interval|, delta)",stage_a_results.json,results.*.20.H1,per dataset,bootstrap ci,+0.1064
+Figure3,a Favorita,"Spearman(|rho_interval|, delta)",stage_a_results.json,results.*.20.H1,per dataset,bootstrap ci,+0.0789
+Figure3,a regime smooth,"Spearman, relative scale",regime_h1/regime_h1.json,regimes.*.relative,M5 SBC subset,bootstrap ci,+0.0872
+Figure3,a regime erratic,"Spearman, relative scale",regime_h1/regime_h1.json,regimes.*.relative,M5 SBC subset,bootstrap ci,+0.0882
+Figure3,a regime intermittent,"Spearman, relative scale",regime_h1/regime_h1.json,regimes.*.relative,M5 SBC subset,bootstrap ci,+0.1529
+Figure3,a regime lumpy,"Spearman, relative scale",regime_h1/regime_h1.json,regimes.*.relative,M5 SBC subset,bootstrap ci,+0.0323
+Figure3,b seed 0,rule effect x100,seed_robustness/seed_robustness.json,by_seed.*.effect,per seed,bootstrap ci,-2.3039
+Figure3,b seed 1,rule effect x100,seed_robustness/seed_robustness.json,by_seed.*.effect,per seed,bootstrap ci,-2.1086
+Figure3,b seed 2,rule effect x100,seed_robustness/seed_robustness.json,by_seed.*.effect,per seed,bootstrap ci,-2.7687
+Figure3,b 3-seed aggregate,rule effect x100,seed_robustness/seed_robustness.json,aggregate_3seed.effect,675 vs 5018 per seed,bootstrap ci,-2.3937
+Figure3,c unadjusted,rule effect,rule_replication/primary_result.json,H2_rule_effect,-,bootstrap ci,-0.02304
+Figure3,c adjusted,overlap-adjusted association,rule_replication/secondary_overlap.json,overlap_adjusted_association,n_used 5693,bootstrap ci,+0.003185
+Figure3,c SMD,worst |SMD| unweighted / matched / weighted,secondary_overlap.json + matching_failed.json,"unweighted_smd, worst_abs_smd, worst_abs_weighted_smd",-,-,1.3193 / 0.6136 / 0.000440
+Table1,parameters,n_parameters,stage1_verified_cells.csv,n_parameters,-,-,5856 / 5856
+Table2,sparsity,effect on G (pp),stage1_verified_contrasts.csv,"effect_pp, ci_low, ci_high",-,-,-6.2641
+Table2,interval_dependence,effect on G (pp),stage1_verified_contrasts.csv,"effect_pp, ci_low, ci_high",-,-,+7.8309
+Table2,magnitude_dependence,effect on G (pp),stage1_verified_contrasts.csv,"effect_pp, ci_low, ci_high",-,-,-4.5806
+Table2,sparsity_x_interval,effect on G (pp),stage1_verified_contrasts.csv,"effect_pp, ci_low, ci_high",-,-,+3.3451
+Table2,sparsity_x_magnitude,effect on G (pp),stage1_verified_contrasts.csv,"effect_pp, ci_low, ci_high",-,-,-0.0118
+Table2,interval_x_magnitude,effect on G (pp),stage1_verified_contrasts.csv,"effect_pp, ci_low, ci_high",-,-,-16.7392
+Table2,three_way,effect on G (pp),stage1_verified_contrasts.csv,"effect_pp, ci_low, ci_high",-,-,-1.9647
+Table3,M5,protocol,stage_a_results.json,manifest.*,-,-,"n=1200, T=1941, train_end=1829"
+Table3,Favorita,protocol,stage_a_results.json,manifest.*,-,-,"n=1200, T=1688, train_end=1576"
+Table4,H1 occurrence-dependence analogue,estimate and CI,stage_a_results.json,results.m5.20.H1,-,-,+0.1064
+Table4,H1 occurrence-dependence analogue,estimate and CI,stage_a_results.json,results.favorita.20.H1,-,-,+0.0789
+Table4,H1 within the intermittent regime,estimate and CI,regime_h1.json,regimes.intermittent.relative,-,-,+0.1529
+Table4,H2 frozen selector,estimate and CI,rule_replication/primary_result.json,H2_rule_effect,-,-,-0.0230
+Table4,H2 isolated mechanism,estimate and CI,rule_replication/secondary_overlap.json,overlap_adjusted_association,-,-,+0.0032
+Table4,H3 sparsity interaction,estimate and CI,stage_a_results.json,results.m5.20.H3,-,-,-0.0305
+Table4,H3 sparsity interaction,estimate and CI,stage_a_results.json,results.favorita.20.H3,-,-,-0.0428

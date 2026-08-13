@@ -1,0 +1,4 @@
+contribution,SyntheticStage1,SyntheticStage2,M5,Favorita,H2independent,ClassicalBenchmark,FreshRetailNet,UCI,GateExperiments
+C1 controlled characterization of relative Point/Hurdle inductive bias,STRONG,STRONG,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+C2 real-data validation and entanglement boundary,PARTIAL,STRONG,STRONG,PARTIAL,STRONG,PARTIAL,N/A,N/A,N/A
+"C3 adaptive-use boundary: complementarity is real, stable routing is not",N/A,N/A,STRONG,PARTIAL,N/A,PARTIAL,NEGATIVE,NEGATIVE,STRONG

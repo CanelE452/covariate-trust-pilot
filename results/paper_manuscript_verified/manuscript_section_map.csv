@@ -1,0 +1,10 @@
+manuscript_section,source_file,sha256_12,words
+Abstract,abstract_v1.md,b714cc8c986e,265
+1 Introduction,introduction_v6.md,48c46c8c7a2e,881
+2 Related Work,related_work_v3.md,8755d241961a,1412
+3-5 Methods,methods_v1.md,ad2c600e5d7e,2634
+4.6-5.9 Results,results_v1.md,7f11ba08e511,1931
+6 Discussion,discussion_v1.md,1ccc1d7626ed,1430
+7 Conclusion,conclusion_v1.md,060d6ee8b0b5,277
+Figure captions,figure_captions_v1.md,6b50e2108b0c,547
+Table captions,table_captions_v1.md,c969fe2858da,426

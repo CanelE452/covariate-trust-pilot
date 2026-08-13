@@ -1,0 +1,10 @@
+id,claim,status,manuscript_location,frozen_source,wording_guard
+C1,Controlled characterization of the finite-sample relative inductive bias of direct and factorized forecasting under temporal occurrence and magnitude dependence,CONFIRMED,"Sec 4.6, 4.8; Table 2; Figure 2",results/paper_synthesis_verified/claim_ledger_frozen.md sec 1,one backbone family; no scale axis; Stage 1 is alternation-only
+C2,"Empirical transfer with an explicit boundary: an analogue and a frozen selector transfer, while the isolated mechanism does not survive overlap adjustment",SUPPORTED,"Sec 5.5, 5.6, 5.7; Table 4; Figure 3",results/paper_synthesis_verified/claim_ledger_frozen.md sec 4,selector is not mechanism; no causal attribution to scale
+C3,Adaptive-use boundary: a measurable oracle opportunity does not imply a learnable routing function,SUPPORTED,Sec 5.9; appendix,results/paper_synthesis_verified/claim_ledger_frozen.md sec 4,reported as a boundary; stop rule triggered
+H1,the occurrence-dependence relationship appears in observed demand,SUPPORTED_WITH_BOUNDARY / EMPIRICAL_ANALOGUE,Sec 5.5,results/paper_rendering_verified/drafts/table4_draft.md,never the word replicates
+H2a,the frozen selector transfers predictively,CONFIRMED,Sec 5.6,results/paper_rendering_verified/drafts/table4_draft.md,"independent population, three seeds"
+H2b,the isolated mechanism,NOT_REPLICATED,Sec 5.7,results/paper_rendering_verified/drafts/table4_draft.md,overlap-weighted interval crosses zero
+H3,the sparsity interaction,NOT_REPLICATED / CONSTRUCT_MISMATCH,Sec 5.8,results/paper_rendering_verified/drafts/table4_draft.md,ADI-median split is not d=4 vs d=8
+MECH,occurrence-head attribution,"COMPONENT-ATTRIBUTION DIAGNOSTIC SUPPORT, synthetic only; not supported on real data","Sec 4.7, 5.7",results/paper_synthesis_verified/claim_ledger_frozen.md sec 0 F5,"attribution, not causation"
+ROUTE,stable learned routing,NOT_REPLICATED,Sec 5.9,results/paper_synthesis_verified/paper_readiness_verified.md,UCI -193.9% reported at full strength
