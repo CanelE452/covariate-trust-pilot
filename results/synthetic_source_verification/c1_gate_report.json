@@ -1,0 +1,54 @@
+{
+  "gates": {
+    "C1-G1_paper_dgp_identified": {
+      "pass": true,
+      "evidence": "run_20260802_112655; only run with factorial_contrasts.csv; only C01..C08 layout; contrasts reproduce +7.83/-4.58/-6.26/-16.74 exactly; prereg length/split 576 384/480/576 matches the migrated audit note"
+    },
+    "C1-G2_marginal_control": {
+      "pass": true,
+      "evidence": "both arms draw the same two-point support with the same long-run share; long-run positive mean 10 in both magnitude modes; audit marginal_control_pass=true, d4 ADI mode difference 0.0015"
+    },
+    "C1-G3_dependence_manipulation": {
+      "pass": true,
+      "evidence": "Stage 1 alternation vs iid; Stage 2 rho in {-0.8,0,+0.8} on both axes; paired random numbers across modes"
+    },
+    "C1-G4_point_hurdle_fairness": {
+      "pass": true,
+      "evidence": "M0 and M1 both 5856 parameters; identical trainer, optimizer, budget, split, seeds; checkpoint = validation realized-y MSE for every model; per-cell tuning prohibited"
+    },
+    "C1-G5_stage1_verified": {
+      "pass": true,
+      "evidence": "8 cells x 80 series; 7 contrasts with paired series bootstrap 2000; audit status CONDITIONALLY_VALID with a genuine no-signal control"
+    },
+    "C1-G6_stage2_verified": {
+      "pass": true,
+      "evidence": "18 cells x 80 series; factor model; CLASS_A_GENERAL_PREDICTABILITY_SUPPORT; five integrity gates pass"
+    },
+    "C1-G7_metric_sign": {
+      "pass": true,
+      "evidence": "rmse_mean_truth against exact DP oracle; gain = 1 - RMSE_h/RMSE_p consistent across studies; three delta conventions documented"
+    },
+    "C1-G8_seed_replication": {
+      "pass": true,
+      "evidence": "40 series per cell per data seed, data_seeds (0,1), model_seeds (0,1), model seeds averaged within series, bootstrap seed 20260802, BLAKE2b seed key"
+    }
+  },
+  "verdict": "C1_CONFIRMED",
+  "boundary": [
+    "single backbone family (DLinear) throughout; no second backbone exists in the source",
+    "Stage 1 predictable arm is deterministic alternation (rho=-1); graded-axis claims require Stage 2",
+    "no scale axis in the synthetic design, so it cannot address the external scale confound behind H2"
+  ],
+  "transport": {
+    "G-T1_private": true,
+    "G-T2_release_complete": true,
+    "G-T3_parity": "19/19 name+bytes",
+    "G-T4_split_sha256": "4/4 OK",
+    "G-T5_reconstructed_tar_sha256": "OK, 7380474226 bytes",
+    "G-T6_bundle_sha256": "OK",
+    "G-T7_bundle_verify": "okay, complete history",
+    "G-T8_extract": "exit 0",
+    "G-T9_spot_check": "HEAD in extracted == metadata HEAD == 03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+    "TRANSPORT_INTEGRITY_PASS": true
+  }
+}
