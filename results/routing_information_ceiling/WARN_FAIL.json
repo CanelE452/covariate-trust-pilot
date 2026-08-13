@@ -1,0 +1,48 @@
+{
+  "warn": [
+    {
+      "code": "CAPACITY_MANIPULATION_WEAKER_THAN_INTENDED",
+      "detail": "the frozen threshold for 'HGB fits training clearly better' was a 10% direct-mixture gain and no dataset reached it (m5 3.02%, favorita 1.32%, fresh 4.38%, uci 0.07%). The diagnostic therefore establishes 'a much more flexible learner does not generalise better here' more firmly than it establishes 'we gave it much more usable capacity'. No sweep was run to strengthen the manipulation because G9 forbids it."
+    },
+    {
+      "code": "HGB_WORSE_THAN_MLP_ON_THREE_OF_FOUR",
+      "detail": "cross-fitted aggregate hgb_vs_mlp: m5 +0.286%, favorita -0.619%, fresh -0.799%, uci -6.935%. Only m5 is positive and its CI includes zero; the UCI loss has a CI clear of zero."
+    },
+    {
+      "code": "HGB_VS_MLP_SIGN_REVERSES_ACROSS_FOLDS",
+      "detail": "favorita per fold -4.124/+2.455/+0.505/-2.162% and uci -2.000/-24.403/-0.512%. The frozen FEATURE_SIGNAL_NONSTATIONARY criterion reads hgb_vs_alpha, not hgb_vs_mlp, so this reversal is recorded as an observation and did not set that verdict."
+    },
+    {
+      "code": "ORACLE_RECOVERY_NEGATIVE_ON_FRESH",
+      "detail": "recovery is -0.028 for MLP and -0.073 for HGB on FreshRetailNet: both routers are further from the convex oracle than the static weight is."
+    },
+    {
+      "code": "WARN_SINGLE_FOLD_DOMINANCE",
+      "dataset": "favorita",
+      "detail": "fold 3 contributes 84.6% of the gain"
+    },
+    {
+      "code": "WARN_SINGLE_FOLD_DOMINANCE",
+      "dataset": "uci",
+      "detail": "fold 2 contributes 95.5% of the gain"
+    },
+    {
+      "code": "WARN_HGB_TAIL_RISK",
+      "dataset": "uci",
+      "detail": "HGB p95 degradation 0.108 against MLP 0.054"
+    },
+    {
+      "code": "P0L1_SPEC_HASH_NOT_REPRODUCIBLE",
+      "detail": "freeze_spec hashes a payload containing frozen_at_utc, so the stored sha256 cannot be matched by construction; identity is established from the fields and from reproducing the MLP cross-fitted aggregate instead"
+    },
+    {
+      "code": "REPOSITORY_CHANGE_WARNING",
+      "detail": "4 untracked or modified paths unrelated to the sealed dependencies; not promoted to a G0a failure"
+    },
+    {
+      "code": "NO_TEST_SCORED",
+      "detail": "no existing TEST was scored and no new dataset was used"
+    }
+  ],
+  "fail": []
+}

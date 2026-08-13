@@ -1,0 +1,17 @@
+{
+  "verdict": "P0L1_TEMPORAL_STRONG",
+  "mean_improvement": {
+    "m5": 0.007799400358378297,
+    "favorita": 0.010809776140746715,
+    "freshretailnet": 0.001229083371809515,
+    "uci": 0.3781010362096306
+  },
+  "positive_fold_ratio": 0.8571428571428571,
+  "ci_excludes_zero": {
+    "m5": true,
+    "favorita": false,
+    "freshretailnet": false,
+    "uci": true
+  },
+  "artifacts_unchanged": true
+}

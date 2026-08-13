@@ -1,0 +1,76 @@
+{
+  "m5": {
+    "MLP": {
+      "p90": 0.010452216740254656,
+      "p95": 0.020942450503454335,
+      "p99": 0.050499491753233074,
+      "mean": -0.029768035682304895,
+      "frac_worse_than_alpha": 0.3466666666666667
+    },
+    "HGB": {
+      "p90": 0.01949845733014526,
+      "p95": 0.031028162815702344,
+      "p99": 0.09676848950601066,
+      "mean": -0.032027525996681745,
+      "frac_worse_than_alpha": 0.3441666666666667
+    },
+    "WARN_HGB_TAIL_RISK": false
+  },
+  "favorita": {
+    "MLP": {
+      "p90": 0.024135403101523196,
+      "p95": 0.03875009011004254,
+      "p99": 0.08264667942937888,
+      "mean": -0.025944774680434293,
+      "frac_worse_than_alpha": 0.3525
+    },
+    "HGB": {
+      "p90": 0.027982238747427602,
+      "p95": 0.05178018992503438,
+      "p99": 0.15988437633997957,
+      "mean": -0.019997096373760317,
+      "frac_worse_than_alpha": 0.375
+    },
+    "WARN_HGB_TAIL_RISK": false
+  },
+  "freshretailnet": {
+    "MLP": {
+      "p90": 0.11956203110556947,
+      "p95": 0.18239913681270525,
+      "p99": 0.30804676069601095,
+      "mean": 0.0016676356197717777,
+      "frac_worse_than_alpha": 0.4727683315621679
+    },
+    "HGB": {
+      "p90": 0.1017745623585531,
+      "p95": 0.14998609212457092,
+      "p99": 0.29305235655158346,
+      "mean": -0.019135418834062966,
+      "frac_worse_than_alpha": 0.39984059511158343
+    },
+    "WARN_HGB_TAIL_RISK": false
+  },
+  "uci": {
+    "MLP": {
+      "p90": 0.02258851430032715,
+      "p95": 0.05390474747620158,
+      "p99": 0.15614045069518043,
+      "mean": -0.1469063785152661,
+      "frac_worse_than_alpha": 0.23308619091751623
+    },
+    "HGB": {
+      "p90": 0.04185935985217098,
+      "p95": 0.10806705743425811,
+      "p99": 0.46624209209981704,
+      "mean": -0.13196781699675092,
+      "frac_worse_than_alpha": 0.252548656163114
+    },
+    "WARN_HGB_TAIL_RISK": true
+  },
+  "_criterion": {
+    "definition": "per-series degradation against alpha, positive meaning worse than alpha.  WARN when the HGB p95 degradation is both above the absolute floor and worse than the MLP p95 by more than the ratio.",
+    "absolute_floor": 0.05,
+    "ratio_over_mlp": 1.5
+  },
+  "_note": "positive means worse than the static alpha weight"
+}

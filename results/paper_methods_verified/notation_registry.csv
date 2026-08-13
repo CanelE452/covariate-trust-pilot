@@ -1,0 +1,21 @@
+symbol,meaning,units_or_domain,first_manuscript_use,source_file,source_field_or_line,warning,notes
+y_t,observed demand in period t,non-negative integer,Sec 3.1,synthetic_source_verification/dgp_verification.md,"Y_t = M_j at t = T_j, else 0",,the realized series; all zeros outside event times
+o_t,"occurrence indicator, 1[y_t > 0]","{0,1}",Sec 3.1,synthetic_source_verification/dgp_verification.md,derived from Y_t,,z is NOT used for this: z is reserved for Croston-style non-zero demand size in Sec 2.1
+y_t^+,"positive demand magnitude, y_t given y_t > 0",integer >= 1,Sec 3.1,synthetic_source_verification/dgp_verification.md,M_j = 1 + Poisson(lambda_j - 1),,E[M_j | lambda_j] = lambda_j
+h_t,history available at origin t,vector,Sec 3.1,synthetic_source_verification/point_hurdle_fairness.md,lookback / horizon = 96 / 24,,identical for both arms; 'same window'
+L,lookback length,periods,Sec 3.2,synthetic_source_verification/point_hurdle_fairness.md,lookback = 96,,fixed at 96 in the synthetic study
+H_f,forecast horizon,periods,Sec 3.2,synthetic_source_verification/point_hurdle_fairness.md,horizon = 24,,"written H_f, never H: H is reserved for the Hurdle arm subscript"
+p_t,"P(y_t > 0 | h_t), the occurrence probability head","[0,1]",Sec 3.3,synthetic_source_verification/point_hurdle_fairness.md,p_hat,,estimated by the factorized arm; NOT an interval
+mu_t,"E[y_t | y_t > 0, h_t], the conditional positive mean head",> 0,Sec 3.3,synthetic_source_verification/point_hurdle_fairness.md,mu_hat,,
+yhat_t^P,direct (Point) prediction of the conditional mean,real,Sec 3.2,synthetic_source_verification/point_hurdle_fairness.md,y_hat directly; M0_PARAMETER_MATCHED_POINT,,"5,856 parameters"
+yhat_t^H,"factorized (Hurdle) prediction, p_t * mu_t",real,Sec 3.3,synthetic_source_verification/point_hurdle_fairness.md,mean_hat = p_hat * mu_hat; M1_HURDLE_MEAN,,"5,856 parameters; a PRODUCT, not a ratio (contrast Sec 2.1)"
+m_t,"exact oracle conditional mean, p_true * mu_true",real,Sec 3.4,synthetic_source_verification/dgp_verification.md,"exact dynamic programming over (steps to next event, next-gap parity, next-magnitude parity)",,"the evaluation target in the synthetic study; Monte Carlo 200,000 paths is a cross-check only"
+"RMSE_P, RMSE_H",root mean squared error of each arm against m_t,real,Sec 3.4,synthetic_source_verification/metric_sign.md,PRIMARY_METRIC = rmse_mean_truth,,"per series, then bootstrapped across series"
+G,"relative gain, 100 (1 - RMSE_H / RMSE_P)",percentage points,Sec 3.4,synthetic_source_verification/metric_sign.md,"gain = 1 - RMSE_hurdle/RMSE_point, x100",,G > 0 favours the factorized arm. The ONLY performance quantity in the main text.
+d,"sparsity parameter; gap support is {d-1, d+1} with equal long-run share","{4, 8}",Sec 4.1,synthetic_source_verification/dgp_verification.md,"gap support short = d-1, long = d+1, each with long-run share 0.5",,"d is the DESIGN parameter, not the measured ADI. Mean gap = d by construction; empirical ADI is reported separately for real data."
+rho_I,serial dependence of the occurrence interval process,"[-0.8, +0.8] tested",Sec 4.5,synthetic_source_verification/stage1_stage2_verified.md,"rho_I in {-0.8, 0.0, +0.8}",,"Stage 2 only. Stage 1's structured arm is deterministic alternation, rho = -1."
+rho_M,serial dependence of the positive-magnitude process,"[-0.8, +0.8] tested",Sec 4.5,synthetic_source_verification/stage1_stage2_verified.md,"rho_M in {-0.8, 0.0, +0.8}",,Stage 2 only. Same Stage 1 caveat.
+Stage 1,"fixed-marginal 2x2x2 factorial, cells C01..C08",-,Sec 4.3,synthetic_source_verification/stage1_stage2_verified.md,run_20260802_112655,,there is no Stage 3 or Stage 4 in the source
+Stage 2,"stationary rho sweep, d x rho_I x rho_M, 18 cells",-,Sec 4.5,synthetic_source_verification/stage1_stage2_verified.md,pilot_20260803_051713,,carries every graded dependence claim
+split,"train [0,384], validation [384,480], test [480,576]",period index,Sec 4.2,synthetic_source_verification/point_hurdle_fairness.md,retained_length 576,,one continuous trajectory generated then split; state never reset at a boundary
+n_series,series per synthetic cell,count,Sec 4.2,synthetic_source_verification/dgp_verification.md,40 per data seed x 2 data seeds = 80,,"model seeds (0,1) averaged within a series before comparison"

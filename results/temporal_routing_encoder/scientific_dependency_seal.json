@@ -1,0 +1,107 @@
+{
+  "sealed_at_utc": "2026-08-08T03:12:35.555572+00:00",
+  "n_artifacts": 25,
+  "missing": [],
+  "artifacts": {
+    "results/expert_diversity/expert_set_spec.json": {
+      "sha256": "16c1e141b7ba7cff6d42b66e96894f0f20aced151523ea30df1f1262607ad2ac",
+      "bytes": 11731
+    },
+    "results/gate_p0l1_robustness/expanded_fold_manifest.json": {
+      "sha256": "1e5e99efcabf06ab4e2998a8d7774ffd48740a19f15cdbf603fcb1aa3212c508",
+      "bytes": 6629
+    },
+    "results/gate_p0l1_robustness/final_candidate_spec.json": {
+      "sha256": "c66f362dee672cb5e6b9e3a20deb1b522f9494a9c36dbbf576273e5af7d01d68",
+      "bytes": 1023
+    },
+    "results/gate_p0l1_robustness/aggregate_result.json": {
+      "sha256": "f11c659e970390e104172667eca6b76a9ccbcfc69a4483eeb6226d5a87ca4a1f",
+      "bytes": 17190
+    },
+    "results/routing_information_ceiling/aggregate_results.json": {
+      "sha256": "c121ff26aeaf00832f64e8b4c11ff46437aa9e917ed204bff050c64dd0c9e86f",
+      "bytes": 26525
+    },
+    "results/routing_information_ceiling/crossfitted_m5.parquet": {
+      "sha256": "90aaea18c401bde4e44a5558b63b9d9343b0678f2fd0e182d1c2f1e8c1dc3e88",
+      "bytes": 570151
+    },
+    "results/routing_information_ceiling/crossfitted_favorita.parquet": {
+      "sha256": "cb0b5d593fda248789d1ee3e9ae299f569765a225e31685d24507b9441e544ed",
+      "bytes": 564886
+    },
+    "results/routing_information_ceiling/crossfitted_freshretailnet.parquet": {
+      "sha256": "6581f860012f62e4bb6d3ed2ce68d7837165f684517549e238164e5dcd4229fe",
+      "bytes": 2707661
+    },
+    "results/routing_information_ceiling/crossfitted_uci.parquet": {
+      "sha256": "77a9a053ebcca940795d1e15b7e3cc2b2a6ca97457f63fa0072aa18c18899f86",
+      "bytes": 777004
+    },
+    "results/gate_p0l1_robustness/crossfitted_m5.parquet": {
+      "sha256": "35893f30b4497014d3ce8064b08621eea5a26e85730d5812c7b160ff70b6300f",
+      "bytes": 899093
+    },
+    "results/gate_p0l1_robustness/crossfitted_favorita.parquet": {
+      "sha256": "165a585cd6084f21fc2960b91fb9a64b0e2e27f2d44348ea0103dcb0b90376a8",
+      "bytes": 882878
+    },
+    "results/gate_p0l1_robustness/crossfitted_freshretailnet.parquet": {
+      "sha256": "1fcdfe512b90ddd3b1f71c8d83a3e088ede7c093e0b2fea575aaca0dfdd7eb60",
+      "bytes": 3960804
+    },
+    "results/gate_p0l1_robustness/crossfitted_uci.parquet": {
+      "sha256": "2f167a92ae03c80f9c09e762231fdeaba5a0a20d44c8581b4c3b54abcf757db1",
+      "bytes": 1110165
+    },
+    "data/processed/series.parquet": {
+      "sha256": "aa8d96ecd6ed6eaa91274087b4b90880b5da4ec3954962d94d57e37947f13aba",
+      "bytes": 2421954
+    },
+    "data/processed/favorita_series.parquet": {
+      "sha256": "2764b5d2b34e8d78fe473f06571971a88f3c9ec04db44ef6c86e86ec543fad58",
+      "bytes": 2079313
+    },
+    "data/processed/freshretailnet_grid.npz": {
+      "sha256": "589d1f05a5e59c4f040c80268b7a558ab13350aaa96124cba20b51f9a0f80483",
+      "bytes": 6032759
+    },
+    "data/processed/uci_grid.npz": {
+      "sha256": "8159ffea8801a7d13aea278eed7f40035ac82961183cf2960ba326b58c073d9f",
+      "bytes": 676962
+    },
+    "data/calendar.csv": {
+      "sha256": "d12b5914ef03e66649adf5dd9e996e6602251c22b7a6af8f1f7e3aa12f8860f5",
+      "bytes": 103469
+    },
+    "data/sell_prices.csv": {
+      "sha256": "9da3ad1f8b8ccacdbdc70612191dd375ec24a4ac6625c24b75b3bc60b0bed2ef",
+      "bytes": 203395785
+    },
+    "experiments/p0l1_robustness/run.py": {
+      "sha256": "53466c9117e2a8789be4e60dd968089fb97d6d85e055d03d0f8962ab8f6d0554",
+      "bytes": 14373
+    },
+    "experiments/p0l1_robustness/folds.py": {
+      "sha256": "76657a3ce640360f16dc6719cd431cf45f8c5f658daa505d45725dc5eb3c7d0c",
+      "bytes": 4864
+    },
+    "experiments/gate_v3/oof.py": {
+      "sha256": "4df204d3f3f894cd0ea29ca924cd0a212e7ecbddcbe7f93a541596369416f94d",
+      "bytes": 8423
+    },
+    "experiments/gate_v3/diagnose.py": {
+      "sha256": "1dc4235a1d69414ace4776085bd24e05528a4ebe2c657e24fa27f6a70aac9c7c",
+      "bytes": 6979
+    },
+    "experiments/multi_benchmark/run.py": {
+      "sha256": "7efb70fc43ca4fcdb492a871baf3b3932662e221fd212dba510f18d318554538",
+      "bytes": 17649
+    },
+    "experiments/unified_temporal_27_v3/training.py": {
+      "sha256": "4a7292d7986ef393b094206478e54cfafb0006935ff81556bd94b591c1be8ed8",
+      "bytes": 62280
+    }
+  }
+}

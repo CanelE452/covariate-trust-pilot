@@ -1,0 +1,10 @@
+{
+  "aggregate_safe_vs_alpha": -0.008091915375405849,
+  "aggregate_raw_vs_alpha": -0.005057921239119604,
+  "scale_signs": {
+    "normalized_mse": -0.008091915375405849,
+    "mean_per_series_relative": -0.008916611195427424,
+    "rmse_of_normalized": -0.004624012295478937
+  },
+  "verdict": "FRESH_TEMPORAL_NOT_RECOVERED"
+}

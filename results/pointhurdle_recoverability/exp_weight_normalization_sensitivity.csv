@@ -1,0 +1,7 @@
+policy,macro_improve,worst,capture
+D3 expw eta=2.0 norm=per_origin_scale,0.24380457,-0.22755063,8.06503
+D3 expw eta=2.0 norm=per_series_scale,0.33736977,0.006764,11.062454
+D3 expw eta=2.0 norm=raw,0.35743025,0.017757272,11.463013
+D3 expw eta=8.0 norm=per_origin_scale,0.3966299,0.017757272,12.6256
+D3 expw eta=8.0 norm=per_series_scale,0.5532202,0.017757272,17.613945
+D3 expw eta=8.0 norm=raw,0.4096893,0.017757272,12.983231

@@ -1,0 +1,18 @@
+{
+  "gate_v2_external": "EXTERNAL_VALIDATION_NOT_REPLICATED",
+  "gate_v3_mechanism": {
+    "DIRECT_LOSS_SUPPORTED": true,
+    "ALPHA_ANCHOR_SUPPORTED": false,
+    "FEATURE_ROUTING_LIMITED": true
+  },
+  "frozen": {
+    "expert_pair": [
+      "dlinear_point_plain",
+      "naive"
+    ],
+    "feature": "G-NOSCALE",
+    "architecture": "small MLP, hidden 16",
+    "loss": "direct normalized mixture MSE"
+  },
+  "conflict": "expanding time gives only n-1 validation folds; fold 0 never validates"
+}

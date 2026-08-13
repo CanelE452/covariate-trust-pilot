@@ -1,0 +1,7 @@
+{
+  "seed_variance_share": 0.0009640596698155461,
+  "winner_flip_across_seeds_pct": 36.62392411733708,
+  "seed_over_residual": 0.03718817013641252,
+  "gate_c4_seed_variance_lt_20pct_of_interaction": true,
+  "gate_c4_winner_flip_lt_20pct": false
+}

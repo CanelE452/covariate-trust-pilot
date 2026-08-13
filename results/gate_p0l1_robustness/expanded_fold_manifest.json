@@ -1,0 +1,291 @@
+{
+  "frozen_at_utc": "2026-08-07T17:48:35.568102+00:00",
+  "target_folds": 5,
+  "min_validation_folds": 3,
+  "rule": "expanding time; a gate is fitted only on folds strictly earlier than the one it is scored on, so fold 0 never validates",
+  "protocol_unchanged": true,
+  "datasets": {
+    "m5": {
+      "geometry": {
+        "lookback": 96,
+        "horizon": 28,
+        "stride": 28,
+        "train_end": 1829,
+        "length": 1941
+      },
+      "block_days": 112,
+      "max_usable_folds": 15,
+      "n_folds": 5,
+      "folds": [
+        {
+          "fold": 0,
+          "train_start": 0,
+          "train_end": 1269,
+          "validation_start": 1297,
+          "validation_end": 1381,
+          "origins": [
+            1297,
+            1325,
+            1353
+          ]
+        },
+        {
+          "fold": 1,
+          "train_start": 0,
+          "train_end": 1381,
+          "validation_start": 1409,
+          "validation_end": 1493,
+          "origins": [
+            1409,
+            1437,
+            1465
+          ]
+        },
+        {
+          "fold": 2,
+          "train_start": 0,
+          "train_end": 1493,
+          "validation_start": 1521,
+          "validation_end": 1605,
+          "origins": [
+            1521,
+            1549,
+            1577
+          ]
+        },
+        {
+          "fold": 3,
+          "train_start": 0,
+          "train_end": 1605,
+          "validation_start": 1633,
+          "validation_end": 1717,
+          "origins": [
+            1633,
+            1661,
+            1689
+          ]
+        },
+        {
+          "fold": 4,
+          "train_start": 0,
+          "train_end": 1717,
+          "validation_start": 1745,
+          "validation_end": 1829,
+          "origins": [
+            1745,
+            1773,
+            1801
+          ]
+        }
+      ],
+      "n_validation_folds": 4,
+      "warn_limited": false
+    },
+    "favorita": {
+      "geometry": {
+        "lookback": 96,
+        "horizon": 28,
+        "stride": 28,
+        "train_end": 1576,
+        "length": 1688
+      },
+      "block_days": 112,
+      "max_usable_folds": 12,
+      "n_folds": 5,
+      "folds": [
+        {
+          "fold": 0,
+          "train_start": 0,
+          "train_end": 1016,
+          "validation_start": 1044,
+          "validation_end": 1128,
+          "origins": [
+            1044,
+            1072,
+            1100
+          ]
+        },
+        {
+          "fold": 1,
+          "train_start": 0,
+          "train_end": 1128,
+          "validation_start": 1156,
+          "validation_end": 1240,
+          "origins": [
+            1156,
+            1184,
+            1212
+          ]
+        },
+        {
+          "fold": 2,
+          "train_start": 0,
+          "train_end": 1240,
+          "validation_start": 1268,
+          "validation_end": 1352,
+          "origins": [
+            1268,
+            1296,
+            1324
+          ]
+        },
+        {
+          "fold": 3,
+          "train_start": 0,
+          "train_end": 1352,
+          "validation_start": 1380,
+          "validation_end": 1464,
+          "origins": [
+            1380,
+            1408,
+            1436
+          ]
+        },
+        {
+          "fold": 4,
+          "train_start": 0,
+          "train_end": 1464,
+          "validation_start": 1492,
+          "validation_end": 1576,
+          "origins": [
+            1492,
+            1520,
+            1548
+          ]
+        }
+      ],
+      "n_validation_folds": 4,
+      "warn_limited": false
+    },
+    "freshretailnet": {
+      "geometry": {
+        "lookback": 96,
+        "horizon": 28,
+        "stride": 28,
+        "train_end": 658,
+        "length": 770
+      },
+      "block_days": 112,
+      "max_usable_folds": 4,
+      "n_folds": 4,
+      "folds": [
+        {
+          "fold": 0,
+          "train_start": 0,
+          "train_end": 210,
+          "validation_start": 238,
+          "validation_end": 322,
+          "origins": [
+            238,
+            266,
+            294
+          ]
+        },
+        {
+          "fold": 1,
+          "train_start": 0,
+          "train_end": 322,
+          "validation_start": 350,
+          "validation_end": 434,
+          "origins": [
+            350,
+            378,
+            406
+          ]
+        },
+        {
+          "fold": 2,
+          "train_start": 0,
+          "train_end": 434,
+          "validation_start": 462,
+          "validation_end": 546,
+          "origins": [
+            462,
+            490,
+            518
+          ]
+        },
+        {
+          "fold": 3,
+          "train_start": 0,
+          "train_end": 546,
+          "validation_start": 574,
+          "validation_end": 658,
+          "origins": [
+            574,
+            602,
+            630
+          ]
+        }
+      ],
+      "n_validation_folds": 3,
+      "warn_limited": false
+    },
+    "uci": {
+      "geometry": {
+        "lookback": 96,
+        "horizon": 28,
+        "stride": 28,
+        "train_end": 627,
+        "length": 739
+      },
+      "block_days": 112,
+      "max_usable_folds": 4,
+      "n_folds": 4,
+      "folds": [
+        {
+          "fold": 0,
+          "train_start": 0,
+          "train_end": 179,
+          "validation_start": 207,
+          "validation_end": 291,
+          "origins": [
+            207,
+            235,
+            263
+          ]
+        },
+        {
+          "fold": 1,
+          "train_start": 0,
+          "train_end": 291,
+          "validation_start": 319,
+          "validation_end": 403,
+          "origins": [
+            319,
+            347,
+            375
+          ]
+        },
+        {
+          "fold": 2,
+          "train_start": 0,
+          "train_end": 403,
+          "validation_start": 431,
+          "validation_end": 515,
+          "origins": [
+            431,
+            459,
+            487
+          ]
+        },
+        {
+          "fold": 3,
+          "train_start": 0,
+          "train_end": 515,
+          "validation_start": 543,
+          "validation_end": 627,
+          "origins": [
+            543,
+            571,
+            599
+          ]
+        }
+      ],
+      "n_validation_folds": 3,
+      "warn_limited": false
+    }
+  },
+  "fold_boundary_sha256": "6e57b1f6e2a5b8bed692fc22aff8f271943518406806d0782858e9cd0e5e5b69",
+  "git_commit": "84d44a13b2babcaa5d6f509e86cb0b8053482c87"
+}

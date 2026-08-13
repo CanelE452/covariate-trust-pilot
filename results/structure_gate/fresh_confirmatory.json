@@ -1,0 +1,271 @@
+{
+  "analysis": "Gate-v2 fresh-holdout confirmation",
+  "scored_at_utc": "2026-08-07T14:37:13.561828+00:00",
+  "spec_frozen_at_utc": "2026-08-07T14:36:24.268879+00:00",
+  "pooled": false,
+  "existing_test_reused": false,
+  "datasets": {
+    "m5": {
+      "n_series": 23513,
+      "origins": [
+        1857,
+        1885,
+        1913
+      ],
+      "fresh_id_sha256": "b6d3fed1e66a876b13abe79b03aaf71035f180148451dac5ff7b91299b4a9f52",
+      "deployable": {
+        "point": {
+          "overall_rmse": 2.0232718452623657,
+          "overall_mae": 1.0208339049726705,
+          "mean_per_series_rmse": 1.3025353909713064,
+          "median_per_series_rmse": 0.879551250472199,
+          "mean_per_series_mae": 1.0208339049726705
+        },
+        "hurdle": {
+          "overall_rmse": 2.0528756738359393,
+          "overall_mae": 0.9463634853488482,
+          "mean_per_series_rmse": 1.2864554675819762,
+          "median_per_series_rmse": 0.8682605129159623,
+          "mean_per_series_mae": 0.9463634853488481
+        },
+        "fifty": {
+          "overall_rmse": 2.012570897114748,
+          "overall_mae": 0.9768529607599608,
+          "mean_per_series_rmse": 1.2807666085011358,
+          "median_per_series_rmse": 0.8650007777753889,
+          "mean_per_series_mae": 0.9768529607599608
+        },
+        "global_alpha": {
+          "overall_rmse": 2.0125708968074294,
+          "overall_mae": 0.9768529607987106,
+          "mean_per_series_rmse": 1.2807666085544311,
+          "median_per_series_rmse": 0.8650007787294143,
+          "mean_per_series_mae": 0.9768529607987105
+        },
+        "gate_v1": {
+          "overall_rmse": 2.0127513025589674,
+          "overall_mae": 0.9641755244029949,
+          "mean_per_series_rmse": 1.2761870953765868,
+          "median_per_series_rmse": 0.8622487234856064,
+          "mean_per_series_mae": 0.964175524402995
+        },
+        "gate_v2": {
+          "overall_rmse": 2.0108557553132136,
+          "overall_mae": 0.9647333341490868,
+          "mean_per_series_rmse": 1.2757807172848912,
+          "median_per_series_rmse": 0.8630805804991619,
+          "mean_per_series_mae": 0.9647333341490868
+        }
+      },
+      "oracle_upper_bounds": {
+        "oracle_hard": {
+          "overall_rmse": 1.9653240729117054,
+          "overall_mae": 0.9367021167050774,
+          "mean_per_series_rmse": 1.2484152743454202,
+          "median_per_series_rmse": 0.8465986661564904,
+          "upper_bound_only": true
+        },
+        "oracle_convex": {
+          "overall_rmse": 1.9601065579904173,
+          "overall_mae": 0.9366053355189236,
+          "mean_per_series_rmse": 1.2461282300741912,
+          "median_per_series_rmse": 0.8445963279929466,
+          "upper_bound_only": true
+        }
+      },
+      "best_static": "global_alpha",
+      "paired_bootstrap": {
+        "gate_v2_vs_point": {
+          "relative_improvement": 0.02054045814944359,
+          "ci": [
+            0.01967432514838462,
+            0.02153203128137103
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_hurdle": {
+          "relative_improvement": 0.008297800091867352,
+          "ci": [
+            0.007407565853342651,
+            0.009198499070072426
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_fifty": {
+          "relative_improvement": 0.0038928960070871307,
+          "ci": [
+            0.0036948884133610267,
+            0.00408995295185826
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_global_alpha": {
+          "relative_improvement": 0.0038928960485372236,
+          "ci": [
+            0.003694888477204806,
+            0.004089953014913622
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_gate_v1": {
+          "relative_improvement": 0.0003184314378102366,
+          "ci": [
+            0.0001921388576870777,
+            0.00045086319956972096
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_best_static": {
+          "relative_improvement": 0.0038928960485372236,
+          "ci": [
+            0.003694888477204806,
+            0.004089953014913622
+          ],
+          "ci_excludes_zero": true
+        }
+      },
+      "convex_oracle_recovery": 0.03269156788953298,
+      "gate_weight": {
+        "mean": 0.6020960807800293,
+        "sd": 0.11296621710062027,
+        "extreme_share": 0.0003402373155275805
+      }
+    },
+    "favorita": {
+      "n_series": 50167,
+      "origins": [
+        1604,
+        1632,
+        1660
+      ],
+      "fresh_id_sha256": "d334def333c3f77c6e9735517009f3081f0fe482a92c55be5072b151e3ababa4",
+      "deployable": {
+        "point": {
+          "overall_rmse": 14.775965647173654,
+          "overall_mae": 3.5291789804779676,
+          "mean_per_series_rmse": 5.1122925205401,
+          "median_per_series_rmse": 2.710969098823504,
+          "mean_per_series_mae": 3.529178980477967
+        },
+        "hurdle": {
+          "overall_rmse": 15.264900579248298,
+          "overall_mae": 3.3627549167676474,
+          "mean_per_series_rmse": 5.139767842062879,
+          "median_per_series_rmse": 2.6686407740207176,
+          "mean_per_series_mae": 3.362754916767647
+        },
+        "fifty": {
+          "overall_rmse": 14.827735291728796,
+          "overall_mae": 3.3401575218494357,
+          "mean_per_series_rmse": 5.004450785793816,
+          "median_per_series_rmse": 2.6310551972694367,
+          "mean_per_series_mae": 3.3401575218494357
+        },
+        "global_alpha": {
+          "overall_rmse": 14.8049129290703,
+          "overall_mae": 3.350110957170438,
+          "mean_per_series_rmse": 5.00428453233695,
+          "median_per_series_rmse": 2.635076798053213,
+          "mean_per_series_mae": 3.3501109571704384
+        },
+        "gate_v1": {
+          "overall_rmse": 14.970539628916514,
+          "overall_mae": 3.346671609024509,
+          "mean_per_series_rmse": 4.990769290006718,
+          "median_per_series_rmse": 2.62602843208562,
+          "mean_per_series_mae": 3.3466716090245097
+        },
+        "gate_v2": {
+          "overall_rmse": 14.73728654903798,
+          "overall_mae": 3.333853543712454,
+          "mean_per_series_rmse": 4.981163241295381,
+          "median_per_series_rmse": 2.623237851139694,
+          "mean_per_series_mae": 3.3338535437124546
+        }
+      },
+      "oracle_upper_bounds": {
+        "oracle_hard": {
+          "overall_rmse": 14.548254310548801,
+          "overall_mae": 3.207478140717543,
+          "mean_per_series_rmse": 4.840814898311795,
+          "median_per_series_rmse": 2.541447659315602,
+          "upper_bound_only": true
+        },
+        "oracle_convex": {
+          "overall_rmse": 14.516031879482778,
+          "overall_mae": 3.177475589536456,
+          "mean_per_series_rmse": 4.807723125857391,
+          "median_per_series_rmse": 2.523296820314734,
+          "upper_bound_only": true
+        }
+      },
+      "best_static": "point",
+      "paired_bootstrap": {
+        "gate_v2_vs_point": {
+          "relative_improvement": 0.02564979971663788,
+          "ci": [
+            0.024472324267561928,
+            0.026865664882590568
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_hurdle": {
+          "relative_improvement": 0.030858319994438,
+          "ci": [
+            0.02906872227287717,
+            0.03289469552626127
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_fifty": {
+          "relative_improvement": 0.004653366672031643,
+          "ci": [
+            0.004053592262723965,
+            0.005299834276732025
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_global_alpha": {
+          "relative_improvement": 0.004620299044181612,
+          "ci": [
+            0.004044921855650048,
+            0.005202808771560051
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_gate_v1": {
+          "relative_improvement": 0.0019247631283162208,
+          "ci": [
+            0.0008393964217079082,
+            0.0034351596380973134
+          ],
+          "ci_excludes_zero": true
+        },
+        "gate_v2_vs_best_static": {
+          "relative_improvement": 0.02564979971663788,
+          "ci": [
+            0.024472324267561928,
+            0.026865664882590568
+          ],
+          "ci_excludes_zero": true
+        }
+      },
+      "convex_oracle_recovery": 0.14880366825472505,
+      "gate_weight": {
+        "mean": 0.4342425763607025,
+        "sd": 0.15440496802330017,
+        "extreme_share": 0.0028837017694234588
+      }
+    }
+  },
+  "verdict": "GATE_V2_CONFIRM_GREEN",
+  "direction_positive": {
+    "m5": true,
+    "favorita": true
+  },
+  "ci_excludes_zero": {
+    "m5": true,
+    "favorita": true
+  },
+  "git_commit": "a542ca5b45ca25eee5437a64a979c62e896f8490"
+}

@@ -1,0 +1,34 @@
+{
+  "m5": {
+    "relative_improvement": 0.007742546453059535,
+    "ci": [
+      0.005858038012682482,
+      0.009656293393814902
+    ],
+    "ci_excludes_zero": true
+  },
+  "favorita": {
+    "relative_improvement": 0.013496907028629797,
+    "ci": [
+      -0.005687388455804754,
+      0.028567936771444397
+    ],
+    "ci_excludes_zero": false
+  },
+  "freshretailnet": {
+    "relative_improvement": -0.005057921239119604,
+    "ci": [
+      -0.010731885379620611,
+      0.0008526953362832989
+    ],
+    "ci_excludes_zero": false
+  },
+  "uci": {
+    "relative_improvement": 0.6792424716278731,
+    "ci": [
+      0.09518412977335473,
+      0.875680980173635
+    ],
+    "ci_excludes_zero": true
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "G0_scientific_dependency_seal": true,
+  "G1_previous_test_untouched": true,
+  "G2_no_new_dataset": true,
+  "G3_expert_pair_frozen": [
+    "dlinear_point_plain",
+    "naive"
+  ],
+  "G4_objective_frozen": "direct normalized mixture MSE, unchanged",
+  "G5_fold_boundaries_frozen": "6e57b1f6e2a5b8bed692fc22aff8f271943518406806d0782858e9cd0e5e5b69",
+  "G6_raw_history_past_only": true,
+  "G7_normalization_past_only": true,
+  "G8_expert_forecasts_target_free": true,
+  "G9_handcrafted_summaries_excluded": true,
+  "G10_single_frozen_gru": true,
+  "G11_no_architecture_sweep": true,
+  "G12_experts_receive_no_gradient": true,
+  "G13_same_validation_rows": {
+    "m5": [
+      {
+        "fold": 1,
+        "rows": 3545,
+        "reference_rows": 3545,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 2,
+        "rows": 3578,
+        "reference_rows": 3578,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 3,
+        "rows": 3598,
+        "reference_rows": 3598,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 4,
+        "rows": 3600,
+        "reference_rows": 3600,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      }
+    ],
+    "favorita": [
+      {
+        "fold": 1,
+        "rows": 3600,
+        "reference_rows": 3600,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 2,
+        "rows": 3600,
+        "reference_rows": 3600,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 3,
+        "rows": 3600,
+        "reference_rows": 3600,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 4,
+        "rows": 3600,
+        "reference_rows": 3600,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      }
+    ],
+    "freshretailnet": [
+      {
+        "fold": 1,
+        "rows": 20705,
+        "reference_rows": 20705,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 2,
+        "rows": 22340,
+        "reference_rows": 22340,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 3,
+        "rows": 22554,
+        "reference_rows": 22554,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      }
+    ],
+    "uci": [
+      {
+        "fold": 1,
+        "rows": 6140,
+        "reference_rows": 6140,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 2,
+        "rows": 6390,
+        "reference_rows": 6390,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      },
+      {
+        "fold": 3,
+        "rows": 6474,
+        "reference_rows": 6474,
+        "series_id_order_matches": true,
+        "adi_source_order_matches": true,
+        "alpha_matches_reference": true
+      }
+    ]
+  },
+  "G14_primary_crossfitted_aggregate": true,
+  "G15_bootstrap_unit_series": true,
+  "G16_fresh_negative_preserved": true,
+  "G17_uci_collapse_sensitivity_only": true,
+  "G18_no_result_driven_redesign": true,
+  "G19_no_stronger_backbone": true,
+  "G20_repository_tests": "284 passed, 5 skipped (12 new)",
+  "p0l1_identity": {
+    "m5": {
+      "reproduced_p0l1_vs_alpha": 0.007742546453059535,
+      "p0l1_artifact": 0.007742546453059535,
+      "matches": true
+    },
+    "favorita": {
+      "reproduced_p0l1_vs_alpha": 0.013496907028629797,
+      "p0l1_artifact": 0.013496907028629797,
+      "matches": true
+    },
+    "freshretailnet": {
+      "reproduced_p0l1_vs_alpha": -0.005057921239119604,
+      "p0l1_artifact": -0.005057921239119604,
+      "matches": true
+    },
+    "uci": {
+      "reproduced_p0l1_vs_alpha": 0.6792424716278731,
+      "p0l1_artifact": 0.6792424716278731,
+      "matches": true
+    }
+  },
+  "verdict": "SEQUENCE_ROUTING_RED",
+  "binding_status": [
+    "HANDCRAFTED_FEATURE_GATE_STOP",
+    "RAW_SEQUENCE_GATE_STOP",
+    "ROUTING_MODEL_DEVELOPMENT_STOP",
+    "DO_NOT_CONSUME_NEW_CONFIRMATORY_DATASET"
+  ]
+}

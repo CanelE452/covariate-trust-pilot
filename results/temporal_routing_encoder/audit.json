@@ -1,0 +1,13 @@
+{
+  "historical_chain": [
+    "Gate-v2 external: EXTERNAL_VALIDATION_NOT_REPLICATED",
+    "Gate-v3: DIRECT_LOSS_SUPPORTED, ALPHA_ANCHOR_SUPPORTED=False, FEATURE_ROUTING_LIMITED=True",
+    "P0L1 temporal: strong by rule, Fresh aggregate negative",
+    "Safe-P0L1: tail improved, mean worse on 4/4, Fresh not recovered",
+    "Routing information ceiling: CURRENT_FEATURE_INFORMATION_LIMITED",
+    "this run: raw-history representation, final experiment on the axis"
+  ],
+  "what_changed": "the representation only",
+  "reference_for_p0l1_rows": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\routing_information_ceiling",
+  "git_commit": "ac23a2ffe4d5d4b2c759508f130b3412e75a5f00"
+}

@@ -1,0 +1,235 @@
+{
+  "analysis": "outcome-blind structural audit of the prospective datasets",
+  "test_outcome_computed": false,
+  "audited_at_utc": "2026-08-07T16:26:12.215463+00:00",
+  "protocol": {
+    "lookback": 96,
+    "horizon": 28,
+    "test_origins": 3,
+    "stride": 28,
+    "min_span_days": 236,
+    "min_positive_train": 20
+  },
+  "admission_thresholds": {
+    "full": 1000,
+    "limited": 300
+  },
+  "datasets": {
+    "freshretailnet": {
+      "role": "PRIMARY_EXTERNAL_CONFIRMATION",
+      "series_key": "store_id x product_id",
+      "series_key_evidence": "both identifiers present as integer columns",
+      "n_rows": 7869549,
+      "eval_rows": 70000,
+      "eval_labelled": true,
+      "eval_span": [
+        "2025-07-14",
+        "2025-07-20"
+      ],
+      "eval_horizon_days": 7,
+      "duplicate_series_date": 0,
+      "value_field": "sale_amount",
+      "value_is_integer": false,
+      "value_min": 0.0,
+      "value_max": 83.7,
+      "negative_values": 0,
+      "zero_rows_share": 0.054657897167931735,
+      "availability_field": "stock_hour6_22_cnt",
+      "availability_evidence": "verified against hours_stock_status: stock_hour6_22_cnt equals the number of hours in [6,22) with status 1 (match rate 1.0000), and status-1 hours carry 12x lower sales than status-0 hours (0.0085 vs 0.1022), so 1 marks a stockout hour and the counter is stockout hours, not in-stock hours",
+      "stockout_hours_mean": 3.5463206341303675,
+      "full_day_stockout_row_share": 0.05451875323477877,
+      "no_stockout_row_share": 0.5180413769581967,
+      "grid": {
+        "n_series_raw": 22939,
+        "calendar_days": 770,
+        "span": [
+          "2023-06-05",
+          "2025-07-13"
+        ],
+        "observed_rows_per_series": {
+          "median": 236.0,
+          "p10": 78.0,
+          "p90": 770.0
+        },
+        "series_life_days": {
+          "median": 392.0,
+          "p10": 80.0,
+          "p90": 770.0,
+          "max": 770.0
+        },
+        "n_positive_per_series": {
+          "median": 220.0,
+          "p10": 72.0,
+          "p90": 739.0
+        },
+        "series_with_full_span": 5227,
+        "series_meeting_min_span": 13479,
+        "series_meeting_min_positive": 22939,
+        "series_meeting_both": 13479,
+        "extra": {}
+      },
+      "ambiguities": [
+        "sale_amount is not integer (max 83.7); it is a weight or value measure, so count-based intermittency descriptors are approximations",
+        "the eval block is 7 days, shorter than the frozen horizon of 28",
+        "a zero sale on a day with stockout hours is censored demand, not observed zero demand; the two are kept apart by the mask rather than merged"
+      ],
+      "admission": "FULL_BENCHMARK_ELIGIBLE",
+      "standard_protocol_supported": true
+    },
+    "retail_stocks": {
+      "role": "SECONDARY_EXTERNAL_CONFIRMATION",
+      "series_key": "Store x Product No",
+      "series_key_evidence": "both columns present in the sales file",
+      "n_rows": 125751,
+      "n_stores": 40,
+      "n_products": 2326,
+      "span": [
+        "2025-06-01",
+        "2026-04-24"
+      ],
+      "calendar_days": 328,
+      "return_rows": 7491,
+      "return_share": 0.05957010282224396,
+      "negative_qty_rows": 7491,
+      "value_field": "Qty Sold, returns (Is Return == 1) excluded from demand",
+      "grid": {
+        "n_series_raw": 50237,
+        "calendar_days": 328,
+        "span": [
+          "2025-06-01",
+          "2026-04-24"
+        ],
+        "observed_rows_per_series": {
+          "median": 2.0,
+          "p10": 1.0,
+          "p90": 4.0
+        },
+        "series_life_days": {
+          "median": 14.0,
+          "p10": 1.0,
+          "p90": 183.0,
+          "max": 328.0
+        },
+        "n_positive_per_series": {
+          "median": 2.0,
+          "p10": 1.0,
+          "p90": 4.0
+        },
+        "series_with_full_span": 13,
+        "series_meeting_min_span": 2336,
+        "series_meeting_min_positive": 156,
+        "series_meeting_both": 129,
+        "extra": {}
+      },
+      "inventory_rows_sampled": 284755,
+      "inventory_has_store": true,
+      "inventory_span": [
+        "2025-06-01",
+        "2026-04-24"
+      ],
+      "inventory_stock_status_values": [
+        "Clearance",
+        "Full Price",
+        "Markdown Tier 1",
+        "Markdown Tier 2",
+        "Promo"
+      ],
+      "ambiguities": [
+        "inventory rows are Start Date / End Date intervals, not daily snapshots, so an on-hand quantity per day is not directly available",
+        "inventory carries Store, join is possible",
+        "product descriptions are templated (Scholar Footwear, Femme Footwear ...), which is consistent with a synthetic or anonymised catalogue"
+      ],
+      "admission": "INSUFFICIENT_SUPPORT",
+      "standard_protocol_supported": true
+    },
+    "uci_online_retail_ii": {
+      "role": "EXTERNAL_ROBUSTNESS",
+      "sheets": [
+        "Year 2009-2010",
+        "Year 2010-2011"
+      ],
+      "n_rows": 1067371,
+      "span": [
+        "2009-12-01",
+        "2011-12-09"
+      ],
+      "calendar_days": 739,
+      "cancellation_rows": 19494,
+      "negative_quantity_rows": 22950,
+      "zero_quantity_rows": 0,
+      "n_stockcodes": 5305,
+      "n_countries": 43,
+      "store_identifier": null,
+      "availability_field": null,
+      "availability_status": "AVAILABILITY_UNKNOWN",
+      "series_construction_candidates": {
+        "StockCode x Country": {
+          "n_series_raw": 28434,
+          "calendar_days": 739,
+          "span": [
+            "2009-12-01",
+            "2011-12-09"
+          ],
+          "observed_rows_per_series": {
+            "median": 2.0,
+            "p10": 1.0,
+            "p90": 48.0
+          },
+          "series_life_days": {
+            "median": 50.0,
+            "p10": 1.0,
+            "p90": 644.0,
+            "max": 739.0
+          },
+          "n_positive_per_series": {
+            "median": 2.0,
+            "p10": 1.0,
+            "p90": 48.0
+          },
+          "series_with_full_span": 1434,
+          "series_meeting_min_span": 9856,
+          "series_meeting_min_positive": 4220,
+          "series_meeting_both": 3607,
+          "extra": {}
+        },
+        "StockCode": {
+          "n_series_raw": 4985,
+          "calendar_days": 739,
+          "span": [
+            "2009-12-01",
+            "2011-12-09"
+          ],
+          "observed_rows_per_series": {
+            "median": 63.0,
+            "p10": 5.0,
+            "p90": 285.0
+          },
+          "series_life_days": {
+            "median": 520.0,
+            "p10": 58.0,
+            "p90": 738.0,
+            "max": 739.0
+          },
+          "n_positive_per_series": {
+            "median": 63.0,
+            "p10": 5.0,
+            "p90": 285.0
+          },
+          "series_with_full_span": 1315,
+          "series_meeting_min_span": 3626,
+          "series_meeting_min_positive": 3710,
+          "series_meeting_both": 3112,
+          "extra": {}
+        }
+      },
+      "ambiguities": [
+        "transaction-only: a date with no invoice line cannot be distinguished between zero demand and the product not being offered",
+        "cancellations are identified by an Invoice starting with C and are removed along with non-positive quantities; they are never counted as demand",
+        "there is no store or location field, so no per-store series exist"
+      ],
+      "admission": "FULL_BENCHMARK_ELIGIBLE",
+      "standard_protocol_supported": true
+    }
+  },
+  "git_commit": "94f5029b83af766af14635362595f2982d6d6887"
+}

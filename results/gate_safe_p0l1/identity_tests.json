@@ -1,0 +1,33 @@
+{
+  "lambda_0.0": {
+    "max_abs_weight_error": 0.0,
+    "max_abs_loss_error": 0.0,
+    "tolerance": 1e-12,
+    "ok": true
+  },
+  "lambda_1.0": {
+    "max_abs_weight_error": 1.1102230246251565e-16,
+    "max_abs_loss_error": 4.440892098500626e-16,
+    "tolerance": 1e-12,
+    "ok": true
+  },
+  "g_raw_equals_alpha": {
+    "max_abs_error": 0.0,
+    "ok": true
+  },
+  "experts_identical_invariant": {
+    "ok": true
+  },
+  "g_safe_in_unit_interval": {
+    "min": 0.15160425920484374,
+    "max": 0.647131797745266,
+    "ok": true
+  },
+  "no_signal_gives_zero": {
+    "ok": true
+  },
+  "cold_start_gives_zero": {
+    "ok": true
+  },
+  "passed": true
+}

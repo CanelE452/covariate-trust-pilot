@@ -1,0 +1,86 @@
+{
+  "study": "M5 H2 frozen-rule replication, seed robustness",
+  "frozen_at_utc": "2026-08-07T12:43:08.373383+00:00",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "seed_source": {
+    "killtest_model_seeds": [
+      0,
+      1
+    ],
+    "canonical_model_seed": 0,
+    "rule": "canonical first, then the repository convention, extended by one only to reach three; no invented values"
+  },
+  "training_population": "Stage A M5 1200, identical for every seed",
+  "evaluation_population": {
+    "candidate_id_sha256": "f21c615bd1fc3a408aec086a93439b25577566af64516127fd363da3d3c3152b",
+    "n_candidate": 675,
+    "control_id_sha256": "69485fe2bc0a08a273ccdcf3f2603ba7a679ec9b790889b66ee13e26fd8f4ea5",
+    "n_control": 5018
+  },
+  "frozen_h2_cutoffs": {
+    "HIGH_ADI_min": 1.3036350677120456,
+    "LOW_OCC_max": 0.0074430844292528,
+    "MAG_PERSISTENT_min": 0.290998278399666,
+    "source": "results\\external_validity_screen\\posthoc_diagnostic\\posthoc_diagnostic.json",
+    "recomputed_on_full_pool": false
+  },
+  "independent_series_in_training": false,
+  "varies_between_runs": [
+    "model_seed"
+  ],
+  "held_constant": [
+    "point implementation",
+    "hurdle implementation",
+    "parameter count",
+    "lookback",
+    "horizon",
+    "optimizer",
+    "learning rate",
+    "batch size",
+    "max epochs",
+    "patience",
+    "normalization",
+    "training stride",
+    "validation split",
+    "checkpoint rule",
+    "candidate ids",
+    "control ids"
+  ],
+  "training": {
+    "max_epochs": 30,
+    "patience": 5,
+    "batch_size": 256,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "checkpoint_rule": "validation MSE of the final mean prediction, identical for every DLinear variant",
+    "lambda_factorized": 1.0,
+    "hyperparameter_rule": "no per-cell tuning; one setting for every cell and every model; TSB alpha/beta chosen on a fixed grid using the validation split only"
+  },
+  "split": {
+    "length": 1941,
+    "train_end": 1829,
+    "val_end": 1857,
+    "horizon": 28,
+    "lookback": 96,
+    "test_origin_stride": 28,
+    "source": "src/rcoi/data/prepare_m5.py rolling origin 1"
+  },
+  "aggregate_rule": "average delta_relative across seeds per series, then bootstrap over series; seeds are not extra series",
+  "bootstrap": {
+    "unit": "series",
+    "draws": 2000,
+    "seed": 20260807,
+    "note": "time rows are never resampled as if independent"
+  },
+  "verdict_rule": {
+    "H2_SEED_ROBUST": "every seed effect < 0 and aggregate < 0 with CI excluding 0",
+    "H2_SEED_DIRECTION_STABLE": "at least 2/3 seeds < 0 and aggregate < 0 but CI covers 0",
+    "H2_SEED_UNSTABLE": "aggregate >= 0 or the sign flips repeatedly"
+  },
+  "git_commit": "12b35d2a220bfd2f1819802138932f97ecd6a365"
+}

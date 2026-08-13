@@ -1,0 +1,8 @@
+{
+  "historical": {
+    "gate_v2_external": "EXTERNAL_VALIDATION_NOT_REPLICATED",
+    "p0l1_label": "P0L1_TEMPORAL_STRONG (operational) / temporal mixed (scientific)"
+  },
+  "conflict": "existing crossfitted parquet lacked quadratic coefficients; P0L1 regenerated on TRAIN/OOF only",
+  "identity_fix": "lambda=1 endpoint checked to 1e-12 tolerance, actual error 1.11e-16"
+}

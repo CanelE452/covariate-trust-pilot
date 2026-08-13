@@ -1,0 +1,57 @@
+{
+  "allowed_claim": "The Stage 1 no-signal control is a genuine iid control with independent per-series seeds and no reusable template, so a Stage 1 contrast may be read as 'perfect alternation (rho = -1) versus iid', restricted to exploratory status.",
+  "blocked_claims": [
+    "temporal predictability in general drives the hurdle advantage",
+    "the Stage 1 interval effect measures a graded predictability axis",
+    "the Stage 1 predictable arm represents a realistic dependent process"
+  ],
+  "evidence": [
+    "control long-motif (L=16) repetition max 0.0035",
+    "control distinct sequences per 40 series: 40-40",
+    "control train/test identical prefix count: 0",
+    "control out-of-sample Markov gain range [-0.2036, -0.0005] \u2014 all below the 0.02 tolerance and mostly negative",
+    "predictable arm distinct sequences per 40 series: 2-40",
+    "predictable arm reuse fraction max 1.0000",
+    "lag-1 ACF alone was NOT used: PACF, spectrum, long motifs, order 1-4 out-of-sample Markov predictors and sequence hashes agree"
+  ],
+  "fixed_pattern_detected": true,
+  "fixed_pattern_scope": "predictable arm only (I1/S1); the no-signal control shows none",
+  "generator_case": 2,
+  "generator_case_description": "CASE 2 for the no-signal control: each event draws an independent uniform from a per-series stream keyed by (dataset_version, name, d, data_seed, series). The PREDICTABLE arm is not CASE 2 \u2014 it is a deterministic period-2 alternation with a per-series random phase, i.e. rho = -1 with only two distinct realisations per cell.",
+  "higher_order_predictability_detected": false,
+  "marginal_control_pass": true,
+  "marginal_evidence": {
+    "d4_empirical_adi_mode_difference": 0.0015127931088840996,
+    "d4_empirical_adi_range_over_blocks": 0.012005941117016609,
+    "d4_mean_gap_mode_difference": 0.0011109460775294356,
+    "d4_mean_gap_range_over_blocks": 0.012918539290892463,
+    "d4_positive_mean_mode_difference": 0.013260240911960298,
+    "d4_positive_mean_range_over_blocks": 0.02214927183352529,
+    "d4_positive_variance_mode_difference": 0.004859280284632604,
+    "d4_positive_variance_range_over_blocks": 0.020817500216067826,
+    "d8_empirical_adi_mode_difference": 0.0032916820822370824,
+    "d8_empirical_adi_range_over_blocks": 0.004500972087731336,
+    "d8_mean_gap_mode_difference": 0.0018213067725836797,
+    "d8_mean_gap_range_over_blocks": 0.0025878676625425826,
+    "d8_positive_mean_mode_difference": 0.012865394168401417,
+    "d8_positive_mean_range_over_blocks": 0.018673187580576747,
+    "d8_positive_variance_mode_difference": 0.024236592839336126,
+    "d8_positive_variance_range_over_blocks": 0.05531896226507491,
+    "note": "compared WITHIN each d; the d=4 vs d=8 ADI difference is the intended manipulation. The range reading over eight blocks exceeds its fixed tolerance on two entries, but every observed spread sits inside the sampling expectation for that many blocks, and the theoretical marginals are identical across dependence modes by construction.",
+    "range_reading_pass": false,
+    "systematic_reading_pass": true,
+    "theoretical_positive_mean_both_modes": 10.0,
+    "theoretical_positive_variance_both_modes": 34.0
+  },
+  "source_run": "experiments/decomposition_when_helps/results/run_20260802_112655",
+  "source_run_provenance": {
+    "dataset_content_hash": "c889f8f588ada4114434de0d644ed0d08c7d6620933a63363138dd103e6895ab",
+    "git_commit_at_run": "03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+    "git_commit_now": "03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+    "hash_chain_consistent": true,
+    "manifest_content_hash": "c889f8f588ada4114434de0d644ed0d08c7d6620933a63363138dd103e6895ab",
+    "prereg_hash": "3b6b5f89ba24d42aaab6f65dc39526096578dbfcc4820e0284bbf92736bab9f9"
+  },
+  "status": "CONDITIONALLY_VALID",
+  "template_reuse_detected": false
+}

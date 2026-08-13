@@ -1,0 +1,98 @@
+{
+  "C_neg": 0.12656570291900335,
+  "C_neg_ci": [
+    0.087022539971714,
+    0.1659530882949327
+  ],
+  "C_pos": 0.2007623311580358,
+  "C_pos_ci": [
+    0.1554329979468015,
+    0.24394375066484203
+  ],
+  "C_pred": 0.16366401703851957,
+  "C_sign": 0.07419662823903242,
+  "allowed_claim": "With occurrence temporal dependence present, the relative advantage of Hurdle increased regardless of the sign of the dependence.",
+  "blocked_claims": [
+    "the effect is specific to alternation",
+    "the effect is specific to persistence"
+  ],
+  "classification": "CLASS_A_GENERAL_PREDICTABILITY_SUPPORT",
+  "gates": [
+    {
+      "evidence": {
+        "dataset_content_hash": "c889f8f588ada4114434de0d644ed0d08c7d6620933a63363138dd103e6895ab",
+        "git_commit_at_run": "03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+        "git_commit_now": "03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+        "hash_chain_consistent": true,
+        "manifest_content_hash": "c889f8f588ada4114434de0d644ed0d08c7d6620933a63363138dd103e6895ab",
+        "prereg_hash": "3b6b5f89ba24d42aaab6f65dc39526096578dbfcc4820e0284bbf92736bab9f9"
+      },
+      "gate": "G0_PROVENANCE",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "beats_marginal_baseline": false,
+        "criterion": "upper CI bound must not exceed 0.02",
+        "literal_ci_includes_zero": false,
+        "markov_gain_ci": [
+          -0.07427883377309535,
+          -0.05617808998625676
+        ],
+        "markov_gain_mean": -0.06500059417674744,
+        "max_reuse_fraction": 0.0,
+        "note": "the gain is significantly NEGATIVE: higher-order tables overfit short sequences and lose to the marginal out of sample, which is what a genuine no-signal control looks like",
+        "train_test_identical_prefix": 0
+      },
+      "gate": "G1_NO_SIGNAL",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "event_count_by_d": {
+          "4": 5810.666666666667,
+          "8": 2900.5
+        },
+        "marginal_relative_differences": {
+          "d4_mean_gap": 0.013125761403477935,
+          "d4_positive_mean": 0.018312451617523814,
+          "d4_positive_variance": 0.004494927709563486,
+          "d8_mean_gap": 0.0017907356426903537,
+          "d8_positive_mean": 0.011316645569323927,
+          "d8_positive_variance": 0.006340155226054092
+        },
+        "max_rho_interval_error": 0.039514826035160065,
+        "max_rho_magnitude_error": 0.02824337370317469,
+        "note": "the realised +1 share drifts at rho = +0.8 because the effective sample size is n(1-rho)/(1+rho) = n/9; the process marginal is exactly 0.5/0.5 by construction"
+      },
+      "gate": "G2_DGP_CALIBRATION",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "hurdle_point_parameter_ratio": 1.0,
+        "identical_test_history_checksum_across_models": true,
+        "parameter_counts": {
+          "HURDLE_MEAN": 5856,
+          "HURDLE_ZTNB": 5857,
+          "POINT": 5856
+        },
+        "targets_start_at_origin": true
+      },
+      "gate": "G3_FAIRNESS",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "git_commit": "03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+        "original": "39caa46d8621a6c135c16f5dc4107709ad17791c4f706eba7665327841bc908f",
+        "prereg_hash": "0ba93bd91aed09fe0694034ac3a2bb29bc5e5b1ec26658c8734af4da8cde02d9",
+        "rebuilt": "39caa46d8621a6c135c16f5dc4107709ad17791c4f706eba7665327841bc908f"
+      },
+      "gate": "G4_REPRODUCIBILITY",
+      "status": "PASS"
+    }
+  ],
+  "gates_all_pass": true,
+  "sign_asymmetry_small_vs_endpoints": true
+}

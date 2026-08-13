@@ -1,0 +1,17 @@
+{
+  "verdict": "GATE_V3_OOF_STRONG",
+  "positive": {
+    "m5": true,
+    "favorita": true,
+    "freshretailnet": true,
+    "uci": true
+  },
+  "ci_excludes_zero": {
+    "m5": true,
+    "favorita": true,
+    "freshretailnet": true,
+    "uci": true
+  },
+  "artifacts_unchanged": true,
+  "identity_passed": true
+}

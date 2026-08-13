@@ -1,0 +1,504 @@
+{
+  "analysis": "Gate-v2 cross-fold selection on OOF only",
+  "test_used": false,
+  "existing_test_reused": false,
+  "selected_at_utc": "2026-08-07T14:29:31.357715+00:00",
+  "gradient_checks": {
+    "identity_g_0.0": {
+      "max_abs_error": 0.0,
+      "ok": true
+    },
+    "identity_g_1.0": {
+      "max_abs_error": 0.0,
+      "ok": true
+    },
+    "identity_g_0.5": {
+      "max_abs_error": 0.0,
+      "ok": true
+    },
+    "expert_grads_absent": {
+      "point": true,
+      "hurdle": true,
+      "gate_receives_gradient": true
+    },
+    "gradient_vanishes_when_experts_agree": {
+      "identical": 0.0,
+      "different": 0.6683776676654816,
+      "ok": true
+    },
+    "passed": true
+  },
+  "cv_scheme": "expanding time: a gate is fitted only on folds strictly earlier than the one it is scored on, so fold 0 has no validation row and leave-one-fold-out is not used",
+  "candidates": {
+    "G-STRUCT|linear|regret_bce": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.0005246425769041587,
+          "2": 0.0010945766072137637
+        },
+        "mean": 0.0008096095920589613,
+        "median": 0.0008096095920589613,
+        "worst": 0.0005246425769041587,
+        "sign_consistent": true,
+        "n_parameters": 25
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.0002503068388803224,
+          "2": 0.002110968268919258
+        },
+        "mean": 0.0009303307150194677,
+        "median": 0.0009303307150194677,
+        "worst": -0.0002503068388803224,
+        "sign_consistent": false,
+        "n_parameters": 25
+      }
+    },
+    "G-STRUCT|linear|direct_mixture": {
+      "m5": {
+        "fold_improvement": {
+          "1": -0.002167779400731472,
+          "2": 0.0016094482086332976
+        },
+        "mean": -0.0002791655960490873,
+        "median": -0.0002791655960490873,
+        "worst": -0.002167779400731472,
+        "sign_consistent": false,
+        "n_parameters": 25
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.002372502729235434,
+          "2": -0.005110171118474283
+        },
+        "mean": -0.0037413369238548586,
+        "median": -0.0037413369238548586,
+        "worst": -0.005110171118474283,
+        "sign_consistent": true,
+        "n_parameters": 25
+      }
+    },
+    "G-STRUCT|linear|gstar_regression": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.0009417880800487492,
+          "2": 0.001905874523502788
+        },
+        "mean": 0.0014238313017757686,
+        "median": 0.0014238313017757686,
+        "worst": 0.0009417880800487492,
+        "sign_consistent": true,
+        "n_parameters": 25
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.002055077084549563,
+          "2": 0.0037924023959127516
+        },
+        "mean": 0.0008686626556815944,
+        "median": 0.0008686626556815944,
+        "worst": -0.002055077084549563,
+        "sign_consistent": false,
+        "n_parameters": 25
+      }
+    },
+    "G-STRUCT|mlp|regret_bce": {
+      "m5": {
+        "fold_improvement": {
+          "1": 2.2038739227098938e-05,
+          "2": 0.0015589394408524844
+        },
+        "mean": 0.0007904890900397916,
+        "median": 0.0007904890900397916,
+        "worst": 2.2038739227098938e-05,
+        "sign_consistent": true,
+        "n_parameters": 417
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.0014628567301078086,
+          "2": -0.001625414911935664
+        },
+        "mean": -0.0015441358210217364,
+        "median": -0.0015441358210217364,
+        "worst": -0.001625414911935664,
+        "sign_consistent": true,
+        "n_parameters": 417
+      }
+    },
+    "G-STRUCT|mlp|direct_mixture": {
+      "m5": {
+        "fold_improvement": {
+          "1": -0.0010928621476145133,
+          "2": -0.0032007455597348787
+        },
+        "mean": -0.002146803853674696,
+        "median": -0.002146803853674696,
+        "worst": -0.0032007455597348787,
+        "sign_consistent": true,
+        "n_parameters": 417
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.002841519260543426,
+          "2": -0.010831129607236862
+        },
+        "mean": -0.006836324433890144,
+        "median": -0.006836324433890144,
+        "worst": -0.010831129607236862,
+        "sign_consistent": true,
+        "n_parameters": 417
+      }
+    },
+    "G-STRUCT|mlp|gstar_regression": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.0014990749496078249,
+          "2": 0.0025118192292653383
+        },
+        "mean": 0.0020054470894365815,
+        "median": 0.0020054470894365815,
+        "worst": 0.0014990749496078249,
+        "sign_consistent": true,
+        "n_parameters": 417
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.001500938832524958,
+          "2": -0.0005761819734705419
+        },
+        "mean": -0.00103856040299775,
+        "median": -0.00103856040299775,
+        "worst": -0.001500938832524958,
+        "sign_consistent": true,
+        "n_parameters": 417
+      }
+    },
+    "G-FULL|linear|regret_bce": {
+      "m5": {
+        "fold_improvement": {
+          "1": -0.0023784059885837375,
+          "2": 0.0014157654723144328
+        },
+        "mean": -0.00048132025813465236,
+        "median": -0.00048132025813465236,
+        "worst": -0.0023784059885837375,
+        "sign_consistent": false,
+        "n_parameters": 36
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.0017662067959544443,
+          "2": -1.3992061671529863e-05
+        },
+        "mean": -0.0008900994288129871,
+        "median": -0.0008900994288129871,
+        "worst": -0.0017662067959544443,
+        "sign_consistent": true,
+        "n_parameters": 36
+      }
+    },
+    "G-FULL|linear|direct_mixture": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.002162367016008352,
+          "2": 0.0014812158103788041
+        },
+        "mean": 0.001821791413193578,
+        "median": 0.001821791413193578,
+        "worst": 0.0014812158103788041,
+        "sign_consistent": true,
+        "n_parameters": 36
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.0025435779302135364,
+          "2": 0.004076340200491178
+        },
+        "mean": 0.0007663811351388207,
+        "median": 0.0007663811351388207,
+        "worst": -0.0025435779302135364,
+        "sign_consistent": false,
+        "n_parameters": 36
+      }
+    },
+    "G-FULL|linear|gstar_regression": {
+      "m5": {
+        "fold_improvement": {
+          "1": -0.0013530985803929074,
+          "2": 0.002446204240005874
+        },
+        "mean": 0.0005465528298064834,
+        "median": 0.0005465528298064834,
+        "worst": -0.0013530985803929074,
+        "sign_consistent": false,
+        "n_parameters": 36
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.0018804930775201919,
+          "2": 0.00029389325359407997
+        },
+        "mean": -0.000793299911963056,
+        "median": -0.000793299911963056,
+        "worst": -0.0018804930775201919,
+        "sign_consistent": false,
+        "n_parameters": 36
+      }
+    },
+    "G-FULL|mlp|regret_bce": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.0025711944012775934,
+          "2": 0.00282093187552145
+        },
+        "mean": 0.0026960631383995217,
+        "median": 0.0026960631383995217,
+        "worst": 0.0025711944012775934,
+        "sign_consistent": true,
+        "n_parameters": 593
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": 0.001279914934022236,
+          "2": 0.0039994539008819715
+        },
+        "mean": 0.002639684417452104,
+        "median": 0.002639684417452104,
+        "worst": 0.001279914934022236,
+        "sign_consistent": true,
+        "n_parameters": 593
+      }
+    },
+    "G-FULL|mlp|direct_mixture": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.0017097705669647455,
+          "2": 0.00024259947724283856
+        },
+        "mean": 0.0009761850221037921,
+        "median": 0.0009761850221037921,
+        "worst": 0.00024259947724283856,
+        "sign_consistent": true,
+        "n_parameters": 593
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": 0.0015324614134341564,
+          "2": -0.0021654699307673123
+        },
+        "mean": -0.00031650425866657796,
+        "median": -0.00031650425866657796,
+        "worst": -0.0021654699307673123,
+        "sign_consistent": false,
+        "n_parameters": 593
+      }
+    },
+    "G-FULL|mlp|gstar_regression": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.0049579465898403246,
+          "2": 0.0032199525727622303
+        },
+        "mean": 0.004088949581301278,
+        "median": 0.004088949581301278,
+        "worst": 0.0032199525727622303,
+        "sign_consistent": true,
+        "n_parameters": 593
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": 0.0006959855897071896,
+          "2": 0.0004422193271994041
+        },
+        "mean": 0.0005691024584532969,
+        "median": 0.0005691024584532969,
+        "worst": 0.0004422193271994041,
+        "sign_consistent": true,
+        "n_parameters": 593
+      }
+    },
+    "G-NOSCALE|linear|regret_bce": {
+      "m5": {
+        "fold_improvement": {
+          "1": -0.0019632252519082025,
+          "2": 0.0015038595987271561
+        },
+        "mean": -0.00022968282659052318,
+        "median": -0.00022968282659052318,
+        "worst": -0.0019632252519082025,
+        "sign_consistent": false,
+        "n_parameters": 32
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.001775210721542012,
+          "2": -0.00020839136082842678
+        },
+        "mean": -0.0009918010411852194,
+        "median": -0.0009918010411852194,
+        "worst": -0.001775210721542012,
+        "sign_consistent": true,
+        "n_parameters": 32
+      }
+    },
+    "G-NOSCALE|linear|direct_mixture": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.0012814002605268467,
+          "2": 0.001985654727426013
+        },
+        "mean": 0.0016335274939764297,
+        "median": 0.0016335274939764297,
+        "worst": 0.0012814002605268467,
+        "sign_consistent": true,
+        "n_parameters": 32
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.0021409153603994526,
+          "2": 0.005631574169102223
+        },
+        "mean": 0.0017453294043513852,
+        "median": 0.0017453294043513852,
+        "worst": -0.0021409153603994526,
+        "sign_consistent": false,
+        "n_parameters": 32
+      }
+    },
+    "G-NOSCALE|linear|gstar_regression": {
+      "m5": {
+        "fold_improvement": {
+          "1": -0.001538019887501794,
+          "2": 0.002490263462251092
+        },
+        "mean": 0.000476121787374649,
+        "median": 0.000476121787374649,
+        "worst": -0.001538019887501794,
+        "sign_consistent": false,
+        "n_parameters": 32
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.0019174514845142954,
+          "2": 0.0002308327065570973
+        },
+        "mean": -0.000843309388978599,
+        "median": -0.000843309388978599,
+        "worst": -0.0019174514845142954,
+        "sign_consistent": false,
+        "n_parameters": 32
+      }
+    },
+    "G-NOSCALE|mlp|regret_bce": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.002824701100774638,
+          "2": 0.002849629335442608
+        },
+        "mean": 0.002837165218108623,
+        "median": 0.002837165218108623,
+        "worst": 0.002824701100774638,
+        "sign_consistent": true,
+        "n_parameters": 529
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": 0.0026764900371208994,
+          "2": 0.004798191235834424
+        },
+        "mean": 0.003737340636477662,
+        "median": 0.003737340636477662,
+        "worst": 0.0026764900371208994,
+        "sign_consistent": true,
+        "n_parameters": 529
+      }
+    },
+    "G-NOSCALE|mlp|direct_mixture": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.001983554680094157,
+          "2": 0.0009527134839812899
+        },
+        "mean": 0.0014681340820377235,
+        "median": 0.0014681340820377235,
+        "worst": 0.0009527134839812899,
+        "sign_consistent": true,
+        "n_parameters": 529
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": -0.0001858822882365751,
+          "2": 0.0035603081804155834
+        },
+        "mean": 0.001687212946089504,
+        "median": 0.001687212946089504,
+        "worst": -0.0001858822882365751,
+        "sign_consistent": false,
+        "n_parameters": 529
+      }
+    },
+    "G-NOSCALE|mlp|gstar_regression": {
+      "m5": {
+        "fold_improvement": {
+          "1": 0.0032667201817700286,
+          "2": 0.0033438299328104842
+        },
+        "mean": 0.0033052750572902566,
+        "median": 0.0033052750572902566,
+        "worst": 0.0032667201817700286,
+        "sign_consistent": true,
+        "n_parameters": 529
+      },
+      "favorita": {
+        "fold_improvement": {
+          "1": 0.0011551490976718672,
+          "2": 0.0023001185497500544
+        },
+        "mean": 0.0017276338237109607,
+        "median": 0.0017276338237109607,
+        "worst": 0.0011551490976718672,
+        "sign_consistent": true,
+        "n_parameters": 529
+      }
+    }
+  },
+  "datasets": {
+    "m5": {
+      "folds": [
+        0,
+        1,
+        2
+      ],
+      "n_origins": 10776
+    },
+    "favorita": {
+      "folds": [
+        0,
+        1,
+        2
+      ],
+      "n_origins": 10800
+    }
+  },
+  "selection_criterion": "mean improvement over best static across datasets, then worst fold, then fewer parameters; test never used",
+  "selected": {
+    "variant": "G-NOSCALE",
+    "architecture": "mlp",
+    "loss": "regret_bce",
+    "key": "G-NOSCALE|mlp|regret_bce"
+  },
+  "ranking": [
+    "G-NOSCALE|mlp|regret_bce",
+    "G-FULL|mlp|regret_bce",
+    "G-NOSCALE|mlp|gstar_regression",
+    "G-FULL|mlp|gstar_regression",
+    "G-NOSCALE|linear|direct_mixture",
+    "G-NOSCALE|mlp|direct_mixture",
+    "G-FULL|linear|direct_mixture",
+    "G-STRUCT|linear|gstar_regression",
+    "G-STRUCT|linear|regret_bce",
+    "G-STRUCT|mlp|gstar_regression"
+  ],
+  "git_commit": "a542ca5b45ca25eee5437a64a979c62e896f8490"
+}

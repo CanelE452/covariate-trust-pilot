@@ -1,0 +1,122 @@
+{
+  "m5": [
+    {
+      "fold": 1,
+      "rows": 3545,
+      "reference_rows": 3545,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 2,
+      "rows": 3578,
+      "reference_rows": 3578,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 3,
+      "rows": 3598,
+      "reference_rows": 3598,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 4,
+      "rows": 3600,
+      "reference_rows": 3600,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    }
+  ],
+  "favorita": [
+    {
+      "fold": 1,
+      "rows": 3600,
+      "reference_rows": 3600,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 2,
+      "rows": 3600,
+      "reference_rows": 3600,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 3,
+      "rows": 3600,
+      "reference_rows": 3600,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 4,
+      "rows": 3600,
+      "reference_rows": 3600,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    }
+  ],
+  "freshretailnet": [
+    {
+      "fold": 1,
+      "rows": 20705,
+      "reference_rows": 20705,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 2,
+      "rows": 22340,
+      "reference_rows": 22340,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 3,
+      "rows": 22554,
+      "reference_rows": 22554,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    }
+  ],
+  "uci": [
+    {
+      "fold": 1,
+      "rows": 6140,
+      "reference_rows": 6140,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 2,
+      "rows": 6390,
+      "reference_rows": 6390,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    },
+    {
+      "fold": 3,
+      "rows": 6474,
+      "reference_rows": 6474,
+      "series_id_order_matches": true,
+      "adi_source_order_matches": true,
+      "alpha_matches_reference": true
+    }
+  ]
+}

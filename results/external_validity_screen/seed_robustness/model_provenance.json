@@ -1,0 +1,36 @@
+{
+  "seed0_point": {
+    "path": "results\\external_validity_screen\\rule_replication\\models\\point.pt",
+    "reused": true,
+    "sha256": "5c81d83fec9324057e137028a32824de9269000476372d94587f6bfe71b0b266"
+  },
+  "seed0_hurdle": {
+    "path": "results\\external_validity_screen\\rule_replication\\models\\hurdle.pt",
+    "reused": true,
+    "sha256": "87550d928c0d872f0490a6c1496ea68ecb35f01e6c73a5402fb07b5ffa755114"
+  },
+  "seed1_point": {
+    "path": "results\\external_validity_screen\\seed_robustness\\models\\seed1_point.pt",
+    "reused": false,
+    "train_seconds": 42.8082537651062,
+    "sha256": "d1644eddcbdbbdd6658662fafecd59d8c1e50ae2f24e7e3cd3641d6be21612c2"
+  },
+  "seed1_hurdle": {
+    "path": "results\\external_validity_screen\\seed_robustness\\models\\seed1_hurdle.pt",
+    "reused": false,
+    "train_seconds": 39.84093618392944,
+    "sha256": "81ebc672965e663b93f61d440a982caef44a2a9ed5de775849f3ead63b6d2487"
+  },
+  "seed2_point": {
+    "path": "results\\external_validity_screen\\seed_robustness\\models\\seed2_point.pt",
+    "reused": false,
+    "train_seconds": 43.97181725502014,
+    "sha256": "5d42ffc17e9edda65ca16ff714c7b36cf965b2611d4ae1dd84c6a9c050d86f26"
+  },
+  "seed2_hurdle": {
+    "path": "results\\external_validity_screen\\seed_robustness\\models\\seed2_hurdle.pt",
+    "reused": false,
+    "train_seconds": 32.05652332305908,
+    "sha256": "0ea9785b52f0587d3893cffdf44b1723524bd567132b953b88ff516a2bba9647"
+  }
+}

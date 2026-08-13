@@ -1,0 +1,14 @@
+key,temporal_dependence_manipulated,marginal_characteristics_controlled,neural_model,direct_prediction_arm,croston_style_dual_ratio,occurrence_probability_magnitude_product,direct_vs_decomposed_comparison,direct_vs_hurdle_product_comparison,matched_feature_set,matched_parameter_budget,matched_training_protocol,occurrence_dependence_axis,magnitude_dependence_axis,representation_x_dependence_interaction,synthetic_to_real_transfer_boundary,grade,note
+SBC05,N,N,N,N,N,N,N,N,-,-,-,N,N,N,N,N1,ADI / CV^2 categorization scheme
+KH06,N,N,N,N,N,N,N,N,-,-,-,N,N,N,N,N1,correction to the SBC categorization boundary
+Cro72,N,N,N,N,Y,N,N,N,-,-,-,N,N,N,N,N1,"origin of the size/interval ratio decomposition; classical, non-neural"
+SB05,N,N,N,N,Y,N,N,N,-,-,-,N,N,N,N,N1,SBA (1 - alpha/2) bias correction on the ratio form; classical baseline
+TSB11,N,N,N,N,N,Y,N,N,-,-,-,N,N,N,N,N1,"TSB updates the occurrence PROBABILITY every period; closest classical ancestor of the product form, but not a representation comparison"
+WSS04,N,N,N,N,N,N,N,N,-,-,-,P,N,N,N,N2,"two-state Markov occurrence inside a bootstrap; exploits occurrence dependence, does not manipulate it"
+ALR12,Y,U,N,N,N,N,N,N,-,-,-,Y,Y,N,N,N3,"manipulates interval AC, size AC and cross-correlation in generated demand; compares Croston-family ESTIMATORS inside one already-factorized form. marg_ctrl = U: full text unobtainable, six routes failed (LIT-W3)"
+Kou13,N,N,Y,Y,Y,N,Y,N,N,N,P,N,N,N,N,N3,"NN-Rate = single linear output, demand rate. NN-Dual = two linear outputs, size and interval, combined as a RATIO then de-biased by a fitted coefficient. One simulated population; each arm reported at its own best (I,H)"
+TJWC21,N,P,Y,Y,N,P,N,N,N,N,P,N,N,N,N,N2,deep renewal processes; occurrence and size modelled jointly; illustrative synthetic patterns incl. alternating inter-demand times; no matched contrast
+NAR26,N,N,N,Y,N,Y,Y,Y,Y,U,U,N,N,N,N,N3,"LightGBM, NOT neural. Single-stage regressor vs two-stage LightGBM classifier x Tweedie regressor = the PRODUCT form, at an identical feature set. m_param / m_train = U: NAR-E, NAR-F, NAR-G all NOT STATED (LIT-W-NAR26). No dependence factor and no regime breakdown (NAR-H verified negative)"
+GDTP25,N,N,N,N,N,N,N,N,-,-,-,N,N,N,N,N1,review of ML for intermittent demand; no located statement that the question is settled
+MC26,N,N,Y,N,N,Y,N,N,N,N,N,N,N,N,N,N1,"PREPRINT, not peer-reviewed; MoE encoder with a hurdle decoder; no controlled comparison"
+THIS PAPER,Y,Y,Y,Y,N,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,--,"occurrence and magnitude dependence on separate axes; 5,856 = 5,856 parameters, one backbone, one trainer, one 30-epoch budget, one evaluation target"

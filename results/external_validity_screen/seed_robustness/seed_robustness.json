@@ -1,0 +1,114 @@
+{
+  "verdict": "H2_SEED_ROBUST",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "by_seed": {
+    "0": {
+      "candidate_mean": 0.0012770810083178065,
+      "candidate_median": -0.00974831474159876,
+      "control_mean": 0.02431560719903206,
+      "control_median": 0.00287081209077715,
+      "candidate_point_win_rate": 0.5896296296296296,
+      "control_point_win_rate": 0.4709047429254683,
+      "point_win_rate_difference": 0.11872488670416131,
+      "point_win_rate_difference_ci": [
+        0.07853243139512575,
+        0.1581296665338116
+      ],
+      "effect": -0.023038526190714254,
+      "effect_ci": [
+        -0.029420044008396352,
+        -0.01633998575950969
+      ],
+      "effect_ci_excludes_zero": true,
+      "n_candidate": 675,
+      "n_control": 5018
+    },
+    "1": {
+      "candidate_mean": 0.006370751899087739,
+      "candidate_median": -0.00503353250012031,
+      "control_mean": 0.027457092829349983,
+      "control_median": 0.00439237006469444,
+      "candidate_point_win_rate": 0.5422222222222223,
+      "control_point_win_rate": 0.4491829414109207,
+      "point_win_rate_difference": 0.09303928081130158,
+      "point_win_rate_difference_ci": [
+        0.05237425269031485,
+        0.13130110860162672
+      ],
+      "effect": -0.021086340930262244,
+      "effect_ci": [
+        -0.02780493746026291,
+        -0.01413143915676285
+      ],
+      "effect_ci_excludes_zero": true,
+      "n_candidate": 675,
+      "n_control": 5018
+    },
+    "2": {
+      "candidate_mean": 0.0021855671319491133,
+      "candidate_median": -0.009204447531163923,
+      "control_mean": 0.02987207631852071,
+      "control_median": 0.00581819006309882,
+      "candidate_point_win_rate": 0.5851851851851851,
+      "control_point_win_rate": 0.4390195296931048,
+      "point_win_rate_difference": 0.14616565549208033,
+      "point_win_rate_difference_ci": [
+        0.10584479577225686,
+        0.18681802547864723
+      ],
+      "effect": -0.027686509186571596,
+      "effect_ci": [
+        -0.03437796318991138,
+        -0.02053526685000818
+      ],
+      "effect_ci_excludes_zero": true,
+      "n_candidate": 675,
+      "n_control": 5018
+    }
+  },
+  "aggregate_3seed": {
+    "candidate_mean": 0.003277800013118219,
+    "candidate_median": -0.008407116042480883,
+    "control_mean": 0.027214925448967583,
+    "control_median": 0.0031167129898858293,
+    "candidate_point_win_rate": 0.597037037037037,
+    "control_point_win_rate": 0.46153846153846156,
+    "point_win_rate_difference": 0.13549857549857547,
+    "point_win_rate_difference_ci": [
+      0.09493251701282784,
+      0.17384841238209112
+    ],
+    "effect": -0.023937125435849364,
+    "effect_ci": [
+      -0.030453687488816737,
+      -0.017207365774053174
+    ],
+    "effect_ci_excludes_zero": true,
+    "n_candidate": 675,
+    "n_control": 5018
+  },
+  "seed_effect_range": [
+    -0.027686509186571596,
+    -0.021086340930262244
+  ],
+  "seed_effect_signs": [
+    "negative",
+    "negative",
+    "negative"
+  ],
+  "n_seeds_negative": 3,
+  "aggregate_rule": "average delta_relative across seeds per series, then bootstrap over series; seeds are not extra series",
+  "bootstrap": {
+    "unit": "series",
+    "draws": 2000,
+    "seed": 20260807,
+    "note": "time rows are never resampled as if independent"
+  },
+  "evaluated_at_utc": "2026-08-07T12:46:09.332990+00:00",
+  "device": "cuda",
+  "git_commit": "12b35d2a220bfd2f1819802138932f97ecd6a365"
+}

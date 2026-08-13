@@ -1,0 +1,195 @@
+{
+  "name": "BENCHMARK_SPEC_V1",
+  "frozen_at_utc": "2026-08-07T16:29:27.504540+00:00",
+  "frozen_before_any_external_test_scoring": true,
+  "sequential_tuning_forbidden": "all three prospective datasets are configured in this single freeze; no dataset's outcome may inform another's configuration",
+  "protocol": {
+    "lookback": 96,
+    "horizon": 28,
+    "test_origins": 3,
+    "stride": 28,
+    "min_span_days": 236,
+    "min_positive_train": 20,
+    "split_rule": "date boundaries only; never a random split",
+    "validation": "one horizon, used for early stopping, global alpha and gate OOF support"
+  },
+  "eligibility": {
+    "n_positive_train_min": 20,
+    "span_min_days": 236,
+    "train_scale_positive": true
+  },
+  "admission_thresholds": {
+    "full": 1000,
+    "limited": 300
+  },
+  "datasets": {
+    "m5": {
+      "role": "DEVELOPMENT_BENCHMARK",
+      "reuse_existing_results": true,
+      "reason": "test outcomes already used during development"
+    },
+    "favorita": {
+      "role": "DEVELOPMENT_BENCHMARK",
+      "reuse_existing_results": true,
+      "reason": "test outcomes already used during development"
+    },
+    "freshretailnet": {
+      "role": "PRIMARY_EXTERNAL_CONFIRMATION",
+      "admission": "FULL_BENCHMARK_ELIGIBLE",
+      "series_key": "store_id x product_id",
+      "value_field": "sale_amount",
+      "cleaning": "none; sale_amount is already a daily aggregate and is never negative",
+      "availability": {
+        "field": "stock_hour6_22_cnt",
+        "semantics": "number of stockout hours in [6,22); verified against hours_stock_status with a match rate of 1.0000",
+        "policy": "a day with any stockout hour is marked stockout_mask=1 and its zero is treated as censored, never as observed zero demand"
+      },
+      "official_eval_used": false,
+      "official_eval_reason": "the shipped eval block is 7 days, shorter than the frozen horizon of 28; a temporal holdout is cut from train instead",
+      "split": "temporal, taken from the end of the train file"
+    },
+    "retail_stocks": {
+      "role": "SECONDARY_EXTERNAL_CONFIRMATION",
+      "admission": "INSUFFICIENT_SUPPORT",
+      "excluded_from_scoring": true,
+      "exclusion_reason": "only 129 series carry both the 236-day span and 20 positive train observations the protocol needs; median series life is 14 days. Excluded on structure, before any forecast.",
+      "series_key": "Store x Product No",
+      "cleaning": "rows with Is Return == 1 are dropped; returns are never demand"
+    },
+    "uci_online_retail_ii": {
+      "role": "EXTERNAL_ROBUSTNESS",
+      "admission": "FULL_BENCHMARK_ELIGIBLE",
+      "series_key": "StockCode x Country",
+      "series_key_rule": "StockCode x Country when it yields at least 1000 eligible series, otherwise StockCode; decided on eligibility counts alone",
+      "eligible_under_chosen_key": 3607,
+      "value_field": "Quantity",
+      "cleaning": "invoices beginning with C are cancellations and are dropped; non-positive quantities are dropped; neither is counted as demand",
+      "availability": {
+        "field": null,
+        "status": "AVAILABILITY_UNKNOWN",
+        "policy": "days without an invoice line are filled with zero to form the grid, but are reported as unknown rather than observed zero demand"
+      },
+      "split": "temporal, taken from the end of the observed span"
+    }
+  },
+  "proposed_method": {
+    "expert_pair": [
+      "dlinear_point_plain",
+      "naive"
+    ],
+    "expert_pair_source": "results/expert_diversity/expert_set_spec.json",
+    "expert_selection_formula": "geometric mean of the convex-oracle ceiling multiplier across datasets, then the worse dataset, then residual correlation, then static loss; pairs whose best static is more than 2% worse than the reference are excluded",
+    "use_triple": false,
+    "reference_pair": [
+      "dlinear_point",
+      "dlinear_hurdle"
+    ],
+    "gate": {
+      "variant": "G-NOSCALE",
+      "architecture": "mlp",
+      "loss": "regret_bce",
+      "key": "G-NOSCALE|mlp|regret_bce"
+    },
+    "gate_source": "results/structure_gate/gate_v2_spec.json",
+    "gate_cv_scheme": "expanding time: a gate is fitted only on folds strictly earlier than the one it is scored on, so fold 0 has no validation row and leave-one-fold-out is not used",
+    "gate_hyperparameters": {
+      "epochs": 400,
+      "lr": 0.01,
+      "seed": 0,
+      "mlp_hidden": null
+    },
+    "mixing_rule": "y = (1 - g) * expert_a + g * expert_b, one g per forecast origin",
+    "transfer": "METHOD TRANSFER, not WEIGHT TRANSFER: weights are refit per dataset"
+  },
+  "expert_pool": {
+    "neural": [
+      "dlinear_point",
+      "dlinear_hurdle",
+      "dlinear_point_plain",
+      "dlinear_hurdle_ztnb"
+    ],
+    "classical": [
+      "croston",
+      "sba",
+      "ses",
+      "tsb",
+      "seasonal_naive",
+      "naive"
+    ]
+  },
+  "baselines": {
+    "neural": [
+      "dlinear_point",
+      "dlinear_hurdle",
+      "dlinear_point_plain",
+      "dlinear_hurdle_ztnb"
+    ],
+    "classical": [
+      "croston",
+      "sba",
+      "ses",
+      "tsb",
+      "seasonal_naive",
+      "naive"
+    ],
+    "static": [
+      "reference 50:50",
+      "reference global alpha",
+      "diverse-pair equal mixture",
+      "diverse-pair global alpha"
+    ],
+    "adaptive": [
+      "reference Point/Hurdle Gate-v2",
+      "proposed diverse gate"
+    ],
+    "oracle": [
+      "hard per-origin",
+      "convex per-origin"
+    ],
+    "oracle_excluded_from_deployable_ranking": true
+  },
+  "training": {
+    "max_epochs": 30,
+    "patience": 5,
+    "batch_size": 256,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "checkpoint_rule": "validation MSE of the final mean prediction, identical for every DLinear variant",
+    "lambda_factorized": 1.0,
+    "hyperparameter_rule": "no per-cell tuning; one setting for every cell and every model; TSB alpha/beta chosen on a fixed grid using the validation split only"
+  },
+  "normalization": "per-series mean over the train window (train_scale), train only",
+  "global_alpha": "fitted on validation/OOF only, frozen before test scoring",
+  "gate_fitting": "expanding-time OOF inside train; no gate hyperparameter reselection",
+  "metrics": {
+    "primary": [
+      "overall RMSE",
+      "overall MAE",
+      "mean per-series RMSE",
+      "median per-series RMSE"
+    ],
+    "additional": [
+      "point win %",
+      "hurdle win %",
+      "mean method rank"
+    ],
+    "bootstrap": {
+      "unit": "series",
+      "draws": 2000,
+      "seed": 20260807,
+      "note": "time rows are never resampled as if independent"
+    }
+  },
+  "hypotheses": {
+    "RQ1": "the proposed adaptive gate beats the best single expert and the best static mixture on unseen datasets",
+    "RQ2": "the diverse pair raises the convex-oracle ceiling over the reference pair",
+    "RQ3": "the gate recovers part of that raised ceiling",
+    "RQ4": "results differ between datasets with and without availability signal",
+    "RQ5": "where the method sits against classical intermittent baselines"
+  },
+  "exclusion_criteria": "a dataset is excluded only on structural grounds decided before scoring; never because its result is unfavourable",
+  "failure_handling": "a method that fails on a dataset is reported as failed, with the reason, and is not removed from the table",
+  "git_commit": "94f5029b83af766af14635362595f2982d6d6887",
+  "spec_sha256": "7ccb743c5dc79af29a82fa90682c945ffd82afe514135adfbf4acf0022cc3a5c"
+}

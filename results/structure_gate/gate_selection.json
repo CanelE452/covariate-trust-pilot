@@ -1,0 +1,265 @@
+{
+  "analysis": "gate variant selection on OOF only; test never read",
+  "test_used": false,
+  "selected_at_utc": "2026-08-07T14:02:36.284501+00:00",
+  "candidates": {
+    "G-STRUCT|linear|softbce": {
+      "m5": {
+        "gate_validation_loss": 0.9979195869817375,
+        "n_features": 24,
+        "n_parameters": 25,
+        "mean_g": 0.5297998785972595
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9547983080778357,
+        "n_features": 24,
+        "n_parameters": 25,
+        "mean_g": 0.5023671984672546
+      }
+    },
+    "G-STRUCT|linear|regret_weighted": {
+      "m5": {
+        "gate_validation_loss": 0.9979999722304822,
+        "n_features": 24,
+        "n_parameters": 25,
+        "mean_g": 0.5118013620376587
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9552081753228467,
+        "n_features": 24,
+        "n_parameters": 25,
+        "mean_g": 0.45874327421188354
+      }
+    },
+    "G-STRUCT|mlp|softbce": {
+      "m5": {
+        "gate_validation_loss": 0.9973914003770412,
+        "n_features": 24,
+        "n_parameters": 417,
+        "mean_g": 0.5268851518630981
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9594633006146411,
+        "n_features": 24,
+        "n_parameters": 417,
+        "mean_g": 0.5193057060241699
+      }
+    },
+    "G-STRUCT|mlp|regret_weighted": {
+      "m5": {
+        "gate_validation_loss": 0.9974122020102686,
+        "n_features": 24,
+        "n_parameters": 417,
+        "mean_g": 0.5025426149368286
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9654358610910365,
+        "n_features": 24,
+        "n_parameters": 417,
+        "mean_g": 0.4925660490989685
+      }
+    },
+    "G-FULL|linear|softbce": {
+      "m5": {
+        "gate_validation_loss": 0.9976012173217206,
+        "n_features": 35,
+        "n_parameters": 36,
+        "mean_g": 0.5303590893745422
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9588649683156498,
+        "n_features": 35,
+        "n_parameters": 36,
+        "mean_g": 0.49432244896888733
+      }
+    },
+    "G-FULL|linear|regret_weighted": {
+      "m5": {
+        "gate_validation_loss": 0.9976443497884487,
+        "n_features": 35,
+        "n_parameters": 36,
+        "mean_g": 0.5173774361610413
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9559046840634062,
+        "n_features": 35,
+        "n_parameters": 36,
+        "mean_g": 0.43932387232780457
+      }
+    },
+    "G-FULL|mlp|softbce": {
+      "m5": {
+        "gate_validation_loss": 0.9963737861441915,
+        "n_features": 35,
+        "n_parameters": 593,
+        "mean_g": 0.5418708920478821
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9491524192237177,
+        "n_features": 35,
+        "n_parameters": 593,
+        "mean_g": 0.4843693971633911
+      }
+    },
+    "G-FULL|mlp|regret_weighted": {
+      "m5": {
+        "gate_validation_loss": 0.9972638039475074,
+        "n_features": 35,
+        "n_parameters": 593,
+        "mean_g": 0.5131551027297974
+      },
+      "favorita": {
+        "gate_validation_loss": 1.950788907677386,
+        "n_features": 35,
+        "n_parameters": 593,
+        "mean_g": 0.42033806443214417
+      }
+    },
+    "G-NOSCALE|linear|softbce": {
+      "m5": {
+        "gate_validation_loss": 0.9975341594368663,
+        "n_features": 31,
+        "n_parameters": 32,
+        "mean_g": 0.5315547585487366
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9600284047797853,
+        "n_features": 31,
+        "n_parameters": 32,
+        "mean_g": 0.4900139570236206
+      }
+    },
+    "G-NOSCALE|linear|regret_weighted": {
+      "m5": {
+        "gate_validation_loss": 0.9974704771312123,
+        "n_features": 31,
+        "n_parameters": 32,
+        "mean_g": 0.5167242884635925
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9571640384171962,
+        "n_features": 31,
+        "n_parameters": 32,
+        "mean_g": 0.4381074905395508
+      }
+    },
+    "G-NOSCALE|mlp|softbce": {
+      "m5": {
+        "gate_validation_loss": 0.9963129252657591,
+        "n_features": 31,
+        "n_parameters": 529,
+        "mean_g": 0.5456576347351074
+      },
+      "favorita": {
+        "gate_validation_loss": 1.9490007995164722,
+        "n_features": 31,
+        "n_parameters": 529,
+        "mean_g": 0.49279868602752686
+      }
+    },
+    "G-NOSCALE|mlp|regret_weighted": {
+      "m5": {
+        "gate_validation_loss": 0.995689832713327,
+        "n_features": 31,
+        "n_parameters": 529,
+        "mean_g": 0.5297587513923645
+      },
+      "favorita": {
+        "gate_validation_loss": 1.951151426151889,
+        "n_features": 31,
+        "n_parameters": 529,
+        "mean_g": 0.40871819853782654
+      }
+    }
+  },
+  "datasets": {
+    "m5": {
+      "gate_train_folds": [
+        0,
+        1
+      ],
+      "gate_validation_fold": 2,
+      "split_rule": "time ordered; the latest OOF fold validates, never a random split",
+      "n_train_rows": 7176,
+      "n_validation_rows": 3600,
+      "tau": 0.06109783436531857,
+      "imputation_medians": {
+        "f_log_ADI": 0.26673126842546013,
+        "f_CV2_positive": 0.47651179772340735,
+        "f_rho_interval": 0.007275679334945792,
+        "f_abs_rho_interval": 0.01993444736983496,
+        "f_rho_magnitude": 0.15755027241218494,
+        "f_zero_ratio": 0.23436551305403763,
+        "f_occurrence_acf1": 0.3053056120630082,
+        "f_age_since_positive": 1.0,
+        "f_recent_occurrence_rate": 0.75,
+        "f_recent_positive_mean": 2.8518519401550293,
+        "f_log_history_scale": 0.9823332281614494,
+        "f_log_n_positive": 7.056606132899151
+      },
+      "weight_clip": 0.30669134421873034
+    },
+    "favorita": {
+      "gate_train_folds": [
+        0,
+        1
+      ],
+      "gate_validation_fold": 2,
+      "split_rule": "time ordered; the latest OOF fold validates, never a random split",
+      "n_train_rows": 7200,
+      "n_validation_rows": 3600,
+      "tau": 0.06529247382906171,
+      "imputation_medians": {
+        "f_log_ADI": 0.2685427322410835,
+        "f_CV2_positive": 0.47704113638796025,
+        "f_rho_interval": 0.008297510030108807,
+        "f_abs_rho_interval": 0.020689626260365655,
+        "f_rho_magnitude": 0.13237474151683887,
+        "f_zero_ratio": 0.23550724637681159,
+        "f_occurrence_acf1": 0.2226820061385823,
+        "f_age_since_positive": 1.0,
+        "f_recent_occurrence_rate": 0.7857142857142857,
+        "f_recent_positive_mean": 3.0,
+        "f_log_history_scale": 1.0154322755780836,
+        "f_log_n_positive": 6.934397209928558
+      },
+      "weight_clip": 0.39498668657050723
+    }
+  },
+  "candidate_penalty": {
+    "G-NOSCALE|mlp|softbce": 1.0003128949056024,
+    "G-FULL|mlp|softbce": 1.000382353852002,
+    "G-NOSCALE|mlp|regret_weighted": 1.0005517254369394,
+    "G-FULL|mlp|regret_weighted": 1.0012491166674922,
+    "G-STRUCT|linear|softbce": 1.0026070060088124,
+    "G-STRUCT|linear|regret_weighted": 1.0027525206643817,
+    "G-FULL|linear|regret_weighted": 1.002752623273746,
+    "G-NOSCALE|linear|regret_weighted": 1.002988387533728,
+    "G-FULL|linear|softbce": 1.0034904000712737,
+    "G-STRUCT|mlp|softbce": 1.0035385346602665,
+    "G-NOSCALE|linear|softbce": 1.0037551959691537,
+    "G-STRUCT|mlp|regret_weighted": 1.005081191384328
+  },
+  "selection_rule": "mean across datasets of the ratio to that dataset's best candidate; one spec must serve both",
+  "selected": {
+    "variant": "G-NOSCALE",
+    "architecture": "mlp",
+    "loss_mode": "softbce",
+    "key": "G-NOSCALE|mlp|softbce"
+  },
+  "ranking": [
+    "G-NOSCALE|mlp|softbce",
+    "G-FULL|mlp|softbce",
+    "G-NOSCALE|mlp|regret_weighted",
+    "G-FULL|mlp|regret_weighted",
+    "G-STRUCT|linear|softbce",
+    "G-STRUCT|linear|regret_weighted",
+    "G-FULL|linear|regret_weighted",
+    "G-NOSCALE|linear|regret_weighted",
+    "G-FULL|linear|softbce",
+    "G-STRUCT|mlp|softbce",
+    "G-NOSCALE|linear|softbce",
+    "G-STRUCT|mlp|regret_weighted"
+  ],
+  "git_commit": "403841f16c3329e5328e1c35479f5d1f746aee5b"
+}

@@ -1,0 +1,49 @@
+section,displayed_value,quantity,source_file,source_field,aggregation,uncertainty_source
+4.6,"+7.83 pp [+6.09,+9.45]",interval dependence contrast,results/synthetic_source_verification/stage1_verified_contrasts.csv,"effect_pp/ci, M1_HURDLE_MEAN",per series then bootstrap,2000-draw paired series bootstrap
+4.6,"-4.58 pp [-6.28,-2.92]",magnitude dependence contrast,results/synthetic_source_verification/stage1_verified_contrasts.csv,effect_pp/ci,same,2000-draw paired series bootstrap
+4.6,"-6.26 pp [-8.01,-4.57]",sparsity contrast,results/synthetic_source_verification/stage1_verified_contrasts.csv,effect_pp/ci,same,2000-draw paired series bootstrap
+4.6,"+3.35 pp [+1.62,+5.09]",sparsity x interval,results/synthetic_source_verification/stage1_verified_contrasts.csv,effect_pp/ci,same,2000-draw paired series bootstrap
+4.6,"-0.01 pp [-1.70,+1.69]","sparsity x magnitude, spans zero",results/synthetic_source_verification/stage1_verified_contrasts.csv,effect_pp/ci,same,2000-draw paired series bootstrap
+4.6,"-16.74 pp [-18.45,-15.05]",interval x magnitude,results/synthetic_source_verification/stage1_verified_contrasts.csv,effect_pp/ci,same,2000-draw paired series bootstrap
+4.6,"-1.96 pp [-3.64,-0.31]",three-way,results/synthetic_source_verification/stage1_verified_contrasts.csv,effect_pp/ci,same,2000-draw paired series bootstrap
+4.6,"G = -3.01 [-6.79,+0.23]","C08, most direct-favourable Stage 1 cell",results/synthetic_source_verification/stage1_verified_cells.csv,rmse_mean_truth M0 vs M1,G=100(1-H/P),results/paper_synthesis_verified/claim_ledger_frozen.md sec 2
+4.6,"0.0035 / 40 of 40 / [-0.2036,-0.0005]",control-arm integrity checks,results/synthetic_source_verification/stage1_validity.json,"long-motif, distinct seqs, Markov gain",as recorded,n/a
+4.7,0.9652 / 0.2900 / 0.9030,C03 M1 error and the two hybrid columns,results/synthetic_source_verification/stage1_verified_cells.csv,"rmse_mean_truth, p_true_x_mu_hat, p_hat_x_mu_true",per cell,none quoted
+4.8,"+0.1904 [+0.1699,+0.2119]",abs_rho_I coefficient,results/synthetic_source_verification/stage2_verified_factor_effects.csv,"estimate/ci, HURDLE_MEAN",factor model over 18 cells,2000-draw paired series bootstrap
+4.8,"+0.0667 [+0.0533,+0.0807]",rho_I coefficient,results/synthetic_source_verification/stage2_verified_factor_effects.csv,estimate/ci,same,2000-draw paired series bootstrap
+4.8,"-0.0711 [-0.0851,-0.0570]",rho_M coefficient,results/synthetic_source_verification/stage2_verified_factor_effects.csv,estimate/ci,same,2000-draw paired series bootstrap
+4.8,"-0.0228 [-0.0441,-0.0020]",abs_rho_M coefficient,results/synthetic_source_verification/stage2_verified_factor_effects.csv,estimate/ci,same,2000-draw paired series bootstrap
+4.8,"-0.0239 [-0.0322,-0.0153]",d coefficient,results/synthetic_source_verification/stage2_verified_factor_effects.csv,estimate/ci,same,2000-draw paired series bootstrap
+4.8,"+0.0332 [+0.0194,+0.0471]",d x rho_I,results/synthetic_source_verification/stage2_verified_factor_effects.csv,estimate/ci,same,2000-draw paired series bootstrap
+4.8,"-0.0124 [-0.0262,+0.0012]","d x rho_M, spans zero",results/synthetic_source_verification/stage2_verified_factor_effects.csv,estimate/ci,same,2000-draw paired series bootstrap
+4.8,"-0.0886 [-0.1115,-0.0654]",rho_I x rho_M,results/synthetic_source_verification/stage2_verified_factor_effects.csv,estimate/ci,same,2000-draw paired series bootstrap
+4.8,+12.10 / +3.57 / +16.47 pp,Figure 2B marginal means over rho_I,results/synthetic_source_verification/stage2_verified_cells.csv,gain*100,mean of 6 cells per level,"NONE - spread only, explicitly not a CI"
+4.8,+14.10 / +11.94 / +6.11 pp,Figure 2C marginal means over rho_M,results/synthetic_source_verification/stage2_verified_cells.csv,gain*100,mean of 6 cells per level,"NONE - spread only, explicitly not a CI"
+4.8,"G = -19.76 [-26.00,-14.53]","d=8, rho_I=0, rho_M=+0.8",results/synthetic_source_verification/stage2_verified_cells.csv,"gain, gain_ci_low/high",per cell,2000-draw paired series bootstrap
+4.8,"G = +2.36 [-1.20,+5.73]","d=8, rho_I=0, rho_M=0, spans zero",results/synthetic_source_verification/stage2_verified_cells.csv,"gain, ci",per cell,2000-draw paired series bootstrap
+4.8,"-0.0650 [-0.0743,-0.0562]",no-signal control Markov gain,results/synthetic_source_verification/stage2_scientific_classification.json,G1_NO_SIGNAL,as recorded,as recorded
+5.4,3.152 / 3.260 / 3.411 / 3.483 / 4.202 / 4.220,M5 classical mean ranks,results/paper_outline_verified/detailed_outline.md sec 5.2,classical_benchmark/benchmark.json,mean rank,none
+5.5,"+0.1064 [+0.0437,+0.1652]",H1 M5,results/paper_rendering_verified/drafts/table4_draft.md,estimate/ci,per series then bootstrap,2000-draw paired series bootstrap
+5.5,"+0.0789 [+0.0205,+0.1405]",H1 Favorita,results/paper_rendering_verified/drafts/table4_draft.md,estimate/ci,same,2000-draw paired series bootstrap
+5.5,"+0.1529 [+0.0519,+0.2613]","H1 within the intermittent regime, M5",results/paper_rendering_verified/drafts/table4_draft.md,estimate/ci,same,2000-draw paired series bootstrap
+5.6,"-0.0230 [-0.0294,-0.0163]","H2 frozen selector, M5 675 vs 5018",results/paper_rendering_verified/drafts/table4_draft.md,estimate/ci,independent population,2000-draw paired series bootstrap
+5.6,+11.87 pp,H2 direct-prediction win-rate difference,results/paper_rendering_verified/drafts/table4_draft.md,reading column,win rate,3 seeds reported separately
+5.7,"+0.0032 [-0.0033,+0.0094]","H2 isolated mechanism, overlap-weighted, n=5693",results/paper_rendering_verified/drafts/table4_draft.md,estimate/ci,overlap weighting,2000-draw paired series bootstrap
+5.7,1.32 / 0.614,unweighted |SMD| on log scale; best matching balance,results/paper_synthesis_verified/claim_ledger_frozen.md,sec 4,as recorded,none
+5.7,"-0.0084 / -0.0908 [-0.1401,-0.0438]","occurrence-head Brier skill, M5 / Favorita",results/paper_outline_verified/reviewer_risk_map.md,R8 evidence,as recorded,as recorded
+5.8,"-0.0305 [-0.1418,+0.0912]",H3 M5,results/paper_rendering_verified/drafts/table4_draft.md,estimate/ci,ADI-median split,2000-draw paired series bootstrap
+5.8,"-0.0428 [-0.1587,+0.0704]",H3 Favorita,results/paper_rendering_verified/drafts/table4_draft.md,estimate/ci,same,2000-draw paired series bootstrap
+5.8,1.304 / 1.317,"ADI median split points, M5 / Favorita",results/paper_synthesis_verified/paper_readiness_verified.md,H3 block,as recorded,none
+5.9,4.11%,"convex oracle over the best static mixture, M5",results/paper_outline_verified/claim_to_evidence_map.md,convex_oracle.json,as recorded,none quoted
+5.9,2.15x,expert-diversity ceiling multiplier,results/paper_outline_verified/claim_to_evidence_map.md,expert_set_spec.json,as recorded,none quoted
+5.9,"-2.43% [-2.74,-2.13]","frozen gate vs static mixture, first external dataset",results/paper_outline_verified/claim_to_evidence_map.md,external_benchmark.json,as recorded,as recorded
+5.9,"+2.648% [+2.068,+3.287]","sequence gate, FreshRetailNet-LT",results/paper_outline_verified/claim_to_evidence_map.md,temporal_routing_encoder,as recorded,as recorded
+5.9,-193.9%,"sequence gate, UCI Online Retail II",results/paper_outline_verified/claim_to_evidence_map.md,temporal_routing_encoder,as recorded,none
+Abstract,about 20%,rounded from G = -19.76 at the direct-favourable cell,results/synthetic_source_verification/stage2_verified_cells.csv,gain,rounding of a mapped value,see the 4.8 row
+Abstract,11.87 percentage points,H2 win-rate difference,results/paper_rendering_verified/drafts/table4_draft.md,reading column,see the 5.6 row,see the 5.6 row
+Introduction,about -19.8%,"rounded from G = -19.76, direct-favourable cell",results/synthetic_source_verification/stage2_verified_cells.csv,gain,rounding of a mapped value,see the 4.8 row
+Methods 4.1,0.0015,empirical mean-interval mode difference at d=4 (marginal control check),results/synthetic_source_verification/dgp_verification.md,marginal_control_pass block,as recorded,n/a
+Methods,0.95 / +-0.8,bootstrap level; swept dependence levels,results/synthetic_source_verification/metric_sign.md; results/synthetic_source_verification/stage1_stage2_verified.md,bootstrap level; rho grid,setup constants,n/a
+Methods,"5,856 / 5,857 / 0.017%",parameter counts and the match margin,results/synthetic_source_verification/point_hurdle_fairness.md,parameters (recorded),setup constant,n/a
+Methods,"96 / 24 / 576 / 384 / 480 / 80 / 18 / 2,000 / 30 / 256 / 1e-3",protocol constants,results/synthetic_source_verification/point_hurdle_fairness.md; results/synthetic_source_verification/dgp_verification.md; results/synthetic_source_verification/metric_sign.md,"geometry, replication, bootstrap",setup constants,n/a
+Methods,"1,200 / 1,941 / 1,829 / 1,688 / 1,576 / 300 / 20",empirical protocol constants,results/paper_rendering_verified/drafts/table3_draft.md,Table 3,setup constants,n/a

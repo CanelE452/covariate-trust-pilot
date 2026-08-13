@@ -1,0 +1,14 @@
+{
+  "verdict": "SAFE_P0L1_TEMPORAL_MIXED",
+  "ready": false,
+  "conditions": {
+    "three_of_four": true,
+    "fresh_non_negative": false,
+    "uci_and_sensitivity": true,
+    "calibrated_positive_rate": 0.8,
+    "worst_fold_ok": false,
+    "scale_sign_consistent": true
+  },
+  "fresh": "FRESH_TEMPORAL_NOT_RECOVERED",
+  "dependency_artifacts_unchanged": true
+}

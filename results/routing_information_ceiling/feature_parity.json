@@ -1,0 +1,181 @@
+{
+  "per_dataset": {
+    "m5": [
+      {
+        "fold": 1,
+        "n_features": 25,
+        "train_rows": 3510,
+        "valid_rows": 3545,
+        "x_train_sha256": "73ac778a7649906db8d402a6cde13c6e60d699994b97808bcfedb6353fb24e5b",
+        "x_valid_sha256": "8bd509b8105c59fb08db0935fcfad2edd0fae6599b7984783173498f74e994c7",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 3510,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 2,
+        "n_features": 25,
+        "train_rows": 7055,
+        "valid_rows": 3578,
+        "x_train_sha256": "879d1ad466a8f141831609c40cfa0cbc25f2216160033619dacb61244f330a3f",
+        "x_valid_sha256": "8f41e5cd546b8595c8145918b3b2757ff9afc2bcd4bc01a5ca5c48038806233e",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 7055,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 3,
+        "n_features": 25,
+        "train_rows": 10633,
+        "valid_rows": 3598,
+        "x_train_sha256": "2a72986a733f643016e4dc973746b21d1fe5ea500ae4986fb20c6bb0f2a5474f",
+        "x_valid_sha256": "6b2952c4194f1786aa9d6e306f7639a27340463ed3ed347e992d1fe4749dd3a3",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 10633,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 4,
+        "n_features": 25,
+        "train_rows": 14231,
+        "valid_rows": 3600,
+        "x_train_sha256": "0ee5ef78dfce8b8426b5bba8c7be7d2e44a5d3f18c0847f9e1719af627c1cbb3",
+        "x_valid_sha256": "1ee3d0821e716222d428c25496a40eda051be4d3721148ce86b7cb7f2716afb7",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 14231,
+        "n_flat_in_validation": 0
+      }
+    ],
+    "favorita": [
+      {
+        "fold": 1,
+        "n_features": 25,
+        "train_rows": 3600,
+        "valid_rows": 3600,
+        "x_train_sha256": "b8ee4afaba27f10a971fff513e812bb5133649343d9e0b30d9f5accbe84efbb6",
+        "x_valid_sha256": "d41966d8ea824c97cac357fd11dcb5be2b2367f3a6fafc4b7e24b7bd2c3612c3",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 3600,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 2,
+        "n_features": 25,
+        "train_rows": 7200,
+        "valid_rows": 3600,
+        "x_train_sha256": "a2aeb3d7bc9c69ab1af76b25c7cc56235173e02eb4af8c5d017dd6ff24c2b246",
+        "x_valid_sha256": "c3be0c3d52309328cb9808235aca5ecbedd2d6ac9369c7d6723881b05d4c6373",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 7200,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 3,
+        "n_features": 25,
+        "train_rows": 10800,
+        "valid_rows": 3600,
+        "x_train_sha256": "9cb54c53037721ee98d799ff074ae94e56051d4c6faa166970edbaccbdbda9b7",
+        "x_valid_sha256": "5ba93be03c653787aebe9905dab04ee75d582432644756a0144505e9a1159ca8",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 10800,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 4,
+        "n_features": 25,
+        "train_rows": 14400,
+        "valid_rows": 3600,
+        "x_train_sha256": "61e23e3bec7a7b89012cf0c5356dfd1af42cb61ac5be6030804895cfaa586b03",
+        "x_valid_sha256": "57083df2103853084a83f53bc63fac882cde620c5c8089fb607165556595553b",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 14400,
+        "n_flat_in_validation": 0
+      }
+    ],
+    "freshretailnet": [
+      {
+        "fold": 1,
+        "n_features": 25,
+        "train_rows": 19061,
+        "valid_rows": 20705,
+        "x_train_sha256": "4808c79f4aab933168a74570019fdbfb47dd4f558f79c1e093529b6aa6ae3e11",
+        "x_valid_sha256": "620f07cfa864f21599543f0e12c4dba3987a824ffcc8a5cd5f56bdeabc3011f8",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 19061,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 2,
+        "n_features": 25,
+        "train_rows": 39766,
+        "valid_rows": 22340,
+        "x_train_sha256": "3bf86bb8270eb1dcb1b56f9a2a34ed19343a5363d1e4107b8cd2502f1092156b",
+        "x_valid_sha256": "a40be9a8bbc5ac4130408d10c1ac73c801a3deafb5067961d4f64de3adbd5456",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 39766,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 3,
+        "n_features": 25,
+        "train_rows": 62106,
+        "valid_rows": 22554,
+        "x_train_sha256": "60983e11d41d273b8d41de7a67e67c2cbd710ee2eed83824fcf997e981a5b476",
+        "x_valid_sha256": "ddb55ab9bf4518e3b49764bf5ff0a95674230f03d9094b92cf71ac337bcc00c9",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 62106,
+        "n_flat_in_validation": 0
+      }
+    ],
+    "uci": [
+      {
+        "fold": 1,
+        "n_features": 25,
+        "train_rows": 5569,
+        "valid_rows": 6140,
+        "x_train_sha256": "f7120da7109db936df2f72bc038a0dbcb9419aa6da63fc92d2fd5796935985e2",
+        "x_valid_sha256": "a8bc992bfac04e175c674e3be7e91374298566a64a541a1d7db62ba008db923e",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 5569,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 2,
+        "n_features": 25,
+        "train_rows": 11709,
+        "valid_rows": 6390,
+        "x_train_sha256": "1f9256099f8f39d1c8c4503c40ccd0700d91be0025f9fa79d96b05099858340e",
+        "x_valid_sha256": "4afacb822eadc73e6362b25124dee6fc3e09a982191bf2a9991a04f33884c1a9",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 11709,
+        "n_flat_in_validation": 0
+      },
+      {
+        "fold": 3,
+        "n_features": 25,
+        "train_rows": 18099,
+        "valid_rows": 6474,
+        "x_train_sha256": "4e31f16c4d58accfa6c69d0dae481a135e437b09664c8202dd8a58142488c713",
+        "x_valid_sha256": "132246ee14b9daa3f811fe8d48124655b75e1d8d9745fc107b21a60f87ab05f1",
+        "shared_matrix_object": true,
+        "n_flat_excluded_from_fit": 0,
+        "n_rows_fitted": 18099,
+        "n_flat_in_validation": 0
+      }
+    ]
+  },
+  "note": "both learners receive the identical standardized G-NOSCALE matrix; the hashes are of that one array"
+}

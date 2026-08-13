@@ -1,0 +1,31 @@
+{
+  "policy": {
+    "mode": "canonical_seed_primary_plus_reproducibility_rerun",
+    "primary_seed": 0,
+    "reproducibility_rerun": true,
+    "additional_diagnostic_seeds": [],
+    "post_hoc_seed_retry": "forbidden"
+  },
+  "reproducibility": {
+    "m5": {
+      "fold": 4,
+      "max_abs_g_difference": 0.0,
+      "identical": true
+    },
+    "favorita": {
+      "fold": 4,
+      "max_abs_g_difference": 0.0,
+      "identical": true
+    },
+    "freshretailnet": {
+      "fold": 3,
+      "max_abs_g_difference": 0.0,
+      "identical": true
+    },
+    "uci": {
+      "fold": 3,
+      "max_abs_g_difference": 0.0,
+      "identical": true
+    }
+  }
+}

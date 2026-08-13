@@ -1,0 +1,91 @@
+train,test,origin,policy,family,cumulative_regret
+m5,favorita,1604,P0 always Point,hard,0.1413123607635498
+m5,favorita,1632,P0 always Point,hard,0.29487133026123047
+m5,favorita,1660,P0 always Point,hard,0.45566725730895996
+m5,favorita,1604,P1 always Hurdle,hard,0.08108234405517578
+m5,favorita,1632,P1 always Hurdle,hard,0.15792632102966309
+m5,favorita,1660,P1 always Hurdle,hard,0.23007631301879883
+m5,favorita,1604,P2 train-domain global choice,hard,0.08108234405517578
+m5,favorita,1632,P2 train-domain global choice,hard,0.15792632102966309
+m5,favorita,1660,P2 train-domain global choice,hard,0.23007631301879883
+m5,favorita,1604,P3 50:50 average,convex,0.09043145179748535
+m5,favorita,1632,P3 50:50 average,convex,0.18355178833007812
+m5,favorita,1660,P3 50:50 average,convex,0.2788548469543457
+m5,favorita,1604,P4 train-domain convex w=0.60,convex,0.08537030220031738
+m5,favorita,1632,P4 train-domain convex w=0.60,convex,0.1718277931213379
+m5,favorita,1660,P4 train-domain convex w=0.60,convex,0.25920891761779785
+m5,favorita,1604,D1 discounted selector g=0.5,hard,0.08108234405517578
+m5,favorita,1632,D1 discounted selector g=0.5,hard,0.15034151077270508
+m5,favorita,1660,D1 discounted selector g=0.5,hard,0.22556591033935547
+m5,favorita,1604,D1 discounted selector g=0.9,hard,0.08108234405517578
+m5,favorita,1632,D1 discounted selector g=0.9,hard,0.15034151077270508
+m5,favorita,1660,D1 discounted selector g=0.9,hard,0.22911667823791504
+m5,favorita,1604,D3 expw eta=2.0 norm=raw,convex,0.08537030220031738
+m5,favorita,1632,D3 expw eta=2.0 norm=raw,convex,0.15257835388183594
+m5,favorita,1660,D3 expw eta=2.0 norm=raw,convex,0.22777318954467773
+m5,favorita,1604,D3 expw eta=8.0 norm=raw,convex,0.08537030220031738
+m5,favorita,1632,D3 expw eta=8.0 norm=raw,convex,0.14829301834106445
+m5,favorita,1660,D3 expw eta=8.0 norm=raw,convex,0.21869134902954102
+m5,favorita,1604,D3 expw eta=2.0 norm=per_series_scale,convex,0.08537030220031738
+m5,favorita,1632,D3 expw eta=2.0 norm=per_series_scale,convex,0.15718746185302734
+m5,favorita,1660,D3 expw eta=2.0 norm=per_series_scale,convex,0.23386383056640625
+m5,favorita,1604,D3 expw eta=8.0 norm=per_series_scale,convex,0.08537030220031738
+m5,favorita,1632,D3 expw eta=8.0 norm=per_series_scale,convex,0.14254546165466309
+m5,favorita,1660,D3 expw eta=8.0 norm=per_series_scale,convex,0.20585346221923828
+m5,favorita,1604,D3 expw eta=2.0 norm=per_origin_scale,convex,0.08537030220031738
+m5,favorita,1632,D3 expw eta=2.0 norm=per_origin_scale,convex,0.16117525100708008
+m5,favorita,1660,D3 expw eta=2.0 norm=per_origin_scale,convex,0.24363303184509277
+m5,favorita,1604,D3 expw eta=8.0 norm=per_origin_scale,convex,0.08537030220031738
+m5,favorita,1632,D3 expw eta=8.0 norm=per_origin_scale,convex,0.14960718154907227
+m5,favorita,1660,D3 expw eta=8.0 norm=per_origin_scale,convex,0.2216482162475586
+m5,favorita,1604,ORACLE hard origin,hard,0.0
+m5,favorita,1632,ORACLE hard origin,hard,0.0
+m5,favorita,1660,ORACLE hard origin,hard,0.0
+m5,favorita,1604,ORACLE convex origin,convex,0.0
+m5,favorita,1632,ORACLE convex origin,convex,0.0
+m5,favorita,1660,ORACLE convex origin,convex,0.0
+favorita,m5,1857,P0 always Point,hard,0.05435645580291748
+favorita,m5,1885,P0 always Point,hard,0.11379623413085938
+favorita,m5,1913,P0 always Point,hard,0.16379451751708984
+favorita,m5,1857,P1 always Hurdle,hard,0.05063271522521973
+favorita,m5,1885,P1 always Hurdle,hard,0.09167110919952393
+favorita,m5,1913,P1 always Hurdle,hard,0.1380378007888794
+favorita,m5,1857,P2 train-domain global choice,hard,0.05063271522521973
+favorita,m5,1885,P2 train-domain global choice,hard,0.09167110919952393
+favorita,m5,1913,P2 train-domain global choice,hard,0.1380378007888794
+favorita,m5,1857,P3 50:50 average,convex,0.041672348976135254
+favorita,m5,1885,P3 50:50 average,convex,0.08083140850067139
+favorita,m5,1913,P3 50:50 average,convex,0.11751580238342285
+favorita,m5,1857,P4 train-domain convex w=0.85,convex,0.04660975933074951
+favorita,m5,1885,P4 train-domain convex w=0.85,convex,0.08615422248840332
+favorita,m5,1913,P4 train-domain convex w=0.85,convex,0.1282639503479004
+favorita,m5,1857,D1 discounted selector g=0.5,hard,0.05063271522521973
+favorita,m5,1885,D1 discounted selector g=0.5,hard,0.09412515163421631
+favorita,m5,1913,D1 discounted selector g=0.5,hard,0.13815093040466309
+favorita,m5,1857,D1 discounted selector g=0.9,hard,0.05063271522521973
+favorita,m5,1885,D1 discounted selector g=0.9,hard,0.09412515163421631
+favorita,m5,1913,D1 discounted selector g=0.9,hard,0.13574182987213135
+favorita,m5,1857,D3 expw eta=2.0 norm=raw,convex,0.04660975933074951
+favorita,m5,1885,D3 expw eta=2.0 norm=raw,convex,0.08586466312408447
+favorita,m5,1913,D3 expw eta=2.0 norm=raw,convex,0.12177860736846924
+favorita,m5,1857,D3 expw eta=8.0 norm=raw,convex,0.04660975933074951
+favorita,m5,1885,D3 expw eta=8.0 norm=raw,convex,0.08615767955780029
+favorita,m5,1913,D3 expw eta=8.0 norm=raw,convex,0.12289142608642578
+favorita,m5,1857,D3 expw eta=2.0 norm=per_series_scale,convex,0.04660975933074951
+favorita,m5,1885,D3 expw eta=2.0 norm=per_series_scale,convex,0.08344364166259766
+favorita,m5,1913,D3 expw eta=2.0 norm=per_series_scale,convex,0.11952388286590576
+favorita,m5,1857,D3 expw eta=8.0 norm=per_series_scale,convex,0.04660975933074951
+favorita,m5,1885,D3 expw eta=8.0 norm=per_series_scale,convex,0.08250534534454346
+favorita,m5,1913,D3 expw eta=8.0 norm=per_series_scale,convex,0.11766421794891357
+favorita,m5,1857,D3 expw eta=2.0 norm=per_origin_scale,convex,0.04660975933074951
+favorita,m5,1885,D3 expw eta=2.0 norm=per_origin_scale,convex,0.08601033687591553
+favorita,m5,1913,D3 expw eta=2.0 norm=per_origin_scale,convex,0.12197554111480713
+favorita,m5,1857,D3 expw eta=8.0 norm=per_origin_scale,convex,0.04660975933074951
+favorita,m5,1885,D3 expw eta=8.0 norm=per_origin_scale,convex,0.08585286140441895
+favorita,m5,1913,D3 expw eta=8.0 norm=per_origin_scale,convex,0.12214744091033936
+favorita,m5,1857,ORACLE hard origin,hard,0.0
+favorita,m5,1885,ORACLE hard origin,hard,0.0
+favorita,m5,1913,ORACLE hard origin,hard,0.0
+favorita,m5,1857,ORACLE convex origin,convex,0.0
+favorita,m5,1885,ORACLE convex origin,convex,0.0
+favorita,m5,1913,ORACLE convex origin,convex,0.0

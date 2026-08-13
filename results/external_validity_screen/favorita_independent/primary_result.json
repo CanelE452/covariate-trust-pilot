@@ -1,0 +1,65 @@
+{
+  "verdict": "FAVORITA_RULE_PARTIAL_TRANSFER",
+  "analysis": "PRIMARY, unmatched, M5-frozen rule, unseen Favorita",
+  "matching_applied": false,
+  "pooled_with_m5": false,
+  "candidate": {
+    "n": 792,
+    "n_finite": 792,
+    "mean_delta_relative": 0.04590716695444613,
+    "median_delta_relative": -0.0010366747909469768,
+    "mean_delta_raw": 0.029718279522811718,
+    "median_delta_raw": -0.004213105451730592,
+    "point_win_rate": 0.5113636363636364,
+    "hurdle_win_rate": 0.48863636363636365,
+    "mean_ci": [
+      0.035452826847052865,
+      0.05695446108459169
+    ]
+  },
+  "control": {
+    "n": 4613,
+    "n_finite": 4613,
+    "mean_delta_relative": 0.07155360802866856,
+    "median_delta_relative": 0.004061979771121938,
+    "mean_delta_raw": 0.062005462598962814,
+    "median_delta_raw": 0.007402624744289321,
+    "point_win_rate": 0.472360719705181,
+    "hurdle_win_rate": 0.527639280294819,
+    "mean_ci": [
+      0.06646172320413034,
+      0.07686370322678773
+    ]
+  },
+  "H2_FAVORITA_rule_effect": -0.025646441074222426,
+  "effect_ci": [
+    -0.0369589730225136,
+    -0.013254266917107765
+  ],
+  "effect_ci_excludes_zero": true,
+  "point_win_rate_difference": 0.039002916658455344,
+  "point_win_rate_difference_ci": [
+    0.0030224543834179774,
+    0.07472598847788524
+  ],
+  "population": {
+    "full_pool": 56918,
+    "descriptor_eligible": 56767,
+    "after_stage_a_removal": 55572,
+    "stage_a_removed": 1195,
+    "candidate": 792,
+    "control": 4613,
+    "stage_a_overlap": 0
+  },
+  "bootstrap": {
+    "unit": "series",
+    "draws": 2000,
+    "seed": 20260807,
+    "note": "time rows are never resampled as if independent"
+  },
+  "n_degenerate_rmse_point": 0,
+  "scored_at_utc": "2026-08-07T13:29:03.742614+00:00",
+  "spec_frozen_at_utc": "2026-08-07T13:29:00.850882+00:00",
+  "device": "cuda",
+  "git_commit": "59ae50d4dd634a4fb41e7b38656c98f54f85c3da"
+}

@@ -1,0 +1,28 @@
+{
+  "available": true,
+  "n_entries": 4,
+  "n_unrelated": 4,
+  "entries": [
+    {
+      "status": "??",
+      "path": "experiments/external_validity_screen/poster_stage2.py",
+      "is_scientific_dependency": false
+    },
+    {
+      "status": "??",
+      "path": "experiments/routing_information_ceiling/",
+      "is_scientific_dependency": false
+    },
+    {
+      "status": "??",
+      "path": "results/external_validity_screen/poster_stage2/",
+      "is_scientific_dependency": false
+    },
+    {
+      "status": "??",
+      "path": "results/routing_information_ceiling/",
+      "is_scientific_dependency": false
+    }
+  ],
+  "note": "unrelated untracked or modified files do not promote to a G0a failure; only a changed dependency artifact does"
+}

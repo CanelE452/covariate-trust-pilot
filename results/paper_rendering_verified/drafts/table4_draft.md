@@ -1,0 +1,13 @@
+# Table 4 draft - empirical evidence summary
+
+```
+question                           population      estimate  95% CI              status                   reading                                 
+---------------------------------  --------------  --------  ------------------  -----------------------  ----------------------------------------
+H1 occurrence-dependence analogue  M5              +0.1064   [+0.0437, +0.1652]  SUPPORTED_WITH_BOUNDARY  empirical analogue, not replication     
+H1 occurrence-dependence analogue  Favorita        +0.0789   [+0.0205, +0.1405]  SUPPORTED_WITH_BOUNDARY  empirical analogue, not replication     
+H1 within the intermittent regime  M5              +0.1529   [+0.0519, +0.2613]  SUPPORTED                relative scale; lumpy regime spans zero 
+H2 frozen selector                 M5 675 vs 5018  -0.0230   [-0.0294, -0.0163]  CONFIRMED                Point win rate +11.87 pp; 3 seeds       
+H2 isolated mechanism              M5 n=5693       +0.0032   [-0.0033, +0.0094]  NOT_REPLICATED           vanishes after overlap weighting        
+H3 sparsity interaction            M5              -0.0305   [-0.1418, +0.0912]  CONSTRUCT_MISMATCH       tested at the ADI median, not ADI 4 vs 8
+H3 sparsity interaction            Favorita        -0.0428   [-0.1587, +0.0704]  CONSTRUCT_MISMATCH       tested at the ADI median, not ADI 4 vs 8
+```

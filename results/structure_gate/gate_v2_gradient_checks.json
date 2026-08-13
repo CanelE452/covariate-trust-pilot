@@ -1,0 +1,25 @@
+{
+  "identity_g_0.0": {
+    "max_abs_error": 0.0,
+    "ok": true
+  },
+  "identity_g_1.0": {
+    "max_abs_error": 0.0,
+    "ok": true
+  },
+  "identity_g_0.5": {
+    "max_abs_error": 0.0,
+    "ok": true
+  },
+  "expert_grads_absent": {
+    "point": true,
+    "hurdle": true,
+    "gate_receives_gradient": true
+  },
+  "gradient_vanishes_when_experts_agree": {
+    "identical": 0.0,
+    "different": 0.6683776676654816,
+    "ok": true
+  },
+  "passed": true
+}

@@ -1,0 +1,102 @@
+{
+  "checks": {
+    "1_seq_beats_alpha_on_3_of_4": {
+      "datasets": [
+        "m5",
+        "favorita",
+        "freshretailnet"
+      ],
+      "passed": true
+    },
+    "2_fresh_positive": {
+      "value": 0.026478123134293433,
+      "passed": true
+    },
+    "3_fresh_positive_folds": {
+      "value": 2,
+      "required": 2,
+      "passed": true
+    },
+    "4_seq_beats_p0l1_on_3_of_4": {
+      "datasets": [
+        "favorita",
+        "freshretailnet"
+      ],
+      "passed": false
+    },
+    "5_non_uci_ci_excludes_zero": {
+      "datasets": [
+        "freshretailnet"
+      ],
+      "passed": true
+    },
+    "6_positive_fold_rate": {
+      "value": 0.7857142857142857,
+      "passed": false
+    },
+    "7_worst_fold_floor": {
+      "worst": {
+        "m5": 0.0027965554775811,
+        "favorita": -0.0414645340776662,
+        "freshretailnet": -0.0319927420511753,
+        "uci": -2.6589509972943923
+      },
+      "passed": false
+    },
+    "8_no_scale_sign_contradiction": {
+      "contradiction": {
+        "m5": false,
+        "favorita": false,
+        "freshretailnet": false,
+        "uci": true
+      },
+      "passed": false
+    },
+    "9_no_critical_integrity_failure": {
+      "passed": true
+    }
+  },
+  "green_passed": false,
+  "red_reasons": [
+    "fails to beat P0L1 on at least 3 of 4",
+    "severe temporal fold reversal on 3 datasets",
+    "catastrophic tail worsening on ['uci']"
+  ],
+  "verdict": "SEQUENCE_ROUTING_RED",
+  "binding_status": [
+    "HANDCRAFTED_FEATURE_GATE_STOP",
+    "RAW_SEQUENCE_GATE_STOP",
+    "ROUTING_MODEL_DEVELOPMENT_STOP",
+    "DO_NOT_CONSUME_NEW_CONFIRMATORY_DATASET"
+  ],
+  "rule": {
+    "green": {
+      "1_seq_beats_alpha_datasets": 3,
+      "2_fresh_seq_vs_alpha_positive": true,
+      "3_fresh_positive_folds_min": 2,
+      "3_fresh_folds_total": 3,
+      "4_seq_beats_p0l1_datasets": 3,
+      "5_non_uci_ci_excludes_zero": 1,
+      "6_overall_positive_fold_rate": 0.8,
+      "7_worst_fold_floor": -0.02,
+      "8_no_scale_sign_contradiction": true,
+      "9_no_critical_integrity_failure": true
+    },
+    "red_any_of": [
+      "fresh aggregate <= 0",
+      "two or more datasets worse than alpha in aggregate",
+      "fails to beat P0L1 on at least 3 of 4",
+      "severe temporal fold reversal",
+      "catastrophic tail worsening"
+    ],
+    "severe_fold_reversal": {
+      "datasets": 2,
+      "worst_below": -0.02
+    },
+    "catastrophic_tail": {
+      "absolute_floor": 0.05,
+      "ratio_over_p0l1": 1.5
+    },
+    "frozen_before_results": true
+  }
+}

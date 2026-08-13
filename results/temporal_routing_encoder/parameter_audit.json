@@ -1,0 +1,16 @@
+{
+  "p0l1_mlp_architecture": "small MLP, hidden 16",
+  "p0l1_mlp_params": 433,
+  "p0l1_mlp_params_note": "25 G-NOSCALE inputs into one hidden layer of 16",
+  "sequence_gate_params": 1081,
+  "sequence_gate_params_by_dataset": {
+    "m5": 1081,
+    "favorita": 1081,
+    "freshretailnet": 1081,
+    "uci": 1081
+  },
+  "ratio_to_p0l1": 2.496535796766744,
+  "expert_a_dlinear_params_lower_bound": 2716,
+  "gate_smaller_than_expert_a": true,
+  "note": "the sequence gate is larger than the handcrafted gate and that is stated rather than hidden; it stays smaller than the DLinear expert it routes, so it is still a probe rather than the model"
+}

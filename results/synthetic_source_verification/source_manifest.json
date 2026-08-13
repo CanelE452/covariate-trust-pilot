@@ -1,0 +1,55 @@
+{
+  "recovered_at": "2026-08-11",
+  "transport": {
+    "release": "recovery-20260811_135203",
+    "repo": "CanelE452/m5dataset-recovery",
+    "private": true,
+    "assets": 19
+  },
+  "source": {
+    "original_path": "/home/minjae/Documents/github/m5dataset",
+    "machine": "Linux minjae-MS-7D17 6.8.0-136-generic Ubuntu",
+    "HEAD": "03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+    "branch": "master",
+    "remotes": "none",
+    "size": "12G",
+    "tracked": 47,
+    "untracked": 6962,
+    "modified": 3
+  },
+  "windows_extracted": "E:/research_recovery/m5dataset_recovery-20260811_135203/extracted/m5dataset",
+  "provenance": {
+    "stage1_run": "experiments/decomposition_when_helps/results/run_20260802_112655",
+    "stage2_run": "reports/temporal_dependence/rho_sweep/pilot_20260803_051713",
+    "prereg_hash": "3b6b5f89ba24d42aaab6f65dc39526096578dbfcc4820e0284bbf92736bab9f9",
+    "dataset_content_hash": "c889f8f588ada4114434de0d644ed0d08c7d6620933a63363138dd103e6895ab",
+    "git_commit_at_run": "03043927c1ea89e8569ab4e9d0bfe0b6d041a47f",
+    "matches_stage_a_git_commit": true
+  },
+  "copied_files": {
+    "stage1_validity.json": {
+      "sha256": "37a5156205d0bdfadfa0e7553d194346c8fcea2fad74b78d70c35b28277eb5e9",
+      "bytes": 3842
+    },
+    "stage1_verified_cells.csv": {
+      "sha256": "64b905ca0ab8a293aadded4737010fb2986d1bf5f9d7f6227374254f848a6fb4",
+      "bytes": 5816
+    },
+    "stage1_verified_contrasts.csv": {
+      "sha256": "bf3fcfae3a57e1fc58c9ca0cbed9b857f4bf3e8996b7ae71156e1252b09326d9",
+      "bytes": 1379
+    },
+    "stage2_scientific_classification.json": {
+      "sha256": "97ec8ab4dafaa6420301951a6ee276daade5b58ff6762b1e0e118e07b9408cd0",
+      "bytes": 3567
+    },
+    "stage2_verified_cells.csv": {
+      "sha256": "3eb9608f8f72eca8b761ff5a71839dc283d2307749cf60d3dbed02fa622d732c",
+      "bytes": 7400
+    },
+    "stage2_verified_factor_effects.csv": {
+      "sha256": "d4f96376d95182803895f663ba5dc059f60735b29624afa0980dd01d0a17e16f",
+      "bytes": 1635
+    }
+  }
+}

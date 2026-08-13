@@ -1,0 +1,42 @@
+{
+  "warn": [
+    {
+      "code": "UCI_CATASTROPHIC_ROUTING",
+      "detail": "on the pre-identified collapse fold expert A's error is 3249.2 against B's 86.7, so the optimum sits near g=1. P0L1 held 0.593, close to the fitted alpha of 0.65; the sequence gate went to 0.295 with 45.3% of origins below 0.3. Its correlation with g* is the same as P0L1's (0.381 vs 0.377), so the failure is in the level it chooses, not in its ranking."
+    },
+    {
+      "code": "FRESH_RECOVERED_BUT_DOES_NOT_CARRY_THE_VERDICT",
+      "detail": "FreshRetailNet is genuinely recovered for the first time on this axis: -0.506% for P0L1 becomes +2.648% with a CI clear of zero, better than P0L1 on 3/3 folds. The stop rule was frozen to require this AND four other things, and three of those failed."
+    },
+    {
+      "code": "PER_SERIES_SCALE_UNSTABLE",
+      "detail": "the per-series relative metric explodes where a series' P0L1 error is near zero (favorita -186%, uci -2.7e6). The normalized-MSE primary is unaffected; this is why the scale-contradiction check fired and it is reported rather than dropped."
+    },
+    {
+      "code": "WARN_SEQUENCE_TAIL_RISK",
+      "dataset": "uci",
+      "detail": "sequence p95 degradation 0.107 against P0L1 0.054"
+    },
+    {
+      "code": "RED_CONDITION_MET",
+      "detail": "fails to beat P0L1 on at least 3 of 4"
+    },
+    {
+      "code": "RED_CONDITION_MET",
+      "detail": "severe temporal fold reversal on 3 datasets"
+    },
+    {
+      "code": "RED_CONDITION_MET",
+      "detail": "catastrophic tail worsening on ['uci']"
+    },
+    {
+      "code": "NO_TEST_SCORED",
+      "detail": "no existing TEST was scored and no new dataset was used"
+    },
+    {
+      "code": "SINGLE_SEED_PRIMARY",
+      "detail": "the seed policy was frozen before training as one canonical seed plus a reproducibility rerun, matching P0L1's single-seed structure; no seed was retried after seeing results"
+    }
+  ],
+  "fail": []
+}

@@ -1,0 +1,37 @@
+subsection,methods_claim,source_field,source_file,note
+3.2,direct arm predicts the conditional mean from the same window,M0_PARAMETER_MATCHED_POINT; output y_hat directly,results/synthetic_source_verification/point_hurdle_fairness.md,
+3.3,"factorized arm outputs p_hat and mu_hat, combined as p_hat * mu_hat",M1_HURDLE_MEAN; mean_hat = p_hat * mu_hat,results/synthetic_source_verification/point_hurdle_fairness.md,
+3.3,"a third arm, hurdle-ZTNB, is the secondary comparison","M2_HURDLE_ZTNB; 5,857 params, +0.017%",results/synthetic_source_verification/point_hurdle_fairness.md,primary is M1 vs M0
+3.4,G = 100 (1 - RMSE_H / RMSE_P) against the oracle mean,PRIMARY_METRIC rmse_mean_truth; gain = 1 - RMSE_h/RMSE_p,results/synthetic_source_verification/metric_sign.md,three delta conventions exist; use gain only
+4.1,event times T_j = T_{j-1} + Q_j; y_t = M_j at events else 0,event time recursion,results/synthetic_source_verification/dgp_verification.md,
+4.1,"gap support {d-1, d+1}, equal long-run share; d in {4,8}","short = d-1, long = d+1, share 0.5",results/synthetic_source_verification/dgp_verification.md,
+4.1,"magnitude M_j = 1 + Poisson(lambda_j - 1); lambda in {5,15}; mean 10 in both modes",magnitude law; long-run positive mean 10 BOTH modes,results/synthetic_source_verification/dgp_verification.md,this is the marginal control
+4.1,"burn-in max(128, 8d)",burn-in,results/synthetic_source_verification/dgp_verification.md,
+4.1,paired random numbers across modes,paired_random_numbers,results/synthetic_source_verification/dgp_verification.md,
+4.1,"trend, seasonality, regime, heavy tail, shift, jitter and interval-magnitude cross-correlation excluded by construction",forbidden list,results/synthetic_source_verification/dgp_verification.md,"dead-code defect A2 recorded, no call site"
+4.1,marginal control verified empirically,marginal_control_pass: true; d=4 ADI mode diff 0.0015,results/synthetic_source_verification/dgp_verification.md,
+4.2,"5,856 = 5,856 parameters",parameters (recorded),results/synthetic_source_verification/point_hurdle_fairness.md,
+4.2,one trainer imported unchanged,TRAINING.reuse train_one imported unchanged,results/synthetic_source_verification/point_hurdle_fairness.md,
+4.2,"Adam, lr 1e-3, weight decay 0.0",optimizer block,results/synthetic_source_verification/point_hurdle_fairness.md,
+4.2,"30 max epochs, patience 5, batch 256",training block,results/synthetic_source_verification/point_hurdle_fairness.md,
+4.2,"checkpoint on validation realized-y MSE; oracle, test, per-model metric and per-cell tuning forbidden",checkpoint_prohibitions,results/synthetic_source_verification/point_hurdle_fairness.md,prevents oracle leakage into selection
+4.2,normalization from the train split only,normalization,results/synthetic_source_verification/point_hurdle_fairness.md,
+4.2,"lookback 96, horizon 24; split 384/480/576 of 576",geometry,results/synthetic_source_verification/point_hurdle_fairness.md,
+4.2,one continuous trajectory then split; latent state never reset at a boundary,leakage section,results/synthetic_source_verification/dgp_verification.md,
+4.2,oracle conditions only on history strictly before the origin,oracle leakage statement,results/synthetic_source_verification/dgp_verification.md,
+4.2,"exact DP oracle over (steps to next event, next-gap parity, next-magnitude parity)",oracle construction,results/synthetic_source_verification/dgp_verification.md,"Monte Carlo 200,000 paths is a cross-check only"
+4.2,"80 series per cell (40 x 2 data seeds); model seeds (0,1) averaged within series",replication block,results/synthetic_source_verification/dgp_verification.md,
+4.2,"paired series bootstrap, 2000 draws, level 0.95, seed 20260802",bootstrap block,results/synthetic_source_verification/metric_sign.md,
+4.3,"Stage 1: 2x2x2 over d, interval arm, magnitude arm; cells C01..C08",design block,results/synthetic_source_verification/stage1_stage2_verified.md,
+4.3,Stage 1 structured arms are deterministic period-2 alternation (rho = -1),design note,results/synthetic_source_verification/stage1_stage2_verified.md,blocks any graded reading of Stage 1
+4.4,component-attribution diagnostic substitutes a true component for an estimated one,"p_true_x_mu_hat, p_hat_x_mu_true, p_hat_x_mu_hat",results/synthetic_source_verification/metric_sign.md,attributes error; does not identify a cause
+4.5,"Stage 2: d x rho_I x rho_M, 3x3x2 = 18 cells, 80 series each",design block,results/synthetic_source_verification/stage1_stage2_verified.md,
+4.5,"Stage 2 holds mean interval, interval support and magnitude marginal fixed",held fixed,results/synthetic_source_verification/stage1_stage2_verified.md,
+5.1,"M5: 1,200 series, T=1,941, train_end 1,829, origins 1857/1885/1913, 96/28",Table 3,results/paper_rendering_verified/drafts/table3_draft.md,
+5.1,"Favorita: 1,200 series, T=1,688, train_end 1,576, origins 1604/1632/1660, 96/28",Table 3,results/paper_rendering_verified/drafts/table3_draft.md,
+5.1,"SBC-balanced sampling, 300 per regime; eligibility n_positive_train >= 20",Table 3,results/paper_rendering_verified/drafts/table3_draft.md,"M5 full pool 23,053/5,942/984/496"
+5.1,"FreshRetailNet-LT and UCI Online Retail II are stress tests, appendix only",Table 3 note,results/paper_rendering_verified/drafts/table3_draft.md,never described as core validation data
+5.2,H1 operationalized on |rho_interval| of the observed series,H1 provenance,results/synthetic_source_verification/h1_h2_h3_provenance.md,external uses the ABSOLUTE value; Stage 2 shows that is the finding
+5.2,H2 selector frozen before application to an independent population,H2 provenance,results/synthetic_source_verification/h1_h2_h3_provenance.md,"three axes correspond one-to-one, sign included"
+5.2,"H3 external split at the ADI median (1.304 M5, 1.317 Favorita)",H3 provenance,results/synthetic_source_verification/h1_h2_h3_provenance.md,synthetic contrast is d=4 vs d=8: construct mismatch
+5.3,"overlap weighting on scale, sparsity, positive-demand variability and occurrence dependence",overlap protocol,results/paper_synthesis_verified/claim_ledger_frozen.md,

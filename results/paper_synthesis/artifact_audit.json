@@ -1,0 +1,976 @@
+{
+  "audited_at": "2026-08-09",
+  "repository": "covariate-trust-pilot",
+  "n_entries": 56,
+  "critical_audit_finding": "the controlled synthetic study that the whole argument rests on is not in this repository; only the external-validity work and everything after it was migrated",
+  "entries": [
+    {
+      "area": "A_numerical",
+      "experiment": "Stage 1 / Stage 3 / Stage 4 controlled synthetic study",
+      "artifact": "(NOT IN THIS REPOSITORY)",
+      "sha256_16": null,
+      "dataset": "synthetic",
+      "n": null,
+      "primary_metric": "delta = RMSE_Point - RMSE_Hurdle against the exact DP oracle",
+      "effect": null,
+      "ci": null,
+      "status": "ARTIFACTS_ABSENT_LOCALLY",
+      "integrity": "source repo ~/Documents/github/m5dataset: no git remote, last commit 2026-06-25, different machine"
+    },
+    {
+      "area": "B_stageA",
+      "experiment": "Stage A overall Point vs Hurdle",
+      "artifact": "results/external_validity_screen/stage_a_results.json",
+      "sha256_16": "c0d41d2ddfc0d338",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "mean_delta on realized y",
+      "effect": -0.0006611893681368179,
+      "ci": null,
+      "status": "near tie; RMSE favours Point, MAE favours Hurdle",
+      "integrity": "pre-analysis spec frozen before predictions"
+    },
+    {
+      "area": "B_stageA",
+      "experiment": "H1 |rho_interval| vs delta",
+      "artifact": "results/external_validity_screen/stage_a_results.json",
+      "sha256_16": "c0d41d2ddfc0d338",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "spearman",
+      "effect": 0.10644643192962784,
+      "ci": [
+        0.04372033956495071,
+        0.1652383547846808
+      ],
+      "status": "CI excludes 0",
+      "integrity": "same"
+    },
+    {
+      "area": "B_stageA",
+      "experiment": "H2 Point-favorable rule (screen)",
+      "artifact": "results/external_validity_screen/stage_a_results.json",
+      "sha256_16": "c0d41d2ddfc0d338",
+      "dataset": "m5",
+      "n": 163,
+      "primary_metric": "candidate - control difference",
+      "effect": -0.03031825996676292,
+      "ci": [
+        -0.09536057881525689,
+        0.058779275169732643
+      ],
+      "status": "direction only, CI includes 0",
+      "integrity": "same"
+    },
+    {
+      "area": "B_stageA",
+      "experiment": "H3 sparsity interaction",
+      "artifact": "results/external_validity_screen/stage_a_results.json",
+      "sha256_16": "c0d41d2ddfc0d338",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "corr_high - corr_low",
+      "effect": -0.030518766200817893,
+      "ci": [
+        -0.14180891679768412,
+        0.09120523187531958
+      ],
+      "status": "sign opposite to prediction, CI includes 0",
+      "integrity": "same"
+    },
+    {
+      "area": "C_posthoc",
+      "experiment": "occurrence gate Brier skill vs constant rate",
+      "artifact": "results/external_validity_screen/posthoc_diagnostic/posthoc_diagnostic.json",
+      "sha256_16": "a0be2b44945d7a57",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "pooled Brier skill score",
+      "effect": -0.0084439985714857,
+      "ci": [
+        -0.04112106754651746,
+        0.02414611928093613
+      ],
+      "status": "no skill over a constant rate",
+      "integrity": "stage A hashes unchanged: True"
+    },
+    {
+      "area": "C_posthoc",
+      "experiment": "H1 scale robustness",
+      "artifact": "results/external_validity_screen/posthoc_diagnostic/posthoc_diagnostic.json",
+      "sha256_16": "a0be2b44945d7a57",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "spearman raw/relative/scaled",
+      "effect": [
+        0.10645816734905524,
+        0.12308621758151522,
+        0.09661666369643886
+      ],
+      "ci": [
+        [
+          0.04371982918286347,
+          0.16530138681619416
+        ],
+        [
+          0.06970650840419389,
+          0.17754115832836406
+        ],
+        [
+          0.03904670735184218,
+          0.15356829546552342
+        ]
+      ],
+      "status": "all three positive, all CI exclude 0",
+      "integrity": "same"
+    },
+    {
+      "area": "C_posthoc",
+      "experiment": "H1 adjusted partial association (exploratory)",
+      "artifact": "results/external_validity_screen/posthoc_diagnostic/posthoc_diagnostic.json",
+      "sha256_16": "a0be2b44945d7a57",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "standardized coefficient",
+      "effect": 0.03167509746872119,
+      "ci": [
+        -0.02112180183711536,
+        0.7626821184234603
+      ],
+      "status": "small and CI includes 0",
+      "integrity": "tagged POSTHOC_DIAGNOSTIC, not an H1 primary test"
+    },
+    {
+      "area": "B_stageA",
+      "experiment": "Stage A overall Point vs Hurdle",
+      "artifact": "results/external_validity_screen/stage_a_results.json",
+      "sha256_16": "c0d41d2ddfc0d338",
+      "dataset": "favorita",
+      "n": 1200,
+      "primary_metric": "mean_delta on realized y",
+      "effect": -0.03197136173867907,
+      "ci": null,
+      "status": "near tie; RMSE favours Point, MAE favours Hurdle",
+      "integrity": "pre-analysis spec frozen before predictions"
+    },
+    {
+      "area": "B_stageA",
+      "experiment": "H1 |rho_interval| vs delta",
+      "artifact": "results/external_validity_screen/stage_a_results.json",
+      "sha256_16": "c0d41d2ddfc0d338",
+      "dataset": "favorita",
+      "n": 1195,
+      "primary_metric": "spearman",
+      "effect": 0.07893618342670736,
+      "ci": [
+        0.020462527816382595,
+        0.14045663878488338
+      ],
+      "status": "CI excludes 0",
+      "integrity": "same"
+    },
+    {
+      "area": "B_stageA",
+      "experiment": "H2 Point-favorable rule (screen)",
+      "artifact": "results/external_validity_screen/stage_a_results.json",
+      "sha256_16": "c0d41d2ddfc0d338",
+      "dataset": "favorita",
+      "n": 151,
+      "primary_metric": "candidate - control difference",
+      "effect": -0.022423849668755227,
+      "ci": [
+        -0.16179344021583333,
+        0.13350121118199484
+      ],
+      "status": "direction only, CI includes 0",
+      "integrity": "same"
+    },
+    {
+      "area": "B_stageA",
+      "experiment": "H3 sparsity interaction",
+      "artifact": "results/external_validity_screen/stage_a_results.json",
+      "sha256_16": "c0d41d2ddfc0d338",
+      "dataset": "favorita",
+      "n": 1195,
+      "primary_metric": "corr_high - corr_low",
+      "effect": -0.04276340922940511,
+      "ci": [
+        -0.1586603704689396,
+        0.0703951743713479
+      ],
+      "status": "sign opposite to prediction, CI includes 0",
+      "integrity": "same"
+    },
+    {
+      "area": "C_posthoc",
+      "experiment": "occurrence gate Brier skill vs constant rate",
+      "artifact": "results/external_validity_screen/posthoc_diagnostic/posthoc_diagnostic.json",
+      "sha256_16": "a0be2b44945d7a57",
+      "dataset": "favorita",
+      "n": 1200,
+      "primary_metric": "pooled Brier skill score",
+      "effect": -0.09078264444704032,
+      "ci": [
+        -0.1400787827245614,
+        -0.043805290644429895
+      ],
+      "status": "no skill over a constant rate",
+      "integrity": "stage A hashes unchanged: True"
+    },
+    {
+      "area": "C_posthoc",
+      "experiment": "H1 scale robustness",
+      "artifact": "results/external_validity_screen/posthoc_diagnostic/posthoc_diagnostic.json",
+      "sha256_16": "a0be2b44945d7a57",
+      "dataset": "favorita",
+      "n": 1195,
+      "primary_metric": "spearman raw/relative/scaled",
+      "effect": [
+        0.07891335260963367,
+        0.11782415597915766,
+        0.09280692529777612
+      ],
+      "ci": [
+        [
+          0.020421892623821936,
+          0.14045375974914479
+        ],
+        [
+          0.06026629517626878,
+          0.1726648533457624
+        ],
+        [
+          0.038744893621284485,
+          0.14733893596126632
+        ]
+      ],
+      "status": "all three positive, all CI exclude 0",
+      "integrity": "same"
+    },
+    {
+      "area": "C_posthoc",
+      "experiment": "H1 adjusted partial association (exploratory)",
+      "artifact": "results/external_validity_screen/posthoc_diagnostic/posthoc_diagnostic.json",
+      "sha256_16": "a0be2b44945d7a57",
+      "dataset": "favorita",
+      "n": 1195,
+      "primary_metric": "standardized coefficient",
+      "effect": 0.016750746101480835,
+      "ci": [
+        -0.3507346815700038,
+        0.9050089474670254
+      ],
+      "status": "small and CI includes 0",
+      "integrity": "tagged POSTHOC_DIAGNOSTIC, not an H1 primary test"
+    },
+    {
+      "area": "D_regime",
+      "experiment": "H1 within SBC regime smooth",
+      "artifact": "results/external_validity_screen/regime_h1/regime_h1.json",
+      "sha256_16": "f91f242f2ed23fdf",
+      "dataset": "m5",
+      "n": 300,
+      "primary_metric": "spearman raw/relative/scaled",
+      "effect": [
+        0.128552337847288,
+        0.08724491196178893,
+        0.04308989350202574
+      ],
+      "ci": [
+        [
+          0.015773600930492356,
+          0.24616837490497026
+        ],
+        [
+          -0.031900312451925227,
+          0.20837089050687468
+        ],
+        [
+          -0.06800967241963984,
+          0.16114793212852685
+        ]
+      ],
+      "status": "H1_TARGET_REGIME_DIRECTION_SUPPORTED",
+      "integrity": "regime labels reproduced: True"
+    },
+    {
+      "area": "D_regime",
+      "experiment": "H1 within SBC regime erratic",
+      "artifact": "results/external_validity_screen/regime_h1/regime_h1.json",
+      "sha256_16": "f91f242f2ed23fdf",
+      "dataset": "m5",
+      "n": 300,
+      "primary_metric": "spearman raw/relative/scaled",
+      "effect": [
+        0.08131468127423637,
+        0.08817520194668828,
+        0.07820486894298825
+      ],
+      "ci": [
+        [
+          -0.03181651892721974,
+          0.1954885689554226
+        ],
+        [
+          -0.02464098256562777,
+          0.19838603575160632
+        ],
+        [
+          -0.037702896847992655,
+          0.1917870638227222
+        ]
+      ],
+      "status": "H1_TARGET_REGIME_DIRECTION_SUPPORTED",
+      "integrity": "regime labels reproduced: True"
+    },
+    {
+      "area": "D_regime",
+      "experiment": "H1 within SBC regime intermittent",
+      "artifact": "results/external_validity_screen/regime_h1/regime_h1.json",
+      "sha256_16": "f91f242f2ed23fdf",
+      "dataset": "m5",
+      "n": 300,
+      "primary_metric": "spearman raw/relative/scaled",
+      "effect": [
+        0.10705141168235202,
+        0.15286480960899565,
+        0.12321025789175434
+      ],
+      "ci": [
+        [
+          -0.008915194126224766,
+          0.2148697982931745
+        ],
+        [
+          0.051924173708233184,
+          0.2612574897301647
+        ],
+        [
+          0.01330070894418581,
+          0.22733806527980321
+        ]
+      ],
+      "status": "H1_TARGET_REGIME_DIRECTION_SUPPORTED",
+      "integrity": "regime labels reproduced: True"
+    },
+    {
+      "area": "D_regime",
+      "experiment": "H1 within SBC regime lumpy",
+      "artifact": "results/external_validity_screen/regime_h1/regime_h1.json",
+      "sha256_16": "f91f242f2ed23fdf",
+      "dataset": "m5",
+      "n": 300,
+      "primary_metric": "spearman raw/relative/scaled",
+      "effect": [
+        0.01407837864865165,
+        0.03228346981633129,
+        0.028085200946677186
+      ],
+      "ci": [
+        [
+          -0.10557059047524184,
+          0.1295349963855632
+        ],
+        [
+          -0.07930734310085542,
+          0.1462771350443748
+        ],
+        [
+          -0.08915754090131092,
+          0.1439483831082161
+        ]
+      ],
+      "status": "H1_TARGET_REGIME_DIRECTION_SUPPORTED",
+      "integrity": "regime labels reproduced: True"
+    },
+    {
+      "area": "E_h2_independent",
+      "experiment": "H2 frozen rule on an independent M5 population",
+      "artifact": "results/external_validity_screen/rule_replication/primary_result.json",
+      "sha256_16": "4c4675a411bac1d1",
+      "dataset": "m5",
+      "n": 5693,
+      "primary_metric": "rule effect on relative delta",
+      "effect": -0.023038526190714254,
+      "ci": [
+        -0.029420044008396352,
+        -0.01633998575950969
+      ],
+      "status": "CI excludes 0",
+      "integrity": "rule frozen from the screen, nothing refitted"
+    },
+    {
+      "area": "E_h2_independent",
+      "experiment": "H2 Point win rate difference",
+      "artifact": "results/external_validity_screen/rule_replication/primary_result.json",
+      "sha256_16": "4c4675a411bac1d1",
+      "dataset": "m5",
+      "n": 5693,
+      "primary_metric": "point win rate difference",
+      "effect": 0.11872488670416131,
+      "ci": [
+        0.07853243139512575,
+        0.1581296665338116
+      ],
+      "status": "CI excludes 0",
+      "integrity": "same"
+    },
+    {
+      "area": "E_h2_independent",
+      "experiment": "H2 overlap-adjusted association",
+      "artifact": "results/external_validity_screen/rule_replication/secondary_overlap.json",
+      "sha256_16": "84611e701ee6e563",
+      "dataset": "m5",
+      "n": 5693,
+      "primary_metric": "ATO-weighted association",
+      "effect": 0.0031849974024959074,
+      "ci": [
+        -0.003288935572347664,
+        0.009384154780202037
+      ],
+      "status": "CI includes 0",
+      "integrity": "worst weighted SMD 0.00044; explicitly not a causal effect"
+    },
+    {
+      "area": "E_h2_independent",
+      "experiment": "H2 1:2 nearest-neighbour matching",
+      "artifact": "results/external_validity_screen/h2_confirmatory/matching_failed.json",
+      "sha256_16": "ac29be29195694d0",
+      "dataset": "m5",
+      "n": 2025,
+      "primary_metric": "worst absolute SMD",
+      "effect": 0.6136368324183288,
+      "ci": null,
+      "status": "SMD_FAIL",
+      "integrity": "failed on log_train_scale (SMD 0.61)"
+    },
+    {
+      "area": "F_priority",
+      "experiment": "H2 three-seed robustness",
+      "artifact": "results/external_validity_screen/seed_robustness/seed_robustness.json",
+      "sha256_16": "b6c783e69ec85790",
+      "dataset": "m5",
+      "n": null,
+      "primary_metric": "rule effect per seed",
+      "effect": null,
+      "ci": null,
+      "status": "H2_SEED_ROBUST",
+      "integrity": "seeds [0, 1, 2]"
+    },
+    {
+      "area": "F_priority",
+      "experiment": "Favorita rule transfer on the Stage A pool",
+      "artifact": "results/external_validity_screen/favorita_transfer/primary_transfer.json",
+      "sha256_16": "69e62288892a696f",
+      "dataset": "favorita",
+      "n": 135,
+      "primary_metric": "rule effect",
+      "effect": null,
+      "ci": null,
+      "status": "FAVORITA_RULE_LOW_SUPPORT",
+      "integrity": "design deviation: the specified full-pool replication was not possible"
+    },
+    {
+      "area": "F_priority",
+      "experiment": "Favorita independent pool, M5-frozen rule",
+      "artifact": "results/external_validity_screen/favorita_independent/primary_result.json",
+      "sha256_16": "25e13eee7aa8340e",
+      "dataset": "favorita",
+      "n": 5405,
+      "primary_metric": "rule effect",
+      "effect": null,
+      "ci": null,
+      "status": "FAVORITA_RULE_PARTIAL_TRANSFER",
+      "integrity": "unseen Favorita series"
+    },
+    {
+      "area": "F_priority",
+      "experiment": "classical intermittent benchmark",
+      "artifact": "results/external_validity_screen/classical_benchmark/benchmark.json",
+      "sha256_16": "7546b58b8f0edd69",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "mean rank, lower is better",
+      "effect": {
+        "best_method": "sba",
+        "best_rank": 3.151666666666667,
+        "dlinear_point": 4.2025,
+        "dlinear_hurdle": 4.22
+      },
+      "ci": null,
+      "status": "CLASSICAL_BENCHMARK_COMPLETE",
+      "integrity": "hand check passed; IETS not available"
+    },
+    {
+      "area": "F_priority",
+      "experiment": "classical intermittent benchmark",
+      "artifact": "results/external_validity_screen/classical_benchmark/benchmark.json",
+      "sha256_16": "7546b58b8f0edd69",
+      "dataset": "favorita",
+      "n": 1200,
+      "primary_metric": "mean rank, lower is better",
+      "effect": {
+        "best_method": "sba",
+        "best_rank": 3.06875,
+        "dlinear_point": 3.9466666666666668,
+        "dlinear_hurdle": 4.031666666666666
+      },
+      "ci": null,
+      "status": "CLASSICAL_BENCHMARK_COMPLETE",
+      "integrity": "hand check passed; IETS not available"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "convex-mixture oracle potential",
+      "artifact": "results/structure_gate/convex_oracle.json",
+      "sha256_16": "10a0fc851d7e7c61",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "convex gain over the best static mixture",
+      "effect": 0.04107302959406395,
+      "ci": null,
+      "status": "OOF only",
+      "integrity": "test never read"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "convex-mixture oracle potential",
+      "artifact": "results/structure_gate/convex_oracle.json",
+      "sha256_16": "10a0fc851d7e7c61",
+      "dataset": "favorita",
+      "n": 1200,
+      "primary_metric": "convex gain over the best static mixture",
+      "effect": 0.023314203253128038,
+      "ci": null,
+      "status": "OOF only",
+      "integrity": "test never read"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Gate-v1 structure-gated kill test",
+      "artifact": "results/structure_gate/killtest.json",
+      "sha256_16": "ceddcd3804e8dbef",
+      "dataset": "m5+favorita",
+      "n": null,
+      "primary_metric": "verdict",
+      "effect": null,
+      "ci": null,
+      "status": "GATE_KILL_YELLOW",
+      "integrity": "experts frozen"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Gate-v2 cross-fitted OOF",
+      "artifact": "results/structure_gate/gate_v2_oof_result.json",
+      "sha256_16": "dab4be9e9aa625d4",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "gate vs point",
+      "effect": 0.019862593742264772,
+      "ci": [
+        0.016915801277364664,
+        0.022964569826606697
+      ],
+      "status": "GATE_V2_OOF_GREEN",
+      "integrity": "existing TEST untouched"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Gate-v2 cross-fitted OOF",
+      "artifact": "results/structure_gate/gate_v2_oof_result.json",
+      "sha256_16": "dab4be9e9aa625d4",
+      "dataset": "favorita",
+      "n": 1200,
+      "primary_metric": "gate vs point",
+      "effect": 0.00984018346418109,
+      "ci": [
+        0.0058772263823757545,
+        0.01393380356305197
+      ],
+      "status": "GATE_V2_OOF_GREEN",
+      "integrity": "existing TEST untouched"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Gate-v2 fresh-holdout confirmation",
+      "artifact": "results/structure_gate/fresh_confirmatory.json",
+      "sha256_16": "530adbeba430289e",
+      "dataset": "m5",
+      "n": 23513,
+      "primary_metric": "verdict",
+      "effect": null,
+      "ci": null,
+      "status": "GATE_V2_CONFIRM_GREEN",
+      "integrity": "fresh id list hashed"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Gate-v2 fresh-holdout confirmation",
+      "artifact": "results/structure_gate/fresh_confirmatory.json",
+      "sha256_16": "530adbeba430289e",
+      "dataset": "favorita",
+      "n": 50167,
+      "primary_metric": "verdict",
+      "effect": null,
+      "ci": null,
+      "status": "GATE_V2_CONFIRM_GREEN",
+      "integrity": "fresh id list hashed"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "expert diversity screen",
+      "artifact": "results/expert_diversity/expert_set_spec.json",
+      "sha256_16": "16c1e141b7ba7cff",
+      "dataset": "m5+favorita",
+      "n": null,
+      "primary_metric": "geometric convex-ceiling multiplier over the reference pair",
+      "effect": 2.1506450403482917,
+      "ci": null,
+      "status": "selection frozen before any gate was fitted",
+      "integrity": "top pair ['dlinear_point_plain', 'naive']"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "frozen Gate-v2 applied to the diverse pair",
+      "artifact": "results/expert_diversity/pair_gate_result.json",
+      "sha256_16": "b4113742b09dbc23",
+      "dataset": "m5+favorita",
+      "n": null,
+      "primary_metric": "verdict",
+      "effect": null,
+      "ci": null,
+      "status": "DIVERSE_GATE_GREEN",
+      "integrity": "gate not retuned"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "multi-dataset external benchmark (first TEST scoring)",
+      "artifact": "results/multi_benchmark/external_benchmark.json",
+      "sha256_16": "205572f91e1fde79",
+      "dataset": "freshretailnet",
+      "n": 7528,
+      "primary_metric": "proposed gate vs reference alpha",
+      "effect": -0.024279613649342183,
+      "ci": [
+        -0.027386654627180495,
+        -0.0213244263376491
+      ],
+      "status": "EXTERNAL_VALIDATION_NOT_REPLICATED",
+      "integrity": "spec frozen 2026-08-07T16:29:27, first scoring 2026-08-07T16:38:04"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "multi-dataset external benchmark (first TEST scoring)",
+      "artifact": "results/multi_benchmark/external_benchmark.json",
+      "sha256_16": "205572f91e1fde79",
+      "dataset": "uci",
+      "n": 2158,
+      "primary_metric": "proposed gate vs reference alpha",
+      "effect": 0.0013451511534162083,
+      "ci": [
+        -0.0006444646252948598,
+        0.011336725691444694
+      ],
+      "status": "no improvement over the static reference",
+      "integrity": "spec frozen 2026-08-07T16:29:27, first scoring 2026-08-07T16:38:04"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Gate-v3 2x2 parameterization x loss factorial",
+      "artifact": "results/gate_v3/aggregate_results.json",
+      "sha256_16": "329e57bf92d20191",
+      "dataset": "4 datasets",
+      "n": null,
+      "primary_metric": "factorial effects",
+      "effect": {
+        "m5": {
+          "anchor_under_regret": -0.003731730680848632,
+          "anchor_under_direct": 0.00026911399421570593,
+          "loss_under_neutral": 0.002937420512976914,
+          "loss_under_anchored": 0.006938265188041252,
+          "interaction": 0.004000844675064338
+        },
+        "favorita": {
+          "anchor_under_regret": -0.005562898230651571,
+          "anchor_under_direct": -0.0015833914704326164,
+          "loss_under_neutral": 0.0020449139820716937,
+          "loss_under_anchored": 0.006024420742290648,
+          "interaction": 0.0039795067602189545
+        },
+        "freshretailnet": {
+          "anchor_under_regret": 0.016824007188642628,
+          "anchor_under_direct": 0.003676652754361227,
+          "loss_under_neutral": 0.004782674120403448,
+          "loss_under_anchored": -0.008364680313877952,
+          "interaction": -0.0131473544342814
+        },
+        "uci": {
+          "anchor_under_regret": 0.00020668011393376595,
+          "anchor_under_direct": -0.00098504069842964,
+          "loss_under_neutral": 0.0004691447469201693,
+          "loss_under_anchored": -0.0007225760654432367,
+          "interaction": -0.001191720812363406
+        }
+      },
+      "ci": null,
+      "status": "GATE_V3_OOF_STRONG",
+      "integrity": "OOF ONLY: does not overturn the external failure"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "P0L1 expanded temporal robustness",
+      "artifact": "results/gate_p0l1_robustness/aggregate_result.json",
+      "sha256_16": "f11c659e970390e1",
+      "dataset": "m5",
+      "n": null,
+      "primary_metric": "gate vs alpha, cross-fitted aggregate",
+      "effect": 0.007742546453059535,
+      "ci": [
+        0.005858038012682482,
+        0.009656293393814902
+      ],
+      "status": "operational STRONG, interpretation B",
+      "integrity": "fold boundaries frozen before any error was computed"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "P0L1 expanded temporal robustness",
+      "artifact": "results/gate_p0l1_robustness/aggregate_result.json",
+      "sha256_16": "f11c659e970390e1",
+      "dataset": "favorita",
+      "n": null,
+      "primary_metric": "gate vs alpha, cross-fitted aggregate",
+      "effect": 0.013496907028629797,
+      "ci": [
+        -0.005687388455804754,
+        0.028567936771444397
+      ],
+      "status": "operational STRONG, interpretation B",
+      "integrity": "fold boundaries frozen before any error was computed"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "P0L1 expanded temporal robustness",
+      "artifact": "results/gate_p0l1_robustness/aggregate_result.json",
+      "sha256_16": "f11c659e970390e1",
+      "dataset": "freshretailnet",
+      "n": null,
+      "primary_metric": "gate vs alpha, cross-fitted aggregate",
+      "effect": -0.005057921239119604,
+      "ci": [
+        -0.010731885379620611,
+        0.0008526953362832989
+      ],
+      "status": "operational STRONG, interpretation B",
+      "integrity": "fold boundaries frozen before any error was computed"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "P0L1 expanded temporal robustness",
+      "artifact": "results/gate_p0l1_robustness/aggregate_result.json",
+      "sha256_16": "f11c659e970390e1",
+      "dataset": "uci",
+      "n": null,
+      "primary_metric": "gate vs alpha, cross-fitted aggregate",
+      "effect": 0.6792424716278731,
+      "ci": [
+        0.09518412977335473,
+        0.875680980173635
+      ],
+      "status": "operational STRONG, interpretation B",
+      "integrity": "fold boundaries frozen before any error was computed"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Safe-P0L1 shrinkage",
+      "artifact": "results/gate_safe_p0l1/aggregate_results.json",
+      "sha256_16": "8697eff4c9bcef04",
+      "dataset": "m5",
+      "n": null,
+      "primary_metric": "safe vs alpha",
+      "effect": 0.006072216198277734,
+      "ci": [
+        0.004599969923601245,
+        0.007546259598621745
+      ],
+      "status": "SAFE_P0L1_TEMPORAL_MIXED",
+      "integrity": "lambda fitted on strictly earlier folds only"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Safe-P0L1 shrinkage",
+      "artifact": "results/gate_safe_p0l1/aggregate_results.json",
+      "sha256_16": "8697eff4c9bcef04",
+      "dataset": "favorita",
+      "n": null,
+      "primary_metric": "safe vs alpha",
+      "effect": 0.006499972426871631,
+      "ci": [
+        -0.00883112608142328,
+        0.017189919776105407
+      ],
+      "status": "SAFE_P0L1_TEMPORAL_MIXED",
+      "integrity": "lambda fitted on strictly earlier folds only"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Safe-P0L1 shrinkage",
+      "artifact": "results/gate_safe_p0l1/aggregate_results.json",
+      "sha256_16": "8697eff4c9bcef04",
+      "dataset": "freshretailnet",
+      "n": null,
+      "primary_metric": "safe vs alpha",
+      "effect": -0.008091915375405849,
+      "ci": [
+        -0.010163584357883249,
+        -0.00569636709420249
+      ],
+      "status": "SAFE_P0L1_TEMPORAL_MIXED",
+      "integrity": "lambda fitted on strictly earlier folds only"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "Safe-P0L1 shrinkage",
+      "artifact": "results/gate_safe_p0l1/aggregate_results.json",
+      "sha256_16": "8697eff4c9bcef04",
+      "dataset": "uci",
+      "n": null,
+      "primary_metric": "safe vs alpha",
+      "effect": 0.6248832745556868,
+      "ci": [
+        0.06153211671983108,
+        0.816509540180392
+      ],
+      "status": "SAFE_P0L1_TEMPORAL_MIXED",
+      "integrity": "lambda fitted on strictly earlier folds only"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "routing information ceiling, HGB on the same features",
+      "artifact": "results/routing_information_ceiling/aggregate_results.json",
+      "sha256_16": "c121ff26aeaf0083",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "hgb vs mlp",
+      "effect": 0.0028570954140435586,
+      "ci": [
+        -0.0005470803153721993,
+        0.006716281396650572
+      ],
+      "status": "CURRENT_FEATURE_INFORMATION_LIMITED",
+      "integrity": "quadratic identity 5.7e-14, identical validation rows"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "routing information ceiling, HGB on the same features",
+      "artifact": "results/routing_information_ceiling/aggregate_results.json",
+      "sha256_16": "c121ff26aeaf0083",
+      "dataset": "favorita",
+      "n": 1200,
+      "primary_metric": "hgb vs mlp",
+      "effect": -0.006188518604328232,
+      "ci": [
+        -0.026490768046257746,
+        0.009220738875307416
+      ],
+      "status": "CURRENT_FEATURE_INFORMATION_LIMITED",
+      "integrity": "quadratic identity 5.7e-14, identical validation rows"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "routing information ceiling, HGB on the same features",
+      "artifact": "results/routing_information_ceiling/aggregate_results.json",
+      "sha256_16": "c121ff26aeaf0083",
+      "dataset": "freshretailnet",
+      "n": 7528,
+      "primary_metric": "hgb vs mlp",
+      "effect": -0.007986622580949945,
+      "ci": [
+        -0.01973243280211793,
+        0.002288918841573428
+      ],
+      "status": "CURRENT_FEATURE_INFORMATION_LIMITED",
+      "integrity": "quadratic identity 5.7e-14, identical validation rows"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "routing information ceiling, HGB on the same features",
+      "artifact": "results/routing_information_ceiling/aggregate_results.json",
+      "sha256_16": "c121ff26aeaf0083",
+      "dataset": "uci",
+      "n": 2158,
+      "primary_metric": "hgb vs mlp",
+      "effect": -0.06935071568667349,
+      "ci": [
+        -0.17949846138978845,
+        -0.00867274804324305
+      ],
+      "status": "CURRENT_FEATURE_INFORMATION_LIMITED",
+      "integrity": "quadratic identity 5.7e-14, identical validation rows"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "raw-history GRU sequence gate",
+      "artifact": "results/temporal_routing_encoder/aggregate_results.json",
+      "sha256_16": "dc5df60599bc8a17",
+      "dataset": "m5",
+      "n": 1200,
+      "primary_metric": "sequence gate vs P0L1",
+      "effect": -0.002195512866543176,
+      "ci": [
+        -0.003679430723863718,
+        -0.0007765960384388616
+      ],
+      "status": "SEQUENCE_ROUTING_RED",
+      "integrity": "P0L1 aggregate reproduced to the digit on all four datasets"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "raw-history GRU sequence gate",
+      "artifact": "results/temporal_routing_encoder/aggregate_results.json",
+      "sha256_16": "dc5df60599bc8a17",
+      "dataset": "favorita",
+      "n": 1200,
+      "primary_metric": "sequence gate vs P0L1",
+      "effect": 0.0006794058740402664,
+      "ci": [
+        -0.002818062676819253,
+        0.004171944621916129
+      ],
+      "status": "SEQUENCE_ROUTING_RED",
+      "integrity": "P0L1 aggregate reproduced to the digit on all four datasets"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "raw-history GRU sequence gate",
+      "artifact": "results/temporal_routing_encoder/aggregate_results.json",
+      "sha256_16": "dc5df60599bc8a17",
+      "dataset": "freshretailnet",
+      "n": 7528,
+      "primary_metric": "sequence gate vs P0L1",
+      "effect": 0.031377340257696555,
+      "ci": [
+        0.02556880953006714,
+        0.037304972015692134
+      ],
+      "status": "SEQUENCE_ROUTING_RED",
+      "integrity": "P0L1 aggregate reproduced to the digit on all four datasets"
+    },
+    {
+      "area": "G_routing",
+      "experiment": "raw-history GRU sequence gate",
+      "artifact": "results/temporal_routing_encoder/aggregate_results.json",
+      "sha256_16": "dc5df60599bc8a17",
+      "dataset": "uci",
+      "n": 2158,
+      "primary_metric": "sequence gate vs P0L1",
+      "effect": -8.162704088984247,
+      "ci": [
+        -28.374441643131025,
+        -0.021607534616364037
+      ],
+      "status": "SEQUENCE_ROUTING_RED",
+      "integrity": "P0L1 aggregate reproduced to the digit on all four datasets"
+    }
+  ]
+}

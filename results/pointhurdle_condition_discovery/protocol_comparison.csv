@@ -1,0 +1,14 @@
+item,point,hurdle,agreement
+target,realized y on the test window,realized y on the test window,match
+input variables,same lookback window,same lookback window,match
+lookback,96,96,match
+horizon,28,28,match
+split m5,train_end 1829 / val_end 1857,train_end 1829 / val_end 1857,match
+split favorita,train_end 1576 / val_end 1604,train_end 1576 / val_end 1604,match
+backbone,DLinear (M0PM_point_mse_param_matched),DLinear (M1_factorized_mean),match
+training budget,"om_factorization_killtest.train.train_one, imported unchanged","same trainer, imported unchanged",match
+seed,canonical_model_seed 0,canonical_model_seed 0,match
+primary loss,MSE on y,"factorized objective (p, mu heads)",DIFFERS BY DESIGN
+evaluation metric,RMSE vs realized y,RMSE vs realized y,match
+test origins m5,1857 / 1885 / 1913,1857 / 1885 / 1913,match
+test origins favorita,1604 / 1632 / 1660,1604 / 1632 / 1660,match

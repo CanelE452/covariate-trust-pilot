@@ -1,0 +1,91 @@
+train,test,origin,policy,family,loss,global_loss,family_oracle,rel_improve_pct,capture_pct
+m5,favorita,1604,P0 always Point,hard,2.530712,2.4704819,2.3893995,-2.4379866,-74.28253
+m5,favorita,1632,P0 always Point,hard,2.3679256,2.2912107,2.2143667,-3.3482296,-99.832146
+m5,favorita,1660,P0 always Point,hard,2.5560174,2.4673715,2.3952215,-3.5927277,-122.8634
+m5,favorita,1604,P1 always Hurdle,hard,2.4704819,2.4704819,2.3893995,0.0,0.0
+m5,favorita,1632,P1 always Hurdle,hard,2.2912107,2.2912107,2.2143667,0.0,0.0
+m5,favorita,1660,P1 always Hurdle,hard,2.4673715,2.4673715,2.3952215,0.0,0.0
+m5,favorita,1604,P2 train-domain global choice,hard,2.4704819,2.4704819,2.3893995,0.0,0.0
+m5,favorita,1632,P2 train-domain global choice,hard,2.2912107,2.2912107,2.2143667,0.0,0.0
+m5,favorita,1660,P2 train-domain global choice,hard,2.4673715,2.4673715,2.3952215,0.0,0.0
+m5,favorita,1604,P3 50:50 average,convex,2.4751043,2.4704819,2.3846729,-0.18710761,-5.386917
+m5,favorita,1632,P3 50:50 average,convex,2.302455,2.2912107,2.2093346,-0.49075788,-13.733318
+m5,favorita,1660,P3 50:50 average,convex,2.4858313,2.4673715,2.3905282,-0.74815637,-24.022661
+m5,favorita,1604,P4 train-domain convex w=0.60,convex,2.4700432,2.4704819,2.3846729,0.017757272,0.51124036
+m5,favorita,1632,P4 train-domain convex w=0.60,convex,2.295792,2.2912107,2.2093346,-0.19995767,-5.595595
+m5,favorita,1660,P4 train-domain convex w=0.60,convex,2.4779093,2.4673715,2.3905282,-0.42708862,-13.71345
+m5,favorita,1604,D1 discounted selector g=0.5,hard,2.4704819,2.4704819,2.3893995,0.0,0.0
+m5,favorita,1632,D1 discounted selector g=0.5,hard,2.2836258,2.2912107,2.2143667,0.3310394,9.870403
+m5,favorita,1660,D1 discounted selector g=0.5,hard,2.4704459,2.4673715,2.3952215,-0.12460254,-4.2611337
+m5,favorita,1604,D1 discounted selector g=0.9,hard,2.4704819,2.4704819,2.3893995,0.0,0.0
+m5,favorita,1632,D1 discounted selector g=0.9,hard,2.2836258,2.2912107,2.2143667,0.3310394,9.870403
+m5,favorita,1660,D1 discounted selector g=0.9,hard,2.4739966,2.4673715,2.3952215,-0.26851147,-9.182504
+m5,favorita,1604,D3 expw eta=2.0 norm=raw,convex,2.4700432,2.4704819,2.3846729,0.017757272,0.51124036
+m5,favorita,1632,D3 expw eta=2.0 norm=raw,convex,2.2765427,2.2912107,2.2093346,0.64018506,17.914873
+m5,favorita,1660,D3 expw eta=2.0 norm=raw,convex,2.465723,2.4673715,2.3905282,0.06680899,2.1451797
+m5,favorita,1604,D3 expw eta=8.0 norm=raw,convex,2.4700432,2.4704819,2.3846729,0.017757272,0.51124036
+m5,favorita,1632,D3 expw eta=8.0 norm=raw,convex,2.2722573,2.2912107,2.2093346,0.8272187,23.148804
+m5,favorita,1660,D3 expw eta=8.0 norm=raw,convex,2.4609265,2.4673715,2.3905282,0.26120636,8.387113
+m5,favorita,1604,D3 expw eta=2.0 norm=per_series_scale,convex,2.4700432,2.4704819,2.3846729,0.017757272,0.51124036
+m5,favorita,1632,D3 expw eta=2.0 norm=per_series_scale,convex,2.2811518,2.2912107,2.2093346,0.4390203,12.285499
+m5,favorita,1660,D3 expw eta=2.0 norm=per_series_scale,convex,2.4672046,2.4673715,2.3905282,0.006764,0.21718626
+m5,favorita,1604,D3 expw eta=8.0 norm=per_series_scale,convex,2.4700432,2.4704819,2.3846729,0.017757272,0.51124036
+m5,favorita,1632,D3 expw eta=8.0 norm=per_series_scale,convex,2.2665098,2.2912107,2.2093346,1.0780711,30.16863
+m5,favorita,1660,D3 expw eta=8.0 norm=per_series_scale,convex,2.4538362,2.4673715,2.3905282,0.54857004,17.614117
+m5,favorita,1604,D3 expw eta=2.0 norm=per_origin_scale,convex,2.4700432,2.4704819,2.3846729,0.017757272,0.51124036
+m5,favorita,1632,D3 expw eta=2.0 norm=per_origin_scale,convex,2.2851396,2.2912107,2.2093346,0.26497304,7.4149785
+m5,favorita,1660,D3 expw eta=2.0 norm=per_origin_scale,convex,2.472986,2.4673715,2.3905282,-0.22755063,-7.306456
+m5,favorita,1604,D3 expw eta=8.0 norm=per_origin_scale,convex,2.4700432,2.4704819,2.3846729,0.017757272,0.51124036
+m5,favorita,1632,D3 expw eta=8.0 norm=per_origin_scale,convex,2.2735715,2.2912107,2.2093346,0.769862,21.54374
+m5,favorita,1660,D3 expw eta=8.0 norm=per_origin_scale,convex,2.4625692,2.4673715,2.3905282,0.19462927,6.2493796
+m5,favorita,1604,ORACLE hard origin,hard,2.3893995,2.4704819,2.3893995,3.2820456,100.0
+m5,favorita,1632,ORACLE hard origin,hard,2.2143667,2.2912107,2.2143667,3.3538592,100.0
+m5,favorita,1660,ORACLE hard origin,hard,2.3952215,2.4673715,2.3952215,2.924164,100.0
+m5,favorita,1604,ORACLE convex origin,convex,2.3846729,2.4704819,2.3846729,3.4733706,100.0
+m5,favorita,1632,ORACLE convex origin,convex,2.2093346,2.2912107,2.2093346,3.5734837,100.0
+m5,favorita,1660,ORACLE convex origin,convex,2.3905282,2.4673715,2.3905282,3.1143775,100.0
+favorita,m5,1857,P0 always Point,hard,1.669232,1.6655083,1.6148756,-0.22357982,-7.3544164
+favorita,m5,1885,P0 always Point,hard,1.6226783,1.6042769,1.5632385,-1.1470205,-44.839436
+favorita,m5,1913,P0 always Point,hard,1.6560551,1.6524235,1.6060568,-0.21977367,-7.832329
+favorita,m5,1857,P1 always Hurdle,hard,1.6655083,1.6655083,1.6148756,0.0,0.0
+favorita,m5,1885,P1 always Hurdle,hard,1.6042769,1.6042769,1.5632385,0.0,0.0
+favorita,m5,1913,P1 always Hurdle,hard,1.6524235,1.6524235,1.6060568,0.0,0.0
+favorita,m5,1857,P2 train-domain global choice,hard,1.6655083,1.6655083,1.6148756,0.0,0.0
+favorita,m5,1885,P2 train-domain global choice,hard,1.6042769,1.6042769,1.5632385,0.0,0.0
+favorita,m5,1913,P2 train-domain global choice,hard,1.6524235,1.6524235,1.6060568,0.0,0.0
+favorita,m5,1857,P3 50:50 average,convex,1.654612,1.6655083,1.6129396,0.65423423,20.72779
+favorita,m5,1885,P3 50:50 average,convex,1.5993909,1.6042769,1.5602318,0.30456284,11.093248
+favorita,m5,1913,P3 50:50 average,convex,1.6405784,1.6524235,1.603894,0.7168327,24.408062
+favorita,m5,1857,P4 train-domain convex w=0.85,convex,1.6595494,1.6655083,1.6129396,0.35778356,11.335486
+favorita,m5,1885,P4 train-domain convex w=0.85,convex,1.5997763,1.6042769,1.5602318,0.28053933,10.218227
+favorita,m5,1913,P4 train-domain convex w=0.85,convex,1.6460037,1.6524235,1.603894,0.3885068,13.228607
+favorita,m5,1857,D1 discounted selector g=0.5,hard,1.6655083,1.6655083,1.6148756,0.0,0.0
+favorita,m5,1885,D1 discounted selector g=0.5,hard,1.6067309,1.6042769,1.5632385,-0.15296876,-5.9798694
+favorita,m5,1913,D1 discounted selector g=0.5,hard,1.6500826,1.6524235,1.6060568,0.14166543,5.048695
+favorita,m5,1857,D1 discounted selector g=0.9,hard,1.6655083,1.6655083,1.6148756,0.0,0.0
+favorita,m5,1885,D1 discounted selector g=0.9,hard,1.6067309,1.6042769,1.5632385,-0.15296876,-5.9798694
+favorita,m5,1913,D1 discounted selector g=0.9,hard,1.6476735,1.6524235,1.6060568,0.28745738,10.2444515
+favorita,m5,1857,D3 expw eta=2.0 norm=raw,convex,1.6595494,1.6655083,1.6129396,0.35778356,11.335486
+favorita,m5,1885,D3 expw eta=2.0 norm=raw,convex,1.5994867,1.6042769,1.5602318,0.29858854,10.875643
+favorita,m5,1913,D3 expw eta=2.0 norm=raw,convex,1.6398079,1.6524235,1.603894,0.76345813,25.995651
+favorita,m5,1857,D3 expw eta=8.0 norm=raw,convex,1.6595494,1.6655083,1.6129396,0.35778356,11.335486
+favorita,m5,1885,D3 expw eta=8.0 norm=raw,convex,1.5997797,1.6042769,1.5602318,0.28032383,10.210379
+favorita,m5,1913,D3 expw eta=8.0 norm=raw,convex,1.6406277,1.6524235,1.603894,0.713846,24.306366
+favorita,m5,1857,D3 expw eta=2.0 norm=per_series_scale,convex,1.6595494,1.6655083,1.6129396,0.35778356,11.335486
+favorita,m5,1885,D3 expw eta=2.0 norm=per_series_scale,convex,1.5970657,1.6042769,1.5602318,0.44949898,16.372332
+favorita,m5,1913,D3 expw eta=2.0 norm=per_series_scale,convex,1.6399742,1.6524235,1.603894,0.7533943,25.65298
+favorita,m5,1857,D3 expw eta=8.0 norm=per_series_scale,convex,1.6595494,1.6655083,1.6129396,0.35778356,11.335486
+favorita,m5,1885,D3 expw eta=8.0 norm=per_series_scale,convex,1.5961274,1.6042769,1.5602318,0.5079862,18.50264
+favorita,m5,1913,D3 expw eta=8.0 norm=per_series_scale,convex,1.6390529,1.6524235,1.603894,0.8091529,27.551554
+favorita,m5,1857,D3 expw eta=2.0 norm=per_origin_scale,convex,1.6595494,1.6655083,1.6129396,0.35778356,11.335486
+favorita,m5,1885,D3 expw eta=2.0 norm=per_origin_scale,convex,1.5996324,1.6042769,1.5602318,0.2895082,10.544906
+favorita,m5,1913,D3 expw eta=2.0 norm=per_origin_scale,convex,1.6398592,1.6524235,1.603894,0.760356,25.890026
+favorita,m5,1857,D3 expw eta=8.0 norm=per_origin_scale,convex,1.6595494,1.6655083,1.6129396,0.35778356,11.335486
+favorita,m5,1885,D3 expw eta=8.0 norm=per_origin_scale,convex,1.5994749,1.6042769,1.5602318,0.29932418,10.902438
+favorita,m5,1913,D3 expw eta=8.0 norm=per_origin_scale,convex,1.6401886,1.6524235,1.603894,0.74042314,25.211315
+favorita,m5,1857,ORACLE hard origin,hard,1.6148756,1.6655083,1.6148756,3.0400758,100.0
+favorita,m5,1885,ORACLE hard origin,hard,1.5632385,1.6042769,1.5632385,2.5580618,100.0
+favorita,m5,1913,ORACLE hard origin,hard,1.6060568,1.6524235,1.6060568,2.8059812,100.0
+favorita,m5,1857,ORACLE convex origin,convex,1.6129396,1.6655083,1.6129396,3.1563141,100.0
+favorita,m5,1885,ORACLE convex origin,convex,1.5602318,1.6042769,1.5602318,2.7454793,100.0
+favorita,m5,1913,ORACLE convex origin,convex,1.603894,1.6524235,1.603894,2.9368684,100.0

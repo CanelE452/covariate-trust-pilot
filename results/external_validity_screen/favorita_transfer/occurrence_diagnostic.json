@@ -1,0 +1,30 @@
+{
+  "candidate": {
+    "n_observations": 1512,
+    "prevalence": 0.6858465608465608,
+    "brier_hurdle": 0.16824551854144212,
+    "brier_constant": 0.21153603066726773,
+    "brier_skill_score": 0.20464840901699022,
+    "roc_auc": 0.780825255037304,
+    "pr_auc": 0.872812986898536,
+    "log_loss_hurdle": 0.5191241516847173,
+    "log_loss_constant": 0.6144808016793919,
+    "mean_p_hat_on_zero": 0.5417763952518764,
+    "mean_p_hat_on_positive": 0.7714259790161422,
+    "p_hat_separation": 0.2296495837642658
+  },
+  "control": {
+    "n_observations": 9828,
+    "prevalence": 0.5163817663817664,
+    "brier_hurdle": 0.19903185934269502,
+    "brier_constant": 0.22557683641839918,
+    "brier_skill_score": 0.11767598791246736,
+    "roc_auc": 0.7692845483122406,
+    "pr_auc": 0.738259924314739,
+    "log_loss_hurdle": 0.6084897315912431,
+    "log_loss_constant": 0.6470740755331288,
+    "mean_p_hat_on_zero": 0.47233276802465685,
+    "mean_p_hat_on_positive": 0.6792730111353503,
+    "p_hat_separation": 0.20694024311069348
+  }
+}

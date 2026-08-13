@@ -1,0 +1,39 @@
+{
+  "verdict": "FAVORITA_STAGE_A_REPRODUCED",
+  "tolerance": {
+    "mean_rmse_relative": 0.02,
+    "point_win_pct_absolute": 5.0,
+    "per_series_delta_spearman_min": 0.8,
+    "fixed_before_running": true
+  },
+  "checks": {
+    "rmse_point_relative": 1.0008756451159638e-09,
+    "rmse_hurdle_relative": 4.548364675879703e-09,
+    "point_win_pct_absolute": 0.0,
+    "per_series_delta_spearman": 0.9999942707940445
+  },
+  "stage_a_reference": {
+    "rmse_point": 5.112363668536022,
+    "rmse_hurdle": 5.144335030274701,
+    "mae_point": 3.3017429875855844,
+    "mae_hurdle": 3.166043945816119,
+    "mean_delta": -0.03197136173867907,
+    "median_delta": -0.0028089434525544466,
+    "hurdle_win_pct": 49.25,
+    "point_win_pct": 50.74999999999999
+  },
+  "reproduction": {
+    "rmse_point": 5.112363673652863,
+    "rmse_hurdle": 5.144335006876389,
+    "mae_point": 3.3017430108586403,
+    "mae_hurdle": 3.166043935957903,
+    "mean_delta": -0.03197133322352563,
+    "point_win_pct": 50.74999999999999
+  },
+  "n_series": 1200,
+  "device": "cuda",
+  "torch": "2.13.0+cu126",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "reproduced_at_utc": "2026-08-07T12:50:45.397749+00:00",
+  "git_commit": "12b35d2a220bfd2f1819802138932f97ecd6a365"
+}

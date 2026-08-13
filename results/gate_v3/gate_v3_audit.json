@@ -1,0 +1,44 @@
+{
+  "built_at_utc": "2026-08-07T17:21:40.410948+00:00",
+  "expert_pair": [
+    "dlinear_point_plain",
+    "naive"
+  ],
+  "test_used": false,
+  "existing_test_scored": false,
+  "reused_without_retraining": [
+    "m5",
+    "favorita"
+  ],
+  "datasets": {
+    "m5": {
+      "n_origins": 10776,
+      "n_folds": 3,
+      "n_series": 1200,
+      "flat_share": 0.0,
+      "source": "reused Gate-v2 OOF"
+    },
+    "favorita": {
+      "n_origins": 10800,
+      "n_folds": 3,
+      "n_series": 1200,
+      "flat_share": 0.0,
+      "source": "reused Gate-v2 OOF"
+    },
+    "freshretailnet": {
+      "n_origins": 65599,
+      "n_folds": 3,
+      "n_series": 7528,
+      "flat_share": 0.0,
+      "source": "generated in train region"
+    },
+    "uci": {
+      "n_origins": 19004,
+      "n_folds": 3,
+      "n_series": 2158,
+      "flat_share": 0.0,
+      "source": "generated in train region"
+    }
+  },
+  "git_commit": "056a52461ec55a9a57143a6caf881569419eeb30"
+}

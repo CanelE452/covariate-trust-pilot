@@ -1,0 +1,139 @@
+{
+  "built_at_utc": "2026-08-07T13:45:03.406060+00:00",
+  "n_folds": 3,
+  "origins_per_fold": 3,
+  "model_seed": 0,
+  "device": "cuda",
+  "training": {
+    "max_epochs": 30,
+    "patience": 5,
+    "batch_size": 256,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "checkpoint_rule": "validation MSE of the final mean prediction, identical for every DLinear variant",
+    "lambda_factorized": 1.0,
+    "hyperparameter_rule": "no per-cell tuning; one setting for every cell and every model; TSB alpha/beta chosen on a fixed grid using the validation split only"
+  },
+  "loss": "per-origin horizon MSE divided by the fold's own train_scale squared; masked steps excluded",
+  "test_used": false,
+  "datasets": {
+    "m5": {
+      "train_end": 1829,
+      "val_end": 1857,
+      "lookback": 96,
+      "horizon": 28,
+      "n_series": 1200,
+      "folds": [
+        {
+          "cutoff": 1493,
+          "val_end": 1521,
+          "oof_end": 1605,
+          "origins": [
+            1521,
+            1549,
+            1577
+          ],
+          "n_origins": 3,
+          "point_train_seconds": 48.11365723609924,
+          "point_n_parameters": 7056,
+          "hurdle_train_seconds": 93.85493683815002,
+          "hurdle_n_parameters": 7056
+        },
+        {
+          "cutoff": 1605,
+          "val_end": 1633,
+          "oof_end": 1717,
+          "origins": [
+            1633,
+            1661,
+            1689
+          ],
+          "n_origins": 3,
+          "point_train_seconds": 62.64049696922302,
+          "point_n_parameters": 7056,
+          "hurdle_train_seconds": 76.70495986938477,
+          "hurdle_n_parameters": 7056
+        },
+        {
+          "cutoff": 1717,
+          "val_end": 1745,
+          "oof_end": 1829,
+          "origins": [
+            1745,
+            1773,
+            1801
+          ],
+          "n_origins": 3,
+          "point_train_seconds": 82.87672686576843,
+          "point_n_parameters": 7056,
+          "hurdle_train_seconds": 121.31777262687683,
+          "hurdle_n_parameters": 7056
+        }
+      ],
+      "max_oof_target_day": 1829,
+      "strictly_inside_train": true,
+      "n_oof_rows": 10776,
+      "series_id_sha256": "c73bb7506b56c76b7fbebdf67a20e0e08f48894976da7a05adfad749bba9334e"
+    },
+    "favorita": {
+      "train_end": 1576,
+      "val_end": 1604,
+      "lookback": 96,
+      "horizon": 28,
+      "n_series": 1200,
+      "folds": [
+        {
+          "cutoff": 1240,
+          "val_end": 1268,
+          "oof_end": 1352,
+          "origins": [
+            1268,
+            1296,
+            1324
+          ],
+          "n_origins": 3,
+          "point_train_seconds": 42.2290472984314,
+          "point_n_parameters": 7056,
+          "hurdle_train_seconds": 46.51586198806763,
+          "hurdle_n_parameters": 7056
+        },
+        {
+          "cutoff": 1352,
+          "val_end": 1380,
+          "oof_end": 1464,
+          "origins": [
+            1380,
+            1408,
+            1436
+          ],
+          "n_origins": 3,
+          "point_train_seconds": 62.971277952194214,
+          "point_n_parameters": 7056,
+          "hurdle_train_seconds": 85.67836356163025,
+          "hurdle_n_parameters": 7056
+        },
+        {
+          "cutoff": 1464,
+          "val_end": 1492,
+          "oof_end": 1576,
+          "origins": [
+            1492,
+            1520,
+            1548
+          ],
+          "n_origins": 3,
+          "point_train_seconds": 73.02336573600769,
+          "point_n_parameters": 7056,
+          "hurdle_train_seconds": 81.17452430725098,
+          "hurdle_n_parameters": 7056
+        }
+      ],
+      "max_oof_target_day": 1576,
+      "strictly_inside_train": true,
+      "n_oof_rows": 10800,
+      "series_id_sha256": "5f6463c3e56ce60ea518c42f7d80df109fe92898542d57f8be126a207b33b5cf"
+    }
+  },
+  "git_commit": "403841f16c3329e5328e1c35479f5d1f746aee5b"
+}

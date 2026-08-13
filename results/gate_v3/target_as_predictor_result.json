@@ -1,0 +1,38 @@
+{
+  "m5": {
+    "E_q": 0.9653916434043194,
+    "E_alpha": 1.026810139338467,
+    "E_gstar": 0.948345989772829,
+    "alpha_used": 0.0,
+    "q_worse_than_alpha": false,
+    "q_vs_alpha_relative": -0.05981485143272651,
+    "note": "q is computed from the true OOF regret, so it is an upper bound on what a regret-BCE gate could learn, not a deployable predictor"
+  },
+  "favorita": {
+    "E_q": 2.3098414527546014,
+    "E_alpha": 2.4356633457254935,
+    "E_gstar": 2.2944905786821472,
+    "alpha_used": 0.15000000000000002,
+    "q_worse_than_alpha": false,
+    "q_vs_alpha_relative": -0.051658162525500595,
+    "note": "q is computed from the true OOF regret, so it is an upper bound on what a regret-BCE gate could learn, not a deployable predictor"
+  },
+  "freshretailnet": {
+    "E_q": 0.34132548622948694,
+    "E_alpha": 0.40012336464729403,
+    "E_gstar": 0.3330809097747768,
+    "alpha_used": 0.1,
+    "q_worse_than_alpha": false,
+    "q_vs_alpha_relative": -0.14694937514992912,
+    "note": "q is computed from the true OOF regret, so it is an upper bound on what a regret-BCE gate could learn, not a deployable predictor"
+  },
+  "uci": {
+    "E_q": 85.11468784251728,
+    "E_alpha": 115.2006154364995,
+    "E_gstar": 84.0336168260466,
+    "alpha_used": 0.9500000000000001,
+    "q_worse_than_alpha": false,
+    "q_vs_alpha_relative": -0.2611611707106381,
+    "note": "q is computed from the true OOF regret, so it is an upper bound on what a regret-BCE gate could learn, not a deployable predictor"
+  }
+}

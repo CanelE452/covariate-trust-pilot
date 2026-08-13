@@ -1,0 +1,5 @@
+dataset,family,train_domain_global,heldout_static_best,series_oracle,origin_oracle,w_train_domain,w_heldout_best,H_total_pct,H_static_pct,H_dynamic_pct,static_recoverability_ratio
+favorita,hard_selection,2.4096882,2.4096882,2.3623748,2.3329961,,,3.1826568,1.9634677,1.2191889,0.61692727
+favorita,convex_combination,2.4145815,2.407511,2.355938,2.3281784,0.6,0.85,3.5783894,2.4287264,1.1496631,0.67872053
+m5,hard_selection,1.6407361,1.6407361,1.6129117,1.5947236,,,2.8043828,1.6958487,1.1085341,0.6047137
+m5,convex_combination,1.6351098,1.6311854,1.6096307,1.5923551,0.85,0.6,2.6147878,1.5582488,1.0565389,0.59593695

@@ -1,0 +1,46 @@
+{
+  "name": "ROUTING_INFORMATION_CEILING_DIAGNOSTIC_V1",
+  "purpose": "separate H_CAPACITY from H_INFORMATION by changing only the routing function approximator",
+  "m0": "frozen P0L1 small MLP (hidden 16, neutral sigmoid, direct mixture MSE)",
+  "m1": "sklearn HistGradientBoostingRegressor, single fixed config",
+  "m1_is_not_a_proposed_model": true,
+  "hgb_config": {
+    "loss": "squared_error",
+    "learning_rate": 0.05,
+    "max_iter": 200,
+    "max_leaf_nodes": 31,
+    "min_samples_leaf": 20,
+    "l2_regularization": 1.0,
+    "early_stopping": false,
+    "random_state": 0
+  },
+  "hgb_rationale": "single fixed diagnostic configuration; no grid, no random search, no comparison against other learners; chosen for flexibility relative to the frozen small MLP, not for optimality",
+  "objective": "direct normalized mixture MSE, expressed exactly as weighted least squares: target u = num/den, sample_weight = den/n, prediction clipped to [0,1] afterwards rather than the target being clipped",
+  "flat_threshold": 1e-08,
+  "flat_policy": "excluded_from_fitting_kept_in_evaluation",
+  "warn_single_fold_dominance": {
+    "definition": "per dataset, contribution of fold k is the summed origin-level gain sum_j (E_alpha_j - E_HGB_j) over that fold's validation origins; the dataset total is the sum over folds.  WARN when the total is positive and the largest single fold contributes more than the threshold share.",
+    "threshold_share": 0.7
+  },
+  "warn_hgb_tail_risk": {
+    "definition": "per-series degradation against alpha, positive meaning worse than alpha.  WARN when the HGB p95 degradation is both above the absolute floor and worse than the MLP p95 by more than the ratio.",
+    "absolute_floor": 0.05,
+    "ratio_over_mlp": 1.5
+  },
+  "diagnosis_rule": {
+    "capacity_min_datasets_hgb_beats_mlp": 3,
+    "capacity_min_datasets_recovery_up": 3,
+    "train_fit_clearly_better": 0.1,
+    "train_fit_min_datasets": 3,
+    "small_validation_gain": 0.005,
+    "small_recovery_increase": 0.05,
+    "nonstationary_fold_reversal": 0.02
+  },
+  "preidentified_collapse_fold": {
+    "uci": 2,
+    "identified_from": "results/gate_p0l1_robustness (largest E_alpha); recorded before this run"
+  },
+  "test_used": false,
+  "new_dataset_used": false,
+  "spec_sha256": "3ff50036e944ef98df6677bd51573c0395ab9df4ea735631c6de78bf5d93057b"
+}

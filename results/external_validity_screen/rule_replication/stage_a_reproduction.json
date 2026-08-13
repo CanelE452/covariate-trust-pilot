@@ -1,0 +1,42 @@
+{
+  "verdict": "STAGE_A_REPRODUCED",
+  "tolerance": {
+    "mean_rmse_relative": 0.02,
+    "point_win_pct_absolute": 5.0,
+    "per_series_delta_spearman_min": 0.8,
+    "fixed_before_running": true
+  },
+  "checks": {
+    "rmse_point_relative": 2.1511926065754753e-09,
+    "rmse_hurdle_relative": 1.6802464462340437e-09,
+    "point_win_pct_absolute": 0.0,
+    "per_series_delta_spearman": 1.0
+  },
+  "stage_a_reference": {
+    "rmse_point": 2.9208829537843957,
+    "rmse_hurdle": 2.9215441431525333,
+    "mae_point": 2.2890128477494027,
+    "mae_hurdle": 2.179681494173664,
+    "mean_delta": -0.0006611893681368179,
+    "median_delta": -0.007317808934420356,
+    "hurdle_win_pct": 47.16666666666667,
+    "point_win_pct": 52.83333333333333
+  },
+  "reproduction": {
+    "rmse_point": 2.9208829600677775,
+    "rmse_hurdle": 2.9215441480614475,
+    "mae_point": 2.2890128648062,
+    "mae_hurdle": 2.1796814984423736,
+    "mean_delta": -0.0006611879936696252,
+    "median_delta": -0.007317792616959751,
+    "point_win_pct": 52.83333333333333
+  },
+  "n_series": 1200,
+  "device": "cuda",
+  "torch": "2.13.0+cu126",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "stage_a_torch": "2.5.1+cu121",
+  "stage_a_platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "reproduced_at_utc": "2026-08-07T12:01:22.553953+00:00",
+  "git_commit": "5dc21ac4531b10d29f12db771897faa18e8ef83f"
+}

@@ -1,0 +1,755 @@
+{
+  "analysis": "classical intermittent-demand benchmark, Stage A populations",
+  "not_evidence_for": [
+    "H1",
+    "H2"
+  ],
+  "population": "each dataset's Stage A 1200 series, same test origins as Stage A",
+  "learned_seed": 0,
+  "seed_note": "canonical seed only; the M5 3-seed result is a separate table",
+  "implementation_audit": {
+    "hand_check": {
+      "passed": true,
+      "checks": {
+        "z": {
+          "expected": 3.25,
+          "got": 3.25,
+          "ok": "True"
+        },
+        "x": {
+          "expected": 2.75,
+          "got": 2.75,
+          "ok": true
+        },
+        "croston": {
+          "expected": 1.1818181818181819,
+          "got": 1.1818181818181819,
+          "ok": "True"
+        },
+        "sba": {
+          "expected": 0.8863636363636364,
+          "got": 0.8863636363636364,
+          "ok": "True"
+        },
+        "sba_is_scaled_croston": {
+          "expected": 0.75,
+          "got": 0.75,
+          "ok": "True"
+        },
+        "flat_over_horizon": {
+          "expected": true,
+          "got": true,
+          "ok": true
+        },
+        "empty_window_is_zero": {
+          "expected": 0.0,
+          "got": 0.0,
+          "ok": "True"
+        }
+      }
+    },
+    "reused_from_repository": {
+      "tsb": "om_factorization_killtest.models.tsb_state / tsb_forecast",
+      "seasonal_naive": "om_factorization_killtest.models.seasonal_naive",
+      "tsb_grid": {
+        "alpha": [
+          0.05,
+          0.1,
+          0.2,
+          0.3
+        ],
+        "beta": [
+          0.05,
+          0.1,
+          0.2,
+          0.3
+        ]
+      }
+    },
+    "implemented_here": {
+      "croston": "SES on demand size and interval, forecast z/x",
+      "sba": "Croston scaled by 1 - alpha/2",
+      "ses": "SES on the raw series",
+      "naive": "last observed value"
+    },
+    "packages_available": {
+      "statsforecast": false,
+      "sktime": false,
+      "darts": false
+    },
+    "iets": "IETS_NOT_AVAILABLE -- no verified implementation in the repository or the environment; not written from scratch",
+    "alpha_grid": [
+      0.05,
+      0.1,
+      0.2,
+      0.3
+    ],
+    "tuning": "validation split only; test never used for selection"
+  },
+  "datasets": {
+    "m5": {
+      "dataset": "m5",
+      "n_series": 1200,
+      "test_origins": [
+        1857,
+        1885,
+        1913
+      ],
+      "horizon": 28,
+      "lookback": 96,
+      "table": [
+        {
+          "method": "tsb",
+          "overall_rmse": 3.8921805588167144,
+          "overall_mae": 2.146883358600009,
+          "mean_per_series_rmse": 2.8381998343825288,
+          "median_per_series_rmse": 2.0936959070404617,
+          "mean_per_series_mae": 2.1468833586000087,
+          "mean_rank": 3.410833333333333,
+          "win_pct": 22.583333333333332
+        },
+        {
+          "method": "ses",
+          "overall_rmse": 3.906591656485427,
+          "overall_mae": 2.159567743333423,
+          "mean_per_series_rmse": 2.8449360664521715,
+          "median_per_series_rmse": 2.104910180462747,
+          "mean_per_series_mae": 2.159567743333423,
+          "mean_rank": 3.4829166666666667,
+          "win_pct": 11.0
+        },
+        {
+          "method": "sba",
+          "overall_rmse": 3.951422287208629,
+          "overall_mae": 2.2139525693933724,
+          "mean_per_series_rmse": 2.8730002893082807,
+          "median_per_series_rmse": 2.1116861792975525,
+          "mean_per_series_mae": 2.213952569393372,
+          "mean_rank": 3.151666666666667,
+          "win_pct": 19.0
+        },
+        {
+          "method": "croston",
+          "overall_rmse": 3.98801651060182,
+          "overall_mae": 2.2528761376338244,
+          "mean_per_series_rmse": 2.8904296526433435,
+          "median_per_series_rmse": 2.113514640177773,
+          "mean_per_series_mae": 2.2528761376338236,
+          "mean_rank": 3.2595833333333335,
+          "win_pct": 11.833333333333334
+        },
+        {
+          "method": "dlinear_point",
+          "overall_rmse": 4.032110040774118,
+          "overall_mae": 2.2890128648062,
+          "mean_per_series_rmse": 2.9208829600677775,
+          "median_per_series_rmse": 2.145360646052918,
+          "mean_per_series_mae": 2.2890128648062,
+          "mean_rank": 4.2025,
+          "win_pct": 17.833333333333336
+        },
+        {
+          "method": "dlinear_hurdle",
+          "overall_rmse": 4.037289863842126,
+          "overall_mae": 2.1796814984423736,
+          "mean_per_series_rmse": 2.9215441480614475,
+          "median_per_series_rmse": 2.1318001985329387,
+          "mean_per_series_mae": 2.1796814984423736,
+          "mean_rank": 4.22,
+          "win_pct": 13.5
+        },
+        {
+          "method": "seasonal_naive",
+          "overall_rmse": 4.9817514211592515,
+          "overall_mae": 2.68671626984127,
+          "mean_per_series_rmse": 3.70221672165983,
+          "median_per_series_rmse": 2.844166770654061,
+          "mean_per_series_mae": 2.68671626984127,
+          "mean_rank": 7.452916666666667,
+          "win_pct": 0.4166666666666667
+        },
+        {
+          "method": "naive",
+          "overall_rmse": 5.444339568150882,
+          "overall_mae": 2.9473611111111113,
+          "mean_per_series_rmse": 3.851556155043176,
+          "median_per_series_rmse": 2.7200750590064473,
+          "mean_per_series_mae": 2.947361111111111,
+          "mean_rank": 6.819583333333333,
+          "win_pct": 3.833333333333333
+        }
+      ],
+      "method_config": {
+        "croston": {
+          "alpha": 0.1,
+          "validation_mse": 17.324085382010907,
+          "grid": [
+            0.05,
+            0.1,
+            0.2,
+            0.3
+          ],
+          "selected_on": "validation split"
+        },
+        "sba": {
+          "alpha": 0.1,
+          "validation_mse": 17.738660000914262,
+          "grid": [
+            0.05,
+            0.1,
+            0.2,
+            0.3
+          ],
+          "selected_on": "validation split"
+        },
+        "ses": {
+          "alpha": 0.1,
+          "validation_mse": 16.68334079556082,
+          "grid": [
+            0.05,
+            0.1,
+            0.2,
+            0.3
+          ],
+          "selected_on": "validation split"
+        },
+        "tsb": {
+          "alpha": 0.2,
+          "beta": 0.05,
+          "validation_mse": 16.269222555619837,
+          "grid": {
+            "alpha": [
+              0.05,
+              0.1,
+              0.2,
+              0.3
+            ],
+            "beta": [
+              0.05,
+              0.1,
+              0.2,
+              0.3
+            ]
+          },
+          "selected_on": "validation split",
+          "implementation": "om_factorization_killtest.models.tsb_state"
+        },
+        "seasonal_naive": {
+          "period": 28,
+          "selected_on": "no parameter",
+          "implementation": "om_factorization_killtest.models.seasonal_naive"
+        },
+        "naive": {
+          "selected_on": "no parameter"
+        },
+        "dlinear_point": {
+          "checkpoint": "results\\external_validity_screen\\rule_replication\\models\\point.pt",
+          "model_seed": 0,
+          "trained_on": "stage_a_m5_1200"
+        },
+        "dlinear_hurdle": {
+          "checkpoint": "results\\external_validity_screen\\rule_replication\\models\\hurdle.pt",
+          "model_seed": 0,
+          "trained_on": "stage_a_m5_1200"
+        }
+      },
+      "failures": {},
+      "friedman": {
+        "statistic": 3974.8876281694647,
+        "pvalue": 0.0,
+        "unit": "series",
+        "n_series": 1200,
+        "k_methods": 8
+      },
+      "posthoc": {
+        "method": "pairwise Wilcoxon signed-rank, Holm-corrected; the repository has no standard post-hoc and no package providing Nemenyi is installed",
+        "results": {
+          "tsb vs ses": {
+            "p_raw": 0.9460846289386566,
+            "p_holm": 1.0,
+            "significant_at_0.05": false
+          },
+          "tsb vs sba": {
+            "p_raw": 0.9076439589834967,
+            "p_holm": 1.0,
+            "significant_at_0.05": false
+          },
+          "tsb vs croston": {
+            "p_raw": 0.2140926277595916,
+            "p_holm": 0.6422778832787748,
+            "significant_at_0.05": false
+          },
+          "tsb vs dlinear_point": {
+            "p_raw": 3.526926183617112e-24,
+            "p_holm": 4.937696657063957e-23,
+            "significant_at_0.05": true
+          },
+          "tsb vs dlinear_hurdle": {
+            "p_raw": 2.844589192478035e-22,
+            "p_holm": 3.413507030973642e-21,
+            "significant_at_0.05": true
+          },
+          "tsb vs seasonal_naive": {
+            "p_raw": 5.415637533807615e-193,
+            "p_holm": 1.5163785094661322e-191,
+            "significant_at_0.05": true
+          },
+          "tsb vs naive": {
+            "p_raw": 6.365527259908451e-170,
+            "p_holm": 1.3367607245807747e-168,
+            "significant_at_0.05": true
+          },
+          "ses vs sba": {
+            "p_raw": 0.0007382264824603535,
+            "p_holm": 0.004429358894762121,
+            "significant_at_0.05": true
+          },
+          "ses vs croston": {
+            "p_raw": 9.794851664166528e-06,
+            "p_holm": 6.85639616491657e-05,
+            "significant_at_0.05": true
+          },
+          "ses vs dlinear_point": {
+            "p_raw": 2.2755181977225673e-20,
+            "p_holm": 2.503070017494824e-19,
+            "significant_at_0.05": true
+          },
+          "ses vs dlinear_hurdle": {
+            "p_raw": 1.0818437996303155e-24,
+            "p_holm": 1.6227656994454733e-23,
+            "significant_at_0.05": true
+          },
+          "ses vs seasonal_naive": {
+            "p_raw": 8.36486922420839e-193,
+            "p_holm": 2.258514690536265e-191,
+            "significant_at_0.05": true
+          },
+          "ses vs naive": {
+            "p_raw": 2.7887243357426923e-170,
+            "p_holm": 6.135193538633923e-169,
+            "significant_at_0.05": true
+          },
+          "sba vs croston": {
+            "p_raw": 2.6186907561430297e-08,
+            "p_holm": 2.0949526049144238e-07,
+            "significant_at_0.05": true
+          },
+          "sba vs dlinear_point": {
+            "p_raw": 2.5453297490859516e-19,
+            "p_holm": 2.5453297490859517e-18,
+            "significant_at_0.05": true
+          },
+          "sba vs dlinear_hurdle": {
+            "p_raw": 1.3917141818452817e-35,
+            "p_holm": 2.2267426909524507e-34,
+            "significant_at_0.05": true
+          },
+          "sba vs seasonal_naive": {
+            "p_raw": 1.4554411081345897e-184,
+            "p_holm": 3.784146881149933e-183,
+            "significant_at_0.05": true
+          },
+          "sba vs naive": {
+            "p_raw": 3.6958502459188126e-153,
+            "p_holm": 7.391700491837626e-152,
+            "significant_at_0.05": true
+          },
+          "croston vs dlinear_point": {
+            "p_raw": 2.467164054822809e-17,
+            "p_holm": 2.220447649340528e-16,
+            "significant_at_0.05": true
+          },
+          "croston vs dlinear_hurdle": {
+            "p_raw": 5.055970490161206e-24,
+            "p_holm": 6.572761637209568e-23,
+            "significant_at_0.05": true
+          },
+          "croston vs seasonal_naive": {
+            "p_raw": 9.136432482990862e-182,
+            "p_holm": 2.1013794710878984e-180,
+            "significant_at_0.05": true
+          },
+          "croston vs naive": {
+            "p_raw": 9.233366577642202e-151,
+            "p_holm": 1.6620059839755964e-149,
+            "significant_at_0.05": true
+          },
+          "dlinear_point vs dlinear_hurdle": {
+            "p_raw": 0.0015138385421816193,
+            "p_holm": 0.007569192710908096,
+            "significant_at_0.05": true
+          },
+          "dlinear_point vs seasonal_naive": {
+            "p_raw": 4.579510939656372e-182,
+            "p_holm": 1.0990826255175291e-180,
+            "significant_at_0.05": true
+          },
+          "dlinear_point vs naive": {
+            "p_raw": 3.0111000123280594e-143,
+            "p_holm": 5.118870020957701e-142,
+            "significant_at_0.05": true
+          },
+          "dlinear_hurdle vs seasonal_naive": {
+            "p_raw": 1.7841623578724584e-183,
+            "p_holm": 4.460405894681146e-182,
+            "significant_at_0.05": true
+          },
+          "dlinear_hurdle vs naive": {
+            "p_raw": 3.955587838041469e-152,
+            "p_holm": 7.515616892278791e-151,
+            "significant_at_0.05": true
+          },
+          "seasonal_naive vs naive": {
+            "p_raw": 0.025418756963059046,
+            "p_holm": 0.10167502785223619,
+            "significant_at_0.05": false
+          }
+        }
+      },
+      "per_series_rmse_columns": [
+        "tsb",
+        "ses",
+        "sba",
+        "croston",
+        "dlinear_point",
+        "dlinear_hurdle",
+        "seasonal_naive",
+        "naive"
+      ]
+    },
+    "favorita": {
+      "dataset": "favorita",
+      "n_series": 1200,
+      "test_origins": [
+        1604,
+        1632,
+        1660
+      ],
+      "horizon": 28,
+      "lookback": 96,
+      "table": [
+        {
+          "method": "dlinear_point",
+          "overall_rmse": 20.683298347277656,
+          "overall_mae": 3.3017430108586407,
+          "mean_per_series_rmse": 5.112363673652863,
+          "median_per_series_rmse": 2.3555931280184765,
+          "mean_per_series_mae": 3.3017430108586403,
+          "mean_rank": 3.9466666666666668,
+          "win_pct": 25.5
+        },
+        {
+          "method": "sba",
+          "overall_rmse": 21.106320070865518,
+          "overall_mae": 3.3094332864964686,
+          "mean_per_series_rmse": 5.126998598476343,
+          "median_per_series_rmse": 2.3179903322481166,
+          "mean_per_series_mae": 3.309433286496469,
+          "mean_rank": 3.06875,
+          "win_pct": 20.666666666666668
+        },
+        {
+          "method": "dlinear_hurdle",
+          "overall_rmse": 20.808618714139378,
+          "overall_mae": 3.1660439359579033,
+          "mean_per_series_rmse": 5.144335006876389,
+          "median_per_series_rmse": 2.3463561365030356,
+          "mean_per_series_mae": 3.166043935957903,
+          "mean_rank": 4.031666666666666,
+          "win_pct": 15.666666666666668
+        },
+        {
+          "method": "ses",
+          "overall_rmse": 21.641199560955254,
+          "overall_mae": 3.3324275074922642,
+          "mean_per_series_rmse": 5.180254171034818,
+          "median_per_series_rmse": 2.324459612762888,
+          "mean_per_series_mae": 3.332427507492264,
+          "mean_rank": 3.94,
+          "win_pct": 10.25
+        },
+        {
+          "method": "tsb",
+          "overall_rmse": 21.245418244205997,
+          "overall_mae": 3.3368779175388275,
+          "mean_per_series_rmse": 5.200684151675348,
+          "median_per_series_rmse": 2.297122061113049,
+          "mean_per_series_mae": 3.3368779175388275,
+          "mean_rank": 3.797083333333333,
+          "win_pct": 9.75
+        },
+        {
+          "method": "croston",
+          "overall_rmse": 21.4086559390897,
+          "overall_mae": 3.421144107560987,
+          "mean_per_series_rmse": 5.2364615642662065,
+          "median_per_series_rmse": 2.3464868133277963,
+          "mean_per_series_mae": 3.421144107560987,
+          "mean_rank": 3.7866666666666666,
+          "win_pct": 10.166666666666666
+        },
+        {
+          "method": "naive",
+          "overall_rmse": 22.67081413386082,
+          "overall_mae": 3.8216666666666668,
+          "mean_per_series_rmse": 6.035073862803743,
+          "median_per_series_rmse": 2.8326259516916155,
+          "mean_per_series_mae": 3.8216666666666668,
+          "mean_rank": 6.305833333333333,
+          "win_pct": 4.583333333333333
+        },
+        {
+          "method": "seasonal_naive",
+          "overall_rmse": 23.03519219292688,
+          "overall_mae": 3.743849206349206,
+          "mean_per_series_rmse": 6.250413561471777,
+          "median_per_series_rmse": 3.037454367039752,
+          "mean_per_series_mae": 3.7438492063492066,
+          "mean_rank": 7.123333333333333,
+          "win_pct": 3.4166666666666665
+        }
+      ],
+      "method_config": {
+        "croston": {
+          "alpha": 0.2,
+          "validation_mse": 261.8304314662718,
+          "grid": [
+            0.05,
+            0.1,
+            0.2,
+            0.3
+          ],
+          "selected_on": "validation split"
+        },
+        "sba": {
+          "alpha": 0.1,
+          "validation_mse": 264.8647539319461,
+          "grid": [
+            0.05,
+            0.1,
+            0.2,
+            0.3
+          ],
+          "selected_on": "validation split"
+        },
+        "ses": {
+          "alpha": 0.2,
+          "validation_mse": 258.08877875920547,
+          "grid": [
+            0.05,
+            0.1,
+            0.2,
+            0.3
+          ],
+          "selected_on": "validation split"
+        },
+        "tsb": {
+          "alpha": 0.05,
+          "beta": 0.3,
+          "validation_mse": 246.96050955748638,
+          "grid": {
+            "alpha": [
+              0.05,
+              0.1,
+              0.2,
+              0.3
+            ],
+            "beta": [
+              0.05,
+              0.1,
+              0.2,
+              0.3
+            ]
+          },
+          "selected_on": "validation split",
+          "implementation": "om_factorization_killtest.models.tsb_state"
+        },
+        "seasonal_naive": {
+          "period": 28,
+          "selected_on": "no parameter",
+          "implementation": "om_factorization_killtest.models.seasonal_naive"
+        },
+        "naive": {
+          "selected_on": "no parameter"
+        },
+        "dlinear_point": {
+          "checkpoint": "results\\external_validity_screen\\favorita_transfer\\models\\point.pt",
+          "model_seed": 0,
+          "trained_on": "stage_a_favorita_1200"
+        },
+        "dlinear_hurdle": {
+          "checkpoint": "results\\external_validity_screen\\favorita_transfer\\models\\hurdle.pt",
+          "model_seed": 0,
+          "trained_on": "stage_a_favorita_1200"
+        }
+      },
+      "failures": {},
+      "friedman": {
+        "statistic": 2852.503211300549,
+        "pvalue": 0.0,
+        "unit": "series",
+        "n_series": 1200,
+        "k_methods": 8
+      },
+      "posthoc": {
+        "method": "pairwise Wilcoxon signed-rank, Holm-corrected; the repository has no standard post-hoc and no package providing Nemenyi is installed",
+        "results": {
+          "dlinear_point vs sba": {
+            "p_raw": 6.826580035847946e-07,
+            "p_holm": 7.50923803943274e-06,
+            "significant_at_0.05": true
+          },
+          "dlinear_point vs dlinear_hurdle": {
+            "p_raw": 0.4927203811588956,
+            "p_holm": 1.0,
+            "significant_at_0.05": false
+          },
+          "dlinear_point vs ses": {
+            "p_raw": 0.82811913334636,
+            "p_holm": 1.0,
+            "significant_at_0.05": false
+          },
+          "dlinear_point vs tsb": {
+            "p_raw": 0.33434580783164436,
+            "p_holm": 1.0,
+            "significant_at_0.05": false
+          },
+          "dlinear_point vs croston": {
+            "p_raw": 0.3259913666516988,
+            "p_holm": 1.0,
+            "significant_at_0.05": false
+          },
+          "dlinear_point vs naive": {
+            "p_raw": 2.0529465308307774e-87,
+            "p_holm": 3.4900091024123216e-86,
+            "significant_at_0.05": true
+          },
+          "dlinear_point vs seasonal_naive": {
+            "p_raw": 7.651942474568213e-137,
+            "p_holm": 1.6069079196593248e-135,
+            "significant_at_0.05": true
+          },
+          "sba vs dlinear_hurdle": {
+            "p_raw": 9.059466770195437e-19,
+            "p_holm": 1.0871360124234524e-17,
+            "significant_at_0.05": true
+          },
+          "sba vs ses": {
+            "p_raw": 5.676627696911346e-24,
+            "p_holm": 8.299713829269223e-23,
+            "significant_at_0.05": true
+          },
+          "sba vs tsb": {
+            "p_raw": 2.3908610714750714e-19,
+            "p_holm": 3.1081193929175927e-18,
+            "significant_at_0.05": true
+          },
+          "sba vs croston": {
+            "p_raw": 3.912553438838834e-41,
+            "p_holm": 6.260085502142135e-40,
+            "significant_at_0.05": true
+          },
+          "sba vs naive": {
+            "p_raw": 3.5222990791063076e-115,
+            "p_holm": 7.044598158212615e-114,
+            "significant_at_0.05": true
+          },
+          "sba vs seasonal_naive": {
+            "p_raw": 7.992909354618536e-152,
+            "p_holm": 2.0781564322008192e-150,
+            "significant_at_0.05": true
+          },
+          "dlinear_hurdle vs ses": {
+            "p_raw": 0.002840696829592928,
+            "p_holm": 0.022725574636743424,
+            "significant_at_0.05": true
+          },
+          "dlinear_hurdle vs tsb": {
+            "p_raw": 0.00015112221080917394,
+            "p_holm": 0.0013600998972825656,
+            "significant_at_0.05": true
+          },
+          "dlinear_hurdle vs croston": {
+            "p_raw": 0.1563761615720605,
+            "p_holm": 0.7818808078603025,
+            "significant_at_0.05": false
+          },
+          "dlinear_hurdle vs naive": {
+            "p_raw": 2.212971391624157e-102,
+            "p_holm": 3.983348504923483e-101,
+            "significant_at_0.05": true
+          },
+          "dlinear_hurdle vs seasonal_naive": {
+            "p_raw": 1.0181786694094341e-146,
+            "p_holm": 2.443628806582642e-145,
+            "significant_at_0.05": true
+          },
+          "ses vs tsb": {
+            "p_raw": 0.10756092316477478,
+            "p_holm": 0.6453655389886487,
+            "significant_at_0.05": false
+          },
+          "ses vs croston": {
+            "p_raw": 8.567113663285638e-06,
+            "p_holm": 8.567113663285638e-05,
+            "significant_at_0.05": true
+          },
+          "ses vs naive": {
+            "p_raw": 1.0356351180798373e-147,
+            "p_holm": 2.589087795199593e-146,
+            "significant_at_0.05": true
+          },
+          "ses vs seasonal_naive": {
+            "p_raw": 2.912500661004734e-172,
+            "p_holm": 8.155001850813254e-171,
+            "significant_at_0.05": true
+          },
+          "tsb vs croston": {
+            "p_raw": 0.032394510064933844,
+            "p_holm": 0.2267615704545369,
+            "significant_at_0.05": false
+          },
+          "tsb vs naive": {
+            "p_raw": 2.8759448282854875e-139,
+            "p_holm": 6.327078622228073e-138,
+            "significant_at_0.05": true
+          },
+          "tsb vs seasonal_naive": {
+            "p_raw": 7.87436030150057e-164,
+            "p_holm": 2.126077281405154e-162,
+            "significant_at_0.05": true
+          },
+          "croston vs naive": {
+            "p_raw": 2.1085276575736888e-110,
+            "p_holm": 4.0062025493900087e-109,
+            "significant_at_0.05": true
+          },
+          "croston vs seasonal_naive": {
+            "p_raw": 1.4072583647291425e-146,
+            "p_holm": 3.236694238877028e-145,
+            "significant_at_0.05": true
+          },
+          "naive vs seasonal_naive": {
+            "p_raw": 5.5331425528461485e-24,
+            "p_holm": 8.299713829269223e-23,
+            "significant_at_0.05": true
+          }
+        }
+      },
+      "per_series_rmse_columns": [
+        "dlinear_point",
+        "sba",
+        "dlinear_hurdle",
+        "ses",
+        "tsb",
+        "croston",
+        "naive",
+        "seasonal_naive"
+      ]
+    }
+  },
+  "run_at_utc": "2026-08-07T12:53:04.883006+00:00",
+  "device": "cuda",
+  "git_commit": "12b35d2a220bfd2f1819802138932f97ecd6a365",
+  "verdict": "CLASSICAL_BENCHMARK_COMPLETE"
+}

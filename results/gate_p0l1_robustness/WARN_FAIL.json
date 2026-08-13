@@ -1,0 +1,29 @@
+{
+  "warn": [
+    {
+      "code": "UCI_DOMINATED_BY_ONE_FOLD",
+      "detail": "UCI fold 2 has E_alpha 453.96 against E_gate 45.26, a tenfold gap, and alone gives +90.0%. Dropping it leaves a mean of 11.70% instead of 37.81%. The static alpha collapses there; the gate's apparent skill is that collapse, not routing."
+    },
+    {
+      "code": "FRESHRETAILNET_AGGREGATE_NEGATIVE",
+      "detail": "Fold-level mean is +0.123% but the cross-fitted aggregate is -0.506% with CI [-1.07%, +0.09%]. The verdict rule reads fold means, which weight three folds equally; the aggregate weights origins. On the dataset that was the primary external confirmation, the aggregate says the gate loses."
+    },
+    {
+      "code": "UCI_SUBGROUP_ALL_NEGATIVE",
+      "detail": "Every ADI quartile on UCI has a negative mean per-origin improvement (-35.6%, -50.0%, -114.0%, -258.7%) while the aggregate is strongly positive. A handful of origins with enormous static error carry the whole result."
+    },
+    {
+      "code": "ONLY_TWO_DATASETS_CI_CLEAR",
+      "detail": "Aggregate CIs exclude zero on M5 and UCI only. Favorita and FreshRetailNet cover zero, and UCI is the artifact above, so M5's +0.78% is the one clean CI-clear result."
+    },
+    {
+      "code": "WARN_LIMITED_TEMPORAL_FOLDS",
+      "detail": "FreshRetailNet and UCI supply three validation folds, not the five targeted; their train regions are 658 and 627 days against M5's 1829."
+    },
+    {
+      "code": "NO_TEST_SCORED",
+      "detail": "No existing TEST was scored. EXTERNAL_VALIDATION_NOT_REPLICATED stands unchanged."
+    }
+  ],
+  "fail": []
+}
