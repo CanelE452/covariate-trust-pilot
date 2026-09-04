@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "ARM_CHECKPOINT_COMPLETE",
+  "dataset": "m5",
+  "model_seed": 0,
+  "arm": "hurdle",
+  "model_id": "M1_factorized_mean",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5",
+  "runtime_estimate_sha256": "d214d220f11b5e9effe37f3e911ce686bd1b96b8b27abdac7466d2e5c9c86f9a",
+  "completed_at_utc": "2026-09-04T10:36:18.271031+00:00",
+  "artifacts": {
+    "checkpoint": {
+      "path": "hurdle_checkpoint.pt",
+      "bytes": 30848,
+      "sha256": "91bacd304b9e15e92ed1298e58d3ed36cce282c945891c888c8d9b67a9278cb7"
+    },
+    "prediction_heads": {
+      "path": "hurdle_prediction_heads.pt",
+      "bytes": 68348372,
+      "sha256": "82bf1c692df4963f03ec187d59c80918d9243571f44da5d6bccae86c46304e4a"
+    },
+    "provenance": {
+      "path": "hurdle_provenance.json",
+      "bytes": 626,
+      "sha256": "d834f25a9de32fe7c81e1f8b002dcfbea99d80fc43ff20d37c8ef7956f67a469"
+    }
+  },
+  "completion_payload_sha256": "7d0c6cec1480edb6755e835764dbfb88bee1609f77011bd1ba915dc4050f8a02"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "experiment_name": "PH-ONLINE-MEMORY-GONO-v1",
+  "timestamp_utc": "2026-09-04T08:43:12.1926541Z",
+  "status": "PREFREEZE_EXECUTION_RESOLUTION",
+  "append_only_status_policy": {
+    "preserved_phase0_status": {
+      "path": "results/ph_online_memory_gono_v1/STATUS.md",
+      "sha256": "2F850E9D2A2B9311F44042743C4A3EBE544746A0A4A35DA1BEF303D5BC6D42BA",
+      "meaning": "immutable status of the original Phase 0 stopped attempt"
+    },
+    "resolved_attempt_terminal_status_path": "results/ph_online_memory_gono_v1/STATUS_AFTER_RESOLUTION.md",
+    "rationale": "Do not overwrite the Phase 0 artifact; write the resumed attempt's terminal state to a new explicit path."
+  },
+  "failure_first_order_correction": {
+    "preserved_plan": {
+      "path": "results/ph_online_memory_gono_v1/implementation_plan.md",
+      "sha256": "70DFACE4E773698D8BECB644EC7EB05E4DB8C0E29031051828DC4D47B7AADEB2"
+    },
+    "authoritative_order": [
+      "freeze preregistration",
+      "cached three-origin Stage 0 reproduction",
+      "full frozen test suite including CPU canonical-trainer equivalence fit",
+      "M5 200-series CUDA smoke",
+      "conditional full seed execution"
+    ],
+    "rationale": "The trainer equivalence test performs real fits, so it must not run before Stage 0 under the requested failure-first order."
+  },
+  "restart_policy": {
+    "smoke_attempts": "Each retry reserves smoke/attempt_NNNN; failed attempts stay immutable.",
+    "completion_marker": "runtime_estimate.json is written atomically and exclusively only after a complete smoke attempt."
+  }
+}

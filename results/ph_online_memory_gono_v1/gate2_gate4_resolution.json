@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "experiment_name": "PH-ONLINE-MEMORY-GONO-v1",
+  "created_at_utc": "2026-09-04T09:32:13.5977062Z",
+  "status": "PREFREEZE_GATE2_GATE4_RESOLUTION",
+  "authorization": "After the Gate 2 / Gate 4 conflict was reported, the user instructed that it be fixed or recorded in a separate file before execution.",
+  "request": {
+    "path": "C:/Users/User/.codex/attachments/ae2c604f-7b73-4872-bb5c-358a9a3e0ea8/pasted-text.txt",
+    "sha256": "B606BD0E115E4170E5AB844E73D3CDB988D89FF9139DF3CF270E6E7E977E9C4E"
+  },
+  "bindings": {
+    "audit_resolution": {
+      "path": "results/ph_online_memory_gono_v1/audit_resolution.json",
+      "sha256": "C4E359F65DDEC101E973F1F80B113B1F314BFA1D6D890FCC1894FEEA977D7B04"
+    },
+    "execution_resolution": {
+      "path": "results/ph_online_memory_gono_v1/execution_resolution.json",
+      "sha256": "9C2C2E743F62461510DC6806C377AE1B5850AA4C142F7D6A4431277975563E5B"
+    }
+  },
+  "conflict": {
+    "gate2_rule": "Section 35 makes any failed Gate 2 condition terminal.",
+    "gate4_rule": "Section 39 requires another seed for specified borderline cases, including a positive effect below the Gate 2 threshold or a confidence interval containing zero.",
+    "resolution_principle": "Treat the more specific Gate 4 borderline rule as a predeclared deferral, while preserving every Gate 2 A-F requirement as a final requirement."
+  },
+  "authoritative_interpretation": {
+    "seed0_evaluation": "Compute Gate 2, Gate 3 safety, and Gate 3 control before deciding whether a borderline Gate 2 result is terminal.",
+    "seed1_forbidden_if_any": [
+      "seed0 M1_vs_B4 macro_percent <= 0",
+      "seed0 Gate3 safety FAIL",
+      "seed0 Gate3 control FAIL"
+    ],
+    "borderline_if_any": [
+      "0 < seed0 M1_vs_B4 macro_percent <= 0.40",
+      "seed0 macro 95% CI contains 0",
+      "seed0 macro 95% CI crosses +0.20%",
+      "exactly one transfer-direction M1_vs_B4 effect is positive"
+    ],
+    "deferrable_failed_gate2_checks": [
+      "macro_effect",
+      "direction_safety",
+      "macro_absolute_usefulness",
+      "direction_absolute_usefulness",
+      "macro_ci",
+      "dataset_ci"
+    ],
+    "seed0_gate2_status": "When no seed1-forbidden condition holds and any borderline condition holds, use PENDING_GATE4 even if any seed0 Gate 2 A-F conditions fail. A Gate 2 failure is immediately terminal only when no borderline condition holds.",
+    "seed0_veto_precedence": "If raw seed0 Gate 2 passed, a Gate 3 safety or control veto retains its own terminal verdict. If raw seed0 Gate 2 failed and was only a provisional Gate 4 candidate, either veto retracts the deferral, sets Gate 2 to FINAL_FAIL, and emits SIMPLE_ONLINE_COMBINATION_GO_RETRIEVAL_NO_GO in failure-first order; the measured Gate 3 result is preserved only as an eligibility observation.",
+    "additional_seed_training": "For every additional seed, retrain Point and Hurdle and repeat source-only B3, B4, and M1 selection. Target outcomes must not influence selection.",
+    "seed_average_unit": "Within an exactly matching dataset_id/series_id/origin key set, average each policy's normalized loss across seeds. Do not average predictions, retrieval indices, or selected hyperparameters.",
+    "seed_average_gate2": "Recompute all Gate 2 A-F quantities and the stratified series-cluster bootstrap from seed-averaged B3, B4, and M1 policy losses.",
+    "gate3_across_seeds": "Additional-seed Gate 3 values are diagnostic-only. Seed0 Gate 3 safety and control remain the eligibility and final predecessor checks.",
+    "terminal_pass_rule": "RETRIEVAL_MEMORY_GO requires seed0 Gate 3 safety and control PASS, Gate 4 robustness PASS when invoked, and the applicable final Gate 2 A-F evaluation PASS. When Gate 4 is invoked, the applicable Gate 2 evaluation is the seed-averaged evaluation.",
+    "terminal_fail_rule": "If Gate 4 passes its sign/retention rule but seed-averaged Gate 2 A-F fails, emit SIMPLE_ONLINE_COMBINATION_GO_RETRIEVAL_NO_GO. PENDING_GATE4 is never a terminal scientific verdict."
+  },
+  "prohibited_shortcuts": [
+    "Gate 4 may not override a failed final Gate 2 A-F evaluation.",
+    "Additional-seed predictions, retrieval indices, or selected hyperparameters may not be averaged.",
+    "Mismatched dataset/series/origin key sets may not be silently intersected.",
+    "No rule in this resolution may be changed after preregistration freeze."
+  ],
+  "scope_rationale": [
+    "Section 39 introduces the three seed1-forbidden conditions with the exhaustive wording '즉 다음이면 seed1 실행 금지'.",
+    "Accordingly, no additional unlisted Gate 2 check is treated as a fourth seed1 prohibition.",
+    "This deferral does not relax Gate 2 because all six A-F checks are recomputed and required on the seed-averaged losses before a final GO."
+  ]
+}

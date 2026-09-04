@@ -1,0 +1,14 @@
+{
+  "model_id": "M1_factorized_mean",
+  "model_seed": 0,
+  "trainer": "experiments.om_factorization_killtest.train.train_one",
+  "adapter": "experiments.ph_online_memory_gono_v1.trainer.train_one_on_split",
+  "best_epoch": 4,
+  "best_validation_mean_mse": 4.597425422230189,
+  "train_seconds": 1349.8145625591278,
+  "n_parameters": 7056,
+  "checkpoint_device": "cpu",
+  "execution_device_type": "cuda",
+  "end_to_end_wall_seconds": 1352.4282940998673,
+  "end_to_end_wall_definition": "device-synchronized wall time around canonical train_one_on_split, including its final seven-origin prediction and excluding artifact I/O"
+}

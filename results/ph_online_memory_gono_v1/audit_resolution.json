@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "experiment_name": "PH-ONLINE-MEMORY-GONO-v1",
+  "timestamp_utc": "2026-09-04T07:34:02.3984288Z",
+  "status": "PHASE0_RESOLUTION_AUTHORIZED",
+  "supersedes_scientific_verdict": false,
+  "prior_audit": {
+    "path": "results/ph_online_memory_gono_v1/audit.json",
+    "sha256": "9B1634B7BC49821E9F29B04BB1ADDA42903F2C52267314984165A79071E083F4",
+    "preserved": true
+  },
+  "authorization": "After receiving the Phase 0 stop report, the user explicitly requested that the blocker be fixed or handled in separate files.",
+  "resolution_scope": "Create an isolated implementation under experiments/ph_online_memory_gono_v1 without modifying the canonical trainer, prior records, prior results, or prior stop rules.",
+  "rulings": [
+    {
+      "id": "TRAINER_ADAPTER",
+      "decision": "Use experiments.ph_online_memory_gono_v1.trainer.train_one_on_split. It delegates to experiments.om_factorization_killtest.train.train_one while temporarily substituting only the build_splits dependency with the preregistered supplied Split.",
+      "reason": "This executes the canonical post-split training function instead of copying its loop and truthfully records the intentional split-construction difference.",
+      "constraint": "Training calls are sequential or process-isolated because the scoped module binding is not thread-safe."
+    },
+    {
+      "id": "TRAIN_ORIGIN_STRIDE",
+      "decision": 7,
+      "reason": "The actual frozen external Point/Hurdle comparison uses stride 7 for both arms; the request requires reuse of its actual configuration and prohibits outcome-driven changes."
+    },
+    {
+      "id": "SMOKE_SCOPE",
+      "decision": "One deterministic 200-series M5 sample, stratified over zero_ratio_train by log_train_scale cells.",
+      "reason": "The request explicitly says M5 first and specifies a 200-series sample. The smoke is operational validation, not a scientific result."
+    },
+    {
+      "id": "NATURAL_POPULATION",
+      "decision": "Recompute n_positive_train >= 20 at the new cutoff and exclude the 1,200 Stage-A IDs from each dataset.",
+      "reason": "This preserves the existing independent-natural-population contract while avoiding membership copied from later-cutoff artifacts."
+    },
+    {
+      "id": "MODEL_TRAIN_SCALE",
+      "decision": "Reuse the canonical train_scale exactly: max(mean(y[0:train_end]), 1.0), including M5 pre-availability zero padding.",
+      "reason": "Changing it would change canonical expert preprocessing. The availability/scale confound remains an explicit limitation."
+    },
+    {
+      "id": "POLICY_LOSS_SCALE",
+      "decision": "Use mean(y[0:train_end]^2) + 1e-8 as s_i squared for normalized policy MSE.",
+      "reason": "This is the formula fixed by the user request and is distinct from the model input scale."
+    },
+    {
+      "id": "VERDICT_VOCABULARY",
+      "decision": "Treat the eight exact tokens in section 40 as the only final scientific verdict strings.",
+      "reason": "Section 40 explicitly declares the final exact vocabulary; earlier split-line spellings are intermediate prose."
+    },
+    {
+      "id": "RUNTIME_ENVIRONMENT",
+      "decision": "Use C:/Users/User/anaconda3/envs/pallet-pose/python.exe without installing packages and without KMP_DUPLICATE_LIB_OK.",
+      "reason": "It is the only inspected environment that imports torch, NumPy, pandas, SciPy, scikit-learn, and PyArrow in both import orders without the OpenMP failure.",
+      "versions": {
+        "python": "3.10.20",
+        "torch": "2.1.1+cu118",
+        "numpy": "1.26.4",
+        "pandas": "2.3.3",
+        "scipy": "1.12.0",
+        "scikit_learn": "1.4.1.post1",
+        "pyarrow": "25.0.1"
+      }
+    }
+  ],
+  "pre_result_evidence": {
+    "new_cutoff_eligible_counts_before_stage_a_exclusion": {
+      "m5": 30253,
+      "favorita": 56754
+    },
+    "new_cutoff_eligible_counts_after_stage_a_exclusion": {
+      "m5": 29059,
+      "favorita": 55561
+    },
+    "old_checkpoint_future_training_days_beyond_new_cutoff": 112,
+    "old_checkpoints_reusable": false
+  },
+  "next_gate": "Implement tests and isolated code, freeze preregistration before any model fit, reproduce the cached three-origin artifacts, then run the 200-series M5 smoke."
+}

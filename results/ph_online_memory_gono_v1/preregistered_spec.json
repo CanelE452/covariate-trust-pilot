@@ -1,0 +1,774 @@
+{
+  "schema_version": 1,
+  "experiment_name": "PH-ONLINE-MEMORY-GONO-v1",
+  "frozen_at_utc": "2026-09-04T09:53:17.418099+00:00",
+  "frozen_before_any_new_model_fit": true,
+  "repository": {
+    "path": "E:/CODING/proj/covariate-trust-pilot",
+    "git_commit": "222c82cbf91c4313e77c531742831d211c756b02",
+    "branch": "main",
+    "remote_origin": "https://github.com/CanelE452/covariate-trust-pilot.git",
+    "dirty": true,
+    "dirty_path_count": 36,
+    "head_equals_origin_main": true
+  },
+  "environment": {
+    "python_executable": "C:\\Users\\User\\anaconda3\\envs\\pallet-pose\\python.exe",
+    "python": "3.10.20",
+    "torch": "2.1.1+cu118",
+    "cuda_runtime": "11.8",
+    "cuda_available": true,
+    "gpu": "NVIDIA GeForce RTX 4070",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "scipy": "1.12.0",
+    "scikit_learn": "1.4.1.post1",
+    "pyarrow": "25.0.1",
+    "kmp_duplicate_lib_ok": null
+  },
+  "development_datasets_only": true,
+  "lookback": 96,
+  "horizon": 28,
+  "models": {
+    "point": {
+      "id": "M0PM_point_mse_param_matched",
+      "implementation": "experiments.om_factorization_killtest.models.PointDLinearParamMatched",
+      "loss": "experiments.om_factorization_killtest.models.point_loss",
+      "parameters": 7056
+    },
+    "hurdle": {
+      "id": "M1_factorized_mean",
+      "implementation": "experiments.om_factorization_killtest.models.FactorizedDLinear",
+      "loss": "experiments.om_factorization_killtest.models.factorized_loss",
+      "mean_semantics": "sigmoid(occurrence_logit) * positive_conditional_magnitude",
+      "parameters": 7056
+    },
+    "shared_target": "realized nonnegative demand",
+    "shared_input": "96-step target history; occurrence is supervision only",
+    "shared_backbone": "DLinear moving-average decomposition",
+    "intended_differences": [
+      "output heads",
+      "loss"
+    ]
+  },
+  "trainer": {
+    "identity": "experiments.ph_online_memory_gono_v1.trainer.train_one_on_split",
+    "delegates_to": "experiments.om_factorization_killtest.train.train_one",
+    "split_injection": "scoped substitution of the canonical module's build_splits lookup with the preregistered supplied Split",
+    "execution": "sequential or process-isolated; never concurrent in one interpreter",
+    "restart_hook": "after each Point/Hurdle arm, publish CPU state_dict, provenance, and seven-origin prediction heads through an append-only completion-marked checkpoint; only hash-verified completed arms may skip a refit",
+    "actual_gpu_time": "sum device-synchronized per-arm wall intervals around train_one_on_split, including canonical final seven-origin prediction; exclude artifact serialization and CPU policy analysis",
+    "equivalence_test": "experiments/ph_online_memory_gono_v1/tests/test_trainer.py"
+  },
+  "model_hyperparameter_source_artifact": "experiments/om_factorization_killtest/prereg.py:56-69",
+  "training": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "batch_size": 256,
+    "max_epochs": 30,
+    "patience": 5,
+    "validation_batch_size": 1024,
+    "checkpoint_metric": "masked validation MSE of final mean prediction",
+    "checkpoint_improvement_epsilon": 1e-09,
+    "best_epoch_indexing": "zero_based",
+    "train_origin_stride": 7,
+    "arms_have_identical_budget": true
+  },
+  "datasets": {
+    "m5": {
+      "source": "data/sales_train_evaluation.csv",
+      "length": 1941,
+      "preprocessing_source": "experiments.external_validity_screen.confirmatory_h2.m5_full",
+      "availability_source": [
+        "data/sell_prices.csv",
+        "data/calendar.csv"
+      ],
+      "availability_policy": "mask pre-availability train/validation targets; keep canonical history and model train-scale zero padding",
+      "stage_a_ids_source": "data/processed/series.parquet"
+    },
+    "favorita": {
+      "source": "data/processed/favorita_full_pool.parquet",
+      "raw_source": "data/train.csv",
+      "length": 1688,
+      "preprocessing_source": "experiments.external_validity_screen.favorita_independent.load_pool",
+      "availability_policy": "raw; available_from=0 after full-pool construction",
+      "stage_a_ids_source": "data/processed/favorita_series.parquet"
+    }
+  },
+  "data_source_sha256": {
+    "data/sales_train_evaluation.csv": "4b4a47c44c38380d2a9168216fea8c9ff2f31b1ddb772f8a0995952a038b8aa0",
+    "data/sell_prices.csv": "9da3ad1f8b8ccacdbdc70612191dd375ec24a4ac6625c24b75b3bc60b0bed2ef",
+    "data/calendar.csv": "d12b5914ef03e66649adf5dd9e996e6602251c22b7a6af8f1f7e3aa12f8860f5",
+    "data/processed/favorita_full_pool.parquet": "ee4fb69eef9cc49c00653b7c7204154bf15a8d15611771fe2a21de90cb184825",
+    "data/processed/series.parquet": "aa8d96ecd6ed6eaa91274087b4b90880b5da4ec3954962d94d57e37947f13aba",
+    "data/processed/favorita_series.parquet": "2764b5d2b34e8d78fe473f06571971a88f3c9ec04db44ef6c86e86ec543fad58"
+  },
+  "population": {
+    "role": "independent natural development population",
+    "stage_a_ids_excluded": true,
+    "membership_recomputed_at_new_cutoff": true,
+    "series_count_hard_coded": false
+  },
+  "eligibility": {
+    "primary_min_positive_train": 20,
+    "sensitivity_min_positive_train": [
+      15,
+      20,
+      30
+    ],
+    "positive_definition": "y > 0",
+    "interval": "model_train only",
+    "sensitivity_execution": "count membership and immutable ID hashes during population audit; do not fit models for thresholds 15 or 30"
+  },
+  "splits": {
+    "m5": {
+      "model_train": [
+        0,
+        1717
+      ],
+      "model_validation": [
+        1717,
+        1745
+      ],
+      "warmup_origin": 1745,
+      "warmup_interval": [
+        1745,
+        1773
+      ],
+      "evaluation_origins": [
+        1773,
+        1801,
+        1829,
+        1857,
+        1885,
+        1913
+      ],
+      "last_interval": [
+        1913,
+        1941
+      ]
+    },
+    "favorita": {
+      "model_train": [
+        0,
+        1464
+      ],
+      "model_validation": [
+        1464,
+        1492
+      ],
+      "warmup_origin": 1492,
+      "warmup_interval": [
+        1492,
+        1520
+      ],
+      "evaluation_origins": [
+        1520,
+        1548,
+        1576,
+        1604,
+        1632,
+        1660
+      ],
+      "last_interval": [
+        1660,
+        1688
+      ]
+    },
+    "interval_encoding": "half_open",
+    "warmup_excluded_from_final_metrics": true
+  },
+  "model_seed": 0,
+  "conditional_model_seeds": [
+    1,
+    2
+  ],
+  "bootstrap": {
+    "draws": 2000,
+    "seed": 20260904,
+    "confidence_interval_percent": [
+      2.5,
+      97.5
+    ],
+    "unit": "series cluster",
+    "cluster_contents": "all six evaluation origins for a sampled series",
+    "paired_policy_resampling": "all compared policy losses for a sampled series use the same cluster multiplicity within a draw",
+    "direction_sampling": "resample series independently inside each target dataset",
+    "macro_sampling": "independently resample M5 and Favorita series clusters within each draw, compute both direction RIs, then average the two RIs",
+    "uncertainty_scope": "series uncertainty conditional on the six observed origins; not origin uncertainty",
+    "seed_average_rule": "compute policy loss within each model seed, average series-origin losses across seeds, then series-cluster bootstrap; never average predictions"
+  },
+  "controls": {
+    "seed": 20260904,
+    "C0": "shuffle paired Point/Hurdle loss values within resolved origin",
+    "C1": "uniform random neighbors after same-series exclusion",
+    "rng": "numpy.random.default_rng (PCG64)",
+    "query_seed_derivation": "SHA256 of UTF-8 NUL-separated [base_seed, *seed_parts]; interpret the first 8 digest bytes as an unsigned little-endian integer",
+    "canonical_case_order": [
+      "dataset_id",
+      "series_id",
+      "origin"
+    ],
+    "C0_seed_parts": [
+      "C0",
+      "dataset_id",
+      "resolved_origin"
+    ],
+    "C0_sampling": "within each dataset_id/resolved_origin group, apply one RNG permutation without replacement to intact Point/Hurdle loss pairs",
+    "C1_seed_parts": [
+      "C1",
+      "dataset_id",
+      "series_id",
+      "query_origin"
+    ],
+    "C1_sampling": "uniform choice without replacement from canonical-order eligible memory rows after same-series exclusion"
+  },
+  "primary_loss": {
+    "name": "train-scale normalized MSE",
+    "scale_squared": "mean(y[0:model_train_end]^2) + 1e-8",
+    "epsilon": 1e-08,
+    "aggregation": "mean over 28 horizon steps, then series-origin mean"
+  },
+  "secondary_metrics": [
+    "realized_y_RMSE",
+    "realized_y_MAE"
+  ],
+  "relative_improvement": "100 * (1 - mean_loss_A / mean_loss_B)",
+  "policy_grids": {
+    "b3_alpha": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ],
+    "b4_eta": [
+      0.5,
+      2.0,
+      8.0,
+      32.0
+    ],
+    "b4_half_life_origins": [
+      1,
+      3
+    ],
+    "m1_k": [
+      32,
+      128
+    ],
+    "m1_lambda_max": [
+      0.25,
+      0.5
+    ]
+  },
+  "policy_execution": {
+    "source_target_directions": [
+      "m5_to_favorita",
+      "favorita_to_m5"
+    ],
+    "source_tuning_origins": "six evaluation origins; warmup excluded",
+    "target_hyperparameters_refit": false,
+    "B0": "always Point; hurdle weight alpha=0",
+    "B1": "always Hurdle; hurdle weight alpha=1",
+    "B2": "50:50 convex forecast; hurdle weight alpha=0.5",
+    "b3_forecast": "(1-alpha)*point + alpha*hurdle",
+    "b4_discount": {
+      "gamma_from_half_life": "gamma = 0.5 ** (1 / half_life_origins)",
+      "age_definition": "integer count of completed forecast-origin intervals; the most recent resolved case has age 1",
+      "cumulative_loss": "sum(gamma**age * normalized_expert_loss)",
+      "stable_hurdle_weight": "expit(eta * (S_point - S_hurdle))"
+    },
+    "first_evaluation_memory": "warmup case only"
+  },
+  "tie_breaking": {
+    "B3": [
+      "lower source mean loss",
+      "grid order"
+    ],
+    "B4": [
+      "lower source mean loss",
+      "lower source worst-origin loss",
+      "smaller eta",
+      "longer half-life"
+    ],
+    "M1": [
+      "lower source mean loss",
+      "lower source worst-origin loss",
+      "smaller lambda_max",
+      "larger k"
+    ]
+  },
+  "retrieval": {
+    "memory_value": [
+      "point_resolved_normalized_loss",
+      "hurdle_resolved_normalized_loss"
+    ],
+    "memory_scope": "target dataset only; cases resolved before query origin",
+    "same_series_excluded": true,
+    "distance": "Euclidean after memory-only robust scaling",
+    "distance_tie_break": "deterministic resolved-memory row order after dataset, series_id, origin ordering; squared Euclidean may be used because it has the identical rank",
+    "exact_search_engine": "SciPy cKDTree with eps=0; batched query establishes the kth radius, query_ball_point includes every boundary tie, then exact squared Euclidean distance and canonical row index are lexsorted",
+    "precomputation": "extract each case feature once; fit one memory-only robust scaler and one exact tree per query origin; reuse a max-k=128 neighbor plan for k=32/128, lambda variants, M1, C0, and C1; C1 uses the shared plan only for canonical query/memory geometry and draws uniform random eligible neighbors",
+    "neighbor_average": "uniform",
+    "features": [
+      {
+        "name": "recent_zero_ratio",
+        "formula": "mean(history == 0) over exactly 96 pre-origin steps",
+        "transform": "identity",
+        "missing": false
+      },
+      {
+        "name": "time_since_last_positive",
+        "formula": "number of steps after the last positive; 0 if history[-1] > 0",
+        "transform": "log1p",
+        "missing": true
+      },
+      {
+        "name": "mean_interarrival_gap",
+        "formula": "mean(diff(indices where history > 0))",
+        "transform": "log1p",
+        "missing": true
+      },
+      {
+        "name": "interarrival_gap_cv",
+        "formula": "sample_std(gaps, ddof=1) / mean(gaps)",
+        "transform": "log1p",
+        "missing": true
+      },
+      {
+        "name": "positive_demand_mean",
+        "formula": "mean(history[history > 0])",
+        "transform": "log1p",
+        "missing": true
+      },
+      {
+        "name": "positive_demand_cv",
+        "formula": "sample_std(positive_history, ddof=1) / mean(positive_history)",
+        "transform": "log1p",
+        "missing": true
+      },
+      {
+        "name": "recent_to_canonical_train_scale_rms_ratio",
+        "formula": "sqrt(mean(history**2)) / max(mean(y[0:model_train_end]), 1.0)",
+        "transform": "log1p",
+        "missing": false
+      },
+      {
+        "name": "point_hurdle_forecast_disagreement",
+        "formula": "sqrt(mean((hurdle_forecast-point_forecast)**2)) / max(mean(y[0:model_train_end]), 1.0)",
+        "transform": "log1p",
+        "missing": false
+      }
+    ],
+    "missing_policy": "continuous value zero-filled after transform and paired with an explicit missing indicator; indicators are not robust-scaled",
+    "feature_sufficiency": {
+      "time_since_last_positive": ">=1 lookback positive",
+      "mean_interarrival_gap": ">=2 lookback positives",
+      "interarrival_gap_cv": ">=3 lookback positives",
+      "positive_demand_mean": ">=1 lookback positive",
+      "positive_demand_cv": ">=2 lookback positives and positive mean"
+    },
+    "scaler": {
+      "fit_data": "resolved memory cases only; current query excluded",
+      "center": "median",
+      "scale": "75th minus 25th NumPy linear quantiles; replace exact zero IQR with 1 and record constant flag"
+    },
+    "confidence": "abs(mean_delta)/(abs(mean_delta)+population_sd_delta(ddof=0)+1e-8)",
+    "blend": "(1-lambda_max*confidence)*B4 + lambda_max*confidence*local"
+  },
+  "smoke": {
+    "dataset": "m5",
+    "n_series": 200,
+    "seed": 20260904,
+    "strata": "4x4 quantile cells of availability-aware zero_ratio_train and log canonical train_scale",
+    "allocation": "equal across nonempty cells; deterministic remainder by sorted cell",
+    "scientific_result": false,
+    "runtime_gate_gpu_hours": 6.0,
+    "fallback_estimate_series_per_dataset": 2000,
+    "forecast_origins": [
+      1745,
+      1773
+    ],
+    "pipeline_validation_hyperparameters": {
+      "b4_eta": 0.5,
+      "b4_half_life_origins": 1,
+      "m1_k": 32,
+      "m1_lambda_max": 0.25,
+      "scientific_selection": false
+    },
+    "runtime_projection": {
+      "training": "per-arm measured M5 smoke train time multiplied by full-series ratio and dataset train-window-count ratio",
+      "inference": "per-arm measured M5 smoke inference time/origin multiplied by full-series ratio and seven forecast origins",
+      "retrieval": "measure the exact first-evaluation-origin B4+M1 call; report CPU wall-time separately using quadratic series scaling and resolved-origin pool growth sum(1..6)",
+      "retrieval_passes_per_dataset": 7,
+      "retrieval_pass_breakdown": {
+        "source_M1_grid": 4,
+        "target_real_M1": 1,
+        "target_C0": 1,
+        "target_C1": 1
+      },
+      "gpu_gate_excludes_cpu_retrieval": true,
+      "includes_arms": [
+        "point",
+        "hurdle"
+      ],
+      "includes_datasets": [
+        "m5",
+        "favorita"
+      ]
+    }
+  },
+  "stage0_reproduction": {
+    "scientific_result": false,
+    "raw_sources": {
+      "m5": "results/external_validity_screen/rule_replication/independent_raw_predictions.parquet",
+      "favorita": "results/external_validity_screen/favorita_independent/independent_raw_predictions.parquet"
+    },
+    "panel_rows": 33294,
+    "condition_discovery_panel_atol": 1e-07,
+    "recoverability_gain_atol": 5e-05,
+    "frozen_sha256": {
+      "m5_raw": "a2810787033baac622e6558a53da526f0cb9b2e80d09cf2c4dbe699d2f207f6f",
+      "favorita_raw": "0df546bb479f70b8667c515c421ffe2a4f91dada9f1d50c0ee0300a776c22822",
+      "condition_discovery_panel": "0917e4cc69948c72bf9c33afcccf969a8dc8bb2c74271bb00777cba1d5da532f",
+      "recoverability_panel": "4c21015897e140de30177d7b8c97093c8ccadbf3ed00545ef8070e6206485e41"
+    }
+  },
+  "heterogeneous_gate0_diagnostic": {
+    "run_only_after_point_hurdle_gate0_failure": true,
+    "model_seed_scope": "primary seed 0 only",
+    "new_model_training": false,
+    "expert_order": [
+      "point",
+      "hurdle",
+      "tsb",
+      "sba"
+    ],
+    "expert_implementations": {
+      "tsb_selector": "experiments.om_factorization_killtest.evaluate.select_tsb",
+      "tsb_forecast": "experiments.om_factorization_killtest.models.tsb_forecast",
+      "tsb_grid": "experiments.om_factorization_killtest.prereg.TSB_GRID",
+      "sba_selector": "experiments.external_validity_screen.classical_benchmark.select_alpha",
+      "sba_forecast": "experiments.external_validity_screen.classical_benchmark.croston_forecast",
+      "sba_hand_check": "experiments.external_validity_screen.classical_benchmark.hand_check"
+    },
+    "classical_selection_data": "new frozen validation interval only",
+    "forecast_origins": "warmup plus six evaluation origins; score six only",
+    "pair_order": [
+      [
+        "point",
+        "hurdle"
+      ],
+      [
+        "point",
+        "tsb"
+      ],
+      [
+        "point",
+        "sba"
+      ],
+      [
+        "hurdle",
+        "tsb"
+      ],
+      [
+        "hurdle",
+        "sba"
+      ],
+      [
+        "tsb",
+        "sba"
+      ]
+    ],
+    "alpha_grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ],
+    "candidate_definition": "(1-alpha)*expert_a + alpha*expert_b",
+    "candidate_count": 126,
+    "duplicate_pair_endpoints_preserved": true,
+    "tie_break": "pair-major order, then alpha-grid order, first minimum",
+    "global_static_loss": "minimum whole-panel mean over 126 candidates",
+    "origin_oracle_loss": "minimum candidate loss independently for each series-origin case, then average cases",
+    "relative_gain_percent": "100*(1-origin_oracle/global_static)",
+    "macro": "unweighted mean of M5 and Favorita relative gains",
+    "pass_threshold_inclusive_percent": 2.0
+  },
+  "gates": {
+    "Gate0": {
+      "metric": "origin convex oracle vs target-oracle best global static alpha",
+      "origin_convex_oracle_definition": "for each series-origin case independently, choose the lowest-loss alpha on the frozen grid, then average those case losses",
+      "macro_min_percent": 2.0,
+      "m5_min_percent": 1.0,
+      "favorita_min_percent": 1.0,
+      "on_failure": {
+        "diagnostic_only_experts": [
+          "TSB",
+          "SBA"
+        ],
+        "availability_rule": "use only an already reproducible current-repository implementation; otherwise record NOT_AVAILABLE",
+        "heterogeneous_origin_convex_macro_min_percent": 2.0,
+        "new_heterogeneous_method_implementation_forbidden": true,
+        "final_verdict_if_pass": "PH_ONLY_NO_GO_HETEROGENEOUS_EXPERT_CANDIDATE",
+        "final_verdict_if_fail": "FULL_NO_GO"
+      }
+    },
+    "Gate1A": {
+      "m5_lag1_spearman_min_strict": 0.1,
+      "favorita_lag1_spearman_min_strict": 0.1,
+      "real_minus_shuffle_min_strict": 0.05
+    },
+    "Gate1B": {
+      "B4_vs_B3_each_transfer_min_percent": 0.3
+    },
+    "Gate2": {
+      "M1_vs_B4_macro_min_percent": 0.2,
+      "M1_vs_B4_each_transfer_min_percent": -0.1,
+      "M1_vs_B3_macro_min_percent": 0.7,
+      "M1_vs_B3_each_transfer_min_percent": 0.3,
+      "M1_vs_B4_macro_ci_lower_strict": 0.0,
+      "at_least_one_dataset_ci_lower_strict": 0.0,
+      "borderline_failure_status": "PENDING_GATE4",
+      "deferrable_failed_checks": [
+        "macro_effect",
+        "direction_safety",
+        "macro_absolute_usefulness",
+        "direction_absolute_usefulness",
+        "macro_ci",
+        "dataset_ci"
+      ],
+      "borderline_deferral": "when Gate3 safety/control pass, seed0 macro is positive, and any Gate4 borderline trigger holds, defer every seed0 Gate2 A-F failure and re-evaluate every condition from seed-averaged losses; a Gate2 failure is immediately terminal only when no Gate4 borderline trigger holds"
+    },
+    "Gate3_safety": {
+      "worst_origin_M1_vs_B3_min_percent": -0.5,
+      "q95_M1_over_B4_max": 1.01
+    },
+    "Gate3_control": {
+      "real_retrieval_min_strict": 0.0,
+      "shuffle_over_real_max": 0.25,
+      "random_over_real_max": 0.5
+    },
+    "Gate4": {
+      "seed1_only_if_borderline": true,
+      "seed1_forbidden_if_any": [
+        "seed0 M1_vs_B4_macro_percent <= 0",
+        "seed0 Gate3 safety FAIL",
+        "seed0 control condition FAIL"
+      ],
+      "borderline_if_any": [
+        "0 < seed0 M1_vs_B4_macro_percent <= 0.40",
+        "seed0 95% CI contains 0",
+        "seed0 95% CI crosses +0.20%",
+        "exactly one transfer direction is positive"
+      ],
+      "same_sign_required": true,
+      "effect_retention_min": 0.7,
+      "seed_average_ci_lower_strict": 0.0,
+      "seed_average_construction": "average each policy's loss across seeds within identical dataset/series/origin keys, then bootstrap the averaged losses",
+      "seed1_clear_fail_if_any": [
+        "seed1 effect sign differs from positive seed0",
+        "abs(seed1 effect) / abs(seed0 effect) < 0.70",
+        "seed-average bootstrap CI upper <= 0"
+      ],
+      "seed1_still_borderline_if": "same sign AND retention >= 0.70 AND seed-average CI lower <= 0 < upper",
+      "seed2_only_if_still_borderline": true,
+      "seed2_trigger": "run only when seed1_still_borderline_if is exactly true; a sign/retention failure or nonpositive CI upper is terminal NO-GO",
+      "three_seed_opposite_signs_max": 1,
+      "three_seed_aggregation": "policy loss per seed first, then seed-average series-origin loss, then bootstrap; prediction averaging forbidden",
+      "additional_seed_upstream_gates": "Gate0 through Gate3 are diagnostic-only for seeds 1 and 2; they must not early-stop construction of the M1 and B4 policy-loss panels used by Gate4",
+      "identical_key_set_required": true,
+      "seed_average_full_gate2_recheck": "recompute every Gate2 A-F condition from seed-averaged B3, B4, and M1 normalized policy losses",
+      "terminal_pass_rule": "when Gate4 is invoked, both Gate4 robustness and the seed-averaged Gate2 A-F evaluation must pass",
+      "seed0_veto_precedence": "if raw seed0 Gate2 already passed, a Gate3 safety/control veto keeps its own terminal verdict; if raw seed0 Gate2 failed and was only provisionally deferred, either veto retracts the deferral to Gate2 FINAL_FAIL and the failure-first verdict is SIMPLE_ONLINE_COMBINATION_GO_RETRIEVAL_NO_GO, while the Gate3 measurement remains an eligibility observation",
+      "resolution_path": "results/ph_online_memory_gono_v1/gate2_gate4_resolution.json"
+    }
+  },
+  "pairing": {
+    "keys": [
+      "dataset_id",
+      "series_id",
+      "origin",
+      "step"
+    ],
+    "expected": "one-to-one Point/Hurdle rows",
+    "minimum_coverage": 0.999
+  },
+  "oracle_families": {
+    "hard": [
+      "source global hard",
+      "series hard oracle",
+      "origin hard oracle"
+    ],
+    "convex": [
+      "source global convex",
+      "series convex oracle",
+      "origin convex oracle"
+    ],
+    "cross_family_denominator_forbidden": true
+  },
+  "final_verdict_tokens": [
+    "FULL_NO_GO",
+    "PH_ONLY_NO_GO_HETEROGENEOUS_EXPERT_CANDIDATE",
+    "TEMPORAL_RECURRENCE_NO_GO",
+    "ONLINE_MEMORY_NO_GO",
+    "SIMPLE_ONLINE_COMBINATION_GO_RETRIEVAL_NO_GO",
+    "RETRIEVAL_UNSAFE_NO_GO",
+    "RETRIEVAL_SIGNAL_NOT_IDENTIFIED",
+    "RETRIEVAL_MEMORY_GO"
+  ],
+  "stop_rules": {
+    "HANDCRAFTED_FEATURE_GATE_STOP": "PRESERVED",
+    "RAW_SEQUENCE_GATE_STOP": "PRESERVED",
+    "ROUTING_MODEL_DEVELOPMENT_STOP": "PRESERVED",
+    "DO_NOT_CONSUME_NEW_CONFIRMATORY_DATASET": "PRESERVED",
+    "artifact_reproduction_failure": "STOP",
+    "paired_coverage_below_0.999": "STOP",
+    "runtime_projection_above_6_gpu_hours": "STOP_AND_REPORT_2000_SERIES_ESTIMATE",
+    "gate_failure": "STOP_WITHOUT_RUNNING_LATER_STAGES",
+    "design_error_after_freeze": "INVALIDATE_AND_START_NEW_VERSION"
+  },
+  "execution_order": [
+    "repository/artifact audit and explicit resolution",
+    "freeze preregistration and SHA256",
+    "cached three-origin Stage 0 reproduction",
+    "full frozen tests including CPU canonical-trainer equivalence fit",
+    "M5 200-series CUDA smoke and runtime estimate",
+    "conditional full seed execution only when GPU projection <= 6 hours"
+  ],
+  "append_only_artifacts": {
+    "phase0_status_preserved": "results/ph_online_memory_gono_v1/STATUS.md",
+    "resolved_terminal_status": "results/ph_online_memory_gono_v1/STATUS_AFTER_RESOLUTION.md",
+    "smoke_attempts": "smoke/attempt_NNNN; completion marker written last",
+    "full_dataset_checkpoints": "each Point/Hurdle arm is saved immediately under an append-only seedN/datasets/DATASET arm attempt with completion manifest last; the assembled dataset output is also completion-marked; verified completed attempts may be loaded on restart and files are never replaced",
+    "final_gate_report": "exclusive create; never overwrite",
+    "final_tables": "tables_a_to_g.json is deterministically bound to the frozen preregistration, runtime estimate, final gate report, and seed analysis completion artifacts; identical restart reuse only",
+    "finalization_manifest": "finalization_manifest.json binds final report, tables, resolved status, and the final forbidden-artifact integrity check",
+    "runtime_stop_status": "when the >6 GPU-hour gate stops execution, write only STATUS_AFTER_RESOLUTION.md; scientific tables and final gate report remain absent"
+  },
+  "forbidden_primary_additions": [
+    "Transformer",
+    "GRU",
+    "TCN",
+    "foundation model",
+    "Tweedie",
+    "ZTNB",
+    "gradient surgery",
+    "joint expert training"
+  ],
+  "implementation_sha256": {
+    "experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/external_validity_screen/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/external_validity_screen/classical_benchmark.py": "6b4e452e7c6ad4e3441118a84b9bcc0fe80cb18c73739c54525a277e737157a5",
+    "experiments/external_validity_screen/cli.py": "bdee282fd3029f4515415b4a135de9eeedc5d0e1d4925ef6a0209088eca19de7",
+    "experiments/external_validity_screen/confirmatory_h2.py": "ac5ad7d7a9e14d3c09658a0e3de7d1af22cbe4833da69214dc8c1e69b34de6d7",
+    "experiments/external_validity_screen/favorita_independent.py": "8212910c9731b17b616706da2283387a65f9b5e90d50ce0a981fbf11728b8e10",
+    "experiments/external_validity_screen/favorita_transfer.py": "e335177d1568e29ddf1e1f7c53a8db3c1100eb07a76899a1d6531b4f65d84a35",
+    "experiments/external_validity_screen/posthoc.py": "b031a05ec51bf54656c7a47ce9f5dd1cbf984fecdcc553ee40361ade293ddb32",
+    "experiments/external_validity_screen/prereg.py": "e206d08b372021c5fae5354b396b65c693656f625aae1d0432529e3c43110615",
+    "experiments/external_validity_screen/rule_replication.py": "a9166e90240814066577043f917009fef924cb0b0ddcbbd944447cd4012b3b55",
+    "experiments/external_validity_screen/screen.py": "2a5c8a75e4d17bf73fcb48c11b1a0076e6b0e49554eb7cd434531d02fca1f425",
+    "experiments/om_factorization_killtest/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/om_factorization_killtest/evaluate.py": "3ff213deb694157fbc53440bab5f1e1f26588e86075d8dde39cdeb651ce89500",
+    "experiments/om_factorization_killtest/models.py": "2fb6fdfe6029ce038b8bf6519ba8243ce6cd0733446dcab21852b8522db00259",
+    "experiments/om_factorization_killtest/prereg.py": "4ea4ca163ff1bb72b32816b2f544a99ca3129e9cbb3943999a0b953909811678",
+    "experiments/om_factorization_killtest/train.py": "a19668221115345a379849de8454a18f73c8b17ce20c1776c40a62a5af456749",
+    "experiments/ph_online_memory_gono_v1/__init__.py": "49f2d9b5a3cd03f1cc4f55179a5131694832b19c42047d14f1d42a7680c89797",
+    "experiments/ph_online_memory_gono_v1/analysis.py": "e4e84e1981221c53c1f0eea06b66ba152d71f40e50fda4cea10157abac3fb84e",
+    "experiments/ph_online_memory_gono_v1/artifacts.py": "7fc67765347d753a4b28b7dce394e87abb4d04e71329cbc7b414aded41603513",
+    "experiments/ph_online_memory_gono_v1/bootstrap.py": "5c0ef94b67ff668897663c2e2a96fbb7f4796149fbd755b44400e06a58c38a48",
+    "experiments/ph_online_memory_gono_v1/bridge.py": "9395b38468ba858269ced0837d44ea311212fb3f6d7f0567d7d6dff2e8065f86",
+    "experiments/ph_online_memory_gono_v1/data.py": "1c7b0262ae87427a854610485bc1988f10d0707f081a50eab8005b0a75121dc4",
+    "experiments/ph_online_memory_gono_v1/evaluation.py": "6dc06ac9a06598689255739698fd0dfdc6046b97392efa997779acdbe3c77128",
+    "experiments/ph_online_memory_gono_v1/execution.py": "514b2e52e578313a7cc0b74b564051ff7d086de3aa80ae064dddbec17ffb6555",
+    "experiments/ph_online_memory_gono_v1/full_run.py": "5a0ff8e3f30bfce3edd469c01cf8a08a1c27bbba814abcddcee91e77fcee1b85",
+    "experiments/ph_online_memory_gono_v1/gates.py": "607d40f640e5cc84cce9f4513564a57f1de51958746eb1c799eb0cd737ad8736",
+    "experiments/ph_online_memory_gono_v1/heterogeneous.py": "0e48471fc68008cfed5ad43f597ba239309a144509047bd1c55c0523a05d2993",
+    "experiments/ph_online_memory_gono_v1/integrity.py": "73d78bbf50646f88cacc1efa5232be05d73205d0e5272c8ce9094ccb7defaac8",
+    "experiments/ph_online_memory_gono_v1/metrics.py": "2ff90ccaa8feff88e10e2e155d8975a96187b12354bd597cc2a8e3528c2a9a99",
+    "experiments/ph_online_memory_gono_v1/pipeline.py": "eeda515988f392e6edb6a3f8f6cd3f0ca06f49c1c85cd39e8a18737472297903",
+    "experiments/ph_online_memory_gono_v1/policies.py": "9bbc798483c66656f5c5bab4d9809a84ad97b13535848381039c6c7b0e076b26",
+    "experiments/ph_online_memory_gono_v1/prereg.py": "821e14a3a788c541dd8570025c2b6f091338e94851558a31008492eb446c3b04",
+    "experiments/ph_online_memory_gono_v1/protocol.py": "72b521ee568c473e506e0cd16f72ae216b6fe512941e0d357cd2226e8ed5339d",
+    "experiments/ph_online_memory_gono_v1/reporting.py": "4cc76e865aa28aa4ab8038ef09cc92d1bb8b6d459405a16ff7844c6d2fc44da5",
+    "experiments/ph_online_memory_gono_v1/reproduction.py": "c8836c7d41348027da0274e76ba36c2e34d6543f751895327a89b34eed7aa8bd",
+    "experiments/ph_online_memory_gono_v1/retrieval.py": "e1e3d28f26d6d95f2a90c76e6afcc5c29ecc4a4f2dae38466a3153667cf02c75",
+    "experiments/ph_online_memory_gono_v1/smoke.py": "0d2474d5deb752ccd69b5b9442e3545917b15c2ee40f1e2a10b34d289bf9447d",
+    "experiments/ph_online_memory_gono_v1/smoke_run.py": "ea3963780d75bbd67b1c2fb9aef1b8260b469bf53369dc900c09e4a4f7089449",
+    "experiments/ph_online_memory_gono_v1/tests/test_artifacts.py": "8010b8941e30ea5c60e38caaaaf6d5a1b3864688fd829c384725446608a830e2",
+    "experiments/ph_online_memory_gono_v1/tests/test_bridge.py": "6d47c191d710b91c78cb7720cb8c895b648ccce5cb2107bfe528cbd5b1c490ee",
+    "experiments/ph_online_memory_gono_v1/tests/test_contracts.py": "60467129f86cd94acd94db20b0290db252cabb93e3295ac602a37fbaeb49d2bb",
+    "experiments/ph_online_memory_gono_v1/tests/test_evaluation.py": "626f4f12a81b50206dc8a5e9ef0ac7a432323ab3ba9ca97d41b6d3100b9c7ed7",
+    "experiments/ph_online_memory_gono_v1/tests/test_execution.py": "d458d53a4ca83cc7ffd9363c77d8808c660d93cb92d0f979ce12604370365d9a",
+    "experiments/ph_online_memory_gono_v1/tests/test_full_analysis.py": "a1a689a1f695eb9c02c1d47adfa2e65324d3cb5a849fa55e5d663c1235636107",
+    "experiments/ph_online_memory_gono_v1/tests/test_full_run.py": "172e669bd4b508c2d177342ee7a8c8e44a97ca4098b296b32f6240e83cdc657e",
+    "experiments/ph_online_memory_gono_v1/tests/test_heterogeneous.py": "c05424ee08ed6a602c01445644169659afaf11a9f8ca4254e6ef77badd7ff997",
+    "experiments/ph_online_memory_gono_v1/tests/test_integrity.py": "3a4d80e879294056bc51916c261d1ba614b62899d0b039e2406ec96057ed655e",
+    "experiments/ph_online_memory_gono_v1/tests/test_pipeline.py": "bd57e28cf9b57577bb8b61be456e38d638483c16d7cc5a7d08100edd3191b331",
+    "experiments/ph_online_memory_gono_v1/tests/test_population.py": "b3e92a8c82442c7ce6a112c0003281512e1df1a1c84727622beda3e9dd75d39f",
+    "experiments/ph_online_memory_gono_v1/tests/test_prereg.py": "2b4378f08b4d5593682468c448b07a7154fdd1d1e101fd9ca66a830a73324310",
+    "experiments/ph_online_memory_gono_v1/tests/test_protocol.py": "4138c8c08cb3a1be2d13fbef4a067287483b89011abbe4960cdafe3a1cb547fb",
+    "experiments/ph_online_memory_gono_v1/tests/test_reporting.py": "c47b3b9a04287a8d6fa2cf3d9e363cb200877be5cc73a02f3524536b8feadeb4",
+    "experiments/ph_online_memory_gono_v1/tests/test_reproduction.py": "21ba7d72ed3ccefad58f657d00f147126eed62b462f31b276e105142708ca5af",
+    "experiments/ph_online_memory_gono_v1/tests/test_smoke.py": "b2d80f178e77bd25e734df8ca37d166f1db7fc6192b3e8861e50bbe68512ba1a",
+    "experiments/ph_online_memory_gono_v1/tests/test_smoke_run.py": "ae5859754dc73dc131ef53dfc9f5ecca46bbadd309fe6f04f22c58d5b8612db3",
+    "experiments/ph_online_memory_gono_v1/tests/test_trainer.py": "5a8b0e5829f9d491051e378e76b4756b75a27c2d23168271cea4e43d1afe34b2",
+    "experiments/ph_online_memory_gono_v1/trainer.py": "5e499acdccdd56423879c960cf4bbfe8f5de2e4c81124c60aad32ad8990978e2",
+    "experiments/unified_temporal_27_v3/__init__.py": "8229d18fc14d783aadd83faafba98d6d1c6dbd51c0bbff77c02ad88a5c39b9ae",
+    "experiments/unified_temporal_27_v3/conditional_targets.py": "35cad343c94d8779ba1161674be09c5f7b6d407d21b54d567cbef253a388fcac",
+    "experiments/unified_temporal_27_v3/config.py": "6700f08593d6b08a1f982cc0ecebac411fc57d84252b2200038e6f3d2cb03b3f",
+    "experiments/unified_temporal_27_v3/model.py": "e95203019a73ddf0eab186620022940b818e62342f4100cc9922a3427353a2dc",
+    "experiments/unified_temporal_27_v3/scenarios.py": "77c442d28c99439eab49f8ab582dc72c9bec89fc97bcbfd7c19f1c19600b72d2",
+    "experiments/unified_temporal_27_v3/training.py": "4a7292d7986ef393b094206478e54cfafb0006935ff81556bd94b591c1be8ed8",
+    "results/ph_online_memory_gono_v1/audit.json": "9b1634b7bc49821e9f29b04bb1adda42903f2c52267314984165a79071e083f4",
+    "results/ph_online_memory_gono_v1/audit_resolution.json": "c4e359f65ddec101e973f1f80b113b1f314bfa1d6d890fcc1894feea977d7b04",
+    "results/ph_online_memory_gono_v1/execution_resolution.json": "9c2c2e743f62461510dc6806c377ae1b5850aa4c142f7d6a4431277975563e5b",
+    "results/ph_online_memory_gono_v1/forbidden_artifact_baseline_extension.json": "10e41882455f6e06fecf7656f4b7272a8649f681e622740d4d22e017e52a54ba",
+    "results/ph_online_memory_gono_v1/gate2_gate4_resolution.json": "ca639cd8d67f359e1263afa186f9c39f904b48836d40e5d4a9e6f61932b96cca",
+    "src/rcoi/__init__.py": "127a5f97f45a9e1402447fe8665792502c0c87f880e7737b1374e4a4796e17db",
+    "src/rcoi/models/decomposition.py": "2406073c861096d674f174c608a6f3e382ff60ae062b9162b724dedf86b544fb",
+    "src/rcoi/seed.py": "cc28cf82b02c64ce3a8ca7e3fa80746daa4e2fdcd5c9161780e9bd1bbe07f5f6"
+  },
+  "implementation_hash_scope": "every Python file in experiments/ph_online_memory_gono_v1 plus the imported canonical model/trainer/windowing, external preprocessing, seed, and decomposition dependency files plus the preserved Phase 0 audit, authorization, pre-freeze execution resolution, and forbidden-artifact baseline extension and Gate2/Gate4 resolution enumerated by protocol.py; exact manifest equality is required before Stage 0 and smoke",
+  "authorized_resolution": "results/ph_online_memory_gono_v1/audit_resolution.json",
+  "execution_resolution": "results/ph_online_memory_gono_v1/execution_resolution.json",
+  "forbidden_artifact_baseline_extension": "results/ph_online_memory_gono_v1/forbidden_artifact_baseline_extension.json",
+  "gate2_gate4_resolution": "results/ph_online_memory_gono_v1/gate2_gate4_resolution.json",
+  "preregistration_hash_contract": "SHA256 of canonical UTF-8 JSON excluding preregistration_sha256 and preregistration_hash_contract",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5"
+}

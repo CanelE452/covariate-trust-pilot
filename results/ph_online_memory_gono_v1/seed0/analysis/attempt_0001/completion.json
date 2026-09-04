@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "SEED_ANALYSIS_COMPLETE",
+  "model_seed": 0,
+  "attempt_path": "seed0/analysis/attempt_0001",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5",
+  "runtime_estimate_sha256": "d214d220f11b5e9effe37f3e911ce686bd1b96b8b27abdac7466d2e5c9c86f9a",
+  "completed_at_utc": "2026-09-04T13:53:04.284706+00:00",
+  "source_datasets": {
+    "m5": {
+      "path": "seed0/datasets/m5/attempt_0001",
+      "completion_file_sha256": "95284b86baeaaeffdf2974ddb0b91831850854fbe8b7326c1bf72d9e1d1d0187",
+      "completion_payload_sha256": "913f7899c75d32d22b9b7aa12f11d540cb7a40a66f4307129d664b6e1b358da2"
+    },
+    "favorita": {
+      "path": "seed0/datasets/favorita/attempt_0001",
+      "completion_file_sha256": "e53493b8a5505854ef81d7a7216042160521c39a9fe4af1a08d2a27af316073f",
+      "completion_payload_sha256": "5c117e09db592094622a03303a66106bf05531625b01a4c71bea6fba897f4fef"
+    }
+  },
+  "artifacts": {
+    "report": {
+      "path": "report.json",
+      "bytes": 205781732,
+      "sha256": "532b209478f2bea436eb461fcb9a6bc549039c022954fbb04b66d9cfca83bfd6"
+    },
+    "table_expert_evaluation_losses": {
+      "path": "expert_evaluation_losses.parquet",
+      "bytes": 26370940,
+      "sha256": "8f6e63766f81e3ba9056cc0835470c07b0edf49f540f621e3c365dced9413d8b"
+    },
+    "table_target_b3_b4_losses": {
+      "path": "target_b3_b4_losses.parquet",
+      "bytes": 9577324,
+      "sha256": "6d8c0f2bd29a9c1336f8f69b30bca1e6f11109b8c1494fb946e94e351e57ffd9"
+    }
+  },
+  "analysis_completion_payload_sha256": "4f3118657592a7eefc1455837421a1ec46a372093584af0a027d3e1e27a27ddd"
+}

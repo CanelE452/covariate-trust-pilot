@@ -1,0 +1,14 @@
+{
+  "model_id": "M0PM_point_mse_param_matched",
+  "model_seed": 0,
+  "trainer": "experiments.om_factorization_killtest.train.train_one",
+  "adapter": "experiments.ph_online_memory_gono_v1.trainer.train_one_on_split",
+  "best_epoch": 5,
+  "best_validation_mean_mse": 125.5309479269246,
+  "train_seconds": 2028.035808801651,
+  "n_parameters": 7056,
+  "checkpoint_device": "cpu",
+  "execution_device_type": "cuda",
+  "end_to_end_wall_seconds": 2033.1338698000181,
+  "end_to_end_wall_definition": "device-synchronized wall time around canonical train_one_on_split, including its final seven-origin prediction and excluding artifact I/O"
+}

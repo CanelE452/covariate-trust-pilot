@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "FULL_DATASET_OUTPUT",
+  "dataset": "m5",
+  "model_seed": 0,
+  "schedule": {
+    "warmup_origin": 1745,
+    "evaluation_origins": [
+      1773,
+      1801,
+      1829,
+      1857,
+      1885,
+      1913
+    ],
+    "all_forecast_origins": [
+      1745,
+      1773,
+      1801,
+      1829,
+      1857,
+      1885,
+      1913
+    ],
+    "horizon": 28,
+    "lookback": 96,
+    "model_train_end": 1717,
+    "train_origin_stride": 7
+  },
+  "split_manifest": {
+    "warmup_origin": 1745,
+    "evaluation_origins": [
+      1773,
+      1801,
+      1829,
+      1857,
+      1885,
+      1913
+    ],
+    "all_forecast_origins": [
+      1745,
+      1773,
+      1801,
+      1829,
+      1857,
+      1885,
+      1913
+    ],
+    "horizon": 28,
+    "lookback": 96,
+    "model_train_end": 1717,
+    "train_origin_stride": 7
+  },
+  "series_eligibility": {
+    "dataset": "m5",
+    "descriptor_variant": "availability_aware",
+    "model_train_end": 1717,
+    "min_positive": 20,
+    "full_total": 30490,
+    "eligible_before_stage_a": 30253,
+    "stage_a_excluded": 1194,
+    "eligible_independent": 29059,
+    "ineligible": 237,
+    "exclusion_reasons": {
+      "n_positive_train_below_20": 237,
+      "stage_a_membership": 1194
+    },
+    "independent_id_sha256": "6adda18f1ce35703c742d7051cc63d767b999966b7e9fc81705c290a29cce682",
+    "eligible_before_stage_a_id_sha256": "b333e362334cbc8edc010507616df3866b9d7f0e38da8371c8edc0c35836c452",
+    "stage_a_excluded_id_sha256": "2376ff1b13bf4dad4caf58c618193a1ca940e546f21d0355e343b8c21981ed52",
+    "eligibility_sensitivity_no_training": {
+      "15": {
+        "min_positive_train": 15,
+        "eligible_before_stage_a": 30315,
+        "stage_a_excluded": 1196,
+        "eligible_independent": 29119,
+        "independent_id_sha256": "89a345dd31311cf26a607c5f7904365fbf93efe8a13ba5c4628417b2d911662b"
+      },
+      "20": {
+        "min_positive_train": 20,
+        "eligible_before_stage_a": 30253,
+        "stage_a_excluded": 1194,
+        "eligible_independent": 29059,
+        "independent_id_sha256": "6adda18f1ce35703c742d7051cc63d767b999966b7e9fc81705c290a29cce682"
+      },
+      "30": {
+        "min_positive_train": 30,
+        "eligible_before_stage_a": 30049,
+        "stage_a_excluded": 1192,
+        "eligible_independent": 28857,
+        "independent_id_sha256": "e336744e0998bf3eb4fe5635e2d20fcd5582a0498f79577ed4d056e730f5f959"
+      }
+    },
+    "distributions": {
+      "n_positive_train": {
+        "count": 29059,
+        "min": 20.0,
+        "p25": 203.0,
+        "median": 424.0,
+        "p75": 759.0,
+        "max": 1714.0
+      },
+      "zero_ratio_train": {
+        "count": 29059,
+        "min": 0.0017472335468841002,
+        "p25": 0.45151224358467773,
+        "median": 0.6464764123471171,
+        "p75": 0.8044537720064402,
+        "max": 0.9866045428072219
+      },
+      "train_scale": {
+        "count": 29059,
+        "min": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 135.7047119140625
+      }
+    }
+  },
+  "population_manifest": {
+    "dataset": "m5",
+    "descriptor_variant": "availability_aware",
+    "model_train_end": 1717,
+    "min_positive": 20,
+    "full_total": 30490,
+    "eligible_before_stage_a": 30253,
+    "stage_a_excluded": 1194,
+    "eligible_independent": 29059,
+    "ineligible": 237,
+    "exclusion_reasons": {
+      "n_positive_train_below_20": 237,
+      "stage_a_membership": 1194
+    },
+    "independent_id_sha256": "6adda18f1ce35703c742d7051cc63d767b999966b7e9fc81705c290a29cce682",
+    "eligible_before_stage_a_id_sha256": "b333e362334cbc8edc010507616df3866b9d7f0e38da8371c8edc0c35836c452",
+    "stage_a_excluded_id_sha256": "2376ff1b13bf4dad4caf58c618193a1ca940e546f21d0355e343b8c21981ed52",
+    "eligibility_sensitivity_no_training": {
+      "15": {
+        "min_positive_train": 15,
+        "eligible_before_stage_a": 30315,
+        "stage_a_excluded": 1196,
+        "eligible_independent": 29119,
+        "independent_id_sha256": "89a345dd31311cf26a607c5f7904365fbf93efe8a13ba5c4628417b2d911662b"
+      },
+      "20": {
+        "min_positive_train": 20,
+        "eligible_before_stage_a": 30253,
+        "stage_a_excluded": 1194,
+        "eligible_independent": 29059,
+        "independent_id_sha256": "6adda18f1ce35703c742d7051cc63d767b999966b7e9fc81705c290a29cce682"
+      },
+      "30": {
+        "min_positive_train": 30,
+        "eligible_before_stage_a": 30049,
+        "stage_a_excluded": 1192,
+        "eligible_independent": 28857,
+        "independent_id_sha256": "e336744e0998bf3eb4fe5635e2d20fcd5582a0498f79577ed4d056e730f5f959"
+      }
+    },
+    "distributions": {
+      "n_positive_train": {
+        "count": 29059,
+        "min": 20.0,
+        "p25": 203.0,
+        "median": 424.0,
+        "p75": 759.0,
+        "max": 1714.0
+      },
+      "zero_ratio_train": {
+        "count": 29059,
+        "min": 0.0017472335468841002,
+        "p25": 0.45151224358467773,
+        "median": 0.6464764123471171,
+        "p75": 0.8044537720064402,
+        "max": 0.9866045428072219
+      },
+      "train_scale": {
+        "count": 29059,
+        "min": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 135.7047119140625
+      }
+    }
+  },
+  "model_provenance": {
+    "point": {
+      "model_id": "M0PM_point_mse_param_matched",
+      "model_seed": 0,
+      "trainer": "experiments.om_factorization_killtest.train.train_one",
+      "adapter": "experiments.ph_online_memory_gono_v1.trainer.train_one_on_split",
+      "best_epoch": 3,
+      "best_validation_mean_mse": 4.447319373912504,
+      "train_seconds": 1020.4039692878723,
+      "n_parameters": 7056,
+      "checkpoint_device": "cpu",
+      "execution_device_type": "cuda",
+      "end_to_end_wall_seconds": 1023.269578400068,
+      "end_to_end_wall_definition": "device-synchronized wall time around canonical train_one_on_split, including its final seven-origin prediction and excluding artifact I/O"
+    },
+    "hurdle": {
+      "model_id": "M1_factorized_mean",
+      "model_seed": 0,
+      "trainer": "experiments.om_factorization_killtest.train.train_one",
+      "adapter": "experiments.ph_online_memory_gono_v1.trainer.train_one_on_split",
+      "best_epoch": 4,
+      "best_validation_mean_mse": 4.597425422230189,
+      "train_seconds": 1349.8145625591278,
+      "n_parameters": 7056,
+      "checkpoint_device": "cpu",
+      "execution_device_type": "cuda",
+      "end_to_end_wall_seconds": 1352.4282940998673,
+      "end_to_end_wall_definition": "device-synchronized wall time around canonical train_one_on_split, including its final seven-origin prediction and excluding artifact I/O"
+    }
+  },
+  "resolved_config": {
+    "lookback": 96,
+    "horizon": 28,
+    "train_origin_stride": 7,
+    "model_train_end": 1717,
+    "training": {
+      "optimizer": "Adam",
+      "learning_rate": 0.001,
+      "weight_decay": 0.0,
+      "batch_size": 256,
+      "max_epochs": 30,
+      "patience": 5,
+      "validation_batch_size": 1024,
+      "checkpoint_metric": "masked validation MSE of final mean prediction",
+      "checkpoint_improvement_epsilon": 1e-09,
+      "best_epoch_indexing": "zero_based",
+      "train_origin_stride": 7,
+      "arms_have_identical_budget": true
+    },
+    "models": {
+      "point": {
+        "id": "M0PM_point_mse_param_matched",
+        "implementation": "experiments.om_factorization_killtest.models.PointDLinearParamMatched",
+        "loss": "experiments.om_factorization_killtest.models.point_loss",
+        "parameters": 7056
+      },
+      "hurdle": {
+        "id": "M1_factorized_mean",
+        "implementation": "experiments.om_factorization_killtest.models.FactorizedDLinear",
+        "loss": "experiments.om_factorization_killtest.models.factorized_loss",
+        "mean_semantics": "sigmoid(occurrence_logit) * positive_conditional_magnitude",
+        "parameters": 7056
+      },
+      "shared_target": "realized nonnegative demand",
+      "shared_input": "96-step target history; occurrence is supervision only",
+      "shared_backbone": "DLinear moving-average decomposition",
+      "intended_differences": [
+        "output heads",
+        "loss"
+      ]
+    },
+    "split": {
+      "model_train": [
+        0,
+        1717
+      ],
+      "model_validation": [
+        1717,
+        1745
+      ],
+      "warmup_origin": 1745,
+      "warmup_interval": [
+        1745,
+        1773
+      ],
+      "evaluation_origins": [
+        1773,
+        1801,
+        1829,
+        1857,
+        1885,
+        1913
+      ],
+      "last_interval": [
+        1913,
+        1941
+      ]
+    },
+    "eligibility": {
+      "primary_min_positive_train": 20,
+      "sensitivity_min_positive_train": [
+        15,
+        20,
+        30
+      ],
+      "positive_definition": "y > 0",
+      "interval": "model_train only",
+      "sensitivity_execution": "count membership and immutable ID hashes during population audit; do not fit models for thresholds 15 or 30"
+    }
+  },
+  "environment": {
+    "python_executable": "C:\\Users\\User\\anaconda3\\envs\\pallet-pose\\python.exe",
+    "python": "3.10.20",
+    "torch": "2.1.1+cu118",
+    "cuda_runtime": "11.8",
+    "cuda_available": true,
+    "gpu": "NVIDIA GeForce RTX 4070",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "scipy": "1.12.0",
+    "scikit_learn": "1.4.1.post1",
+    "pyarrow": "25.0.1",
+    "kmp_duplicate_lib_ok": null
+  },
+  "runtime": {
+    "dataset_wall_seconds": 2504.015520800138
+  }
+}

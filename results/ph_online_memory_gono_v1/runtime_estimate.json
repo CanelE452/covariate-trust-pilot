@@ -1,0 +1,845 @@
+{
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "M5_200_SERIES_SMOKE",
+  "scientific_result": false,
+  "dataset": "m5",
+  "device": "cuda",
+  "selected_series_count": 200,
+  "selected_series_ids": [
+    "FOODS_3_053_TX_1_evaluation",
+    "HOUSEHOLD_1_130_TX_3_evaluation",
+    "HOUSEHOLD_1_383_CA_1_evaluation",
+    "FOODS_3_126_TX_2_evaluation",
+    "FOODS_3_119_TX_3_evaluation",
+    "FOODS_3_698_CA_1_evaluation",
+    "HOUSEHOLD_1_359_WI_3_evaluation",
+    "FOODS_2_176_CA_3_evaluation",
+    "FOODS_3_143_CA_3_evaluation",
+    "HOBBIES_1_124_TX_3_evaluation",
+    "HOUSEHOLD_2_267_WI_1_evaluation",
+    "HOUSEHOLD_2_501_WI_2_evaluation",
+    "FOODS_3_175_CA_2_evaluation",
+    "HOUSEHOLD_1_042_CA_4_evaluation",
+    "HOUSEHOLD_2_379_CA_4_evaluation",
+    "HOUSEHOLD_2_503_CA_4_evaluation",
+    "FOODS_2_346_CA_3_evaluation",
+    "HOBBIES_1_327_CA_1_evaluation",
+    "HOUSEHOLD_2_409_TX_3_evaluation",
+    "FOODS_1_044_CA_3_evaluation",
+    "FOODS_1_183_WI_2_evaluation",
+    "HOBBIES_1_010_TX_3_evaluation",
+    "HOUSEHOLD_1_495_WI_2_evaluation",
+    "FOODS_3_441_TX_2_evaluation",
+    "FOODS_2_213_WI_2_evaluation",
+    "FOODS_3_749_TX_1_evaluation",
+    "HOUSEHOLD_2_316_CA_2_evaluation",
+    "FOODS_3_511_WI_3_evaluation",
+    "FOODS_3_484_WI_1_evaluation",
+    "HOBBIES_2_027_CA_1_evaluation",
+    "HOUSEHOLD_2_361_CA_4_evaluation",
+    "HOUSEHOLD_2_494_WI_3_evaluation",
+    "FOODS_3_274_WI_2_evaluation",
+    "HOBBIES_1_373_WI_1_evaluation",
+    "HOUSEHOLD_2_490_TX_3_evaluation",
+    "HOUSEHOLD_1_522_TX_1_evaluation",
+    "FOODS_3_538_CA_4_evaluation",
+    "HOBBIES_1_247_TX_2_evaluation",
+    "HOUSEHOLD_2_031_TX_2_evaluation",
+    "FOODS_3_664_TX_3_evaluation",
+    "FOODS_2_305_CA_3_evaluation",
+    "HOBBIES_2_003_TX_2_evaluation",
+    "HOUSEHOLD_1_192_WI_3_evaluation",
+    "HOUSEHOLD_2_498_TX_1_evaluation",
+    "FOODS_3_380_CA_4_evaluation",
+    "HOBBIES_2_042_CA_1_evaluation",
+    "HOUSEHOLD_2_156_TX_3_evaluation",
+    "HOUSEHOLD_2_494_TX_3_evaluation",
+    "FOODS_2_130_WI_1_evaluation",
+    "HOBBIES_1_123_CA_1_evaluation",
+    "HOUSEHOLD_1_512_WI_2_evaluation",
+    "FOODS_3_138_WI_1_evaluation",
+    "FOODS_3_335_WI_1_evaluation",
+    "HOBBIES_1_383_CA_2_evaluation",
+    "HOUSEHOLD_2_293_CA_3_evaluation",
+    "FOODS_2_189_WI_2_evaluation",
+    "FOODS_3_153_TX_2_evaluation",
+    "FOODS_3_802_TX_2_evaluation",
+    "HOUSEHOLD_1_525_WI_2_evaluation",
+    "HOUSEHOLD_2_501_CA_4_evaluation",
+    "FOODS_1_084_WI_2_evaluation",
+    "HOBBIES_1_212_TX_1_evaluation",
+    "HOUSEHOLD_2_300_TX_3_evaluation",
+    "HOUSEHOLD_2_516_WI_2_evaluation",
+    "FOODS_3_008_WI_3_evaluation",
+    "HOUSEHOLD_1_026_TX_1_evaluation",
+    "HOUSEHOLD_2_266_TX_2_evaluation",
+    "FOODS_3_580_CA_2_evaluation",
+    "FOODS_3_483_WI_1_evaluation",
+    "HOUSEHOLD_1_101_WI_1_evaluation",
+    "HOUSEHOLD_1_534_WI_3_evaluation",
+    "FOODS_3_656_WI_3_evaluation",
+    "FOODS_3_284_TX_3_evaluation",
+    "FOODS_3_703_WI_3_evaluation",
+    "HOUSEHOLD_1_267_WI_2_evaluation",
+    "HOUSEHOLD_2_500_CA_3_evaluation",
+    "FOODS_1_116_TX_3_evaluation",
+    "HOBBIES_1_163_TX_1_evaluation",
+    "HOUSEHOLD_2_065_TX_2_evaluation",
+    "HOUSEHOLD_2_503_WI_3_evaluation",
+    "FOODS_3_401_WI_1_evaluation",
+    "HOUSEHOLD_1_129_TX_2_evaluation",
+    "HOUSEHOLD_2_467_CA_3_evaluation",
+    "FOODS_3_682_TX_3_evaluation",
+    "FOODS_3_314_CA_2_evaluation",
+    "HOBBIES_1_115_CA_3_evaluation",
+    "HOUSEHOLD_2_383_TX_3_evaluation",
+    "FOODS_2_080_TX_1_evaluation",
+    "FOODS_2_120_CA_4_evaluation",
+    "HOBBIES_1_063_WI_3_evaluation",
+    "HOUSEHOLD_2_369_TX_2_evaluation",
+    "HOUSEHOLD_2_513_WI_1_evaluation",
+    "FOODS_3_548_TX_2_evaluation",
+    "HOBBIES_2_015_WI_3_evaluation",
+    "HOUSEHOLD_2_337_CA_4_evaluation",
+    "HOUSEHOLD_2_514_TX_3_evaluation",
+    "FOODS_3_122_TX_3_evaluation",
+    "FOODS_3_687_WI_3_evaluation",
+    "HOUSEHOLD_1_156_TX_3_evaluation",
+    "FOODS_2_183_TX_3_evaluation",
+    "FOODS_2_249_TX_2_evaluation",
+    "FOODS_3_569_WI_3_evaluation",
+    "HOUSEHOLD_2_287_CA_1_evaluation",
+    "FOODS_2_182_TX_3_evaluation",
+    "FOODS_2_352_TX_2_evaluation",
+    "HOUSEHOLD_1_076_CA_2_evaluation",
+    "HOUSEHOLD_1_500_CA_1_evaluation",
+    "HOUSEHOLD_2_505_CA_4_evaluation",
+    "FOODS_3_364_TX_3_evaluation",
+    "HOBBIES_1_402_WI_3_evaluation",
+    "HOUSEHOLD_2_017_WI_2_evaluation",
+    "HOUSEHOLD_2_514_WI_3_evaluation",
+    "FOODS_1_122_CA_1_evaluation",
+    "FOODS_3_761_CA_2_evaluation",
+    "HOUSEHOLD_1_429_WI_1_evaluation",
+    "HOUSEHOLD_2_294_CA_4_evaluation",
+    "FOODS_3_100_TX_1_evaluation",
+    "HOBBIES_1_042_CA_1_evaluation",
+    "HOUSEHOLD_2_341_CA_1_evaluation",
+    "HOUSEHOLD_1_222_TX_3_evaluation",
+    "FOODS_1_193_CA_3_evaluation",
+    "HOBBIES_2_033_WI_3_evaluation",
+    "HOUSEHOLD_2_095_TX_2_evaluation",
+    "HOUSEHOLD_1_235_WI_2_evaluation",
+    "FOODS_2_161_WI_3_evaluation",
+    "HOBBIES_1_234_TX_2_evaluation",
+    "HOUSEHOLD_2_234_CA_3_evaluation",
+    "HOUSEHOLD_2_500_TX_1_evaluation",
+    "FOODS_3_495_WI_2_evaluation",
+    "FOODS_3_647_TX_3_evaluation",
+    "HOUSEHOLD_1_301_CA_3_evaluation",
+    "FOODS_3_530_CA_4_evaluation",
+    "FOODS_3_102_TX_1_evaluation",
+    "HOBBIES_1_349_CA_1_evaluation",
+    "HOUSEHOLD_2_438_TX_2_evaluation",
+    "HOUSEHOLD_1_410_TX_3_evaluation",
+    "FOODS_1_066_TX_1_evaluation",
+    "HOUSEHOLD_1_088_CA_4_evaluation",
+    "HOUSEHOLD_1_309_CA_3_evaluation",
+    "HOUSEHOLD_2_512_TX_3_evaluation",
+    "FOODS_1_084_CA_4_evaluation",
+    "HOBBIES_1_239_CA_4_evaluation",
+    "HOUSEHOLD_1_297_CA_3_evaluation",
+    "HOUSEHOLD_2_508_WI_3_evaluation",
+    "FOODS_3_532_CA_1_evaluation",
+    "FOODS_3_621_CA_1_evaluation",
+    "HOUSEHOLD_1_307_WI_2_evaluation",
+    "FOODS_1_058_WI_2_evaluation",
+    "FOODS_3_537_TX_3_evaluation",
+    "FOODS_3_824_CA_1_evaluation",
+    "HOUSEHOLD_1_404_TX_1_evaluation",
+    "FOODS_2_318_WI_3_evaluation",
+    "FOODS_3_478_CA_3_evaluation",
+    "FOODS_3_643_CA_1_evaluation",
+    "HOUSEHOLD_2_273_TX_1_evaluation",
+    "HOBBIES_1_234_TX_3_evaluation",
+    "FOODS_2_165_TX_2_evaluation",
+    "HOBBIES_2_034_WI_2_evaluation",
+    "HOUSEHOLD_1_258_TX_2_evaluation",
+    "HOUSEHOLD_2_515_TX_3_evaluation",
+    "FOODS_3_530_CA_2_evaluation",
+    "FOODS_3_650_CA_3_evaluation",
+    "HOUSEHOLD_1_489_CA_1_evaluation",
+    "FOODS_1_130_WI_1_evaluation",
+    "FOODS_3_031_CA_3_evaluation",
+    "HOBBIES_1_029_CA_2_evaluation",
+    "HOUSEHOLD_1_346_CA_1_evaluation",
+    "FOODS_1_193_TX_3_evaluation",
+    "FOODS_3_249_WI_3_evaluation",
+    "HOBBIES_1_093_CA_1_evaluation",
+    "HOUSEHOLD_2_053_CA_3_evaluation",
+    "HOBBIES_1_408_TX_1_evaluation",
+    "FOODS_2_007_WI_3_evaluation",
+    "HOBBIES_1_290_WI_2_evaluation",
+    "HOUSEHOLD_2_123_CA_3_evaluation",
+    "HOUSEHOLD_2_515_CA_3_evaluation",
+    "FOODS_2_201_CA_1_evaluation",
+    "FOODS_3_621_CA_3_evaluation",
+    "HOUSEHOLD_1_524_WI_1_evaluation",
+    "HOUSEHOLD_1_319_TX_3_evaluation",
+    "FOODS_2_249_CA_1_evaluation",
+    "HOBBIES_1_161_CA_4_evaluation",
+    "HOUSEHOLD_2_256_TX_2_evaluation",
+    "FOODS_2_255_TX_1_evaluation",
+    "FOODS_1_081_WI_3_evaluation",
+    "HOBBIES_1_131_WI_3_evaluation",
+    "HOUSEHOLD_2_050_CA_1_evaluation",
+    "HOUSEHOLD_2_499_WI_3_evaluation",
+    "FOODS_2_012_TX_1_evaluation",
+    "HOBBIES_1_035_CA_1_evaluation",
+    "HOUSEHOLD_2_058_CA_4_evaluation",
+    "HOUSEHOLD_2_504_TX_1_evaluation",
+    "FOODS_3_437_CA_3_evaluation",
+    "HOUSEHOLD_1_078_CA_1_evaluation",
+    "HOUSEHOLD_1_481_TX_2_evaluation",
+    "FOODS_3_383_CA_1_evaluation",
+    "FOODS_3_212_TX_1_evaluation",
+    "HOBBIES_1_393_WI_1_evaluation",
+    "HOUSEHOLD_1_509_WI_2_evaluation",
+    "HOUSEHOLD_2_033_CA_3_evaluation"
+  ],
+  "sample_seed": 20260904,
+  "model_seed": 0,
+  "forecast_origins": [
+    1745,
+    1773
+  ],
+  "train_origin_stride": 7,
+  "train_origin_counts": {
+    "m5": 228,
+    "favorita": 192
+  },
+  "population_manifest": {
+    "dataset": "m5",
+    "descriptor_variant": "availability_aware",
+    "model_train_end": 1717,
+    "min_positive": 20,
+    "full_total": 30490,
+    "eligible_before_stage_a": 30253,
+    "stage_a_excluded": 1194,
+    "eligible_independent": 29059,
+    "ineligible": 237,
+    "exclusion_reasons": {
+      "n_positive_train_below_20": 237,
+      "stage_a_membership": 1194
+    },
+    "independent_id_sha256": "6adda18f1ce35703c742d7051cc63d767b999966b7e9fc81705c290a29cce682",
+    "eligible_before_stage_a_id_sha256": "b333e362334cbc8edc010507616df3866b9d7f0e38da8371c8edc0c35836c452",
+    "stage_a_excluded_id_sha256": "2376ff1b13bf4dad4caf58c618193a1ca940e546f21d0355e343b8c21981ed52",
+    "eligibility_sensitivity_no_training": {
+      "15": {
+        "min_positive_train": 15,
+        "eligible_before_stage_a": 30315,
+        "stage_a_excluded": 1196,
+        "eligible_independent": 29119,
+        "independent_id_sha256": "89a345dd31311cf26a607c5f7904365fbf93efe8a13ba5c4628417b2d911662b"
+      },
+      "20": {
+        "min_positive_train": 20,
+        "eligible_before_stage_a": 30253,
+        "stage_a_excluded": 1194,
+        "eligible_independent": 29059,
+        "independent_id_sha256": "6adda18f1ce35703c742d7051cc63d767b999966b7e9fc81705c290a29cce682"
+      },
+      "30": {
+        "min_positive_train": 30,
+        "eligible_before_stage_a": 30049,
+        "stage_a_excluded": 1192,
+        "eligible_independent": 28857,
+        "independent_id_sha256": "e336744e0998bf3eb4fe5635e2d20fcd5582a0498f79577ed4d056e730f5f959"
+      }
+    },
+    "distributions": {
+      "n_positive_train": {
+        "count": 29059,
+        "min": 20.0,
+        "p25": 203.0,
+        "median": 424.0,
+        "p75": 759.0,
+        "max": 1714.0
+      },
+      "zero_ratio_train": {
+        "count": 29059,
+        "min": 0.0017472335468841002,
+        "p25": 0.45151224358467773,
+        "median": 0.6464764123471171,
+        "p75": 0.8044537720064402,
+        "max": 0.9866045428072219
+      },
+      "train_scale": {
+        "count": 29059,
+        "min": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 135.7047119140625
+      }
+    }
+  },
+  "training": {
+    "point": {
+      "model_id": "M0PM_point_mse_param_matched",
+      "model_seed": 0,
+      "wall_seconds": 6.887077699881047,
+      "canonical_seconds": 6.578434944152832,
+      "best_epoch": 4,
+      "best_validation_mean_mse": 3.1957456752232143,
+      "n_parameters": 7056
+    },
+    "hurdle": {
+      "model_id": "M1_factorized_mean",
+      "model_seed": 0,
+      "wall_seconds": 8.535756400087848,
+      "canonical_seconds": 8.528579473495483,
+      "best_epoch": 4,
+      "best_validation_mean_mse": 3.229266183035714,
+      "n_parameters": 7056
+    }
+  },
+  "inference": {
+    "point": {
+      "origin_count": 2,
+      "seconds_by_origin": {
+        "1745": 0.002416200004518032,
+        "1773": 0.0037628000136464834
+      },
+      "mean_seconds_per_origin": 0.0030895000090822577
+    },
+    "hurdle": {
+      "origin_count": 2,
+      "seconds_by_origin": {
+        "1745": 0.002526500029489398,
+        "1773": 0.003584199817851186
+      },
+      "mean_seconds_per_origin": 0.003055349923670292
+    }
+  },
+  "cuda_peak_memory_bytes": 17909760,
+  "cuda_peak_memory_by_arm_bytes": {
+    "point": 17899008,
+    "hurdle": 17909760
+  },
+  "retrieval_check": {
+    "memory_origins": [
+      1745
+    ],
+    "query_origin": 1773,
+    "memory_case_count": 200,
+    "query_count": 200,
+    "k": 32,
+    "min_neighbor_count": 32,
+    "max_neighbor_count": 32,
+    "queries_with_same_series_neighbor": 0,
+    "b4_updated_query_count": 200,
+    "m1_updated_query_count": 200,
+    "measured_wall_seconds": 0.5763789000920951,
+    "pipeline_validation_hyperparameters": {
+      "eta": 0.5,
+      "half_life_origins": 1,
+      "lambda_max": 0.25,
+      "scientific_selection": false
+    },
+    "constant_continuous_features_seen": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "serialization": {
+    "format": "parquet",
+    "actual_series": 200,
+    "actual_origins": 2,
+    "actual_rows": 11200,
+    "actual_parquet_bytes": 349227,
+    "full_prediction_storage": {
+      "estimated_bytes_per_series_origin": 873.0675,
+      "by_dataset": {
+        "favorita": 339559524,
+        "m5": 177593279
+      },
+      "total_bytes": 517152803
+    },
+    "prediction_storage_2000_per_dataset": {
+      "estimated_bytes_per_series_origin": 873.0675,
+      "by_dataset": {
+        "favorita": 12222945,
+        "m5": 12222945
+      },
+      "total_bytes": 24445890
+    }
+  },
+  "runtime_projection_full_seed0": {
+    "training_seconds": 5729.124514797299,
+    "inference_seconds": 18.19920204583323,
+    "total_seconds": 5747.3237168431315,
+    "gpu_hours": 1.5964788102342031,
+    "by_dataset": {
+      "favorita": {
+        "training_seconds": 3534.1508549850864,
+        "inference_seconds": 11.949490248978256,
+        "total_seconds": 3546.1003452340647
+      },
+      "m5": {
+        "training_seconds": 2194.9736598122117,
+        "inference_seconds": 6.249711796854972,
+        "total_seconds": 2201.223371609067
+      }
+    }
+  },
+  "runtime_projection_2000_per_dataset": {
+    "training_seconds": 278.2871076935216,
+    "inference_seconds": 0.860278990585357,
+    "total_seconds": 279.14738668410695,
+    "gpu_hours": 0.07754094074558526,
+    "by_dataset": {
+      "favorita": {
+        "training_seconds": 127.21696351703844,
+        "inference_seconds": 0.4301394952926785,
+        "total_seconds": 127.64710301233112
+      },
+      "m5": {
+        "training_seconds": 151.07014417648315,
+        "inference_seconds": 0.4301394952926785,
+        "total_seconds": 151.50028367177583
+      }
+    }
+  },
+  "retrieval_runtime_projection_full_seed0": {
+    "smoke_seconds": 0.5763789000920951,
+    "smoke_n_series": 200,
+    "evaluation_origins": 6,
+    "resolved_origin_units": 21,
+    "retrieval_passes_per_dataset": 7,
+    "by_dataset": {
+      "favorita": {
+        "series": 55561,
+        "quadratic_series_factor": 77175.618025,
+        "seconds": 6538912.481183045,
+        "hours": 1816.3645781064013
+      },
+      "m5": {
+        "series": 29059,
+        "quadratic_series_factor": 21110.637024999996,
+        "seconds": 1788655.6850608047,
+        "hours": 496.8488014057791
+      }
+    },
+    "total_seconds": 8327568.166243849,
+    "cpu_hours": 2313.2133795121804,
+    "complexity_model": "measured_seconds*(N/200)^2*sum(1..6)*passes"
+  },
+  "retrieval_runtime_projection_2000_per_dataset": {
+    "smoke_seconds": 0.5763789000920951,
+    "smoke_n_series": 200,
+    "evaluation_origins": 6,
+    "resolved_origin_units": 21,
+    "retrieval_passes_per_dataset": 7,
+    "by_dataset": {
+      "favorita": {
+        "series": 2000,
+        "quadratic_series_factor": 100.0,
+        "seconds": 8472.769831353799,
+        "hours": 2.3535471753760553
+      },
+      "m5": {
+        "series": 2000,
+        "quadratic_series_factor": 100.0,
+        "seconds": 8472.769831353799,
+        "hours": 2.3535471753760553
+      }
+    },
+    "total_seconds": 16945.539662707597,
+    "cpu_hours": 4.707094350752111,
+    "complexity_model": "measured_seconds*(N/200)^2*sum(1..6)*passes"
+  },
+  "runtime_projection_basis": {
+    "training_seconds": "canonical train_seconds",
+    "reason": "outer wall_seconds includes the canonical function's own two-origin prediction; inference is projected separately",
+    "inference_seconds": "separate synchronized predict calls per origin",
+    "retrieval_seconds": "measured exact first-query-origin B4+M1 policy evaluation; reported separately as CPU wall-time because the preregistered six-hour gate is explicitly GPU runtime"
+  },
+  "runtime_gate": {
+    "threshold_gpu_hours": 6.0,
+    "projected_gpu_hours": 1.5964788102342031,
+    "exceeded": false,
+    "action": "CONTINUE_FULL_SEED0"
+  },
+  "attempt": {
+    "id": "attempt_0001",
+    "path": "smoke/attempt_0001",
+    "restart_policy": "failed attempts remain immutable; retries reserve the next directory"
+  },
+  "forbidden_artifact_integrity": {
+    "before_smoke": {
+      "status": "PASS",
+      "all_unchanged": true,
+      "method": "PowerShell Sort-Object FullName; repo-relative native path, TAB, uppercase file SHA256; LF join without trailing LF; UTF-8 SHA256",
+      "baseline_sources": {
+        "audit": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\ph_online_memory_gono_v1\\audit.json",
+        "extension": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\ph_online_memory_gono_v1\\forbidden_artifact_baseline_extension.json"
+      },
+      "required_exact_directories": [
+        "results/expert_diversity",
+        "results/external_validity_screen",
+        "results/gate_p0l1_robustness",
+        "results/gate_safe_p0l1",
+        "results/gate_v3",
+        "results/paper_manuscript_verified",
+        "results/paper_synthesis",
+        "results/paper_synthesis_verified",
+        "results/pointhurdle_condition_discovery",
+        "results/pointhurdle_recoverability",
+        "results/routing_information_ceiling",
+        "results/structure_gate",
+        "results/temporal_routing_encoder"
+      ],
+      "directories": {
+        "results/expert_diversity": {
+          "expected": {
+            "file_count": 8,
+            "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+          },
+          "current": {
+            "file_count": 8,
+            "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+          },
+          "unchanged": true
+        },
+        "results/external_validity_screen": {
+          "expected": {
+            "file_count": 131,
+            "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+          },
+          "current": {
+            "file_count": 131,
+            "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+          },
+          "unchanged": true
+        },
+        "results/gate_p0l1_robustness": {
+          "expected": {
+            "file_count": 21,
+            "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+          },
+          "current": {
+            "file_count": 21,
+            "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+          },
+          "unchanged": true
+        },
+        "results/gate_safe_p0l1": {
+          "expected": {
+            "file_count": 26,
+            "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+          },
+          "current": {
+            "file_count": 26,
+            "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+          },
+          "unchanged": true
+        },
+        "results/gate_v3": {
+          "expected": {
+            "file_count": 35,
+            "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+          },
+          "current": {
+            "file_count": 35,
+            "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+          },
+          "unchanged": true
+        },
+        "results/paper_manuscript_verified": {
+          "expected": {
+            "file_count": 27,
+            "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+          },
+          "current": {
+            "file_count": 27,
+            "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+          },
+          "unchanged": true
+        },
+        "results/paper_synthesis": {
+          "expected": {
+            "file_count": 20,
+            "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+          },
+          "current": {
+            "file_count": 20,
+            "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+          },
+          "unchanged": true
+        },
+        "results/paper_synthesis_verified": {
+          "expected": {
+            "file_count": 3,
+            "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+          },
+          "current": {
+            "file_count": 3,
+            "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+          },
+          "unchanged": true
+        },
+        "results/pointhurdle_condition_discovery": {
+          "expected": {
+            "file_count": 15,
+            "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+          },
+          "current": {
+            "file_count": 15,
+            "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+          },
+          "unchanged": true
+        },
+        "results/pointhurdle_recoverability": {
+          "expected": {
+            "file_count": 26,
+            "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+          },
+          "current": {
+            "file_count": 26,
+            "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+          },
+          "unchanged": true
+        },
+        "results/routing_information_ceiling": {
+          "expected": {
+            "file_count": 32,
+            "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+          },
+          "current": {
+            "file_count": 32,
+            "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+          },
+          "unchanged": true
+        },
+        "results/structure_gate": {
+          "expected": {
+            "file_count": 42,
+            "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+          },
+          "current": {
+            "file_count": 42,
+            "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+          },
+          "unchanged": true
+        },
+        "results/temporal_routing_encoder": {
+          "expected": {
+            "file_count": 30,
+            "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+          },
+          "current": {
+            "file_count": 30,
+            "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+          },
+          "unchanged": true
+        }
+      }
+    },
+    "after_smoke": {
+      "status": "PASS",
+      "all_unchanged": true,
+      "method": "PowerShell Sort-Object FullName; repo-relative native path, TAB, uppercase file SHA256; LF join without trailing LF; UTF-8 SHA256",
+      "baseline_sources": {
+        "audit": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\ph_online_memory_gono_v1\\audit.json",
+        "extension": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\ph_online_memory_gono_v1\\forbidden_artifact_baseline_extension.json"
+      },
+      "required_exact_directories": [
+        "results/expert_diversity",
+        "results/external_validity_screen",
+        "results/gate_p0l1_robustness",
+        "results/gate_safe_p0l1",
+        "results/gate_v3",
+        "results/paper_manuscript_verified",
+        "results/paper_synthesis",
+        "results/paper_synthesis_verified",
+        "results/pointhurdle_condition_discovery",
+        "results/pointhurdle_recoverability",
+        "results/routing_information_ceiling",
+        "results/structure_gate",
+        "results/temporal_routing_encoder"
+      ],
+      "directories": {
+        "results/expert_diversity": {
+          "expected": {
+            "file_count": 8,
+            "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+          },
+          "current": {
+            "file_count": 8,
+            "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+          },
+          "unchanged": true
+        },
+        "results/external_validity_screen": {
+          "expected": {
+            "file_count": 131,
+            "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+          },
+          "current": {
+            "file_count": 131,
+            "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+          },
+          "unchanged": true
+        },
+        "results/gate_p0l1_robustness": {
+          "expected": {
+            "file_count": 21,
+            "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+          },
+          "current": {
+            "file_count": 21,
+            "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+          },
+          "unchanged": true
+        },
+        "results/gate_safe_p0l1": {
+          "expected": {
+            "file_count": 26,
+            "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+          },
+          "current": {
+            "file_count": 26,
+            "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+          },
+          "unchanged": true
+        },
+        "results/gate_v3": {
+          "expected": {
+            "file_count": 35,
+            "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+          },
+          "current": {
+            "file_count": 35,
+            "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+          },
+          "unchanged": true
+        },
+        "results/paper_manuscript_verified": {
+          "expected": {
+            "file_count": 27,
+            "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+          },
+          "current": {
+            "file_count": 27,
+            "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+          },
+          "unchanged": true
+        },
+        "results/paper_synthesis": {
+          "expected": {
+            "file_count": 20,
+            "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+          },
+          "current": {
+            "file_count": 20,
+            "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+          },
+          "unchanged": true
+        },
+        "results/paper_synthesis_verified": {
+          "expected": {
+            "file_count": 3,
+            "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+          },
+          "current": {
+            "file_count": 3,
+            "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+          },
+          "unchanged": true
+        },
+        "results/pointhurdle_condition_discovery": {
+          "expected": {
+            "file_count": 15,
+            "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+          },
+          "current": {
+            "file_count": 15,
+            "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+          },
+          "unchanged": true
+        },
+        "results/pointhurdle_recoverability": {
+          "expected": {
+            "file_count": 26,
+            "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+          },
+          "current": {
+            "file_count": 26,
+            "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+          },
+          "unchanged": true
+        },
+        "results/routing_information_ceiling": {
+          "expected": {
+            "file_count": 32,
+            "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+          },
+          "current": {
+            "file_count": 32,
+            "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+          },
+          "unchanged": true
+        },
+        "results/structure_gate": {
+          "expected": {
+            "file_count": 42,
+            "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+          },
+          "current": {
+            "file_count": 42,
+            "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+          },
+          "unchanged": true
+        },
+        "results/temporal_routing_encoder": {
+          "expected": {
+            "file_count": 30,
+            "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+          },
+          "current": {
+            "file_count": 30,
+            "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+          },
+          "unchanged": true
+        }
+      }
+    }
+  },
+  "started_at_utc": "2026-09-04T09:55:23.903968+00:00",
+  "completed_at_utc": "2026-09-04T09:55:46.026477+00:00",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5",
+  "artifacts": {
+    "population_audit": {
+      "path": "smoke/attempt_0001/population_audit.json",
+      "sha256": "654f920f56a96924f8ba6886c75011a9f1567f59bf593e78267cd71eabd4caa0"
+    },
+    "predictions": {
+      "path": "smoke/attempt_0001/predictions.parquet",
+      "bytes": 349227,
+      "sha256": "e40e31588c15094b7ca03aa60a68b0f3bf40033943c7143a8d4052206afe4c22"
+    },
+    "expert_losses": {
+      "path": "smoke/attempt_0001/expert_losses.parquet",
+      "bytes": 31750,
+      "sha256": "6ab345678cc20219012be4165be8aead87399a77360a2044ddd182a57017f6f6"
+    }
+  }
+}

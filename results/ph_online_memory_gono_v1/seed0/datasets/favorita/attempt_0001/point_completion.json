@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "ARM_CHECKPOINT_COMPLETE",
+  "dataset": "favorita",
+  "model_seed": 0,
+  "arm": "point",
+  "model_id": "M0PM_point_mse_param_matched",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5",
+  "runtime_estimate_sha256": "d214d220f11b5e9effe37f3e911ce686bd1b96b8b27abdac7466d2e5c9c86f9a",
+  "completed_at_utc": "2026-09-04T11:12:31.218512+00:00",
+  "artifacts": {
+    "checkpoint": {
+      "path": "point_checkpoint.pt",
+      "bytes": 30784,
+      "sha256": "474985fe505144ce19a4b53a215ebc6f94ed4ff0388febe25a27d8804abea873"
+    },
+    "prediction_heads": {
+      "path": "point_prediction_heads.pt",
+      "bytes": 43560988,
+      "sha256": "8548c2a1767b80f5832f690edfd99881f4d11044b9936b03eb49cc747c3fbdaf"
+    },
+    "provenance": {
+      "path": "point_provenance.json",
+      "bytes": 635,
+      "sha256": "e5126e779df82584180b1a145b9c1dce0f43cbcf78723e2bbe2e2fe66a848c65"
+    }
+  },
+  "completion_payload_sha256": "3e05c766a92b583983766a8b2b1561ec2742b0af407f21513ab949aa80515a3e"
+}

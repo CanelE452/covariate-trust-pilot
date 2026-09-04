@@ -1,0 +1,143 @@
+{
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "NEW_CUTOFF_POPULATION_AUDIT",
+  "scientific_result": false,
+  "created_at_utc": "2026-09-04T09:55:23.903968+00:00",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5",
+  "datasets": {
+    "m5": {
+      "dataset": "m5",
+      "descriptor_variant": "availability_aware",
+      "model_train_end": 1717,
+      "min_positive": 20,
+      "full_total": 30490,
+      "eligible_before_stage_a": 30253,
+      "stage_a_excluded": 1194,
+      "eligible_independent": 29059,
+      "ineligible": 237,
+      "exclusion_reasons": {
+        "n_positive_train_below_20": 237,
+        "stage_a_membership": 1194
+      },
+      "independent_id_sha256": "6adda18f1ce35703c742d7051cc63d767b999966b7e9fc81705c290a29cce682",
+      "eligible_before_stage_a_id_sha256": "b333e362334cbc8edc010507616df3866b9d7f0e38da8371c8edc0c35836c452",
+      "stage_a_excluded_id_sha256": "2376ff1b13bf4dad4caf58c618193a1ca940e546f21d0355e343b8c21981ed52",
+      "eligibility_sensitivity_no_training": {
+        "15": {
+          "min_positive_train": 15,
+          "eligible_before_stage_a": 30315,
+          "stage_a_excluded": 1196,
+          "eligible_independent": 29119,
+          "independent_id_sha256": "89a345dd31311cf26a607c5f7904365fbf93efe8a13ba5c4628417b2d911662b"
+        },
+        "20": {
+          "min_positive_train": 20,
+          "eligible_before_stage_a": 30253,
+          "stage_a_excluded": 1194,
+          "eligible_independent": 29059,
+          "independent_id_sha256": "6adda18f1ce35703c742d7051cc63d767b999966b7e9fc81705c290a29cce682"
+        },
+        "30": {
+          "min_positive_train": 30,
+          "eligible_before_stage_a": 30049,
+          "stage_a_excluded": 1192,
+          "eligible_independent": 28857,
+          "independent_id_sha256": "e336744e0998bf3eb4fe5635e2d20fcd5582a0498f79577ed4d056e730f5f959"
+        }
+      },
+      "distributions": {
+        "n_positive_train": {
+          "count": 29059,
+          "min": 20.0,
+          "p25": 203.0,
+          "median": 424.0,
+          "p75": 759.0,
+          "max": 1714.0
+        },
+        "zero_ratio_train": {
+          "count": 29059,
+          "min": 0.0017472335468841002,
+          "p25": 0.45151224358467773,
+          "median": 0.6464764123471171,
+          "p75": 0.8044537720064402,
+          "max": 0.9866045428072219
+        },
+        "train_scale": {
+          "count": 29059,
+          "min": 1.0,
+          "p25": 1.0,
+          "median": 1.0,
+          "p75": 1.0,
+          "max": 135.7047119140625
+        }
+      }
+    },
+    "favorita": {
+      "dataset": "favorita",
+      "descriptor_variant": "raw",
+      "model_train_end": 1464,
+      "min_positive": 20,
+      "full_total": 56918,
+      "eligible_before_stage_a": 56754,
+      "stage_a_excluded": 1193,
+      "eligible_independent": 55561,
+      "ineligible": 164,
+      "exclusion_reasons": {
+        "n_positive_train_below_20": 164,
+        "stage_a_membership": 1193
+      },
+      "independent_id_sha256": "50df9cdf4dbe5819ad48f84222ff84182ab725a752441ae43fee3b6bc97b5df7",
+      "eligible_before_stage_a_id_sha256": "b4d67f0e992f1662b922be43539dd9972a9fa4059d2f75b740566cf75c4cc23f",
+      "stage_a_excluded_id_sha256": "50016e4fda9297e5fb581e49e3e9c145cec4fe917aff6b5c379dbddc38843665",
+      "eligibility_sensitivity_no_training": {
+        "15": {
+          "min_positive_train": 15,
+          "eligible_before_stage_a": 56788,
+          "stage_a_excluded": 1194,
+          "eligible_independent": 55594,
+          "independent_id_sha256": "e353811fcd7cabbb7e07a41d8e00615ba6a85072f69aae65d696db373103958f"
+        },
+        "20": {
+          "min_positive_train": 20,
+          "eligible_before_stage_a": 56754,
+          "stage_a_excluded": 1193,
+          "eligible_independent": 55561,
+          "independent_id_sha256": "50df9cdf4dbe5819ad48f84222ff84182ab725a752441ae43fee3b6bc97b5df7"
+        },
+        "30": {
+          "min_positive_train": 30,
+          "eligible_before_stage_a": 56710,
+          "stage_a_excluded": 1189,
+          "eligible_independent": 55521,
+          "independent_id_sha256": "fb60ee05ada53c48c53ef80302d68cd7b310de4720f3dd3daa0e4148b826d58a"
+        }
+      },
+      "distributions": {
+        "n_positive_train": {
+          "count": 55561,
+          "min": 20.0,
+          "p25": 857.0,
+          "median": 1172.0,
+          "p75": 1345.0,
+          "max": 1455.0
+        },
+        "zero_ratio_train": {
+          "count": 55561,
+          "min": 0.006147540983606557,
+          "p25": 0.08128415300546447,
+          "median": 0.1994535519125683,
+          "p75": 0.4146174863387978,
+          "max": 0.9863387978142076
+        },
+        "train_scale": {
+          "count": 55561,
+          "min": 1.0,
+          "p25": 1.5396175384521484,
+          "median": 3.2609288692474365,
+          "p75": 6.8101091384887695,
+          "max": 514.5430297851562
+        }
+      }
+    }
+  }
+}

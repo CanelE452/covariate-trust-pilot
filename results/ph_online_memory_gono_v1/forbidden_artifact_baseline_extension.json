@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "experiment_name": "PH-ONLINE-MEMORY-GONO-v1",
+  "created_at_utc": "2026-09-04T09:15:14.6880409Z",
+  "status": "PREFREEZE_BASELINE_EXTENSION",
+  "reason": "The immutable Phase-0 audit omitted the directories selected by results/paper_synthesis*/ and results/paper_manuscript_verified/ from the user's forbidden-artifact list. The audit itself remains unchanged; this append-only extension closes that coverage gap before preregistration and before any model fit.",
+  "prior_audit": {
+    "path": "results/ph_online_memory_gono_v1/audit.json",
+    "sha256": "9B1634B7BC49821E9F29B04BB1ADDA42903F2C52267314984165A79071E083F4"
+  },
+  "request": {
+    "sha256": "B606BD0E115E4170E5AB844E73D3CDB988D89FF9139DF3CF270E6E7E977E9C4",
+    "directory_rules": [
+      "results/structure_gate",
+      "results/expert_diversity",
+      "results/gate_v3",
+      "results/gate_p0l1_robustness",
+      "results/gate_safe_p0l1",
+      "results/routing_information_ceiling",
+      "results/temporal_routing_encoder",
+      "results/pointhurdle_condition_discovery",
+      "results/pointhurdle_recoverability",
+      "results/external_validity_screen",
+      "results/paper_synthesis*",
+      "results/paper_manuscript_verified"
+    ]
+  },
+  "required_exact_directories": [
+    "results/structure_gate",
+    "results/expert_diversity",
+    "results/gate_v3",
+    "results/gate_p0l1_robustness",
+    "results/gate_safe_p0l1",
+    "results/routing_information_ceiling",
+    "results/temporal_routing_encoder",
+    "results/pointhurdle_condition_discovery",
+    "results/pointhurdle_recoverability",
+    "results/external_validity_screen",
+    "results/paper_synthesis",
+    "results/paper_synthesis_verified",
+    "results/paper_manuscript_verified"
+  ],
+  "additional_forbidden_artifact_directory_hashes_before": {
+    "results/paper_synthesis": {
+      "file_count": 20,
+      "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+    },
+    "results/paper_synthesis_verified": {
+      "file_count": 3,
+      "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+    },
+    "results/paper_manuscript_verified": {
+      "file_count": 27,
+      "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+    }
+  },
+  "baseline_method": "PowerShell Sort-Object FullName; repo-relative native path, TAB, uppercase file SHA256; LF join without trailing LF; UTF-8 SHA256",
+  "git_status_at_extension": "No tracked, modified, or untracked entries under the three added directories."
+}

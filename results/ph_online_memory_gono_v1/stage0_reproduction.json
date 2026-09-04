@@ -1,0 +1,506 @@
+{
+  "status": "PASS",
+  "input_sha256": {
+    "m5": "a2810787033baac622e6558a53da526f0cb9b2e80d09cf2c4dbe699d2f207f6f",
+    "favorita": "0df546bb479f70b8667c515c421ffe2a4f91dada9f1d50c0ee0300a776c22822"
+  },
+  "reference_sha256": {
+    "condition_discovery": "0917e4cc69948c72bf9c33afcccf969a8dc8bb2c74271bb00777cba1d5da532f",
+    "recoverability": "4c21015897e140de30177d7b8c97093c8ccadbf3ed00545ef8070e6206485e41"
+  },
+  "raw_rows": {
+    "m5": 478212,
+    "favorita": 454020
+  },
+  "panel_rows": 33294,
+  "dataset_rows": {
+    "m5": 17079,
+    "favorita": 16215
+  },
+  "series": {
+    "m5": 5693,
+    "favorita": 5405
+  },
+  "origins": {
+    "m5": [
+      1857,
+      1885,
+      1913
+    ],
+    "favorita": [
+      1604,
+      1632,
+      1660
+    ]
+  },
+  "panel_max_abs_diff": 0.0,
+  "recoverability_panel_max_abs_gain_diff": 3.395523842186776e-05,
+  "winner_counts": {
+    "point": 11269,
+    "neutral": 7101,
+    "hurdle": 14924
+  },
+  "winner_rates_percent": {
+    "point": 33.846939388478404,
+    "neutral": 21.32816723734006,
+    "hurdle": 44.824893374181535
+  },
+  "static_convex": {
+    "hurdle_weight_grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ],
+    "datasets": {
+      "m5": {
+        "loss_50_50": 1.631527066230774,
+        "best_static_hurdle_weight": 0.6,
+        "best_static_loss": 1.6311852931976318,
+        "series_oracle_loss": 1.6096305847167969,
+        "origin_oracle_loss": 1.5923551321029663,
+        "grid_mean_loss_min": 1.6311852931976318,
+        "grid_mean_loss_max": 1.6493217945098877
+      },
+      "favorita": {
+        "loss_50_50": 2.4211301803588867,
+        "best_static_hurdle_weight": 0.85,
+        "best_static_loss": 2.407510995864868,
+        "series_oracle_loss": 2.355937957763672,
+        "origin_oracle_loss": 2.3281784057617188,
+        "grid_mean_loss_min": 2.407510995864868,
+        "grid_mean_loss_max": 2.4848849773406982
+      }
+    },
+    "endpoint_max_abs_diff": 0.0,
+    "convex_range_valid": true,
+    "reported_quantity_ordering_valid": true
+  },
+  "exponential_weighting": {
+    "scope": "numerical/sign diagnostic on squared frozen RMSE histories; not a reproduction of historical undiscounted D3 or six-origin B4",
+    "eta": 32.0,
+    "half_life": 1,
+    "extreme_hurdle_weights": [
+      0.0,
+      1.0,
+      0.5
+    ],
+    "extreme_underflow_guarded": true,
+    "frozen_discounted_weight_count": 22196,
+    "frozen_weights_finite": true,
+    "frozen_weight_sign_consistent": true,
+    "frozen_hurdle_weight_min": 0.0,
+    "frozen_hurdle_weight_max": 1.0
+  },
+  "series_cluster_bootstrap": {
+    "seed": 20260904,
+    "draws": 2000,
+    "deterministic": true,
+    "finite": true,
+    "reference_scope": "point estimates reproduce the frozen P3 artifact; intervals are new seed-20260904 diagnostics because the historical intervals used seed 20260813",
+    "datasets": {
+      "m5": {
+        "source_dataset": "favorita",
+        "source_baseline_choice": "hurdle",
+        "point_estimate": 0.5612747113886505,
+        "mean": 0.5601488103573656,
+        "ci_low": 0.42870019469627496,
+        "ci_high": 0.7031663033613911
+      },
+      "favorita": {
+        "source_dataset": "m5",
+        "source_baseline_choice": "hurdle",
+        "point_estimate": -0.47484091167238746,
+        "mean": -0.4774475021423619,
+        "ci_low": -0.6959782930095294,
+        "ci_high": -0.2604305318469868
+      }
+    }
+  },
+  "constant_spearman": {
+    "status": "DEGENERATE",
+    "rho": null,
+    "pvalue": null,
+    "n": 33294
+  },
+  "checks": {
+    "schema": true,
+    "row_counts": true,
+    "keys_unique": true,
+    "pairing": true,
+    "masks": true,
+    "finiteness": true,
+    "occurrence_identity": true,
+    "hurdle_factorization": true,
+    "condition_discovery_reference": true,
+    "recoverability_reference": true,
+    "aggregate_tolerances": true,
+    "static_convex_grid": true,
+    "exponential_weighting": true,
+    "series_cluster_bootstrap": true,
+    "constant_spearman_degenerate": true
+  },
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "STAGE0_CACHED_THREE_ORIGIN_REPRODUCTION",
+  "scientific_result": false,
+  "started_at_utc": "2026-09-04T09:53:42.737326+00:00",
+  "completed_at_utc": "2026-09-04T09:53:51.411908+00:00",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5",
+  "forbidden_artifact_integrity": {
+    "before_stage0": {
+      "status": "PASS",
+      "all_unchanged": true,
+      "method": "PowerShell Sort-Object FullName; repo-relative native path, TAB, uppercase file SHA256; LF join without trailing LF; UTF-8 SHA256",
+      "baseline_sources": {
+        "audit": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\ph_online_memory_gono_v1\\audit.json",
+        "extension": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\ph_online_memory_gono_v1\\forbidden_artifact_baseline_extension.json"
+      },
+      "required_exact_directories": [
+        "results/expert_diversity",
+        "results/external_validity_screen",
+        "results/gate_p0l1_robustness",
+        "results/gate_safe_p0l1",
+        "results/gate_v3",
+        "results/paper_manuscript_verified",
+        "results/paper_synthesis",
+        "results/paper_synthesis_verified",
+        "results/pointhurdle_condition_discovery",
+        "results/pointhurdle_recoverability",
+        "results/routing_information_ceiling",
+        "results/structure_gate",
+        "results/temporal_routing_encoder"
+      ],
+      "directories": {
+        "results/expert_diversity": {
+          "expected": {
+            "file_count": 8,
+            "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+          },
+          "current": {
+            "file_count": 8,
+            "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+          },
+          "unchanged": true
+        },
+        "results/external_validity_screen": {
+          "expected": {
+            "file_count": 131,
+            "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+          },
+          "current": {
+            "file_count": 131,
+            "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+          },
+          "unchanged": true
+        },
+        "results/gate_p0l1_robustness": {
+          "expected": {
+            "file_count": 21,
+            "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+          },
+          "current": {
+            "file_count": 21,
+            "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+          },
+          "unchanged": true
+        },
+        "results/gate_safe_p0l1": {
+          "expected": {
+            "file_count": 26,
+            "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+          },
+          "current": {
+            "file_count": 26,
+            "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+          },
+          "unchanged": true
+        },
+        "results/gate_v3": {
+          "expected": {
+            "file_count": 35,
+            "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+          },
+          "current": {
+            "file_count": 35,
+            "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+          },
+          "unchanged": true
+        },
+        "results/paper_manuscript_verified": {
+          "expected": {
+            "file_count": 27,
+            "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+          },
+          "current": {
+            "file_count": 27,
+            "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+          },
+          "unchanged": true
+        },
+        "results/paper_synthesis": {
+          "expected": {
+            "file_count": 20,
+            "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+          },
+          "current": {
+            "file_count": 20,
+            "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+          },
+          "unchanged": true
+        },
+        "results/paper_synthesis_verified": {
+          "expected": {
+            "file_count": 3,
+            "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+          },
+          "current": {
+            "file_count": 3,
+            "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+          },
+          "unchanged": true
+        },
+        "results/pointhurdle_condition_discovery": {
+          "expected": {
+            "file_count": 15,
+            "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+          },
+          "current": {
+            "file_count": 15,
+            "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+          },
+          "unchanged": true
+        },
+        "results/pointhurdle_recoverability": {
+          "expected": {
+            "file_count": 26,
+            "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+          },
+          "current": {
+            "file_count": 26,
+            "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+          },
+          "unchanged": true
+        },
+        "results/routing_information_ceiling": {
+          "expected": {
+            "file_count": 32,
+            "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+          },
+          "current": {
+            "file_count": 32,
+            "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+          },
+          "unchanged": true
+        },
+        "results/structure_gate": {
+          "expected": {
+            "file_count": 42,
+            "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+          },
+          "current": {
+            "file_count": 42,
+            "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+          },
+          "unchanged": true
+        },
+        "results/temporal_routing_encoder": {
+          "expected": {
+            "file_count": 30,
+            "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+          },
+          "current": {
+            "file_count": 30,
+            "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+          },
+          "unchanged": true
+        }
+      }
+    },
+    "after_stage0": {
+      "status": "PASS",
+      "all_unchanged": true,
+      "method": "PowerShell Sort-Object FullName; repo-relative native path, TAB, uppercase file SHA256; LF join without trailing LF; UTF-8 SHA256",
+      "baseline_sources": {
+        "audit": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\ph_online_memory_gono_v1\\audit.json",
+        "extension": "E:\\CODING\\proj\\covariate-trust-pilot\\results\\ph_online_memory_gono_v1\\forbidden_artifact_baseline_extension.json"
+      },
+      "required_exact_directories": [
+        "results/expert_diversity",
+        "results/external_validity_screen",
+        "results/gate_p0l1_robustness",
+        "results/gate_safe_p0l1",
+        "results/gate_v3",
+        "results/paper_manuscript_verified",
+        "results/paper_synthesis",
+        "results/paper_synthesis_verified",
+        "results/pointhurdle_condition_discovery",
+        "results/pointhurdle_recoverability",
+        "results/routing_information_ceiling",
+        "results/structure_gate",
+        "results/temporal_routing_encoder"
+      ],
+      "directories": {
+        "results/expert_diversity": {
+          "expected": {
+            "file_count": 8,
+            "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+          },
+          "current": {
+            "file_count": 8,
+            "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+          },
+          "unchanged": true
+        },
+        "results/external_validity_screen": {
+          "expected": {
+            "file_count": 131,
+            "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+          },
+          "current": {
+            "file_count": 131,
+            "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+          },
+          "unchanged": true
+        },
+        "results/gate_p0l1_robustness": {
+          "expected": {
+            "file_count": 21,
+            "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+          },
+          "current": {
+            "file_count": 21,
+            "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+          },
+          "unchanged": true
+        },
+        "results/gate_safe_p0l1": {
+          "expected": {
+            "file_count": 26,
+            "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+          },
+          "current": {
+            "file_count": 26,
+            "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+          },
+          "unchanged": true
+        },
+        "results/gate_v3": {
+          "expected": {
+            "file_count": 35,
+            "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+          },
+          "current": {
+            "file_count": 35,
+            "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+          },
+          "unchanged": true
+        },
+        "results/paper_manuscript_verified": {
+          "expected": {
+            "file_count": 27,
+            "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+          },
+          "current": {
+            "file_count": 27,
+            "sha256": "15142CA653FD07D9B8ADC778E64D824D5FE9704C2DAA120117D85A2215B6B28B"
+          },
+          "unchanged": true
+        },
+        "results/paper_synthesis": {
+          "expected": {
+            "file_count": 20,
+            "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+          },
+          "current": {
+            "file_count": 20,
+            "sha256": "DF7D6A64F6690C86379E48D174EDFA7FFF7EEB329F994AAF24DD0E5CB6A73BCC"
+          },
+          "unchanged": true
+        },
+        "results/paper_synthesis_verified": {
+          "expected": {
+            "file_count": 3,
+            "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+          },
+          "current": {
+            "file_count": 3,
+            "sha256": "00D501AB75FE0F713F7D0E47E355BBB9A6437048CAABC96CD66190D69B4C4C2D"
+          },
+          "unchanged": true
+        },
+        "results/pointhurdle_condition_discovery": {
+          "expected": {
+            "file_count": 15,
+            "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+          },
+          "current": {
+            "file_count": 15,
+            "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+          },
+          "unchanged": true
+        },
+        "results/pointhurdle_recoverability": {
+          "expected": {
+            "file_count": 26,
+            "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+          },
+          "current": {
+            "file_count": 26,
+            "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+          },
+          "unchanged": true
+        },
+        "results/routing_information_ceiling": {
+          "expected": {
+            "file_count": 32,
+            "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+          },
+          "current": {
+            "file_count": 32,
+            "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+          },
+          "unchanged": true
+        },
+        "results/structure_gate": {
+          "expected": {
+            "file_count": 42,
+            "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+          },
+          "current": {
+            "file_count": 42,
+            "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+          },
+          "unchanged": true
+        },
+        "results/temporal_routing_encoder": {
+          "expected": {
+            "file_count": 30,
+            "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+          },
+          "current": {
+            "file_count": 30,
+            "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+          },
+          "unchanged": true
+        }
+      }
+    }
+  }
+}

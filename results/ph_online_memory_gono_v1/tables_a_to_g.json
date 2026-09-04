@@ -1,0 +1,354 @@
+{
+  "schema_version": 1,
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "FINAL_TABLES_A_TO_G",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5",
+  "runtime_estimate_sha256": "d214d220f11b5e9effe37f3e911ce686bd1b96b8b27abdac7466d2e5c9c86f9a",
+  "final_gate_report_sha256": "3603e4cea3ebe16c4ec6bfaad8b61b29d04a750abf7af55a7166435a533bcfb4",
+  "final_gate_report_payload_sha256": "b92028b63d811cadeb5740dd61c4e03cb56cf45cb4b66a11ab6b451f8c84befc",
+  "source_seed_analysis_artifacts": {
+    "0": {
+      "path": "seed0/analysis/attempt_0001",
+      "completion_file_sha256": "6391c1007ba3fadb77da761f3988ed72977aabb542183a40fa602175facd1164",
+      "completion_payload_sha256": "4f3118657592a7eefc1455837421a1ec46a372093584af0a027d3e1e27a27ddd"
+    }
+  },
+  "tables": {
+    "table_a": [
+      {
+        "dataset": "m5",
+        "eligible_n": 29059,
+        "train_end": 1717,
+        "validation_interval": [
+          1717,
+          1745
+        ],
+        "interval_encoding": "half_open",
+        "warmup_origin": 1745,
+        "evaluation_origins": [
+          1773,
+          1801,
+          1829,
+          1857,
+          1885,
+          1913
+        ],
+        "point_params": {
+          "model_id": "M0PM_point_mse_param_matched",
+          "n_parameters": 7056
+        },
+        "hurdle_params": {
+          "model_id": "M1_factorized_mean",
+          "n_parameters": 7056
+        },
+        "executed_model_seeds": [
+          0
+        ],
+        "training_runtime_seconds": 2370.218531847,
+        "training_runtime_by_seed_seconds": {
+          "0": {
+            "point": 1020.4039692878723,
+            "hurdle": 1349.8145625591278
+          }
+        },
+        "actual_synchronized_end_to_end_wall_seconds": 2375.6978724999353,
+        "actual_synchronized_end_to_end_wall_by_seed_seconds": {
+          "0": {
+            "point": 1023.269578400068,
+            "hurdle": 1352.4282940998673
+          }
+        },
+        "execution_device_type": "cuda",
+        "status": "OBSERVED"
+      },
+      {
+        "dataset": "favorita",
+        "eligible_n": 55561,
+        "train_end": 1464,
+        "validation_interval": [
+          1464,
+          1492
+        ],
+        "interval_encoding": "half_open",
+        "warmup_origin": 1492,
+        "evaluation_origins": [
+          1520,
+          1548,
+          1576,
+          1604,
+          1632,
+          1660
+        ],
+        "point_params": {
+          "model_id": "M0PM_point_mse_param_matched",
+          "n_parameters": 7056
+        },
+        "hurdle_params": {
+          "model_id": "M1_factorized_mean",
+          "n_parameters": 7056
+        },
+        "executed_model_seeds": [
+          0
+        ],
+        "training_runtime_seconds": 5666.182096004486,
+        "training_runtime_by_seed_seconds": {
+          "0": {
+            "point": 2028.035808801651,
+            "hurdle": 3638.146287202835
+          }
+        },
+        "actual_synchronized_end_to_end_wall_seconds": 5675.834096999839,
+        "actual_synchronized_end_to_end_wall_by_seed_seconds": {
+          "0": {
+            "point": 2033.1338698000181,
+            "hurdle": 3642.700227199821
+          }
+        },
+        "execution_device_type": "cuda",
+        "status": "OBSERVED"
+      }
+    ],
+    "table_b": [
+      {
+        "dataset": "m5",
+        "always_point_loss": 1.7261906985345432,
+        "always_hurdle_loss": 1.5797869068316117,
+        "half_half_loss": 1.5909909502738298,
+        "source_dataset": "favorita",
+        "source_static_alpha": 0.55,
+        "source_static_status": "OBSERVED",
+        "target_oracle_static_alpha": 0.8,
+        "target_oracle_static_loss": 1.5693890396302792,
+        "origin_hard_oracle_loss": 1.493513637970448,
+        "origin_convex_oracle_loss": 1.4848752107493735,
+        "status": "OBSERVED"
+      },
+      {
+        "dataset": "favorita",
+        "always_point_loss": 1.8467329923807234,
+        "always_hurdle_loss": 1.8386150244386605,
+        "half_half_loss": 1.8258155135908642,
+        "source_dataset": "m5",
+        "source_static_alpha": 0.8,
+        "source_static_status": "OBSERVED",
+        "target_oracle_static_alpha": 0.55,
+        "target_oracle_static_loss": 1.8255782001419496,
+        "origin_hard_oracle_loss": 1.7828078381853827,
+        "origin_convex_oracle_loss": 1.7810604333889304,
+        "status": "OBSERVED"
+      }
+    ],
+    "table_c": [
+      {
+        "dataset": "m5",
+        "lag1_spearman": 0.22381171915131903,
+        "ci95": [
+          0.2156065527607962,
+          0.2317840438152952
+        ],
+        "shuffled_spearman": -0.0021618616949033885,
+        "real_minus_shuffled": 0.22597358084622243,
+        "gate_1a": "PASS",
+        "status": "OBSERVED"
+      },
+      {
+        "dataset": "favorita",
+        "lag1_spearman": 0.33143629448671985,
+        "ci95": [
+          0.3261469673929036,
+          0.33682505909538035
+        ],
+        "shuffled_spearman": 0.0005582845520612447,
+        "real_minus_shuffled": 0.3308780099346586,
+        "gate_1a": "PASS",
+        "status": "OBSERVED"
+      }
+    ],
+    "table_d": [
+      {
+        "target": "m5",
+        "source": "favorita",
+        "b3_loss": 1.584290739212776,
+        "b4_loss": 1.584432999654078,
+        "m1_loss": null,
+        "ri_b4_vs_b3_percent": -0.008979440312373299,
+        "ri_m1_vs_b3_percent": null,
+        "ri_m1_vs_b4_percent": null,
+        "ci95_percent": null,
+        "status": "PARTIAL_OBSERVED_M1_NOT_RUN_AFTER_GATE1B"
+      },
+      {
+        "target": "favorita",
+        "source": "m5",
+        "b3_loss": 1.8294491813430234,
+        "b4_loss": 1.8145240764275583,
+        "m1_loss": null,
+        "ri_b4_vs_b3_percent": 0.8158250618641616,
+        "ri_m1_vs_b3_percent": null,
+        "ri_m1_vs_b4_percent": null,
+        "ci95_percent": null,
+        "status": "PARTIAL_OBSERVED_M1_NOT_RUN_AFTER_GATE1B"
+      }
+    ],
+    "table_e": [
+      {
+        "target": null,
+        "origin": null,
+        "ri_m1_vs_b3_percent": null,
+        "ri_m1_vs_b4_percent": null,
+        "is_worst_origin": null,
+        "status": "NOT_RUN_AFTER_GATE1B"
+      }
+    ],
+    "table_f": [
+      {
+        "target": null,
+        "real_retrieval_ri_percent": null,
+        "shuffled_value_ri_percent": null,
+        "random_neighbor_ri_percent": null,
+        "control_over_real_ratio": null,
+        "status": "NOT_RUN_AFTER_GATE1B"
+      }
+    ],
+    "table_g": [
+      {
+        "gate": "GATE0",
+        "threshold": {
+          "macro_origin_convex_oracle_gain_percent": ">= 2.0",
+          "each_dataset_gain_percent": ">= 1.0"
+        },
+        "observed": {
+          "gains_percent": {
+            "m5": 5.385142035961699,
+            "favorita": 2.4385570965712478
+          },
+          "macro_gain_percent": 3.911849566266473,
+          "heterogeneous_diagnostic": null
+        },
+        "pass_fail": "PASS",
+        "scientific_interpretation": "Point/Hurdle convex oracle opportunity is sufficient",
+        "status": "OBSERVED"
+      },
+      {
+        "gate": "GATE1A",
+        "threshold": {
+          "each_dataset_lag1_spearman": "> 0.10",
+          "each_dataset_real_minus_shuffled": "> 0.05"
+        },
+        "observed": {
+          "m5": {
+            "real_status": "OK",
+            "real_rho": 0.22381171915131903,
+            "real_pvalue": 0.0,
+            "rho_ci95": [
+              0.2156065527607962,
+              0.2317840438152952
+            ],
+            "shuffled_status": "OK",
+            "shuffled_rho": -0.0021618616949033885,
+            "real_minus_shuffled_rho": 0.22597358084622243,
+            "n_adjacent_pairs": 145295,
+            "bootstrap_draws": 2000,
+            "bootstrap_valid_draws": 2000,
+            "rho_above_0_10": true,
+            "gap_above_0_05": true,
+            "passed": true
+          },
+          "favorita": {
+            "real_status": "OK",
+            "real_rho": 0.33143629448671985,
+            "real_pvalue": 0.0,
+            "rho_ci95": [
+              0.3261469673929036,
+              0.33682505909538035
+            ],
+            "shuffled_status": "OK",
+            "shuffled_rho": 0.0005582845520612447,
+            "real_minus_shuffled_rho": 0.3308780099346586,
+            "n_adjacent_pairs": 277805,
+            "bootstrap_draws": 2000,
+            "bootstrap_valid_draws": 2000,
+            "rho_above_0_10": true,
+            "gap_above_0_05": true,
+            "passed": true
+          }
+        },
+        "pass_fail": "PASS",
+        "scientific_interpretation": "past expert advantage recurs temporally in both datasets",
+        "status": "OBSERVED"
+      },
+      {
+        "gate": "GATE1B",
+        "threshold": {
+          "each_transfer_b4_vs_b3_percent": ">= 0.30"
+        },
+        "observed": {
+          "ri_percent": {
+            "m5": -0.008979440312373299,
+            "favorita": 0.8158250618641616
+          }
+        },
+        "pass_fail": "FAIL",
+        "scientific_interpretation": "simple online combination does not beat source-static in both transfers",
+        "status": "OBSERVED"
+      },
+      {
+        "gate": "GATE2",
+        "threshold": {
+          "macro_m1_vs_b4_percent": ">= 0.20",
+          "each_transfer_m1_vs_b4_percent": ">= -0.10",
+          "macro_m1_vs_b3_percent": ">= 0.70",
+          "each_transfer_m1_vs_b3_percent": ">= 0.30",
+          "macro_ci95_lower_percent": "> 0",
+          "at_least_one_dataset_ci95_lower_percent": "> 0"
+        },
+        "observed": {
+          "status": "NOT_RUN_AFTER_GATE1B"
+        },
+        "pass_fail": "NOT_RUN_AFTER_GATE1B",
+        "scientific_interpretation": "not evaluated after the prior gate stop",
+        "status": "NOT_RUN_AFTER_GATE1B"
+      },
+      {
+        "gate": "GATE3_SAFETY",
+        "threshold": {
+          "worst_origin_m1_vs_b3_percent": ">= -0.50",
+          "each_dataset_q95_m1_over_b4": "<= 1.01"
+        },
+        "observed": {
+          "status": "NOT_RUN_AFTER_GATE1B"
+        },
+        "pass_fail": "NOT_RUN_AFTER_GATE1B",
+        "scientific_interpretation": "not evaluated after the prior gate stop",
+        "status": "NOT_RUN_AFTER_GATE1B"
+      },
+      {
+        "gate": "GATE3_CONTROL",
+        "threshold": {
+          "real_macro_ri_percent": "> 0",
+          "shuffled_over_real": "<= 0.25",
+          "random_over_real": "<= 0.50"
+        },
+        "observed": {
+          "status": "NOT_RUN_AFTER_GATE1B"
+        },
+        "pass_fail": "NOT_RUN_AFTER_GATE1B",
+        "scientific_interpretation": "not evaluated after the prior gate stop",
+        "status": "NOT_RUN_AFTER_GATE1B"
+      },
+      {
+        "gate": "GATE4",
+        "threshold": {
+          "rule": "frozen conditional seed-0/seed-1/seed-2 sign, retention, and seed-average series-cluster CI rules"
+        },
+        "observed": {
+          "status": "NOT_RUN_AFTER_GATE1B"
+        },
+        "pass_fail": "NOT_RUN_AFTER_GATE1B",
+        "scientific_interpretation": "not evaluated after the prior gate stop",
+        "status": "NOT_RUN_AFTER_GATE1B"
+      }
+    ]
+  },
+  "tables_a_to_g_payload_sha256": "675b5a34b60485a57f587e70584202eeaaaf83ddbef7f10f413d839f0282f8a9"
+}

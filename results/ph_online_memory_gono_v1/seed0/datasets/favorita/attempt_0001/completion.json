@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "stage": "FULL_DATASET_COMPLETE",
+  "dataset": "favorita",
+  "model_seed": 0,
+  "attempt_path": "seed0/datasets/favorita/attempt_0001",
+  "preregistration_sha256": "2b7462ff0fb85068af0155bcc9014b6fed0c985bf9e1147361c7a0de1ada7ef5",
+  "runtime_estimate_sha256": "d214d220f11b5e9effe37f3e911ce686bd1b96b8b27abdac7466d2e5c9c86f9a",
+  "completed_at_utc": "2026-09-04T12:16:49.612367+00:00",
+  "artifacts": {
+    "predictions": {
+      "path": "predictions.parquet",
+      "bytes": 273478599,
+      "sha256": "4ee9d911676804facc99906158550f8ec106bee214b0691614b388b0bc7d956d"
+    },
+    "step_predictions": {
+      "path": "step_predictions.parquet",
+      "bytes": 274152063,
+      "sha256": "4c1feaded94d91ace07ee480fb5bad06857e6aa795ef1d4f71cef02b6801534a"
+    },
+    "losses": {
+      "path": "losses.parquet",
+      "bytes": 20519780,
+      "sha256": "11ecdbbbd3e71cf4eda45c15f3014af65fd547ed2d10e50f863a42c63f48a086"
+    },
+    "cases": {
+      "path": "cases.parquet",
+      "bytes": 165682553,
+      "sha256": "a37e7c113ac1867be66fa4123f81c17a384be2506d78accd60c53218defa8879"
+    },
+    "metadata": {
+      "path": "metadata.json",
+      "bytes": 9571,
+      "sha256": "180bf5d0052ecf17a5ccffe8cc246d0e262c43aaf4fad46d03b8ea27f58ef328"
+    },
+    "resume_payload": {
+      "path": "resume_payload.json",
+      "bytes": 929,
+      "sha256": "a722d8fbd73099c15eeff40bd33034bcfb945fc089c2d2acbe6c38415a0f5ab8"
+    },
+    "point_checkpoint": {
+      "path": "point_checkpoint.pt",
+      "bytes": 30784,
+      "sha256": "474985fe505144ce19a4b53a215ebc6f94ed4ff0388febe25a27d8804abea873"
+    },
+    "point_prediction_heads": {
+      "path": "point_prediction_heads.pt",
+      "bytes": 43560988,
+      "sha256": "8548c2a1767b80f5832f690edfd99881f4d11044b9936b03eb49cc747c3fbdaf"
+    },
+    "point_provenance": {
+      "path": "point_provenance.json",
+      "bytes": 635,
+      "sha256": "e5126e779df82584180b1a145b9c1dce0f43cbcf78723e2bbe2e2fe66a848c65"
+    },
+    "point_completion": {
+      "path": "point_completion.json",
+      "bytes": 1109,
+      "sha256": "fc146ff39bd9648b018db0dca7e35f50cd7be9afa9b89c927358b198264f3c59"
+    },
+    "hurdle_checkpoint": {
+      "path": "hurdle_checkpoint.pt",
+      "bytes": 30848,
+      "sha256": "a5330e66aea8da96602d5a08979a04e7ec17078d79e49292a6674bc58875858f"
+    },
+    "hurdle_prediction_heads": {
+      "path": "hurdle_prediction_heads.pt",
+      "bytes": 130681172,
+      "sha256": "ffdde4438fc2507ec4586af5125f567c9c4cb890126d070aa3356807adaf326f"
+    },
+    "hurdle_provenance": {
+      "path": "hurdle_provenance.json",
+      "bytes": 625,
+      "sha256": "338c7b89dd40e90b33a3dc55b87c724db077a42548a259c48e8a90fe09340a0b"
+    },
+    "hurdle_completion": {
+      "path": "hurdle_completion.json",
+      "bytes": 1104,
+      "sha256": "999827042691c11665591af3eef8dd6b1e13893ad144ae2cefa1e7b045eb30e2"
+    }
+  },
+  "completion_payload_sha256": "5c117e09db592094622a03303a66106bf05531625b01a4c71bea6fba897f4fef"
+}

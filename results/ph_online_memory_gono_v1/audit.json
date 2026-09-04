@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "experiment_name": "PH-ONLINE-MEMORY-GONO-v1",
+  "phase": "Phase 0",
+  "status": "PHASE0_AUDIT_STOP",
+  "scientific_verdict": null,
+  "scientific_verdict_note": "No scientific verdict was issued because the run stopped before preregistration, Gate 0, smoke training, and all scientific gates.",
+  "audit_timestamp_utc": "2026-09-04T07:10:13.0141998Z",
+  "request_attachment_sha256": "B606BD0E115E4170E5AB844E73D3CDB988D89FF9139DF3CF270E6E7E977E9C4E",
+  "repository": {
+    "path": "E:/CODING/proj/covariate-trust-pilot",
+    "remote": "https://github.com/CanelE452/covariate-trust-pilot",
+    "branch": "main",
+    "head_commit": "222c82cbf91c4313e77c531742831d211c756b02",
+    "origin_alignment": "HEAD == origin/main",
+    "preexisting_dirty_worktree": true,
+    "preexisting_changes_preserved": [
+      "_docs/history/2026-08-13.md",
+      "_docs/history/2026-08-19.md",
+      "_docs/history/2026-08-20.md",
+      "experiments/external_validity_screen/poster_figures.py",
+      "experiments/external_validity_screen/dump_figure_data.py",
+      "experiments/external_validity_screen/poster_intuition.py",
+      "experiments/external_validity_screen/poster_kdms.py",
+      "experiments/external_validity_screen/poster_problem_setup.py",
+      "experiments/external_validity_screen/stage2_gain_contrasts.py",
+      "preexisting untracked artifacts under results/external_validity_screen",
+      "preexisting untracked artifacts under results/synthetic_source_verification"
+    ]
+  },
+  "required_documents": [
+    {
+      "path": "_docs/PROJECT_LOG.md",
+      "exists": true
+    },
+    {
+      "path": "docs/external_validity_STATUS.md",
+      "exists": true
+    },
+    {
+      "path": "results/paper_synthesis/hypothesis_final_status.md",
+      "exists": true
+    },
+    {
+      "path": "results/paper_synthesis/routing_chronology.md",
+      "exists": true
+    },
+    {
+      "path": "results/paper_synthesis/additional_experiment_triage.md",
+      "exists": true
+    },
+    {
+      "path": "results/pointhurdle_condition_discovery/audit.md",
+      "exists": true
+    },
+    {
+      "path": "results/pointhurdle_condition_discovery/gate0_summary.md",
+      "exists": true
+    },
+    {
+      "path": "results/pointhurdle_condition_discovery/pilot_summary.md",
+      "exists": true
+    },
+    {
+      "path": "results/pointhurdle_recoverability/audit.md",
+      "exists": true
+    },
+    {
+      "path": "results/pointhurdle_recoverability/claim_ledger_recoverability.md",
+      "exists": true
+    },
+    {
+      "path": "results/pointhurdle_recoverability/integrity_summary.md",
+      "exists": true
+    },
+    {
+      "path": "results/external_validity_screen/pre_analysis_spec.json",
+      "exists": true
+    }
+  ],
+  "binding_stop_rules": {
+    "HANDCRAFTED_FEATURE_GATE_STOP": "PRESERVED",
+    "RAW_SEQUENCE_GATE_STOP": "PRESERVED",
+    "ROUTING_MODEL_DEVELOPMENT_STOP": "PRESERVED",
+    "DO_NOT_CONSUME_NEW_CONFIRMATORY_DATASET": "PRESERVED",
+    "evidence": [
+      "results/temporal_routing_encoder/stop_rule.json:59",
+      "results/temporal_routing_encoder/stop_rule.json:66",
+      "results/temporal_routing_encoder/stop_rule.json:67",
+      "results/temporal_routing_encoder/stop_rule.json:68",
+      "results/temporal_routing_encoder/stop_rule.json:69",
+      "results/temporal_routing_encoder/stop_rule.json:70",
+      "results/temporal_routing_encoder/gate_report.json:169",
+      "results/paper_synthesis/routing_chronology.md:74",
+      "results/paper_synthesis_verified/claim_ledger_frozen.md:244"
+    ],
+    "scope_note": "The frozen stop rules govern the prior routing chain. The requested online-memory pilot was presented as an independent hypothesis, so the prior stop rules were preserved rather than treated as the direct reason for this Phase 0 stop."
+  },
+  "canonical_contract": {
+    "point_model": {
+      "id": "M0PM_point_mse_param_matched",
+      "implementation": "PointDLinearParamMatched",
+      "loss": "point_loss"
+    },
+    "hurdle_model": {
+      "id": "M1_factorized_mean",
+      "implementation": "FactorizedDLinear",
+      "loss": "factorized_loss",
+      "semantics": "factorized conditional mean: sigmoid occurrence probability multiplied by positive conditional magnitude"
+    },
+    "shared_configuration": {
+      "lookback": 96,
+      "horizon": 28,
+      "parameter_count_each": 7056,
+      "optimizer": "Adam",
+      "learning_rate": 0.001,
+      "weight_decay": 0.0,
+      "max_epochs": 30,
+      "patience": 5,
+      "batch_size": 256,
+      "seed": 0,
+      "selection_metric": "validation final-mean MSE"
+    },
+    "intended_differences": [
+      "output parameterization",
+      "loss",
+      "head topology"
+    ],
+    "evidence": [
+      "experiments/om_factorization_killtest/models.py:70",
+      "experiments/om_factorization_killtest/models.py:91",
+      "experiments/om_factorization_killtest/models.py:154",
+      "experiments/om_factorization_killtest/models.py:171",
+      "experiments/om_factorization_killtest/models.py:176",
+      "experiments/om_factorization_killtest/models.py:219",
+      "experiments/external_validity_screen/prereg.py:104",
+      "results/external_validity_screen/stage_a_results.json:16",
+      "results/external_validity_screen/stage_a_results.json:52"
+    ]
+  },
+  "blocking_conflicts": [
+    {
+      "id": "TRAINER_PROVENANCE_MISMATCH",
+      "severity": "STOP",
+      "recorded_contract": "The external-validity records describe experiments.om_factorization_killtest.train.train_one as imported unchanged.",
+      "actual_code": "The external M5 and Favorita paths use copied training-loop wrappers because the canonical train_one constructs its own dense synthetic split and cannot accept the masked external split.",
+      "impact": "The requested Phase 0 rule requires an immediate stop when frozen records and actual code disagree. Preregistration cannot truthfully freeze the requested canonical trainer identity until this mismatch is resolved.",
+      "evidence": [
+        "experiments/om_factorization_killtest/train.py:57",
+        "experiments/om_factorization_killtest/train.py:63",
+        "experiments/om_factorization_killtest/train.py:121",
+        "experiments/om_factorization_killtest/train.py:123",
+        "experiments/external_validity_screen/cli.py:147",
+        "experiments/external_validity_screen/cli.py:148",
+        "experiments/external_validity_screen/cli.py:154",
+        "experiments/external_validity_screen/screen.py:154",
+        "experiments/external_validity_screen/screen.py:179",
+        "experiments/external_validity_screen/rule_replication.py:76",
+        "experiments/external_validity_screen/prereg.py:107",
+        "results/external_validity_screen/pre_analysis_spec.json:72",
+        "results/pointhurdle_condition_discovery/protocol_comparison.csv:9",
+        "_docs/history/m5dataset_2026-08-07-screen.md:54"
+      ]
+    },
+    {
+      "id": "MISSING_TRAINER_EQUIVALENCE_TEST",
+      "severity": "STOP",
+      "recorded_contract": "The copied wrapper's comment says test_loop_matches_train_one() asserts equivalence.",
+      "actual_code": "No implementation or test named test_loop_matches_train_one was found in the repository; the only occurrence is the comment that claims it exists.",
+      "impact": "The copied external loop cannot be accepted as a demonstrated canonical-equivalent trainer for a frozen Go/No-Go protocol.",
+      "evidence": [
+        "experiments/external_validity_screen/cli.py:154"
+      ]
+    },
+    {
+      "id": "UNSAFE_PYTORCH_RUNTIME",
+      "severity": "STOP",
+      "environment": {
+        "python": "C:/Users/User/anaconda3/python.exe",
+        "python_version": "3.13.9",
+        "torch_version": "2.13.0+cu126",
+        "cuda_version": "12.6",
+        "gpu": "NVIDIA GeForce RTX 4070 12GB"
+      },
+      "actual_behavior": "A normal import torch fails with Intel OpenMP Error #15 because libiomp5md.dll is initialized more than once.",
+      "unsafe_workaround_rejected": "KMP_DUPLICATE_LIB_OK=TRUE permits import but explicitly risks crashes or silently incorrect results, so it was not accepted for a scientific training run.",
+      "impact": "Smoke training and full training require a clean, reproducible environment before execution."
+    }
+  ],
+  "additional_findings": [
+    {
+      "id": "EXISTING_CHECKPOINTS_LEAK_ACROSS_NEW_CUTOFF",
+      "classification": "RETRAIN_REQUIRED",
+      "finding": "Existing external checkpoints were trained beyond the newly requested cutoffs and cannot be reused without temporal leakage.",
+      "details": {
+        "m5_existing_train_interval": "[0, 1829)",
+        "m5_existing_validation_interval": "[1829, 1857)",
+        "m5_requested_train_end": 1717,
+        "favorita_existing_train_interval": "[0, 1576)",
+        "favorita_existing_validation_interval": "[1576, 1604)",
+        "favorita_requested_train_end": 1464,
+        "future_training_days_beyond_requested_cutoff": 112
+      },
+      "resolution_if_restarted": "Train fresh point and hurdle experts using only the frozen pre-cutoff interval."
+    },
+    {
+      "id": "OOF_PREDICTIONS_HAVE_NO_REUSABLE_WEIGHTS",
+      "classification": "RETRAIN_REQUIRED",
+      "finding": "OOF prediction artifacts exist at the requested cutoff, but model weights needed to score the six new origins do not."
+    },
+    {
+      "id": "M5_PREAVAILABILITY_HISTORY_AND_SCALE_CONFOUND",
+      "classification": "DOCUMENT_BEFORE_PREREGISTRATION",
+      "finding": "External splitting masks unavailable M5 targets, but histories and train-scale calculation still include pre-availability zero padding. This is not future leakage, but it is an availability/scale confound that must be frozen and reported."
+    },
+    {
+      "id": "VERDICT_TOKEN_CONFLICT_IN_REQUEST",
+      "classification": "RESOLVE_BEFORE_PREREGISTRATION",
+      "finding": "The request uses POINT_HURDLE_MEMORY_NO_GO at the Gate 0 stop, PH_ONLY_NO_GO HETEROGENEOUS_EXPERT_MEMORY_CANDIDATE at Gate 1, and a different exact final-token list in the final section. A restarted protocol must freeze one unambiguous vocabulary without silently rewriting the request."
+    },
+    {
+      "id": "TRAIN_ORIGIN_STRIDE_NOT_EXPLICITLY_FROZEN",
+      "classification": "RESOLVE_BEFORE_PREREGISTRATION",
+      "finding": "The new request fixes test origins and many trainer settings but does not explicitly freeze the external training-origin stride. The prior external implementation uses stride 7 while the canonical synthetic trainer uses stride 24."
+    },
+    {
+      "id": "PRIOR_THREE_ORIGIN_PANEL_REPRODUCED_READ_ONLY",
+      "classification": "AUDIT_EVIDENCE_ONLY",
+      "finding": "The existing three-origin independent panel was recomputed in memory from the two raw prediction Parquet files without invoking the repository recovery script, because that script writes to frozen result paths.",
+      "raw_sources": {
+        "m5": {
+          "path": "results/external_validity_screen/rule_replication/independent_raw_predictions.parquet",
+          "sha256": "a2810787033baac622e6558a53da526f0cb9b2e80d09cf2c4dbe699d2f207f6f",
+          "bytes": 10492932
+        },
+        "favorita": {
+          "path": "results/external_validity_screen/favorita_independent/independent_raw_predictions.parquet",
+          "sha256": "0df546bb479f70b8667c515c421ffe2a4f91dada9f1d50c0ee0300a776c22822",
+          "bytes": 9976002
+        }
+      },
+      "rows": 33294,
+      "label_rates_percent": {
+        "point": 33.84694,
+        "hurdle": 44.82489,
+        "neutral": 21.32817
+      },
+      "maximum_absolute_gain_difference_vs_current_panel": 0.000033955
+    }
+  ],
+  "data_inventory": {
+    "m5_stage_a_shape": [
+      1200,
+      1941
+    ],
+    "favorita_stage_a_shape": [
+      1200,
+      1688
+    ],
+    "favorita_full_pool_path": "data/processed/favorita_full_pool.parquet",
+    "favorita_full_pool_eligible_series": 56918,
+    "m5_raw_source": "data/sales_train_evaluation.csv",
+    "favorita_raw_source": "data/train.csv",
+    "prior_independent_panel_series": {
+      "m5": 5693,
+      "favorita": 5405
+    },
+    "descriptor_cutoff_rule": "Use y[start:train_end] only; eligibility and descriptor values must be recomputed at the new cutoff if the pilot is restarted."
+  },
+  "artifact_policy": {
+    "new_output_root": "results/ph_online_memory_gono_v1",
+    "created_in_this_attempt": [
+      "results/ph_online_memory_gono_v1/audit.json",
+      "results/ph_online_memory_gono_v1/STATUS.md"
+    ],
+    "intentionally_not_created": [
+      "results/ph_online_memory_gono_v1/preregistered_spec.json",
+      "experiments/ph_online_memory_gono_v1",
+      "runtime_estimate.json",
+      "checkpoint files",
+      "prediction files",
+      "seed result directories",
+      "figures"
+    ]
+  },
+  "forbidden_artifact_directory_hashes_before": {
+    "results/structure_gate": {
+      "file_count": 42,
+      "sha256": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3"
+    },
+    "results/expert_diversity": {
+      "file_count": 8,
+      "sha256": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680"
+    },
+    "results/gate_v3": {
+      "file_count": 35,
+      "sha256": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08"
+    },
+    "results/gate_p0l1_robustness": {
+      "file_count": 21,
+      "sha256": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C"
+    },
+    "results/gate_safe_p0l1": {
+      "file_count": 26,
+      "sha256": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108"
+    },
+    "results/routing_information_ceiling": {
+      "file_count": 32,
+      "sha256": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC"
+    },
+    "results/temporal_routing_encoder": {
+      "file_count": 30,
+      "sha256": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2"
+    },
+    "results/pointhurdle_condition_discovery": {
+      "file_count": 15,
+      "sha256": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1"
+    },
+    "results/pointhurdle_recoverability": {
+      "file_count": 26,
+      "sha256": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0"
+    },
+    "results/external_validity_screen": {
+      "file_count": 131,
+      "sha256": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+    }
+  },
+  "post_write_verification": {
+    "timestamp_utc": "2026-09-04T07:14:09.0257198Z",
+    "json_parse_success": true,
+    "forbidden_artifact_directories_unchanged": true,
+    "method": "For each directory, sort files by absolute path, form repo-relative native-path plus TAB plus SHA-256 per file, join records with LF and no trailing LF, then SHA-256 the UTF-8 manifest.",
+    "verified_hashes": {
+      "results/structure_gate": "C81927E2F7354AC2E69FE6FA2514C1FCF00FDC1EA3F53133393AC9EEEDE378E3",
+      "results/expert_diversity": "7777C592434D19168BB6285585861A983D9E6E43E6D05D82DA6402FAC8634680",
+      "results/gate_v3": "173EF8AE33ACF2B81674AAF6797B09ED0B73325845029CBE02882EBA662B3E08",
+      "results/gate_p0l1_robustness": "113C62AD21CB79A633FA3CFB422019512F1337A0874E897942AEFD92CD6C256C",
+      "results/gate_safe_p0l1": "5FADE8814344EC353A505FDFA58F3B333C8EA288B10AF1225C92D4361D5BB108",
+      "results/routing_information_ceiling": "8A7311DECB617FB2A12F0F13257BD601A19E1E6BAAE2D919558400DDD8C4EAEC",
+      "results/temporal_routing_encoder": "4A56B5E00D51AED01923D250A2CD4D3EA17C4E9BC749A754984FBE9E9D5AD6F2",
+      "results/pointhurdle_condition_discovery": "A5FB5CEDBC714755711E3D1531D065E840B4FD965D7F273F939B2AC3852101F1",
+      "results/pointhurdle_recoverability": "B5EF6B2E31B7E7F1F852F10E885AC932BDCAC4E411495AEBBEE3BCFC800893D0",
+      "results/external_validity_screen": "7897F502DF6DCA918F9FF126C93CBF3A734FFD0352D556BF0B38C18873CDCC4D"
+    }
+  },
+  "stage_reached": "STEP_1_REPOSITORY_AND_ARTIFACT_AUDIT",
+  "stages_not_run": [
+    "STEP_2_PREREGISTRATION",
+    "STEP_3_THREE_ORIGIN_REPRODUCTION_AS_A_RUN_STAGE",
+    "STEP_4_GATE_0",
+    "STEP_5_200_SERIES_SMOKE",
+    "STEP_6_FULL_SEED_0",
+    "STEP_7_SEEDS_1_TO_4",
+    "STEP_8_FINAL_SUMMARY"
+  ],
+  "required_resolution": [
+    "Freeze a truthful external-trainer identity: either make the canonical trainer accept the frozen masked split through an explicitly authorized minimal interface change, or preregister the copied external wrapper without claiming it was imported unchanged.",
+    "Add and execute a real equivalence test if a copied loop is to be treated as canonical-equivalent.",
+    "Use a clean isolated Python environment in which torch imports normally without KMP_DUPLICATE_LIB_OK.",
+    "Resolve the final-verdict token vocabulary and training-origin stride before preregistration.",
+    "After resolution, begin a newly audited attempt; do not reuse post-cutoff checkpoints."
+  ]
+}

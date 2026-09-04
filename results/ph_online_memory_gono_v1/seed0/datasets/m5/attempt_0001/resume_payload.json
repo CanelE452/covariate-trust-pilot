@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "experiment": "PH-ONLINE-MEMORY-GONO-v1",
+  "dataset": "m5",
+  "model_seed": 0,
+  "trust_boundary": "local append-only files only; verify completion self-hash and every artifact SHA-256 before deserialization",
+  "analysis_components": {
+    "schedule_and_provenance": "metadata.json",
+    "predictions": "predictions.parquet",
+    "step_predictions": "step_predictions.parquet",
+    "losses": "losses.parquet",
+    "cases": "cases.parquet"
+  },
+  "arm_components": {
+    "point": {
+      "checkpoint": "point_checkpoint.pt",
+      "prediction_heads": "point_prediction_heads.pt",
+      "provenance": "point_provenance.json",
+      "completion": "point_completion.json"
+    },
+    "hurdle": {
+      "checkpoint": "hurdle_checkpoint.pt",
+      "prediction_heads": "hurdle_prediction_heads.pt",
+      "provenance": "hurdle_provenance.json",
+      "completion": "hurdle_completion.json"
+    }
+  }
+}
