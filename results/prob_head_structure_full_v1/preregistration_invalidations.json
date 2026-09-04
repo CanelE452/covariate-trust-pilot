@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "attempt": 1,
+  "status": "INVALID_BEFORE_ANY_MODEL_FIT",
+  "new_model_fits_completed": 0,
+  "old_preregistration": {
+    "path": "preregistration.json",
+    "payload_sha256": "462b1deae68e0501cc9df0c1805363e39b3aaf56e3d8f37c6d340d658d6d51f8",
+    "file_sha256": "60fda1710cafb0cc3337de44d2b405250252fd1ffd513c4222816db685e10c68",
+    "companion_path": "preregistration.json.sha256.json",
+    "companion_file_sha256": "8afc8ca55c4b345019dca2418148464de4efd84da508a90a5862a3917a45aee5"
+  },
+  "exact_omissions_or_errors": [
+    "missing full frozen-rulings payload and several result-sensitive execution contracts",
+    "M5 intervals were not explicit half-open [0,1717), [1717,1745), [1745,1773)",
+    "required import-order contract was incorrectly recorded",
+    "P0-P3, student, routing, sensor, negative-control, report, and likelihood-validation details were incomplete"
+  ],
+  "reason": "corrected v2 is frozen before any model fit; old file and companion remain immutable"
+}

@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "algorithm": "SHA-256",
+  "relative_filename": "preregistered_spec_v3.json",
+  "sha256": "7f05723044e8fa91d26e15620c243cbc0059adda6bc063fcac439be5517ec8e5",
+  "hash_contract": "SHA-256 of the complete immutable preregistration file bytes"
+}

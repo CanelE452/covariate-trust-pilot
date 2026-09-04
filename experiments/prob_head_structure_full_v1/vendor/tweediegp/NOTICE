@@ -1,0 +1,9 @@
+This directory contains a minimal adaptation of the Tweedie distribution from
+StefanoDamato/TweedieGP, source revision 2567d1322c8cc65f19df4f2d1774c610b167fb66.
+
+Modified for this experiment: removed unrelated distribution classes and all
+FixedDispersionTweedie code; made helper tensors preserve the input device;
+float32 inputs now accumulate in float64 internally and recast to their input
+dtype at the public boundary; exposed
+the compound-Poisson--Gamma density and CDF helpers used by the full Tweedie
+head.  The original project is Apache-2.0 licensed; LICENSE is included here.

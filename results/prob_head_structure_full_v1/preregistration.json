@@ -1,0 +1,533 @@
+{
+  "schema_version": 1,
+  "payload_hash_contract": "SHA-256 of canonical UTF-8 JSON payload",
+  "payload": {
+    "schema_version": 1,
+    "identity": {
+      "experiment": "PROB-HEAD-STRUCTURE-FULL-v1",
+      "branch": "prob-head-structure-full-v1",
+      "base_commit": "2fe2443b2d24c09ad184387b7f7287f32e0f4cd6",
+      "origin_main_commit": "2fe2443b2d24c09ad184387b7f7287f32e0f4cd6",
+      "repository_url": "https://github.com/CanelE452/covariate-trust-pilot.git"
+    },
+    "protected_directories": [
+      "results/ph_online_memory_gono_v1",
+      "results/external_validity_screen",
+      "results/pointhurdle_condition_discovery",
+      "results/pointhurdle_recoverability",
+      "results/structure_gate",
+      "results/expert_diversity",
+      "results/gate_v3",
+      "results/gate_p0l1_robustness",
+      "results/gate_safe_p0l1",
+      "results/routing_information_ceiling",
+      "results/temporal_routing_encoder",
+      "results/paper_synthesis",
+      "results/paper_synthesis_verified",
+      "results/paper_manuscript_verified"
+    ],
+    "seeds": {
+      "master": 20260905,
+      "synthetic_data_0": 2026090501,
+      "synthetic_data_1": 2026090502,
+      "model_0": 2026090511,
+      "model_1": 2026090512,
+      "real_sampling": 2026090521,
+      "bootstrap": 2026090531,
+      "teacher_sampling_quantile_inversion": 2026090541,
+      "shuffle_control": 2026090551
+    },
+    "seed_setter": {
+      "covers": [
+        "random",
+        "numpy",
+        "torch_cpu",
+        "torch_cuda"
+      ]
+    },
+    "external_references": {
+      "TweedieGP": {
+        "sha": "2567d1322c8cc65f19df4f2d1774c610b167fb66",
+        "license": "Apache-2.0",
+        "purpose": "full likelihood",
+        "source": "src/tweediegp/distributions.py:Tweedie.log_prob",
+        "modification_notice_required": true
+      },
+      "tweedie": {
+        "sha": "f14a189d7cd80d41886041f44f40ae4db27d0067",
+        "license": "BSD-2-Clause",
+        "purpose": "validation_only",
+        "pypi_version": "0.0.9"
+      }
+    },
+    "environment": {
+      "isolated_environment": "runs/prob_head_structure_full_v1/.venv-prob-head-structure-v1",
+      "python": "3.10.20",
+      "torch": "2.1.1+cu118",
+      "cuda": "11.8",
+      "gpu": "NVIDIA GeForce RTX 4070",
+      "packages": {
+        "numpy": "1.26.4",
+        "pandas": "2.3.3",
+        "scipy": "1.12.0",
+        "sklearn": "1.4.1.post1",
+        "pyarrow": "25.0.1",
+        "matplotlib": "3.10.9",
+        "pytest": "8.4.2",
+        "tweedie": "0.0.9"
+      },
+      "required_import_orders": [
+        "torch_then_tweedie",
+        "tweedie_then_torch"
+      ],
+      "kmp_duplicate_lib_ok_forbidden": true
+    },
+    "target_support": {
+      "finite": true,
+      "minimum": 0,
+      "integer_tolerance": 1e-06,
+      "raw_targets_only": true,
+      "audit_fields": [
+        "min",
+        "max",
+        "nan_count",
+        "negative_count",
+        "noninteger_count",
+        "zero_ratio",
+        "positive_count",
+        "positive_mean",
+        "positive_variance"
+      ],
+      "NB_HSNB": "count_only",
+      "Favorita": "never_rounded"
+    },
+    "synthetic": {
+      "d": [
+        4,
+        8
+      ],
+      "rho_values": [
+        -0.8,
+        0.0,
+        0.8
+      ],
+      "cells": 18,
+      "T": 576,
+      "splits": {
+        "train": [
+          0,
+          380
+        ],
+        "validation": [
+          380,
+          408
+        ],
+        "warmup": [
+          408,
+          436
+        ]
+      },
+      "origins": [
+        436,
+        464,
+        492,
+        520,
+        548
+      ],
+      "horizon": 28,
+      "lookback": 96,
+      "gap_support": "d_minus_1_or_d_plus_1",
+      "state_stay_probability": "(1+rho)/2",
+      "stationary_probability": 0.5,
+      "magnitude": "1+Poisson(lambda-1)",
+      "lambda": [
+        5,
+        15
+      ],
+      "common_base_innovations": true,
+      "marginal_tolerances": {
+        "zero_rate_absolute": 0.02,
+        "positive_mean_relative": 0.05,
+        "positive_variance_relative": 0.1
+      },
+      "failed_cells": "diagnostic_only_and_not_confirmatory"
+    },
+    "real": {
+      "dataset_priority": [
+        "M5",
+        "Auto",
+        "Carparts",
+        "RAF",
+        "OnlineRetail"
+      ],
+      "M5_mandatory": true,
+      "minimum_total_datasets": 2,
+      "required_non_M5_audits_passing": 2,
+      "M5": {
+        "train_end": 1717,
+        "validation_end": 1745,
+        "warmup_origin": 1745,
+        "evaluation_origins": [
+          1773,
+          1801,
+          1829,
+          1857,
+          1885,
+          1913
+        ]
+      },
+      "generic_split": "last_six_horizons_with_prior_warmup_and_validation",
+      "lookback": "96_else_48",
+      "OnlineRetail": {
+        "train": [
+          0,
+          150
+        ],
+        "validation": [
+          150,
+          178
+        ],
+        "warmup": [
+          178,
+          206
+        ],
+        "evaluation_origins": [
+          206,
+          234,
+          262,
+          290,
+          318,
+          346
+        ],
+        "lookback": 96,
+        "horizon": 28
+      },
+      "sampling_bins": [
+        "train_only_zero_ratio",
+        "train_only_ADI",
+        "train_only_positive_CV2",
+        "train_only_log_scale_quantile"
+      ]
+    },
+    "heads": {
+      "NB": "NB(mu,r)",
+      "HSNB": "p0=1-pi; Y=1+NB(mu_pos,r_pos)",
+      "Tweedie": {
+        "density": "full",
+        "mu": "predicted",
+        "phi": "global",
+        "p": "global",
+        "phi_transform": "softplus(raw_phi)+eps",
+        "p_transform": "1.05+0.90*sigmoid(raw_p)",
+        "epsilon": 1e-06
+      },
+      "interface": [
+        "log_prob",
+        "mean",
+        "p_zero",
+        "cdf",
+        "quantile",
+        "sample"
+      ],
+      "adapter_widths": {
+        "NB": 19,
+        "HSNB": 14,
+        "Tweedie": 29
+      },
+      "initialization": {
+        "phi": 1.0,
+        "p": 1.5
+      },
+      "parameter_spread_maximum": 0.05
+    },
+    "training": {
+      "optimizer": "Adam",
+      "learning_rate": 0.001,
+      "weight_decay": 0.0,
+      "effective_batch": 256,
+      "microbatch_initial": 256,
+      "gradient_accumulation_initial": 1,
+      "max_epochs": 30,
+      "patience": 5,
+      "validation_metric": "sCRPS",
+      "validation_every_epochs": 2,
+      "validation_final_epoch": true,
+      "origin_stride": {
+        "synthetic": "dense",
+        "real_teacher": 7,
+        "student": 28
+      },
+      "oom_retry": {
+        "max_retries": 1,
+        "microbatch_multiplier": 0.5,
+        "accumulation_multiplier": 2
+      },
+      "nan": "blocks_branch",
+      "learning_rate_change": "forbidden"
+    },
+    "metrics": {
+      "quantile_grid": [
+        0.01,
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25,
+        0.3,
+        0.35,
+        0.4,
+        0.45,
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        0.99
+      ],
+      "CRPS": "2*sum(midpoint_cell_width*pinball); probability_cells_bounded_0_1",
+      "draws": {
+        "validation": 256,
+        "evaluation": 1024
+      },
+      "quantile": "numerical_inverse_empirical_CDF",
+      "secondary": [
+        "q50",
+        "q80",
+        "q90",
+        "q95",
+        "q99",
+        "zero_Brier",
+        "NRMSE",
+        "NMAE",
+        "coverage_50",
+        "coverage_80",
+        "coverage_90",
+        "coverage_95",
+        "width",
+        "negative_rate",
+        "NaN_rate"
+      ]
+    },
+    "bootstrap": {
+      "tiers": {
+        "full": 2000,
+        "compact": 1000,
+        "minimal": 500
+      },
+      "clusters": [
+        "series",
+        "base_innovation"
+      ],
+      "macro": "dataset_equal_weight",
+      "seed": 2026090531
+    },
+    "grids": {
+      "CDF_global_weights": "0.1_simplex",
+      "P3_penalty": [
+        0.0,
+        0.01,
+        0.1,
+        1.0
+      ],
+      "student_lambda": [
+        0.25,
+        0.5,
+        0.75
+      ],
+      "router_temperature": [
+        0.25,
+        0.5,
+        1.0
+      ],
+      "action_widening": [
+        1.05,
+        1.1,
+        1.2,
+        1.35,
+        1.5
+      ],
+      "runtime_tiers": {
+        "full": {
+          "hours_max": 12,
+          "series_per_cell": 80,
+          "data_seeds": 2,
+          "model_seeds": 2,
+          "real_series": 4000,
+          "student_seeds": 2
+        },
+        "compact": {
+          "hours_max": 18,
+          "series_per_cell": 40,
+          "data_seeds": 1,
+          "model_seeds": 1,
+          "real_series": 2000,
+          "student_seeds": 1
+        },
+        "minimal": {
+          "hours_gt": 18,
+          "series_per_cell": 24,
+          "data_seeds": 1,
+          "model_seeds": 1,
+          "real_series": 1000,
+          "student_seeds": 1,
+          "mode": "SCREEN_ONLY"
+        }
+      },
+      "cap_hours": 24
+    },
+    "gates": {
+      "S1": {
+        "best": {
+          "heads_min": 2,
+          "cells_min": 3,
+          "of_cells": 18
+        },
+        "practical": {
+          "heads_min": 2,
+          "share_min": 0.15
+        }
+      },
+      "S2": {
+        "cell_oracle_gain_min": 0.02,
+        "series_origin_gain_min": 0.03
+      },
+      "S3": {
+        "temporal_contrasts_min": 1,
+        "absolute_percent_points_min": 2,
+        "cluster_CI_excludes_zero": true
+      },
+      "R1": {
+        "heads_min": 2,
+        "within_best": 0.05,
+        "datasets_min": 2,
+        "behind_max": 0.1,
+        "must_best": [
+          "zero_Brier",
+          "tail"
+        ]
+      },
+      "R2": {
+        "practical_shares_min": 2,
+        "practical_share": 0.15,
+        "macro_oracle_min": 0.02,
+        "datasets_oracle_min": 2,
+        "dataset_oracle_min": 0.01,
+        "error_correlation": "clearly_less_than_1",
+        "identity": "not_globally_fixed"
+      },
+      "R3": {
+        "pool_sCRPS_min": 0.01,
+        "each_sCRPS_min": -0.005,
+        "q95_q99_min": 0.02,
+        "q50_zeroBrier_NRMSE_deterioration_max": 0.01
+      },
+      "A1": {
+        "pool_sCRPS_min": 0.01,
+        "tail_min": 0.02
+      },
+      "A2": {
+        "recovery_min": 0.5
+      },
+      "A3_A4": {
+        "student_over_A0_min": 0.005,
+        "macro_CI_lower_gt": 0,
+        "positive_datasets_min": 2,
+        "dataset_CI_lower_gt_min": 1
+      },
+      "A3": {
+        "not_worse_metrics": [
+          "zero",
+          "q50",
+          "q99",
+          "NRMSE",
+          "coverage_90_95"
+        ],
+        "deterioration_max": 0.01
+      },
+      "A4": {
+        "parameters_max_multiple": 1.5,
+        "latency_max_multiple": 1.3,
+        "pool_speedup_min": 2.0,
+        "memory_max_pool_fraction": 0.5
+      },
+      "B1": {
+        "Spearman_min": 0.2,
+        "datasets_min": 2,
+        "extended_gain_min": 0.08,
+        "shuffle_gain_max_real_fraction": 0.25,
+        "cross_dataset_sign": true
+      },
+      "B2": {
+        "macro_min": 0.005,
+        "each_min": -0.0025,
+        "CI_lower_gt": 0,
+        "positive_datasets_min": 2,
+        "B2_minus_B1_min": 0.002,
+        "q99_zero_deterioration_max": 0.01,
+        "worst_origin_min": -0.005
+      },
+      "C1": {
+        "datasets_min": 2,
+        "AUROC_min": 0.7,
+        "AUPRC_min": 0.35,
+        "C2_minus_C0_AUPRC_min": 0.05,
+        "C2_minus_C3_min": 0.02,
+        "Brier_not_worse": true
+      },
+      "C2": {
+        "synthetic_AUPRC_min": 0.7,
+        "false_alarm_max": 0.1,
+        "delay_hours_max": 1,
+        "no_change_false_positive_max": 0.1,
+        "distinct_components": true
+      },
+      "C3": {
+        "worst_decile_sCRPS_min": 0.1,
+        "coverage_error_reduction_min": 0.15,
+        "overall_sCRPS_deterioration_lt": 0.005,
+        "selective_coverage_min": 0.8,
+        "false_alarm_dataset_deterioration_lt": 0.005
+      }
+    },
+    "policies": {
+      "scientific_failure": "continue_and_permanently_diagnostic_downstream",
+      "integrity_failure": "halt_relevant_branch_or_global",
+      "artifacts": "append_only",
+      "successful_completion": "skip_rerun"
+    },
+    "retry": {
+      "network_attempts": 3,
+      "network_backoff_seconds": [
+        30,
+        120,
+        300
+      ],
+      "OOM": "one_retry_as_training_contract",
+      "post_result_changes": "forbidden"
+    },
+    "verdict_vocabulary": [
+      "HEAD_SPECIALIZATION_GO",
+      "HEAD_SPECIALIZATION_NO_GO",
+      "REAL_DISTRIBUTION_POOL_GO",
+      "REAL_DISTRIBUTION_POOL_NO_GO",
+      "DISTRIBUTION_SPACE_DISTILLATION_GO",
+      "DISTRIBUTION_SPACE_DISTILLATION_NO_GO",
+      "STRUCTURE_CONDITIONED_ROUTING_GO",
+      "STRUCTURE_CONDITIONED_ROUTING_NO_GO",
+      "DISAGREEMENT_SENSOR_GO",
+      "DISAGREEMENT_SENSOR_NO_GO",
+      "RECOMMEND_A_DISTRIBUTION_DISTILLATION",
+      "RECOMMEND_C_DISAGREEMENT_SENSOR",
+      "RECOMMEND_B_STRUCTURE_CONDITIONED_ROUTING",
+      "RECOMMEND_CHARACTERIZATION_ONLY",
+      "ALL_NEW_METHOD_BRANCHES_NO_GO",
+      "INTEGRITY_BLOCKED_NO_SCIENTIFIC_VERDICT"
+    ]
+  },
+  "payload_sha256": "462b1deae68e0501cc9df0c1805363e39b3aaf56e3d8f37c6d340d658d6d51f8"
+}

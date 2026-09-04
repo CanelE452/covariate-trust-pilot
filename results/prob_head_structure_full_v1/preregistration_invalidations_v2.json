@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "attempt": 2,
+  "status": "INVALID_BEFORE_ANY_MODEL_FIT",
+  "new_model_fits_completed": 0,
+  "invalidated": {
+    "path": "preregistered_spec.json",
+    "payload_sha256": "15ebae1060836a972254aef0bc5de67332d85beaadfcf4e68313297914c97bf7",
+    "file_sha256": "3a5593e02ce185db57b82476f0696da59f8aead76c64c8081f3ed03e4ccf3020",
+    "companion_file_sha256": "ef42a17de66b439031b98bdd2ebe9966adde9b011fd92428fb193c8bec6c3aba"
+  },
+  "prior_v1": {
+    "path": "preregistration.json",
+    "payload_sha256": "462b1deae68e0501cc9df0c1805363e39b3aaf56e3d8f37c6d340d658d6d51f8",
+    "file_sha256": "60fda1710cafb0cc3337de44d2b405250252fd1ffd513c4222816db685e10c68"
+  },
+  "exact_reasons": [
+    "A/B/C method labels and action variants differed from the frozen user protocol",
+    "likelihood tolerances, gate dependency lineage, report order, and several execution contracts were incomplete",
+    "v2 remains immutable at the original requested preregistered_spec.json path; v3 is authoritative"
+  ]
+}

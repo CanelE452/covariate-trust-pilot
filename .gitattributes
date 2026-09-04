@@ -1,6 +1,9 @@
 /.gitattributes text eol=lf
 /_docs/history/2026-09-05.md text eol=lf
 /experiments/ph_online_memory_gono_v1/** text eol=lf
+/experiments/prob_head_structure_full_v1/** text eol=lf
+/tests/prob_head_structure_full_v1/** text eol=lf
+/results/prob_head_structure_full_v1/** text eol=lf
 /results/ph_online_memory_gono_v1/** -text
 
 results/ph_online_memory_gono_v1/**/*.parquet filter=lfs diff=lfs merge=lfs -text
