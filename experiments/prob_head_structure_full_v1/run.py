@@ -168,7 +168,10 @@ def run_pipeline(
     ticker = clock or time.monotonic
     started = ticker()
     ledger = ExecutionLedger()
-    shared: dict[str, Any] = {"ledger": ledger, "runs_root": root, **dict(context or {})}
+    # The caller's dict is used directly so stage artifacts remain visible after the run.
+    shared: dict[str, Any] = context if isinstance(context, dict) else dict(context or {})
+    shared["ledger"] = ledger
+    shared["runs_root"] = root
 
     results: list[dict[str, Any]] = []
     status = "COMPLETE"
@@ -217,6 +220,7 @@ def run_pipeline(
         "failed_scientific_gates": ledger.failed_gates(),
         "elapsed_seconds": float(ticker() - started),
         "stage_order": list(stages),
+        "console_summary": list(shared.get("console_summary", [])),
     }
 
 
