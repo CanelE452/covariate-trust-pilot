@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
 from .integrity import publish_completion_marker, reserve_or_resume_attempt
+from .resource_guard import MemoryBudgetExceeded, MemoryGuard
 
 STAGE_ORDER: tuple[str, ...] = (
     "git/repository audit",
@@ -54,9 +55,6 @@ STAGE_ORDER: tuple[str, ...] = (
 # re-render every run. Resuming it would replay an older run's report.
 ALWAYS_RERUN_STAGES: frozenset[str] = frozenset(
     {
-        # The frozen P2 weights stay sealed and are reused, never re-searched; the stage
-        # re-runs only to attach its diagnostic outer application and the R3 gate.
-        "CDF pool",
         "final gate calculation",
         "figures",
         "STATUS",
@@ -69,6 +67,7 @@ ALWAYS_RERUN_STAGES: frozenset[str] = frozenset(
 
 WALL_CLOCK_CAP_SECONDS = 24 * 60 * 60
 RESOURCE_CAP_TOKEN = "RESOURCE_CAP_PARTIAL_COMPLETION"
+MEMORY_CAP_TOKEN = "MEMORY_CAP_PARTIAL_COMPLETION"
 HARD_STOP_STATUS = "HARD_INTEGRITY_STOP"
 
 
@@ -211,6 +210,9 @@ def run_pipeline(
     shared: dict[str, Any] = context if isinstance(context, dict) else dict(context or {})
     shared["ledger"] = ledger
     shared["runs_root"] = root
+    guard = MemoryGuard()
+    shared["memory_guard"] = guard
+    memory_readings: list[dict[str, Any]] = []
 
     results: list[dict[str, Any]] = []
     status = "COMPLETE"
@@ -220,6 +222,14 @@ def run_pipeline(
         if ticker() - started >= float(wall_clock_cap_seconds):
             status = RESOURCE_CAP_TOKEN
             stop_reason = f"{RESOURCE_CAP_TOKEN}: stopped before {stage}"
+            break
+        # Stopping here keeps a heavy stage from exhausting the system commit limit and
+        # taking unrelated processes down with it.
+        try:
+            memory_readings.append(guard.check(stage))
+        except MemoryBudgetExceeded as error:
+            status = MEMORY_CAP_TOKEN
+            stop_reason = str(error)
             break
 
         attempt, resumed = reserve_or_resume_attempt(root, stage_slug(stage))
@@ -292,11 +302,13 @@ def run_pipeline(
         "elapsed_seconds": float(ticker() - started),
         "stage_order": list(stages),
         "console_summary": list(shared.get("console_summary", [])),
+        "memory": {**guard.summary(), "per_stage": memory_readings},
     }
 
 
 __all__ = [
     "HARD_STOP_STATUS",
+    "MEMORY_CAP_TOKEN",
     "RESOURCE_CAP_TOKEN",
     "ALWAYS_RERUN_STAGES",
     "STAGE_ORDER",

@@ -1,0 +1,19 @@
+{
+  "detail": [
+    "Stage B was wired after these files were rendered, so they never saw it.",
+    "Stage C, the negative controls and the bootstrap had not been executed.",
+    "S1/S2/S3/R1/R2/R3/A1/A2 were decided by inline conditions in stages.py rather than by the frozen gates.py reducers.",
+    "The real gates were computed from M5 alone, but the frozen FrozenPrimaryDatasetManifest requires at least two audited datasets.",
+    "RECOMMEND_CHARACTERIZATION_ONLY came from S1 PASS, but the frozen truth table defines characterization_clear as S3 GO or R2 GO."
+  ],
+  "original_file_sha256": {
+    "STATUS.md": "90735985debe9a73cd569ebacbd133e9d1a80893b106a4a6b53e72d8ae66f07d",
+    "final_console_summary.txt": "a5df25c902bbc76af25af31885f2d14484091a03d1c97207c669cb755200320d",
+    "tables_a_to_t.json": "158276ce3e83783a27a4dc11f3fb5166d67d0222e8bb7207fecf66b6a919e34a"
+  },
+  "preservation": "immutable",
+  "reason": "PROVISIONAL_REPORT_BEFORE_FROZEN_GATE_REEXECUTION",
+  "schema": "prob_head_structure_full_v1.report_supersession.v1",
+  "scientific_interpretation": "not final",
+  "source_commit_sha": "df3a06f884ffd28dace766d3fc2420ab2c31d688"
+}

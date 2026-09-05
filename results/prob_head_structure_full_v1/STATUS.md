@@ -1,4 +1,4 @@
-FINAL RECOMMENDATION: RECOMMEND_CHARACTERIZATION_ONLY
+FINAL RECOMMENDATION: ALL_NEW_METHOD_BRANCHES_NO_GO
 
 ## 1. What was attempted
 
@@ -11,7 +11,7 @@ The authoritative preregistration, its companion hash, the protected-artifact ba
 item                          status
 ────────────────────────────────────
 protected_manifest            PASS  
-confirmatory_synthetic_cells  17    
+confirmatory_synthetic_cells  14    
 unbalanced_dgp_cells          3     
 ```
 
@@ -30,9 +30,10 @@ python   torch        cuda  device
 ## 5. Dataset support
 
 ```
-dataset  panel_shape    eligible_pool  sampled  sampling                                                        
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-m5       [29290, 1941]  29233          1000     train-only stratified quantile bins under the preregistered seed
+dataset        eligible_pool  panel_shape    runtime_tier      sampled
+──────────────────────────────────────────────────────────────────────
+m5             29233          [29290, 1941]  MINIMAL-COMPLETE  1000   
+online_retail  2036           [2036, 374]    MINIMAL-COMPLETE  1000   
 ```
 
 ## 6. Numerical likelihood validation
@@ -103,69 +104,63 @@ d8_rI0.8_rM0.8    8  NB            0.8    0.8    0.22248796823984202
 d8_rI0.8_rM0.8    8  TWEEDIE_FULL  0.8    0.8    0.24200109490714744
 ```
 ```
-confirmatory_cells  total_cells  cell_oracle_gain        series_origin_oracle_gain  best_head_cell_counts  practical_winner_share                                                                     
-──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-17                  18           0.00012052142868357318  0.029889632723719917       {'HSNB': 16, 'NB': 1}  {'HSNB': 0.6107843137254902, 'NB': 0.4352941176470588, 'TWEEDIE_FULL': 0.06127450980392156}
+confirmatory_cells  total_cells  cell_oracle_gain        series_origin_oracle_gain  S3_status      best_head_cell_counts                     practical_winner_share                                                                     
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+14                  18           0.00014883250840747042  0.030716368215661927       NOT_EVALUATED  {'HSNB': 17, 'NB': 1, 'TWEEDIE_FULL': 0}  {'HSNB': 0.6107843137254902, 'NB': 0.4352941176470588, 'TWEEDIE_FULL': 0.06127450980392156}
 ```
 
 ## 8. Temporal structure effect
 
 ```
-effect                factor  high_level  high_mean_gap        low_level  low_mean_gap         pair                
-───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-5.951011141929179     d       8.0         -9.729300622096336   4.0        -15.680311764025515  NB_vs_TWEEDIE_FULL  
-4.824692513570454     d       8.0         -12.05280147912418   4.0        -16.877493992694635  HSNB_vs_TWEEDIE_FULL
-2.294754940443514     d       8.0         4.005395821445009    4.0        1.710640881001495    NB_vs_HSNB          
--1.3368254911907993   rho_I   0.8         -14.275266393381619  -0.8       -12.93844090219082   HSNB_vs_TWEEDIE_FULL
-1.2938114338985667    rho_M   0.8         -14.602844506211422  -0.8       -15.896655940109989  HSNB_vs_TWEEDIE_FULL
-1.0135582662956       rho_I   0.8         3.84889131829953     -0.8       2.83533305200393     NB_vs_HSNB          
--0.7566143120997628   rho_M   0.8         2.682779428123926    -0.8       3.439393740223689    NB_vs_HSNB          
--0.5229605396654318   rho_I   0.8         -11.75100793972422   -0.8       -11.228047400058788  NB_vs_TWEEDIE_FULL  
--0.05403932061057226  rho_M   0.8         -13.482930058488172  -0.8       -13.4288907378776    NB_vs_TWEEDIE_FULL  
+NOT_PRODUCED
 ```
 
 ## 9. Real teacher quality
 
 ```
-head          seconds             best_epoch
-────────────────────────────────────────────
-HSNB          93.99631762504578   14        
-NB            218.3116717338562   22        
-TWEEDIE_FULL  162.31079769134521  16        
+dataset        head          seconds             best_epoch
+───────────────────────────────────────────────────────────
+m5             NB            197.8742914199829   22        
+m5             HSNB          166.80423998832703  14        
+m5             TWEEDIE_FULL  201.24754691123962  16        
+online_retail  NB            184.1995575428009   28        
+online_retail  HSNB          112.93111300468445  12        
+online_retail  TWEEDIE_FULL  207.29237484931946  24        
 ```
 ```
-head          sCRPS              relative_to_best   
-────────────────────────────────────────────────────
-HSNB          9.777219935028333  0.2979499783163615 
-NB            7.845563804829036  0.04151787911355487
-TWEEDIE_FULL  7.532817210499032  0.0                
+dataset        head          sCRPS              zero_brier           tail_sQL            relative_to_best
+─────────────────────────────────────────────────────────────────────────────────────────────────────────
+m5             HSNB          9.777219935028333  0.19355305042839377  5.396737479215325   None            
+m5             NB            7.845563804829036  0.18073659423351557  6.646977298580728   None            
+m5             TWEEDIE_FULL  7.532817210499032  0.1821886034606037   5.1740883316042865  None            
+online_retail  TWEEDIE_FULL  4269.61951716686   0.3295994528368457   3834.701868605186   None            
 ```
 
 ## 10. Real complementarity
 
 ```
-best_global_loss   oracle_family  origin_oracle_gain    origin_oracle_loss  series_oracle_gain    series_oracle_loss
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-7.532817210499032  HARD           0.008793392721318738  7.466578190469205   0.001060636187501629  7.524827631971742 
+oracle_family  macro_oracle_gain  dataset_oracle_gains  dataset_best_heads
+──────────────────────────────────────────────────────────────────────────
+HARD           None               None                  None              
 ```
 
 ## 11. CDF pooling
 
 ```
-P0    P2_weights       outer_pool_sCRPS   outer_best_single_sCRPS  relative_improvement
-───────────────────────────────────────────────────────────────────────────────────────
-HSNB  [0.0, 1.0, 0.0]  9.777219965477425  7.5328171985417125       -0.29794998441887177
+dataset  P0    P2_weights       primary_pool  outer_pool_sCRPS   outer_best_single_head  relative_improvement
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+m5       HSNB  [0.0, 1.0, 0.0]  P2            9.777219941093016  TWEEDIE_FULL            -0.2979499811817814 
 ```
 
 ## 12. A distillation
 
 ```
-variant  outer_sCRPS        validation_sCRPS    selected_lambda
-───────────────────────────────────────────────────────────────
-A0       7.26697084615988   6.0806401906364265  0.0            
-A1       7.389259989518947  6.080394814191408   0.25           
-A2       7.362743665425956  6.080006349962915   0.5            
-A3       7.389259989518947  6.080394814191408   0.25           
+dataset  variant  outer_sCRPS        selected_lambda  primary_student
+─────────────────────────────────────────────────────────────────────
+m5       A0       7.26697084615988   0.0              A3             
+m5       A1       7.389259989518947  0.25             A3             
+m5       A2       7.372978133720947  0.5              A3             
+m5       A3       7.389259989518947  0.25             A3             
 ```
 
 ## 13. B structure-conditioned routing
@@ -180,20 +175,20 @@ NOT_PRODUCED
 ## 14. C disagreement sensor
 
 ```
-changepoint  d  post_zero_rate      pre_zero_rate       series  shift_type       status   
-──────────────────────────────────────────────────────────────────────────────────────────
-288          4  0.7475405092592593  0.7488425925925926  24      rho_I_positive   GENERATED
-288          4  0.7498553240740741  0.7488425925925926  24      rho_I_negative   GENERATED
-288          4  0.7507233796296297  0.7488425925925926  24      rho_M_positive   GENERATED
-288          4  0.7507233796296297  0.7488425925925926  24      rho_M_negative   GENERATED
-288          4  0.7475405092592593  0.7488425925925926  24      rho_I_and_rho_M  GENERATED
-288          4  0.7507233796296297  0.7488425925925926  24      no_change        GENERATED
-288          8  0.8744212962962963  0.8729745370370371  24      rho_I_positive   GENERATED
-288          8  0.8747106481481481  0.8729745370370371  24      rho_I_negative   GENERATED
-288          8  0.875               0.8729745370370371  24      rho_M_positive   GENERATED
-288          8  0.875               0.8729745370370371  24      rho_M_negative   GENERATED
-288          8  0.8744212962962963  0.8729745370370371  24      rho_I_and_rho_M  GENERATED
-288          8  0.875               0.8729745370370371  24      no_change        GENERATED
+d  origins  series  shift_type       status
+───────────────────────────────────────────
+4  16       24      rho_I_positive   SCORED
+4  16       24      rho_I_negative   SCORED
+4  16       24      rho_M_positive   SCORED
+4  16       24      rho_M_negative   SCORED
+4  16       24      rho_I_and_rho_M  SCORED
+4  16       24      no_change        SCORED
+8  16       24      rho_I_positive   SCORED
+8  16       24      rho_I_negative   SCORED
+8  16       24      rho_M_positive   SCORED
+8  16       24      rho_M_negative   SCORED
+8  16       24      rho_I_and_rho_M  SCORED
+8  16       24      no_change        SCORED
 ```
 ```
 NOT_PRODUCED
@@ -217,26 +212,26 @@ NOT_PRODUCED
 ## 17. Confirmatory vs diagnostic evidence
 
 ```
-branch                  upstream_required_gates            upstream_gate_status                                               confirmatory_eligible  scientific_role                          
-──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-HEAD_SPECIALIZATION     ['DGP_BALANCE', 'S1', 'S2', 'S3']  {'DGP_BALANCE': 'FAIL', 'S1': 'PASS', 'S2': 'FAIL', 'S3': 'PASS'}  False                  DIAGNOSTIC_CONTINUATION_AFTER_DGP_BALANCE
-REAL_DISTRIBUTION_POOL  ['R1', 'R2', 'R3']                 {'R1': 'FAIL', 'R2': 'FAIL', 'R3': 'FAIL'}                         False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
-A_DISTILLATION          ['R2', 'R3', 'A1', 'A2']           {'R2': 'FAIL', 'R3': 'FAIL', 'A1': 'FAIL', 'A2': 'FAIL'}           False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
-B_STRUCTURE_ROUTING     ['R2', 'B1', 'B2']                 {'R2': 'FAIL', 'B1': 'NOT_EVALUATED', 'B2': 'NOT_EVALUATED'}       False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
-C_DISAGREEMENT_SENSOR   ['R1', 'C1']                       {'R1': 'FAIL', 'C1': 'NOT_EVALUATED'}                              False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
+branch                  upstream_required_gates                                  upstream_gate_status                                                                                                                                                                             confirmatory_eligible  scientific_role                          
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+HEAD_SPECIALIZATION     ['DGP_BALANCE', 'S1', 'S2', 'S3']                        {'DGP_BALANCE': 'FAIL', 'S1': 'PASS', 'S2': 'FAIL', 'S3': 'NOT_EVALUATED'}                                                                                                                       False                  DIAGNOSTIC_CONTINUATION_AFTER_DGP_BALANCE
+REAL_DISTRIBUTION_POOL  ['R1', 'R2', 'R3']                                       {'R1': 'NOT_EVALUATED', 'R2': 'NOT_EVALUATED', 'R3': 'NOT_EVALUATED'}                                                                                                                            True                   None                                     
+A_DISTILLATION          ['R1', 'R2', 'R3', 'A1', 'A2', 'A3', 'A4', 'CONTROL_A']  {'R1': 'NOT_EVALUATED', 'R2': 'NOT_EVALUATED', 'R3': 'NOT_EVALUATED', 'A1': 'NOT_EVALUATED', 'A2': 'NOT_EVALUATED', 'A3': 'NOT_EVALUATED', 'A4': 'NOT_EVALUATED', 'CONTROL_A': 'NOT_EVALUATED'}  True                   None                                     
+B_STRUCTURE_ROUTING     ['R1', 'R2', 'B1', 'B2', 'CONTROL_B']                    {'R1': 'NOT_EVALUATED', 'R2': 'NOT_EVALUATED', 'B1': 'NOT_EVALUATED', 'B2': 'NOT_EVALUATED', 'CONTROL_B': 'NOT_EVALUATED'}                                                                       True                   None                                     
+C_DISAGREEMENT_SENSOR   ['R1', 'C1', 'C2', 'C3', 'CONTROL_C']                    {'R1': 'NOT_EVALUATED', 'C1': 'NOT_EVALUATED', 'C2': 'FAIL', 'C3': 'NOT_EVALUATED', 'CONTROL_C': 'NOT_EVALUATED'}                                                                                False                  DIAGNOSTIC_CONTINUATION_AFTER_C2         
 ```
 
 ## 18. Gate table
 
 ```
-S1    S2    S3    R1    R2    R3    A1    A2    DGP_BALANCE
-───────────────────────────────────────────────────────────
-PASS  FAIL  PASS  FAIL  FAIL  FAIL  FAIL  FAIL  FAIL       
+DGP_BALANCE  S1    S2    C2  
+─────────────────────────────
+FAIL         PASS  FAIL  FAIL
 ```
 
 ## 19. Final recommendation
 
-[판정] RECOMMEND_CHARACTERIZATION_ONLY
+[판정] ALL_NEW_METHOD_BRANCHES_NO_GO
 ```
 NOT_PRODUCED
 ```
@@ -255,4 +250,4 @@ NOT_PRODUCED
 
 ## 21. Exact next research action
 
-write up the characterization result and stop new method development on this axis
+stop method development on this axis and reconsider the expert set

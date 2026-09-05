@@ -1,0 +1,3 @@
+structure_effect_forest.png was rendered from the provisional 9-contrast S3 calculation.
+S3 is NOT_EVALUATED in the frozen re-execution, so the figure is preserved here rather
+than left in results/figures where it would imply an effect the run never established.

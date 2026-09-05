@@ -9,7 +9,7 @@
       },
       {
         "item": "confirmatory_synthetic_cells",
-        "status": 14
+        "status": 17
       },
       {
         "item": "unbalanced_dgp_cells",
@@ -26,22 +26,9 @@
       {
         "dataset": "m5",
         "eligible_pool": 29233,
-        "panel_shape": [
-          29290,
-          1941
-        ],
-        "runtime_tier": "MINIMAL-COMPLETE",
-        "sampled": 1000
-      },
-      {
-        "dataset": "online_retail",
-        "eligible_pool": 2036,
-        "panel_shape": [
-          2036,
-          374
-        ],
-        "runtime_tier": "MINIMAL-COMPLETE",
-        "sampled": 1000
+        "panel_shape": "[29290, 1941]",
+        "sampled": 1000,
+        "sampling": "train-only stratified quantile bins under the preregistered seed"
       }
     ],
     "source_key": "dataset_support",
@@ -67,40 +54,19 @@
     "note": "from persisted payload",
     "rows": [
       {
-        "best_epoch": 22,
-        "dataset": "m5",
-        "head": "NB",
-        "seconds": 197.8742914199829
+        "best_epoch": 14,
+        "head": "HSNB",
+        "seconds": 93.99631762504578
       },
       {
-        "best_epoch": 14,
-        "dataset": "m5",
-        "head": "HSNB",
-        "seconds": 166.80423998832703
+        "best_epoch": 22,
+        "head": "NB",
+        "seconds": 218.3116717338562
       },
       {
         "best_epoch": 16,
-        "dataset": "m5",
         "head": "TWEEDIE_FULL",
-        "seconds": 201.24754691123962
-      },
-      {
-        "best_epoch": 28,
-        "dataset": "online_retail",
-        "head": "NB",
-        "seconds": 184.1995575428009
-      },
-      {
-        "best_epoch": 12,
-        "dataset": "online_retail",
-        "head": "HSNB",
-        "seconds": 112.93111300468445
-      },
-      {
-        "best_epoch": 24,
-        "dataset": "online_retail",
-        "head": "TWEEDIE_FULL",
-        "seconds": 207.29237484931946
+        "seconds": 162.31079769134521
       }
     ],
     "source_key": "teacher_runtime",
@@ -543,20 +509,18 @@
     "note": "from persisted payload",
     "rows": [
       {
-        "S3_status": "NOT_EVALUATED",
         "best_head_cell_counts": {
-          "HSNB": 17,
-          "NB": 1,
-          "TWEEDIE_FULL": 0
+          "HSNB": 16,
+          "NB": 1
         },
-        "cell_oracle_gain": 0.00014883250840747042,
-        "confirmatory_cells": 14,
+        "cell_oracle_gain": 0.00012052142868357318,
+        "confirmatory_cells": 17,
         "practical_winner_share": {
           "HSNB": 0.6107843137254902,
           "NB": 0.4352941176470588,
           "TWEEDIE_FULL": 0.06127450980392156
         },
-        "series_origin_oracle_gain": 0.030716368215661927,
+        "series_origin_oracle_gain": 0.029889632723719917,
         "total_cells": 18
       }
     ],
@@ -566,7 +530,89 @@
   "G": {
     "id": "G",
     "note": "from persisted payload",
-    "rows": [],
+    "rows": [
+      {
+        "effect": 5.951011141929179,
+        "factor": "d",
+        "high_level": 8.0,
+        "high_mean_gap": -9.729300622096336,
+        "low_level": 4.0,
+        "low_mean_gap": -15.680311764025515,
+        "pair": "NB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": 4.824692513570454,
+        "factor": "d",
+        "high_level": 8.0,
+        "high_mean_gap": -12.05280147912418,
+        "low_level": 4.0,
+        "low_mean_gap": -16.877493992694635,
+        "pair": "HSNB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": 2.294754940443514,
+        "factor": "d",
+        "high_level": 8.0,
+        "high_mean_gap": 4.005395821445009,
+        "low_level": 4.0,
+        "low_mean_gap": 1.710640881001495,
+        "pair": "NB_vs_HSNB"
+      },
+      {
+        "effect": -1.3368254911907993,
+        "factor": "rho_I",
+        "high_level": 0.8,
+        "high_mean_gap": -14.275266393381619,
+        "low_level": -0.8,
+        "low_mean_gap": -12.93844090219082,
+        "pair": "HSNB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": 1.2938114338985667,
+        "factor": "rho_M",
+        "high_level": 0.8,
+        "high_mean_gap": -14.602844506211422,
+        "low_level": -0.8,
+        "low_mean_gap": -15.896655940109989,
+        "pair": "HSNB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": 1.0135582662956,
+        "factor": "rho_I",
+        "high_level": 0.8,
+        "high_mean_gap": 3.84889131829953,
+        "low_level": -0.8,
+        "low_mean_gap": 2.83533305200393,
+        "pair": "NB_vs_HSNB"
+      },
+      {
+        "effect": -0.7566143120997628,
+        "factor": "rho_M",
+        "high_level": 0.8,
+        "high_mean_gap": 2.682779428123926,
+        "low_level": -0.8,
+        "low_mean_gap": 3.439393740223689,
+        "pair": "NB_vs_HSNB"
+      },
+      {
+        "effect": -0.5229605396654318,
+        "factor": "rho_I",
+        "high_level": 0.8,
+        "high_mean_gap": -11.75100793972422,
+        "low_level": -0.8,
+        "low_mean_gap": -11.228047400058788,
+        "pair": "NB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": -0.05403932061057226,
+        "factor": "rho_M",
+        "high_level": 0.8,
+        "high_mean_gap": -13.482930058488172,
+        "low_level": -0.8,
+        "low_mean_gap": -13.4288907378776,
+        "pair": "NB_vs_TWEEDIE_FULL"
+      }
+    ],
     "source_key": "structure_contrasts",
     "title": "temporal structure contrasts"
   },
@@ -575,88 +621,112 @@
     "note": "from persisted payload",
     "rows": [
       {
+        "changepoint": 288,
         "d": 4,
-        "origins": 16,
+        "post_zero_rate": 0.7475405092592593,
+        "pre_zero_rate": 0.7488425925925926,
         "series": 24,
         "shift_type": "rho_I_positive",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 4,
-        "origins": 16,
+        "post_zero_rate": 0.7498553240740741,
+        "pre_zero_rate": 0.7488425925925926,
         "series": 24,
         "shift_type": "rho_I_negative",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 4,
-        "origins": 16,
+        "post_zero_rate": 0.7507233796296297,
+        "pre_zero_rate": 0.7488425925925926,
         "series": 24,
         "shift_type": "rho_M_positive",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 4,
-        "origins": 16,
+        "post_zero_rate": 0.7507233796296297,
+        "pre_zero_rate": 0.7488425925925926,
         "series": 24,
         "shift_type": "rho_M_negative",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 4,
-        "origins": 16,
+        "post_zero_rate": 0.7475405092592593,
+        "pre_zero_rate": 0.7488425925925926,
         "series": 24,
         "shift_type": "rho_I_and_rho_M",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 4,
-        "origins": 16,
+        "post_zero_rate": 0.7507233796296297,
+        "pre_zero_rate": 0.7488425925925926,
         "series": 24,
         "shift_type": "no_change",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 8,
-        "origins": 16,
+        "post_zero_rate": 0.8744212962962963,
+        "pre_zero_rate": 0.8729745370370371,
         "series": 24,
         "shift_type": "rho_I_positive",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 8,
-        "origins": 16,
+        "post_zero_rate": 0.8747106481481481,
+        "pre_zero_rate": 0.8729745370370371,
         "series": 24,
         "shift_type": "rho_I_negative",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 8,
-        "origins": 16,
+        "post_zero_rate": 0.875,
+        "pre_zero_rate": 0.8729745370370371,
         "series": 24,
         "shift_type": "rho_M_positive",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 8,
-        "origins": 16,
+        "post_zero_rate": 0.875,
+        "pre_zero_rate": 0.8729745370370371,
         "series": 24,
         "shift_type": "rho_M_negative",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 8,
-        "origins": 16,
+        "post_zero_rate": 0.8744212962962963,
+        "pre_zero_rate": 0.8729745370370371,
         "series": 24,
         "shift_type": "rho_I_and_rho_M",
-        "status": "SCORED"
+        "status": "GENERATED"
       },
       {
+        "changepoint": 288,
         "d": 8,
-        "origins": 16,
+        "post_zero_rate": 0.875,
+        "pre_zero_rate": 0.8729745370370371,
         "series": 24,
         "shift_type": "no_change",
-        "status": "SCORED"
+        "status": "GENERATED"
       }
     ],
     "source_key": "change_sensor",
@@ -667,36 +737,19 @@
     "note": "from persisted payload",
     "rows": [
       {
-        "dataset": "m5",
         "head": "HSNB",
-        "relative_to_best": null,
-        "sCRPS": 9.777219935028333,
-        "tail_sQL": 5.396737479215325,
-        "zero_brier": 0.19355305042839377
+        "relative_to_best": 0.2979499783163615,
+        "sCRPS": 9.777219935028333
       },
       {
-        "dataset": "m5",
         "head": "NB",
-        "relative_to_best": null,
-        "sCRPS": 7.845563804829036,
-        "tail_sQL": 6.646977298580728,
-        "zero_brier": 0.18073659423351557
+        "relative_to_best": 0.04151787911355487,
+        "sCRPS": 7.845563804829036
       },
       {
-        "dataset": "m5",
         "head": "TWEEDIE_FULL",
-        "relative_to_best": null,
-        "sCRPS": 7.532817210499032,
-        "tail_sQL": 5.1740883316042865,
-        "zero_brier": 0.1821886034606037
-      },
-      {
-        "dataset": "online_retail",
-        "head": "TWEEDIE_FULL",
-        "relative_to_best": null,
-        "sCRPS": 4269.61951716686,
-        "tail_sQL": 3834.701868605186,
-        "zero_brier": 0.3295994528368457
+        "relative_to_best": 0.0,
+        "sCRPS": 7.532817210499032
       }
     ],
     "source_key": "real_teachers",
@@ -707,10 +760,12 @@
     "note": "from persisted payload",
     "rows": [
       {
-        "dataset_best_heads": null,
-        "dataset_oracle_gains": null,
-        "macro_oracle_gain": null,
-        "oracle_family": "HARD"
+        "best_global_loss": 7.532817210499032,
+        "oracle_family": "HARD",
+        "origin_oracle_gain": 0.008793392721318738,
+        "origin_oracle_loss": 7.466578190469205,
+        "series_oracle_gain": 0.001060636187501629,
+        "series_oracle_loss": 7.524827631971742
       }
     ],
     "source_key": "real_oracle",
@@ -727,11 +782,9 @@
           1.0,
           0.0
         ],
-        "dataset": "m5",
-        "outer_best_single_head": "TWEEDIE_FULL",
-        "outer_pool_sCRPS": 9.777219941093016,
-        "primary_pool": "P2",
-        "relative_improvement": -0.2979499811817814
+        "outer_best_single_sCRPS": 7.5328171985417125,
+        "outer_pool_sCRPS": 9.777219965477425,
+        "relative_improvement": -0.29794998441887177
       }
     ],
     "source_key": "cdf_pool",
@@ -742,31 +795,27 @@
     "note": "from persisted payload",
     "rows": [
       {
-        "dataset": "m5",
         "outer_sCRPS": 7.26697084615988,
-        "primary_student": "A3",
         "selected_lambda": 0.0,
+        "validation_sCRPS": 6.0806401906364265,
         "variant": "A0"
       },
       {
-        "dataset": "m5",
         "outer_sCRPS": 7.389259989518947,
-        "primary_student": "A3",
         "selected_lambda": 0.25,
+        "validation_sCRPS": 6.080394814191408,
         "variant": "A1"
       },
       {
-        "dataset": "m5",
-        "outer_sCRPS": 7.372978133720947,
-        "primary_student": "A3",
+        "outer_sCRPS": 7.362743665425956,
         "selected_lambda": 0.5,
+        "validation_sCRPS": 6.080006349962915,
         "variant": "A2"
       },
       {
-        "dataset": "m5",
         "outer_sCRPS": 7.389259989518947,
-        "primary_student": "A3",
         "selected_lambda": 0.25,
+        "validation_sCRPS": 6.080394814191408,
         "variant": "A3"
       }
     ],
@@ -820,10 +869,15 @@
     "note": "from persisted payload",
     "rows": [
       {
-        "C2": "FAIL",
+        "A1": "FAIL",
+        "A2": "FAIL",
         "DGP_BALANCE": "FAIL",
+        "R1": "FAIL",
+        "R2": "FAIL",
+        "R3": "FAIL",
         "S1": "PASS",
-        "S2": "FAIL"
+        "S2": "FAIL",
+        "S3": "PASS"
       }
     ],
     "source_key": "gates",
