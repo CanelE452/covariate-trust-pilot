@@ -106,5 +106,37 @@ class RuntimeTierDecisionTests(unittest.TestCase):
                     )
 
 
+class FrozenTierContractTests(unittest.TestCase):
+    def test_the_implementation_tier_projection_matches_the_authoritative_preregistration(self):
+        from pathlib import Path as _Path
+
+        from experiments.prob_head_structure_full_v1.preregistration import verify_preregistration
+        from experiments.prob_head_structure_full_v1.runtime import _PREREGISTERED_TIER_PROJECTION
+
+        spec = _Path(__file__).resolve().parents[2] / (
+            "results/prob_head_structure_full_v1/preregistered_spec_v4.json"
+        )
+        payload = verify_preregistration(spec)["payload"]
+        self.assertEqual(payload["runtime"]["tiers"], _PREREGISTERED_TIER_PROJECTION)
+
+    def test_each_tier_condition_agrees_with_the_selection_thresholds(self):
+        from experiments.prob_head_structure_full_v1.runtime import (
+            _PREREGISTERED_TIER_PROJECTION,
+            select_runtime_tier,
+        )
+
+        self.assertEqual(_PREREGISTERED_TIER_PROJECTION["FULL"]["condition"], "projected_GPU_hours<=12")
+        self.assertEqual(
+            _PREREGISTERED_TIER_PROJECTION["COMPACT"]["condition"], "12<projected_GPU_hours<=18"
+        )
+        self.assertEqual(
+            _PREREGISTERED_TIER_PROJECTION["MINIMAL-COMPLETE"]["condition"], "projected_GPU_hours>18"
+        )
+        self.assertEqual(select_runtime_tier(12.0), "FULL")
+        self.assertEqual(select_runtime_tier(12.0001), "COMPACT")
+        self.assertEqual(select_runtime_tier(18.0), "COMPACT")
+        self.assertEqual(select_runtime_tier(18.0001), "MINIMAL-COMPLETE")
+
+
 if __name__ == "__main__":
     unittest.main()

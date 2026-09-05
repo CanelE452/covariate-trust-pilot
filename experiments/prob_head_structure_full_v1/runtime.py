@@ -55,6 +55,7 @@ _PREREGISTERED_TIER_PROJECTION = {
         "student_seeds": 2,
         "all_A_B_C": True,
         "bootstrap_draws": 2000,
+        "condition": "projected_GPU_hours<=12",
     },
     "COMPACT": {
         "synthetic_series_per_cell": 40,
@@ -64,6 +65,7 @@ _PREREGISTERED_TIER_PROJECTION = {
         "student_seeds": 1,
         "all_A_B_C": True,
         "bootstrap_draws": 1000,
+        "condition": "12<projected_GPU_hours<=18",
     },
     "MINIMAL-COMPLETE": {
         "synthetic_series_per_cell": 24,
@@ -74,6 +76,7 @@ _PREREGISTERED_TIER_PROJECTION = {
         "all_A_B_C": True,
         "bootstrap_draws": 500,
         "label": "SCREEN_ONLY",
+        "condition": "projected_GPU_hours>18",
     },
 }
 
