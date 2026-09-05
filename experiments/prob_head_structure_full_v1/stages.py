@@ -4068,7 +4068,7 @@ def _report_payload(context: dict[str, Any]) -> dict[str, Any]:
         "real_teachers": [
             {
                 "dataset": dataset,
-                "head": head,
+                "head": f"{head} ({dataset})",
                 "sCRPS": values.get("sCRPS"),
                 "zero_brier": values.get("zero_brier"),
                 "tail_sQL": values.get("tail_sQL"),
@@ -4077,9 +4077,40 @@ def _report_payload(context: dict[str, Any]) -> dict[str, Any]:
                 .get(dataset),
             }
             for dataset, heads in (r2.get("head_metrics") or {}).items()
+            if len(heads) == 3
             for head, values in heads.items()
         ],
-        "real_oracle": [oracle] if oracle else [],
+        "real_teachers_incomplete": [
+            {"dataset": dataset, "head": head, "sCRPS": values.get("sCRPS")}
+            for dataset, heads in (r2.get("head_metrics") or {}).items()
+            if len(heads) != 3
+            for head, values in heads.items()
+        ],
+        # R2 reports its gains under one key when the gate was decided and under the
+        # diagnostic key when a numerically blocked head made the gate unevaluable.
+        "real_oracle": (
+            [
+                {"level": f"origin oracle ({dataset})", "gain": float(value)}
+                for dataset, value in (r2.get("dataset_oracle_gains") or {}).items()
+            ]
+            + (
+                [
+                    {
+                        "level": "macro (equal dataset weight)",
+                        "gain": float(r2["macro_oracle_gain"]),
+                    }
+                ]
+                if r2.get("macro_oracle_gain") is not None
+                else []
+            )
+        )
+        or [
+            {
+                "level": f"origin oracle ({dataset}, diagnostic)",
+                "gain": float(record["origin_oracle_gain"]),
+            }
+            for dataset, record in (r2.get("diagnostic_per_dataset") or {}).items()
+        ],
         "cdf_pool": [
             {
                 "dataset": dataset,
@@ -4095,8 +4126,18 @@ def _report_payload(context: dict[str, Any]) -> dict[str, Any]:
         "distillation": [
             {
                 "dataset": dataset,
-                "variant": name,
+                "variant": f"{name} ({dataset})",
                 "outer_sCRPS": values.get("sCRPS"),
+                "recovery": (
+                    float(
+                        1.0
+                        - values["sCRPS"]
+                        / (record.get("outer_metrics") or {})["A0"]["sCRPS"]
+                    )
+                    if "A0" in (record.get("outer_metrics") or {})
+                    and values.get("sCRPS") is not None
+                    else None
+                ),
                 "selected_lambda": (record.get("selected_lambda") or {}).get(name),
                 "primary_student": record.get("primary_student"),
             }

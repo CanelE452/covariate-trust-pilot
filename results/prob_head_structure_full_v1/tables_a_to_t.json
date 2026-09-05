@@ -668,7 +668,7 @@
     "rows": [
       {
         "dataset": "m5",
-        "head": "HSNB",
+        "head": "HSNB (m5)",
         "relative_to_best": null,
         "sCRPS": 9.777219935028333,
         "tail_sQL": 5.396737479215325,
@@ -676,7 +676,7 @@
       },
       {
         "dataset": "m5",
-        "head": "NB",
+        "head": "NB (m5)",
         "relative_to_best": null,
         "sCRPS": 7.845563804829036,
         "tail_sQL": 6.646977298580728,
@@ -684,19 +684,11 @@
       },
       {
         "dataset": "m5",
-        "head": "TWEEDIE_FULL",
+        "head": "TWEEDIE_FULL (m5)",
         "relative_to_best": null,
         "sCRPS": 7.532817210499032,
         "tail_sQL": 5.1740883316042865,
         "zero_brier": 0.1821886034606037
-      },
-      {
-        "dataset": "online_retail",
-        "head": "TWEEDIE_FULL",
-        "relative_to_best": null,
-        "sCRPS": 4269.61951716686,
-        "tail_sQL": 3834.701868605186,
-        "zero_brier": 0.3295994528368457
       }
     ],
     "source_key": "real_teachers",
@@ -707,10 +699,8 @@
     "note": "from persisted payload",
     "rows": [
       {
-        "dataset_best_heads": null,
-        "dataset_oracle_gains": null,
-        "macro_oracle_gain": null,
-        "oracle_family": "HARD"
+        "gain": 0.008793392721318738,
+        "level": "origin oracle (m5, diagnostic)"
       }
     ],
     "source_key": "real_oracle",
@@ -745,29 +735,33 @@
         "dataset": "m5",
         "outer_sCRPS": 7.26697084615988,
         "primary_student": "A3",
+        "recovery": 0.0,
         "selected_lambda": 0.0,
-        "variant": "A0"
+        "variant": "A0 (m5)"
       },
       {
         "dataset": "m5",
         "outer_sCRPS": 7.389259989518947,
         "primary_student": "A3",
+        "recovery": -0.016828076780256884,
         "selected_lambda": 0.25,
-        "variant": "A1"
+        "variant": "A1 (m5)"
       },
       {
         "dataset": "m5",
         "outer_sCRPS": 7.372978133720947,
         "primary_student": "A3",
+        "recovery": -0.01458754821028152,
         "selected_lambda": 0.5,
-        "variant": "A2"
+        "variant": "A2 (m5)"
       },
       {
         "dataset": "m5",
         "outer_sCRPS": 7.389259989518947,
         "primary_student": "A3",
+        "recovery": -0.016828076780256884,
         "selected_lambda": 0.25,
-        "variant": "A3"
+        "variant": "A3 (m5)"
       }
     ],
     "source_key": "distillation",
