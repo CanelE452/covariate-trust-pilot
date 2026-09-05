@@ -496,6 +496,34 @@ def stage_s2_analysis(context: dict[str, Any]) -> dict[str, Any]:
         panel = pd.read_parquet(cached)
     from .integrity import BranchEligibility, GateStatus
 
+    # A head blocked by the exact-CDF guard costs its cell confirmatory eligibility,
+    # exactly as an unbalanced DGP cell does. The cell is reported, never deleted.
+    coverage = panel.groupby("cell_id")["head"].nunique()
+    complete_cells = sorted(coverage[coverage == len(HEADS)].index)
+    excluded = [
+        {
+            "cell_id": str(cell_id),
+            "present_heads": sorted(panel.loc[panel["cell_id"] == cell_id, "head"].unique()),
+            "missing_heads": sorted(
+                set(HEADS) - set(panel.loc[panel["cell_id"] == cell_id, "head"].unique())
+            ),
+            "reason": "NUMERICAL_BRANCH_BLOCKED",
+            "confirmatory_eligible": False,
+        }
+        for cell_id in sorted(coverage[coverage != len(HEADS)].index)
+    ]
+    diagnostic_panel = panel
+    panel = panel.loc[panel["cell_id"].isin(complete_cells)].reset_index(drop=True)
+    if not complete_cells:
+        context["ledger"].record_gate("S1", passed=False)
+        context["ledger"].record_gate("S2", passed=False)
+        context["ledger"].record_gate("S3", passed=False)
+        return {
+            "status": "NUMERICAL_BRANCH_BLOCKED",
+            "excluded_cells": excluded,
+            "reason": "no cell retained the complete three-family coverage",
+        }
+
     tier = _tier(context)
     seeds = {
         "expected_model_seeds": [int(value) for value in tier["teacher_model_seeds"]],
@@ -510,17 +538,6 @@ def stage_s2_analysis(context: dict[str, Any]) -> dict[str, Any]:
         upstream_required_gates=("DGP_BALANCE", "S1"),
         upstream_gate_status=(("DGP_BALANCE", "PASS"), ("S1", "PASS")),
     )
-    available = set(panel["head"].unique())
-    if available != set(HEADS):
-        context["ledger"].record_gate("S1", passed=False)
-        context["ledger"].record_gate("S2", passed=False)
-        context["ledger"].record_gate("S3", passed=False)
-        return {
-            "status": "NUMERICAL_BRANCH_BLOCKED",
-            "available_heads": sorted(available),
-            "missing_heads": sorted(set(HEADS) - available),
-            "reason": "the confirmatory three-family ladder needs every head",
-        }
     ladder = summarize_oracle_ladder(
         panel,
         unit_columns=unit,
@@ -572,6 +589,9 @@ def stage_s2_analysis(context: dict[str, Any]) -> dict[str, Any]:
     _store(context, "structure_contrasts", contrasts)
     _store(context, "synthetic_winners", {"best_counts": best_counts, "shares": shares})
     return {
+        "confirmatory_cells": len(complete_cells),
+        "total_cells": int(diagnostic_panel["cell_id"].nunique()),
+        "excluded_cells": excluded,
         "best_head_cell_counts": best_counts,
         "practical_winner_share": shares,
         "cell_oracle_gain": cell_gain,
