@@ -278,5 +278,346 @@ class RegretSpearmanTests(unittest.TestCase):
             regret_spearman(weights, regret)
 
 
+from experiments.prob_head_structure_full_v1.sensor import (
+    ACTION_FACTOR_GRID,
+    DISAGREEMENT_COMPONENTS,
+    SENSOR_FEATURE_SETS,
+    SensorGeometryBlocked,
+    SingleClassMetricUndefined,
+    baseline_change_features,
+    disagreement_components,
+    disagreement_deltas,
+    flag_threshold,
+    outer_feature_origins,
+    select_inner_pair_origins,
+    sensor_feature_names,
+    target_labels,
+    widen_quantiles,
+)
+
+
+class DisagreementComponentTests(unittest.TestCase):
+    def _teachers(self):
+        p_zero = np.array([[0.10, 0.20], [0.30, 0.30], [0.20, 0.10]])
+        quantiles = np.zeros((3, 2, 21))
+        for head in range(3):
+            quantiles[head] = np.linspace(0.0, 10.0 + head, 21)[None, :]
+        mean = np.array([[1.0, 2.0], [2.0, 2.0], [3.0, 2.0]])
+        return p_zero, quantiles, mean
+
+    def test_every_declared_component_is_emitted(self):
+        p_zero, quantiles, mean = self._teachers()
+        components = disagreement_components(
+            p_zero=p_zero, quantiles=quantiles, predictive_mean=mean, scale=1.0
+        )
+        for name in DISAGREEMENT_COMPONENTS:
+            self.assertIn(name, components)
+            self.assertTrue(np.isfinite(components[name]))
+
+    def test_components_use_population_variance_then_average_over_horizon(self):
+        p_zero, quantiles, mean = self._teachers()
+        components = disagreement_components(
+            p_zero=p_zero, quantiles=quantiles, predictive_mean=mean, scale=1.0
+        )
+        expected = float(np.mean(p_zero.var(axis=0, ddof=0)))
+        self.assertAlmostEqual(components["D_zero"], expected)
+
+    def test_identical_teachers_have_zero_disagreement_and_maximum_entropy(self):
+        p_zero = np.full((3, 2), 0.25)
+        quantiles = np.repeat(np.linspace(0.0, 5.0, 21)[None, None, :], 3, axis=0)
+        quantiles = np.repeat(quantiles, 2, axis=1)
+        mean = np.full((3, 2), 1.0)
+        components = disagreement_components(
+            p_zero=p_zero, quantiles=quantiles, predictive_mean=mean, scale=2.0
+        )
+        for name in ("D_zero", "D_center", "D_tail", "D_cdf", "D_mean"):
+            self.assertAlmostEqual(components[name], 0.0)
+        self.assertAlmostEqual(components["D_winner_entropy"], float(np.log(3.0)))
+
+    def test_deltas_subtract_the_same_series_previous_origin_component(self):
+        current = {"D_zero": 0.5, "D_center": 1.0, "D_tail": 2.0, "D_cdf": 0.25}
+        previous = {"D_zero": 0.2, "D_center": 1.0, "D_tail": 0.5, "D_cdf": 0.25}
+        deltas = disagreement_deltas(current, previous)
+        self.assertAlmostEqual(deltas["Delta_D_zero"], 0.3)
+        self.assertAlmostEqual(deltas["Delta_D_center"], 0.0)
+        self.assertEqual(deltas["Delta_D_zero__missing"], 0.0)
+
+        undefined = disagreement_deltas(current, None)
+        self.assertEqual(undefined["Delta_D_tail__missing"], 1.0)
+        self.assertTrue(np.isnan(undefined["Delta_D_tail"]))
+
+
+class SensorGeometryTests(unittest.TestCase):
+    def test_the_frozen_m5_inner_pair_origins_are_reproduced(self):
+        origins = select_inner_pair_origins(lookback=96, horizon=28, model_train_end=1717)
+        self.assertEqual(origins, (1465, 1493, 1521, 1549, 1577, 1605, 1633, 1661))
+
+    def test_online_retail_has_no_valid_inner_pair_and_is_branch_blocked(self):
+        with self.assertRaises(SensorGeometryBlocked) as context:
+            select_inner_pair_origins(lookback=96, horizon=28, model_train_end=150)
+        self.assertIn("REAL_C_SENSOR_GEOMETRY_BLOCKED", str(context.exception))
+
+    def test_outer_feature_origins_precede_each_target_origin_by_one_horizon(self):
+        self.assertEqual(
+            outer_feature_origins((1773, 1801, 1829, 1857, 1885, 1913), horizon=28),
+            (1745, 1773, 1801, 1829, 1857, 1885),
+        )
+        self.assertEqual(
+            outer_feature_origins((206, 234, 262, 290, 318, 346), horizon=28),
+            (178, 206, 234, 262, 290, 318),
+        )
+
+
+class SensorTargetTests(unittest.TestCase):
+    def test_target_two_flags_either_undercovered_central_interval(self):
+        labels = target_labels(
+            next_scrps=1.0,
+            scrps_threshold=2.0,
+            coverage_90=0.88,
+            coverage_95=0.99,
+            zero_calibration=0.1,
+            zero_threshold=0.5,
+            best_head_changed=False,
+        )
+        self.assertEqual(labels["target_2"], 1)
+
+        covered = target_labels(
+            next_scrps=1.0,
+            scrps_threshold=2.0,
+            coverage_90=0.95,
+            coverage_95=0.97,
+            zero_calibration=0.1,
+            zero_threshold=0.5,
+            best_head_changed=False,
+        )
+        self.assertEqual(covered["target_2"], 0)
+
+    def test_targets_one_and_three_are_strict_exceedances_of_their_threshold(self):
+        labels = target_labels(
+            next_scrps=2.0,
+            scrps_threshold=2.0,
+            coverage_90=1.0,
+            coverage_95=1.0,
+            zero_calibration=0.6,
+            zero_threshold=0.5,
+            best_head_changed=True,
+        )
+        self.assertEqual(labels["target_1"], 0)
+        self.assertEqual(labels["target_3"], 1)
+        self.assertEqual(labels["target_4"], 1)
+
+
+class BaselineChangeFeatureTests(unittest.TestCase):
+    def test_baseline_features_never_read_at_or_after_the_decision_boundary(self):
+        values = np.arange(200, dtype=np.float64) % 5
+        mean_forecast = np.full(28, 2.0)
+        first = baseline_change_features(
+            values,
+            current_origin=100,
+            horizon=28,
+            available_from=0,
+            scale=2.0,
+            p0_predictive_mean=mean_forecast,
+        )
+        mutated = values.copy()
+        mutated[128:] = 999.0
+        second = baseline_change_features(
+            mutated,
+            current_origin=100,
+            horizon=28,
+            available_from=0,
+            scale=2.0,
+            p0_predictive_mean=mean_forecast,
+        )
+        for name in first:
+            self.assertTrue(
+                (np.isnan(first[name]) and np.isnan(second[name])) or first[name] == second[name],
+                name,
+            )
+
+    def test_every_declared_c0_feature_and_indicator_is_emitted(self):
+        values = np.arange(200, dtype=np.float64) % 5
+        features = baseline_change_features(
+            values,
+            current_origin=100,
+            horizon=28,
+            available_from=0,
+            scale=2.0,
+            p0_predictive_mean=np.full(28, 2.0),
+        )
+        for name in (
+            "previous_realized_residual",
+            "zero_ratio_change",
+            "scale_change",
+            "last_event_gap_change",
+            "recent_target_variance",
+        ):
+            self.assertIn(name, features)
+        self.assertIn("last_event_gap_change__missing", features)
+
+
+class SensorFeatureSetTests(unittest.TestCase):
+    def test_the_four_feature_sets_are_frozen_and_nested_as_declared(self):
+        self.assertEqual(tuple(SENSOR_FEATURE_SETS), ("C0", "C1", "C2", "C3"))
+        c0 = set(sensor_feature_names("C0"))
+        c1 = set(sensor_feature_names("C1"))
+        c2 = set(sensor_feature_names("C2"))
+        c3 = set(sensor_feature_names("C3"))
+        self.assertTrue(c0.isdisjoint(c1))
+        self.assertEqual(c2, c0 | c1)
+        self.assertEqual(c3 - c0, {"D_total", "D_total__missing"})
+
+
+class ActionPolicyTests(unittest.TestCase):
+    def test_the_flag_threshold_is_the_higher_interpolation_eightieth_percentile(self):
+        scores = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
+        self.assertAlmostEqual(
+            flag_threshold(scores), float(np.quantile(scores, 0.8, method="higher"))
+        )
+
+    def test_no_validation_row_flagged_is_an_undefined_metric_not_a_zero(self):
+        with self.assertRaises(SingleClassMetricUndefined):
+            flag_threshold(np.array([0.5, 0.5, 0.5]), require_flagged=True)
+
+    def test_widening_preserves_the_median_and_stays_monotone_and_nonnegative(self):
+        grid = np.linspace(0.01, 0.99, 21)
+        quantiles = np.linspace(0.0, 20.0, 21)
+        widened = widen_quantiles(quantiles, grid, factor=1.2, p_zero=0.05)
+        median_index = int(np.argmin(np.abs(grid - 0.5)))
+        self.assertAlmostEqual(widened[median_index], quantiles[median_index])
+        self.assertTrue(np.all(np.diff(widened) >= 0.0))
+        self.assertTrue(np.all(widened >= 0.0))
+
+    def test_the_action_factor_grid_is_frozen(self):
+        self.assertEqual(ACTION_FACTOR_GRID, (1.05, 1.1, 1.2, 1.35, 1.5))
+
+
+from experiments.prob_head_structure_full_v1.controls import (
+    CONTROL_SEED,
+    FIFTY_PERCENT_RULE_CONTROLS,
+    IdentificationFailure,
+    control_rng,
+    feature_row_shuffle,
+    random_sensor_scores,
+    recovery_ratio,
+    regret_label_shuffle,
+    teacher_identity_shuffle,
+    teacher_name_permutation,
+    teacher_quantile_shuffle,
+    time_shuffle,
+)
+
+
+class ControlDeterminismTests(unittest.TestCase):
+    def test_the_control_seed_is_frozen(self):
+        self.assertEqual(CONTROL_SEED, 20260905_51 // 10 * 10 + 1 if False else 2026090551)
+
+    def test_the_same_scope_always_yields_the_same_stream(self):
+        first = control_rng("m5", "fold3", "regret").normal(size=5)
+        second = control_rng("m5", "fold3", "regret").normal(size=5)
+        third = control_rng("m5", "fold4", "regret").normal(size=5)
+        self.assertTrue(np.array_equal(first, second))
+        self.assertFalse(np.array_equal(first, third))
+
+
+class ShuffleBoundaryTests(unittest.TestCase):
+    def test_teacher_identity_shuffle_moves_all_three_channels_together(self):
+        p_zero = np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]])
+        mean = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
+        quantiles = np.stack([p_zero, mean], axis=-1)
+        shuffled = teacher_identity_shuffle(
+            p_zero=p_zero, quantiles=quantiles, predictive_mean=mean, scope=("m5", "fold2")
+        )
+        for row in range(p_zero.shape[0]):
+            self.assertEqual(sorted(shuffled["p_zero"][row]), sorted(p_zero[row]))
+            order = [list(p_zero[row]).index(value) for value in shuffled["p_zero"][row]]
+            self.assertEqual(
+                [list(mean[row]).index(value) for value in shuffled["predictive_mean"][row]], order
+            )
+
+    def test_teacher_quantile_shuffle_permutes_whole_vectors_and_leaves_p0_alone(self):
+        quantiles = np.arange(24, dtype=np.float64).reshape(4, 2, 3)
+        p_zero = np.full((4, 2), 0.25)
+        shuffled = teacher_quantile_shuffle(quantiles=quantiles, p_zero=p_zero, scope=("m5",))
+        self.assertTrue(np.array_equal(shuffled["p_zero"], p_zero))
+        for head in range(quantiles.shape[1]):
+            original = {tuple(row) for row in quantiles[:, head, :]}
+            permuted = {tuple(row) for row in shuffled["quantiles"][:, head, :]}
+            self.assertEqual(original, permuted)
+
+    def test_regret_label_shuffle_permutes_the_complete_row_vector(self):
+        regret = np.array([[0.0, 1.0, 2.0], [0.0, 3.0, 5.0], [1.0, 0.0, 4.0]])
+        shuffled = regret_label_shuffle(regret, scope=("m5", "fold2"))
+        self.assertEqual(
+            sorted(tuple(row) for row in shuffled), sorted(tuple(row) for row in regret)
+        )
+
+    def test_feature_row_shuffle_keeps_every_row_intact(self):
+        features = np.arange(12, dtype=np.float64).reshape(4, 3)
+        shuffled = feature_row_shuffle(features, scope=("m5", "fold2"))
+        self.assertEqual(
+            sorted(tuple(row) for row in shuffled), sorted(tuple(row) for row in features)
+        )
+
+    def test_time_shuffle_permutes_origins_only_inside_one_series(self):
+        rows = np.arange(12, dtype=np.float64).reshape(4, 3)
+        series = np.array(["a", "a", "b", "b"])
+        shuffled = time_shuffle(rows, series_ids=series, scope=("m5",))
+        for name in ("a", "b"):
+            mask = series == name
+            self.assertEqual(
+                sorted(tuple(row) for row in shuffled[mask]),
+                sorted(tuple(row) for row in rows[mask]),
+            )
+
+
+class LabelSymmetryTests(unittest.TestCase):
+    def test_a_global_teacher_permutation_leaves_the_components_numerically_identical(self):
+        p_zero = np.array([[0.1, 0.2], [0.3, 0.3], [0.2, 0.1]])
+        quantiles = np.stack(
+            [np.linspace(0.0, 10.0 + head, 5)[None, :].repeat(2, axis=0) for head in range(3)]
+        )
+        mean = np.array([[1.0, 2.0], [2.0, 2.0], [3.0, 2.0]])
+        report = teacher_name_permutation(
+            p_zero=p_zero, quantiles=quantiles, predictive_mean=mean, scale=1.0
+        )
+        self.assertTrue(report["invariant"])
+        self.assertLessEqual(report["max_absolute_difference"], 1e-12)
+        self.assertNotEqual(report["permutation"], [0, 1, 2])
+
+
+class RandomScoreTests(unittest.TestCase):
+    def test_scores_are_uniform_reproducible_and_keyed_by_the_frozen_row_key(self):
+        keys = [("m5", "s1", 1773), ("m5", "s2", 1773), ("m5", "s1", 1801)]
+        first = random_sensor_scores(keys)
+        second = random_sensor_scores(keys)
+        self.assertTrue(np.array_equal(first, second))
+        self.assertTrue(np.all((first >= 0.0) & (first < 1.0)))
+        self.assertEqual(len(set(first.tolist())), 3)
+        self.assertTrue(np.array_equal(random_sensor_scores(list(reversed(keys)))[::-1], first))
+
+
+class RecoveryRuleTests(unittest.TestCase):
+    def test_a_nonpositive_real_effect_is_an_identification_failure(self):
+        with self.assertRaises(IdentificationFailure):
+            recovery_ratio(real_effect=0.0, control_effect=0.0)
+        with self.assertRaises(IdentificationFailure):
+            recovery_ratio(real_effect=-0.01, control_effect=-0.02)
+
+    def test_recovery_of_half_the_real_effect_or_more_fails_identification(self):
+        passing = recovery_ratio(real_effect=0.02, control_effect=0.004)
+        self.assertAlmostEqual(passing["recovery"], 0.2)
+        self.assertTrue(passing["passed"])
+
+        failing = recovery_ratio(real_effect=0.02, control_effect=0.01)
+        self.assertAlmostEqual(failing["recovery"], 0.5)
+        self.assertFalse(failing["passed"])
+
+    def test_the_fifty_percent_rule_covers_exactly_the_declared_controls(self):
+        self.assertEqual(len(FIFTY_PERCENT_RULE_CONTROLS), 8)
+        self.assertNotIn("A single-teacher soft target", FIFTY_PERCENT_RULE_CONTROLS)
+        self.assertIn("C random sensor score", FIFTY_PERCENT_RULE_CONTROLS)
+
+
 if __name__ == "__main__":
     unittest.main()
