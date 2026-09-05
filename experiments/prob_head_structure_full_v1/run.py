@@ -59,6 +59,10 @@ class HardIntegrityFailure(RuntimeError):
     """An integrity contract broke; the branch or the whole run must stop."""
 
 
+class StageInputUnavailable(RuntimeError):
+    """A stage could not obtain its declared input, so it must not be sealed complete."""
+
+
 class StageNotImplemented(RuntimeError):
     """The stage has no implementation yet.
 
@@ -194,6 +198,10 @@ def run_pipeline(
         attempt, resumed = reserve_or_resume_attempt(root, stage_slug(stage))
         if resumed:
             payload = json.loads((attempt / "stage_payload.json").read_text(encoding="utf-8"))
+            # A resumed stage must re-register the verdicts it sealed, otherwise the final
+            # gate calculation sees an already-decided gate as never evaluated.
+            for gate, verdict in dict(payload.get("gates", {})).items():
+                ledger.record_gate(str(gate), passed=bool(verdict))
             results.append(
                 StageResult(stage=stage, status="COMPLETE", payload=payload, resumed=True).as_dict()
             )
@@ -206,6 +214,16 @@ def run_pipeline(
         shared["attempt"] = attempt
         try:
             payload = dict(function(shared) or {})
+        except StageInputUnavailable as error:
+            # No completion marker: the stage will be retried once its input exists.
+            results.append(
+                StageResult(
+                    stage=stage,
+                    status="INPUT_UNAVAILABLE",
+                    payload={"status": "STAGE_INPUT_UNAVAILABLE", "reason": str(error)},
+                ).as_dict()
+            )
+            continue
         except StageNotImplemented as error:
             # No completion marker: the stage stays incomplete and will be retried.
             results.append(
@@ -255,6 +273,7 @@ __all__ = [
     "ExecutionLedger",
     "HardIntegrityFailure",
     "ResourceCapReached",
+    "StageInputUnavailable",
     "StageNotImplemented",
     "StageResult",
     "run_pipeline",

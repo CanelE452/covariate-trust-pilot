@@ -36,7 +36,7 @@ from .routing import (
     regret_spearman,
     select_inner_origins,
 )
-from .run import HardIntegrityFailure, StageNotImplemented
+from .run import HardIntegrityFailure, StageInputUnavailable, StageNotImplemented
 from .sensor import (
     SensorGeometryBlocked,
     disagreement_components,
@@ -330,7 +330,12 @@ def stage_synthetic_dgp_audit(context: dict[str, Any]) -> dict[str, Any]:
     failed = [row["cell_id"] for row in balance if not row["balanced"]]
     context["ledger"].record_gate("DGP_BALANCE", passed=not failed)
     _store(context, "dgp_balance_failed", failed)
-    return {"cells": summaries, "balance": balance, "unbalanced_cells": failed}
+    return {
+        "cells": summaries,
+        "balance": balance,
+        "unbalanced_cells": failed,
+        "gates": {"DGP_BALANCE": not failed},
+    }
 
 
 def _save_teacher_checkpoints(
@@ -369,6 +374,17 @@ def load_teacher_checkpoint(path: Path):
     model.to(_device())
     model.eval()
     return model, payload
+
+
+def _completed_attempt(runs_root: Path, slug: str) -> Path | None:
+    """Return the sealed attempt for a stage, whatever its attempt number turned out to be."""
+    stage_root = Path(runs_root) / slug
+    if not stage_root.is_dir():
+        return None
+    for attempt in sorted(stage_root.glob("attempt_*")):
+        if (attempt / "completion.json").exists():
+            return attempt
+    return None
 
 
 def _synthetic_blocks(context: dict[str, Any]) -> dict[str, Any]:
@@ -490,9 +506,14 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
 def stage_s2_analysis(context: dict[str, Any]) -> dict[str, Any]:
     panel = _load(context, "synthetic_panel")
     if panel is None:
-        cached = Path(context["runs_root"]) / "stage_s1_synthetic_18_cell_teacher_training/attempt_0001/synthetic_panel.parquet"
-        if not cached.exists():
-            return {"status": "SKIPPED_NO_SYNTHETIC_PANEL"}
+        attempt = _completed_attempt(
+            context["runs_root"], "stage_s1_synthetic_18_cell_teacher_training"
+        )
+        cached = None if attempt is None else attempt / "synthetic_panel.parquet"
+        if cached is None or not cached.exists():
+            raise StageInputUnavailable(
+                "STAGE_INPUT_UNAVAILABLE: no sealed Stage S1 synthetic panel to analyse"
+            )
         panel = pd.read_parquet(cached)
     from .integrity import BranchEligibility, GateStatus
 
@@ -851,9 +872,12 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
 def stage_r2_complementarity(context: dict[str, Any]) -> dict[str, Any]:
     frame = _load(context, "real_panel")
     if frame is None:
-        cached = Path(context["runs_root"]) / "stage_r1_real_teacher_training/attempt_0001/real_panel.parquet"
-        if not cached.exists():
-            return {"status": "SKIPPED_NO_REAL_PANEL"}
+        attempt = _completed_attempt(context["runs_root"], "stage_r1_real_teacher_training")
+        cached = None if attempt is None else attempt / "real_panel.parquet"
+        if cached is None or not cached.exists():
+            raise StageInputUnavailable(
+                "STAGE_INPUT_UNAVAILABLE: no sealed Stage R1 real panel to analyse"
+            )
         frame = pd.read_parquet(cached)
     tier = _tier(context)
     unit = ("dataset_id", "series_id", "origin")
