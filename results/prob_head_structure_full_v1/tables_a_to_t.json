@@ -1,0 +1,853 @@
+{
+  "A": {
+    "id": "A",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "item": "protected_manifest",
+        "status": "PASS"
+      },
+      {
+        "item": "confirmatory_synthetic_cells",
+        "status": 17
+      },
+      {
+        "item": "unbalanced_dgp_cells",
+        "status": 3
+      }
+    ],
+    "source_key": "audit",
+    "title": "repository / environment / source audit"
+  },
+  "B": {
+    "id": "B",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "dataset": "m5",
+        "eligible_pool": 29233,
+        "panel_shape": "[29290, 1941]",
+        "sampled": 1000,
+        "sampling": "train-only stratified quantile bins under the preregistered seed"
+      }
+    ],
+    "source_key": "dataset_support",
+    "title": "dataset support and split"
+  },
+  "C": {
+    "id": "C",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "branch": "PASS",
+        "comparisons": 600,
+        "finite_fraction": 1.0,
+        "median_abs_log_difference": 8.881784197001252e-16,
+        "zero_relative_error": 0.0
+      }
+    ],
+    "source_key": "likelihood_validation",
+    "title": "distribution numerical validation"
+  },
+  "D": {
+    "id": "D",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "best_epoch": 14,
+        "head": "HSNB",
+        "seconds": 93.99631762504578
+      },
+      {
+        "best_epoch": 22,
+        "head": "NB",
+        "seconds": 218.3116717338562
+      },
+      {
+        "best_epoch": 16,
+        "head": "TWEEDIE_FULL",
+        "seconds": 162.31079769134521
+      }
+    ],
+    "source_key": "teacher_runtime",
+    "title": "teacher parameter count and runtime"
+  },
+  "E": {
+    "id": "E",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "cell_id": "d4_rI-0.8_rM-0.8",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": -0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.23531913105780367
+      },
+      {
+        "cell_id": "d4_rI-0.8_rM-0.8",
+        "d": 4,
+        "head": "NB",
+        "rho_I": -0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.23858717259380344
+      },
+      {
+        "cell_id": "d4_rI-0.8_rM-0.8",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": -0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.26955399572448485
+      },
+      {
+        "cell_id": "d4_rI-0.8_rM0.0",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": -0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.2522426168317653
+      },
+      {
+        "cell_id": "d4_rI-0.8_rM0.0",
+        "d": 4,
+        "head": "NB",
+        "rho_I": -0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.2563990612686374
+      },
+      {
+        "cell_id": "d4_rI-0.8_rM0.0",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": -0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.28823082289636837
+      },
+      {
+        "cell_id": "d4_rI-0.8_rM0.8",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": -0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.20688602371256615
+      },
+      {
+        "cell_id": "d4_rI-0.8_rM0.8",
+        "d": 4,
+        "head": "NB",
+        "rho_I": -0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.21421127905269557
+      },
+      {
+        "cell_id": "d4_rI-0.8_rM0.8",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": -0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.24312380472747908
+      },
+      {
+        "cell_id": "d4_rI0.0_rM-0.8",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": 0.0,
+        "rho_M": -0.8,
+        "sCRPS": 0.3327246366738671
+      },
+      {
+        "cell_id": "d4_rI0.0_rM-0.8",
+        "d": 4,
+        "head": "NB",
+        "rho_I": 0.0,
+        "rho_M": -0.8,
+        "sCRPS": 0.3390296520777159
+      },
+      {
+        "cell_id": "d4_rI0.0_rM-0.8",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.0,
+        "rho_M": -0.8,
+        "sCRPS": 0.4035356304151587
+      },
+      {
+        "cell_id": "d4_rI0.0_rM0.0",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": 0.0,
+        "rho_M": 0.0,
+        "sCRPS": 0.341343273953532
+      },
+      {
+        "cell_id": "d4_rI0.0_rM0.0",
+        "d": 4,
+        "head": "NB",
+        "rho_I": 0.0,
+        "rho_M": 0.0,
+        "sCRPS": 0.34528060028555563
+      },
+      {
+        "cell_id": "d4_rI0.0_rM0.0",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.0,
+        "rho_M": 0.0,
+        "sCRPS": 0.41452597855738127
+      },
+      {
+        "cell_id": "d4_rI0.0_rM0.8",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": 0.0,
+        "rho_M": 0.8,
+        "sCRPS": 0.3213651780110709
+      },
+      {
+        "cell_id": "d4_rI0.0_rM0.8",
+        "d": 4,
+        "head": "NB",
+        "rho_I": 0.0,
+        "rho_M": 0.8,
+        "sCRPS": 0.32517234001006884
+      },
+      {
+        "cell_id": "d4_rI0.0_rM0.8",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.0,
+        "rho_M": 0.8,
+        "sCRPS": 0.39465107953643763
+      },
+      {
+        "cell_id": "d4_rI0.8_rM-0.8",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": 0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.24847996492225918
+      },
+      {
+        "cell_id": "d4_rI0.8_rM-0.8",
+        "d": 4,
+        "head": "NB",
+        "rho_I": 0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.25508185732738714
+      },
+      {
+        "cell_id": "d4_rI0.8_rM-0.8",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.3005366217780888
+      },
+      {
+        "cell_id": "d4_rI0.8_rM0.0",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": 0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.2642767421109936
+      },
+      {
+        "cell_id": "d4_rI0.8_rM0.0",
+        "d": 4,
+        "head": "NB",
+        "rho_I": 0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.2673840111204704
+      },
+      {
+        "cell_id": "d4_rI0.8_rM0.0",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.31664482105256836
+      },
+      {
+        "cell_id": "d4_rI0.8_rM0.8",
+        "d": 4,
+        "head": "HSNB",
+        "rho_I": 0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.23912128500887053
+      },
+      {
+        "cell_id": "d4_rI0.8_rM0.8",
+        "d": 4,
+        "head": "NB",
+        "rho_I": 0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.24185138357785146
+      },
+      {
+        "cell_id": "d4_rI0.8_rM0.8",
+        "d": 4,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.2914120272543684
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM-0.8",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": -0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.14229773032792303
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM-0.8",
+        "d": 8,
+        "head": "NB",
+        "rho_I": -0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.14471610991779663
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM-0.8",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": -0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.16230956063262175
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM0.0",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": -0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.15321178184475717
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM0.0",
+        "d": 8,
+        "head": "NB",
+        "rho_I": -0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.15780438333186056
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM0.0",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": -0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.17394178838161603
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM0.8",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": -0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.14502079207249718
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM0.8",
+        "d": 8,
+        "head": "NB",
+        "rho_I": -0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.147111046773844
+      },
+      {
+        "cell_id": "d8_rI-0.8_rM0.8",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": -0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.16790016462386637
+      },
+      {
+        "cell_id": "d8_rI0.0_rM-0.8",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": 0.0,
+        "rho_M": -0.8,
+        "sCRPS": 0.2325345830338158
+      },
+      {
+        "cell_id": "d8_rI0.0_rM-0.8",
+        "d": 8,
+        "head": "NB",
+        "rho_I": 0.0,
+        "rho_M": -0.8,
+        "sCRPS": 0.24296060947511716
+      },
+      {
+        "cell_id": "d8_rI0.0_rM-0.8",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.0,
+        "rho_M": -0.8,
+        "sCRPS": 0.2781752713771544
+      },
+      {
+        "cell_id": "d8_rI0.0_rM0.0",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": 0.0,
+        "rho_M": 0.0,
+        "sCRPS": 0.23871361641412772
+      },
+      {
+        "cell_id": "d8_rI0.0_rM0.0",
+        "d": 8,
+        "head": "NB",
+        "rho_I": 0.0,
+        "rho_M": 0.0,
+        "sCRPS": 0.244170523659786
+      },
+      {
+        "cell_id": "d8_rI0.0_rM0.0",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.0,
+        "rho_M": 0.0,
+        "sCRPS": 0.28465470782901386
+      },
+      {
+        "cell_id": "d8_rI0.0_rM0.8",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": 0.0,
+        "rho_M": 0.8,
+        "sCRPS": 0.2528231075740457
+      },
+      {
+        "cell_id": "d8_rI0.0_rM0.8",
+        "d": 8,
+        "head": "NB",
+        "rho_I": 0.0,
+        "rho_M": 0.8,
+        "sCRPS": 0.25233691103405254
+      },
+      {
+        "cell_id": "d8_rI0.0_rM0.8",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.0,
+        "rho_M": 0.8,
+        "sCRPS": 0.29474035428207146
+      },
+      {
+        "cell_id": "d8_rI0.8_rM-0.8",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": 0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.19540799902278908
+      },
+      {
+        "cell_id": "d8_rI0.8_rM-0.8",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.8,
+        "rho_M": -0.8,
+        "sCRPS": 0.22800245992825963
+      },
+      {
+        "cell_id": "d8_rI0.8_rM0.0",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": 0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.21613354549811953
+      },
+      {
+        "cell_id": "d8_rI0.8_rM0.0",
+        "d": 8,
+        "head": "NB",
+        "rho_I": 0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.22589947502298824
+      },
+      {
+        "cell_id": "d8_rI0.8_rM0.0",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.8,
+        "rho_M": 0.0,
+        "sCRPS": 0.23387102360707746
+      },
+      {
+        "cell_id": "d8_rI0.8_rM0.8",
+        "d": 8,
+        "head": "HSNB",
+        "rho_I": 0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.21161465780228714
+      },
+      {
+        "cell_id": "d8_rI0.8_rM0.8",
+        "d": 8,
+        "head": "NB",
+        "rho_I": 0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.22248796823984202
+      },
+      {
+        "cell_id": "d8_rI0.8_rM0.8",
+        "d": 8,
+        "head": "TWEEDIE_FULL",
+        "rho_I": 0.8,
+        "rho_M": 0.8,
+        "sCRPS": 0.24200109490714744
+      }
+    ],
+    "source_key": "synthetic_cells",
+    "title": "synthetic 18-cell sCRPS"
+  },
+  "F": {
+    "id": "F",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "best_head_cell_counts": {
+          "HSNB": 16,
+          "NB": 1
+        },
+        "cell_oracle_gain": 0.00012052142868357318,
+        "confirmatory_cells": 17,
+        "practical_winner_share": {
+          "HSNB": 0.6107843137254902,
+          "NB": 0.4352941176470588,
+          "TWEEDIE_FULL": 0.06127450980392156
+        },
+        "series_origin_oracle_gain": 0.029889632723719917,
+        "total_cells": 18
+      }
+    ],
+    "source_key": "synthetic_oracle",
+    "title": "synthetic winner share and oracle gain"
+  },
+  "G": {
+    "id": "G",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "effect": 5.951011141929179,
+        "factor": "d",
+        "high_level": 8.0,
+        "high_mean_gap": -9.729300622096336,
+        "low_level": 4.0,
+        "low_mean_gap": -15.680311764025515,
+        "pair": "NB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": 4.824692513570454,
+        "factor": "d",
+        "high_level": 8.0,
+        "high_mean_gap": -12.05280147912418,
+        "low_level": 4.0,
+        "low_mean_gap": -16.877493992694635,
+        "pair": "HSNB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": 2.294754940443514,
+        "factor": "d",
+        "high_level": 8.0,
+        "high_mean_gap": 4.005395821445009,
+        "low_level": 4.0,
+        "low_mean_gap": 1.710640881001495,
+        "pair": "NB_vs_HSNB"
+      },
+      {
+        "effect": -1.3368254911907993,
+        "factor": "rho_I",
+        "high_level": 0.8,
+        "high_mean_gap": -14.275266393381619,
+        "low_level": -0.8,
+        "low_mean_gap": -12.93844090219082,
+        "pair": "HSNB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": 1.2938114338985667,
+        "factor": "rho_M",
+        "high_level": 0.8,
+        "high_mean_gap": -14.602844506211422,
+        "low_level": -0.8,
+        "low_mean_gap": -15.896655940109989,
+        "pair": "HSNB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": 1.0135582662956,
+        "factor": "rho_I",
+        "high_level": 0.8,
+        "high_mean_gap": 3.84889131829953,
+        "low_level": -0.8,
+        "low_mean_gap": 2.83533305200393,
+        "pair": "NB_vs_HSNB"
+      },
+      {
+        "effect": -0.7566143120997628,
+        "factor": "rho_M",
+        "high_level": 0.8,
+        "high_mean_gap": 2.682779428123926,
+        "low_level": -0.8,
+        "low_mean_gap": 3.439393740223689,
+        "pair": "NB_vs_HSNB"
+      },
+      {
+        "effect": -0.5229605396654318,
+        "factor": "rho_I",
+        "high_level": 0.8,
+        "high_mean_gap": -11.75100793972422,
+        "low_level": -0.8,
+        "low_mean_gap": -11.228047400058788,
+        "pair": "NB_vs_TWEEDIE_FULL"
+      },
+      {
+        "effect": -0.05403932061057226,
+        "factor": "rho_M",
+        "high_level": 0.8,
+        "high_mean_gap": -13.482930058488172,
+        "low_level": -0.8,
+        "low_mean_gap": -13.4288907378776,
+        "pair": "NB_vs_TWEEDIE_FULL"
+      }
+    ],
+    "source_key": "structure_contrasts",
+    "title": "temporal structure contrasts"
+  },
+  "H": {
+    "id": "H",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "changepoint": 288,
+        "d": 4,
+        "post_zero_rate": 0.7475405092592593,
+        "pre_zero_rate": 0.7488425925925926,
+        "series": 24,
+        "shift_type": "rho_I_positive",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 4,
+        "post_zero_rate": 0.7498553240740741,
+        "pre_zero_rate": 0.7488425925925926,
+        "series": 24,
+        "shift_type": "rho_I_negative",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 4,
+        "post_zero_rate": 0.7507233796296297,
+        "pre_zero_rate": 0.7488425925925926,
+        "series": 24,
+        "shift_type": "rho_M_positive",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 4,
+        "post_zero_rate": 0.7507233796296297,
+        "pre_zero_rate": 0.7488425925925926,
+        "series": 24,
+        "shift_type": "rho_M_negative",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 4,
+        "post_zero_rate": 0.7475405092592593,
+        "pre_zero_rate": 0.7488425925925926,
+        "series": 24,
+        "shift_type": "rho_I_and_rho_M",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 4,
+        "post_zero_rate": 0.7507233796296297,
+        "pre_zero_rate": 0.7488425925925926,
+        "series": 24,
+        "shift_type": "no_change",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 8,
+        "post_zero_rate": 0.8744212962962963,
+        "pre_zero_rate": 0.8729745370370371,
+        "series": 24,
+        "shift_type": "rho_I_positive",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 8,
+        "post_zero_rate": 0.8747106481481481,
+        "pre_zero_rate": 0.8729745370370371,
+        "series": 24,
+        "shift_type": "rho_I_negative",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 8,
+        "post_zero_rate": 0.875,
+        "pre_zero_rate": 0.8729745370370371,
+        "series": 24,
+        "shift_type": "rho_M_positive",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 8,
+        "post_zero_rate": 0.875,
+        "pre_zero_rate": 0.8729745370370371,
+        "series": 24,
+        "shift_type": "rho_M_negative",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 8,
+        "post_zero_rate": 0.8744212962962963,
+        "pre_zero_rate": 0.8729745370370371,
+        "series": 24,
+        "shift_type": "rho_I_and_rho_M",
+        "status": "GENERATED"
+      },
+      {
+        "changepoint": 288,
+        "d": 8,
+        "post_zero_rate": 0.875,
+        "pre_zero_rate": 0.8729745370370371,
+        "series": 24,
+        "shift_type": "no_change",
+        "status": "GENERATED"
+      }
+    ],
+    "source_key": "change_sensor",
+    "title": "synthetic change-sensor result"
+  },
+  "I": {
+    "id": "I",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "head": "HSNB",
+        "relative_to_best": 0.2979499783163615,
+        "sCRPS": 9.777219935028333
+      },
+      {
+        "head": "NB",
+        "relative_to_best": 0.04151787911355487,
+        "sCRPS": 7.845563804829036
+      },
+      {
+        "head": "TWEEDIE_FULL",
+        "relative_to_best": 0.0,
+        "sCRPS": 7.532817210499032
+      }
+    ],
+    "source_key": "real_teachers",
+    "title": "real teacher benchmark"
+  },
+  "J": {
+    "id": "J",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "best_global_loss": 7.532817210499032,
+        "oracle_family": "HARD",
+        "origin_oracle_gain": 0.008793392721318738,
+        "origin_oracle_loss": 7.466578190469205,
+        "series_oracle_gain": 0.001060636187501629,
+        "series_oracle_loss": 7.524827631971742
+      }
+    ],
+    "source_key": "real_oracle",
+    "title": "real winner share and oracle ladder"
+  },
+  "K": {
+    "id": "K",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "cdf_pool",
+    "title": "CDF pool result"
+  },
+  "L": {
+    "id": "L",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "distillation",
+    "title": "distillation result and recovery"
+  },
+  "M": {
+    "id": "M",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "compression",
+    "title": "student compression/latency"
+  },
+  "N": {
+    "id": "N",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "regret_predictability",
+    "title": "structure-regret predictability"
+  },
+  "O": {
+    "id": "O",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "structure_conditioned",
+    "title": "structure-conditioned distillation"
+  },
+  "P": {
+    "id": "P",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "failure_detection",
+    "title": "disagreement future-failure detection"
+  },
+  "Q": {
+    "id": "Q",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "action_policy",
+    "title": "actionable sensor policy"
+  },
+  "R": {
+    "id": "R",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "controls",
+    "title": "negative controls"
+  },
+  "S": {
+    "id": "S",
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "DGP_BALANCE": "FAIL",
+        "R1": "FAIL",
+        "R2": "FAIL",
+        "S1": "PASS",
+        "S2": "FAIL",
+        "S3": "PASS"
+      }
+    ],
+    "source_key": "gates",
+    "title": "every gate"
+  },
+  "T": {
+    "id": "T",
+    "note": "NOT_PRODUCED",
+    "rows": [],
+    "source_key": "recommendation_axis",
+    "title": "final recommended research axis"
+  }
+}

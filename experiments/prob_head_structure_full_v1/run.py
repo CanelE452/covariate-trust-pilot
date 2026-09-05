@@ -50,6 +50,20 @@ STAGE_ORDER: tuple[str, ...] = (
     "optional push",
 )
 
+# Reporting derives from persisted artifacts rather than computing science, so it must
+# re-render every run. Resuming it would replay an older run's report.
+ALWAYS_RERUN_STAGES: frozenset[str] = frozenset(
+    {
+        "final gate calculation",
+        "figures",
+        "STATUS",
+        "artifact hash verification",
+        "test suite",
+        "commit",
+        "optional push",
+    }
+)
+
 WALL_CLOCK_CAP_SECONDS = 24 * 60 * 60
 RESOURCE_CAP_TOKEN = "RESOURCE_CAP_PARTIAL_COMPLETION"
 HARD_STOP_STATUS = "HARD_INTEGRITY_STOP"
@@ -156,6 +170,16 @@ class ExecutionLedger:
         }
 
 
+def _next_attempt(root: Path, slug: str) -> Path:
+    """Reserve a fresh attempt for a stage that must re-render rather than resume."""
+    stage_root = root / slug
+    stage_root.mkdir(parents=True, exist_ok=True)
+    existing = [int(item.name[-4:]) for item in stage_root.glob("attempt_*") if item.is_dir()]
+    attempt = stage_root / f"attempt_{max(existing, default=0) + 1:04d}"
+    attempt.mkdir(exist_ok=False)
+    return attempt.resolve()
+
+
 def _write_payload(attempt: Path, payload: Mapping[str, Any]) -> Path:
     path = attempt / "stage_payload.json"
     path.write_text(
@@ -196,6 +220,9 @@ def run_pipeline(
             break
 
         attempt, resumed = reserve_or_resume_attempt(root, stage_slug(stage))
+        if resumed and stage in ALWAYS_RERUN_STAGES:
+            attempt = _next_attempt(root, stage_slug(stage))
+            resumed = False
         if resumed:
             payload = json.loads((attempt / "stage_payload.json").read_text(encoding="utf-8"))
             # A resumed stage must re-register the verdicts it sealed, otherwise the final
@@ -268,6 +295,7 @@ def run_pipeline(
 __all__ = [
     "HARD_STOP_STATUS",
     "RESOURCE_CAP_TOKEN",
+    "ALWAYS_RERUN_STAGES",
     "STAGE_ORDER",
     "WALL_CLOCK_CAP_SECONDS",
     "ExecutionLedger",

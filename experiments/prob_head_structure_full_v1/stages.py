@@ -1122,36 +1122,62 @@ def _blocked(token: str, reason: str) -> Callable[[dict[str, Any]], dict[str, An
 
 def stage_final_gates(context: dict[str, Any]) -> dict[str, Any]:
     ledger = context["ledger"]
+    if ledger.status("DGP_BALANCE") == "NOT_EVALUATED":
+        # This audit was sealed before stages emitted a gates block, so read its verdict
+        # back out of the sealed payload rather than leaving a decided gate unrecorded.
+        attempt = _completed_attempt(context["runs_root"], "synthetic_dgp_audit")
+        if attempt is not None:
+            sealed = json.loads((attempt / "stage_payload.json").read_text(encoding="utf-8"))
+            ledger.record_gate("DGP_BALANCE", passed=not sealed.get("unbalanced_cells"))
     branches = [
-        ledger.branch_record("HEAD_SPECIALIZATION", ["S1", "S2", "S3"]),
-        ledger.branch_record("REAL_DISTRIBUTION_POOL", ["R1", "R2"]),
-        ledger.branch_record("A_DISTILLATION", ["R2", "R3"]),
-        ledger.branch_record("B_STRUCTURE_ROUTING", ["R2", "B1"]),
+        ledger.branch_record("HEAD_SPECIALIZATION", ["DGP_BALANCE", "S1", "S2", "S3"]),
+        ledger.branch_record("REAL_DISTRIBUTION_POOL", ["R1", "R2", "R3"]),
+        ledger.branch_record("A_DISTILLATION", ["R2", "R3", "A1", "A2"]),
+        ledger.branch_record("B_STRUCTURE_ROUTING", ["R2", "B1", "B2"]),
         ledger.branch_record("C_DISAGREEMENT_SENSOR", ["R1", "C1"]),
     ]
 
 
-    def _verdict(gate: str, go_token: str, no_go_token: str) -> str:
-        """A branch that never ran is NOT_EVALUATED; NO_GO means it ran and failed."""
-        status = ledger.status(gate)
-        if status == "NOT_EVALUATED":
-            return f"NOT_EVALUATED_{gate}_NOT_RUN"
-        return go_token if status == "PASS" else no_go_token
+    # A branch verdict must respect its whole registered lineage, not one gate.
+    BRANCH_GATES = {
+        "HEAD": ("DGP_BALANCE", "S1", "S2", "S3"),
+        "REAL": ("R1", "R2", "R3"),
+        "A": ("R2", "R3", "A1", "A2"),
+        "B": ("R2", "B1", "B2"),
+        "C": ("R1", "C1"),
+    }
+
+    def _verdict(branch: str, go_token: str, no_go_token: str) -> str:
+        """GO only when every required gate passed; NO_GO once any of them failed."""
+        required = BRANCH_GATES[branch]
+        statuses = [ledger.status(gate) for gate in required]
+        if "FAIL" in statuses:
+            return no_go_token
+        if all(status == "PASS" for status in statuses):
+            return go_token
+        pending = required[statuses.index("NOT_EVALUATED")]
+        return f"NOT_EVALUATED_{pending}_NOT_RUN"
 
     verdicts = {
-        "HEAD": _verdict("S1", "HEAD_SPECIALIZATION_GO", "HEAD_SPECIALIZATION_NO_GO"),
-        "REAL": _verdict("R3", "REAL_DISTRIBUTION_POOL_GO", "REAL_DISTRIBUTION_POOL_NO_GO"),
-        "A": _verdict("A2", "DISTRIBUTION_SPACE_DISTILLATION_GO", "DISTRIBUTION_SPACE_DISTILLATION_NO_GO"),
-        "B": _verdict("B2", "STRUCTURE_CONDITIONED_ROUTING_GO", "STRUCTURE_CONDITIONED_ROUTING_NO_GO"),
-        "C": _verdict("C1", "DISAGREEMENT_SENSOR_GO", "DISAGREEMENT_SENSOR_NO_GO"),
+        "HEAD": _verdict("HEAD", "HEAD_SPECIALIZATION_GO", "HEAD_SPECIALIZATION_NO_GO"),
+        "REAL": _verdict("REAL", "REAL_DISTRIBUTION_POOL_GO", "REAL_DISTRIBUTION_POOL_NO_GO"),
+        "A": _verdict(
+            "A", "DISTRIBUTION_SPACE_DISTILLATION_GO", "DISTRIBUTION_SPACE_DISTILLATION_NO_GO"
+        ),
+        "B": _verdict(
+            "B", "STRUCTURE_CONDITIONED_ROUTING_GO", "STRUCTURE_CONDITIONED_ROUTING_NO_GO"
+        ),
+        "C": _verdict("C", "DISAGREEMENT_SENSOR_GO", "DISAGREEMENT_SENSOR_NO_GO"),
     }
-    method_branches_evaluated = any(
-        ledger.status(gate) != "NOT_EVALUATED" for gate in ("A2", "B2", "C1")
-    )
-    if not method_branches_evaluated:
-        # No method branch was executed, so no method verdict may be asserted.
-        recommendation = "INTEGRITY_BLOCKED_NO_SCIENTIFIC_VERDICT"
-    elif ledger.status("S3") == "PASS" or ledger.status("R2") == "PASS":
+    # Section 62 fixes the priority: A, then C, then B, then characterization, then all-no-go.
+    # INTEGRITY_BLOCKED is reserved for an actual integrity failure, not for an unrun branch.
+    if verdicts["A"].endswith("_GO") and not verdicts["A"].endswith("NO_GO"):
+        recommendation = "RECOMMEND_A_DISTRIBUTION_DISTILLATION"
+    elif verdicts["C"].endswith("_GO") and not verdicts["C"].endswith("NO_GO"):
+        recommendation = "RECOMMEND_C_DISAGREEMENT_SENSOR"
+    elif verdicts["B"].endswith("_GO") and not verdicts["B"].endswith("NO_GO"):
+        recommendation = "RECOMMEND_B_STRUCTURE_CONDITIONED_ROUTING"
+    elif ledger.status("S3") == "PASS" or ledger.status("S1") == "PASS":
         recommendation = "RECOMMEND_CHARACTERIZATION_ONLY"
     else:
         recommendation = "ALL_NEW_METHOD_BRANCHES_NO_GO"
@@ -1161,35 +1187,100 @@ def stage_final_gates(context: dict[str, Any]) -> dict[str, Any]:
     return {"branches": branches, "verdicts": verdicts, "recommendation": recommendation}
 
 
+def _sealed_payload(context: Mapping[str, Any], slug: str) -> dict[str, Any]:
+    """Read one stage's sealed payload; reporting must not depend on in-memory state."""
+    attempt = _completed_attempt(context["runs_root"], slug)
+    if attempt is None:
+        return {}
+    return json.loads((attempt / "stage_payload.json").read_text(encoding="utf-8"))
+
+
 def _report_payload(context: dict[str, Any]) -> dict[str, Any]:
-    """Collect every persisted stage payload into the reporting payload."""
-    artifacts = context.get("artifacts", {})
+    """Build the reporting payload from persisted artifacts alone (section 24)."""
     ledger = context["ledger"]
-    real_oracle = artifacts.get("real_oracle", {}) or {}
-    winners = artifacts.get("synthetic_winners", {}) or {}
-    contrasts = artifacts.get("structure_contrasts", []) or []
-    strongest = max((abs(row["effect"]) for row in contrasts), default=0.0)
+    dgp = _sealed_payload(context, "synthetic_dgp_audit")
+    s1 = _sealed_payload(context, "stage_s1_synthetic_18_cell_teacher_training")
+    s2 = _sealed_payload(context, "stage_s2_specialization_oracle_structure_analysis")
+    csyn = _sealed_payload(context, "stage_c_syn_known_change_experiment")
+    audit = _sealed_payload(context, "real_count_dataset_audit_download")
+    r1 = _sealed_payload(context, "stage_r1_real_teacher_training")
+    r2 = _sealed_payload(context, "stage_r2_real_complementarity")
+    tweedie = _sealed_payload(context, "likelihood_numerical_unit_test")
+    gate_stage = _sealed_payload(context, "final_gate_calculation")
+
+    contrasts = list(s2.get("structure_contrasts", []) or [])
+    strongest = max((abs(float(row["effect"])) for row in contrasts), default=0.0)
+    oracle = dict(r2.get("oracle_ladder", {}) or {})
+    branches = context.get("artifacts", {}).get("branches") or gate_stage.get("branches", [])
+    verdicts = context.get("artifacts", {}).get("verdicts") or gate_stage.get("verdicts", {})
+    recommendation = context.get("artifacts", {}).get("recommendation") or gate_stage.get(
+        "recommendation", "INTEGRITY_BLOCKED_NO_SCIENTIFIC_VERDICT"
+    )
+
     return {
-        "recommendation": artifacts.get("recommendation", "INTEGRITY_BLOCKED_NO_SCIENTIFIC_VERDICT"),
-        "verdicts": artifacts.get("verdicts", {}),
-        "branches": artifacts.get("branches", []),
+        "recommendation": recommendation,
+        "verdicts": verdicts,
+        "branches": branches,
         "runtime_tier": context["runtime_decision"]["runtime_tier"],
         "environment": context.get("environment", {}),
         "gates": {name: ledger.status(name) for name in ledger.order},
         "failed_gates": ledger.failed_gates(),
-        "audit": [{"item": "protected_manifest", "status": "PASS"}],
-        "dataset_support": artifacts.get("dataset_support", []),
-        "likelihood_validation": artifacts.get("tweedie_gate", {}),
-        "teacher_runtime": artifacts.get("teacher_runtime", []),
-        "synthetic_cells": artifacts.get("synthetic_cell_means", []),
-        "synthetic_oracle": [winners] if winners else [],
-        "structure_contrasts": contrasts,
-        "change_sensor": artifacts.get("csyn_panels", []),
-        "real_teachers": artifacts.get("real_head_means", []),
-        "real_oracle": [real_oracle] if real_oracle else [],
+        "audit": [
+            {"item": "protected_manifest", "status": "PASS"},
+            {"item": "confirmatory_synthetic_cells", "status": s2.get("confirmatory_cells", "n/a")},
+            {"item": "unbalanced_dgp_cells", "status": len(dgp.get("unbalanced_cells", []) or [])},
+        ],
+        "dataset_support": [
+            {
+                "dataset": audit.get("dataset", "m5"),
+                "panel_shape": str(audit.get("panel_shape")),
+                "eligible_pool": audit.get("eligible_pool_n"),
+                "sampled": audit.get("sampled_n"),
+                "sampling": audit.get("sampling"),
+            }
+        ]
+        if audit
+        else [],
+        "likelihood_validation": [
+            {
+                "comparisons": tweedie.get("comparison_count"),
+                "finite_fraction": tweedie.get("finite_fraction"),
+                "zero_relative_error": tweedie.get("zero_relative_error"),
+                "median_abs_log_difference": tweedie.get("median_abs_log_difference"),
+                "branch": (tweedie.get("gate") or {}).get("branch"),
+            }
+        ]
+        if tweedie
+        else [],
+        "teacher_runtime": [
+            {"head": head, "seconds": value, "best_epoch": (r1.get("best_epoch") or {}).get(head)}
+            for head, value in (r1.get("seconds") or {}).items()
+        ],
+        "synthetic_cells": s1.get("cell_means", []),
+        "synthetic_oracle": [
+            {
+                "confirmatory_cells": s2.get("confirmatory_cells"),
+                "total_cells": s2.get("total_cells"),
+                "cell_oracle_gain": s2.get("cell_oracle_gain"),
+                "series_origin_oracle_gain": s2.get("series_origin_oracle_gain"),
+                "best_head_cell_counts": s2.get("best_head_cell_counts"),
+                "practical_winner_share": s2.get("practical_winner_share"),
+            }
+        ]
+        if s2
+        else [],
+        "structure_contrasts": sorted(
+            contrasts, key=lambda row: -abs(float(row["effect"]))
+        )[:12],
+        "change_sensor": csyn.get("panels", []),
+        "real_teachers": [
+            {"head": head, "sCRPS": value, "relative_to_best": (r2.get("relative_to_best") or {}).get(head)}
+            for head, value in (r2.get("head_mean_sCRPS") or {}).items()
+        ],
+        "real_oracle": [oracle] if oracle else [],
         "observations": {
             "synthetic_effect": round(strongest, 4),
-            "real_oracle_headroom": round(float(real_oracle.get("origin_oracle_gain", 0.0)), 6),
+            "real_oracle_headroom": round(float(oracle.get("origin_oracle_gain", 0.0)), 6),
             "teacher_pool_gain": "NOT_PRODUCED",
             "student_recovery": "NOT_PRODUCED",
             "sensor_auprc": "NOT_PRODUCED",
