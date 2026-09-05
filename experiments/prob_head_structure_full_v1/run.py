@@ -227,7 +227,12 @@ def run_pipeline(
             break
 
         payload_path = _write_payload(attempt, payload)
-        publish_completion_marker(attempt, {"stage": stage, "status": "COMPLETE"}, [payload_path])
+        # The marker must bind every file the stage produced, not just its payload.
+        artifacts = sorted(
+            (item for item in attempt.rglob("*") if item.is_file()),
+            key=lambda item: item.relative_to(attempt).as_posix(),
+        )
+        publish_completion_marker(attempt, {"stage": stage, "status": "COMPLETE"}, artifacts)
         results.append(StageResult(stage=stage, status="COMPLETE", payload=payload).as_dict())
 
     return {
