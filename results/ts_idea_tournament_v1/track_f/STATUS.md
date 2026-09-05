@@ -1,0 +1,6 @@
+# Track F
+
+verdict: CHARACTERIZATION_ONLY
+detailed: F_SELECTION_CHARACTERIZATION
+result role: CONFIRMATORY_SCREEN
+status: OK

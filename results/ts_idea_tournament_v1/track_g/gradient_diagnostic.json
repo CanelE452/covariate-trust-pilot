@@ -1,0 +1,847 @@
+{
+ "attempt": "E:\\CODING\\worktrees\\covariate-trust-pilot-ts-idea-tournament-v1\\runs\\ts_idea_tournament_v1\\track_g_diagnostic\\attempt_0001",
+ "tier": "FULL",
+ "n_probe_pairs": 32,
+ "harm_threshold": 0.005,
+ "shared_parameter_audit": {
+  "ETTm1": {
+   "shared_parameters": [
+    "channelAggregator.in_proj_weight",
+    "channelAggregator.in_proj_bias",
+    "channelAggregator.out_proj.weight",
+    "channelAggregator.out_proj.bias",
+    "input_proj.weight",
+    "input_proj.bias",
+    "model.0.weight",
+    "model.0.bias",
+    "model.2.weight",
+    "model.2.bias",
+    "output_proj.1.weight",
+    "output_proj.1.bias"
+   ],
+   "per_channel_parameters": [
+    "temporalQuery"
+   ],
+   "detail": {
+    "temporalQuery": {
+     "shape": [
+      96,
+      7
+     ],
+     "numel": 672,
+     "class": "per_channel"
+    },
+    "channelAggregator.in_proj_weight": {
+     "shape": [
+      288,
+      96
+     ],
+     "numel": 27648,
+     "class": "shared"
+    },
+    "channelAggregator.in_proj_bias": {
+     "shape": [
+      288
+     ],
+     "numel": 288,
+     "class": "shared"
+    },
+    "channelAggregator.out_proj.weight": {
+     "shape": [
+      96,
+      96
+     ],
+     "numel": 9216,
+     "class": "shared"
+    },
+    "channelAggregator.out_proj.bias": {
+     "shape": [
+      96
+     ],
+     "numel": 96,
+     "class": "shared"
+    },
+    "input_proj.weight": {
+     "shape": [
+      512,
+      96
+     ],
+     "numel": 49152,
+     "class": "shared"
+    },
+    "input_proj.bias": {
+     "shape": [
+      512
+     ],
+     "numel": 512,
+     "class": "shared"
+    },
+    "model.0.weight": {
+     "shape": [
+      512,
+      512
+     ],
+     "numel": 262144,
+     "class": "shared"
+    },
+    "model.0.bias": {
+     "shape": [
+      512
+     ],
+     "numel": 512,
+     "class": "shared"
+    },
+    "model.2.weight": {
+     "shape": [
+      512,
+      512
+     ],
+     "numel": 262144,
+     "class": "shared"
+    },
+    "model.2.bias": {
+     "shape": [
+      512
+     ],
+     "numel": 512,
+     "class": "shared"
+    },
+    "output_proj.1.weight": {
+     "shape": [
+      96,
+      512
+     ],
+     "numel": 49152,
+     "class": "shared"
+    },
+    "output_proj.1.bias": {
+     "shape": [
+      96
+     ],
+     "numel": 96,
+     "class": "shared"
+    }
+   },
+   "n_shared_scalars": 661472,
+   "rule": "A parameter is per-channel when it carries an explicit enc_in axis that indexes output variables (TQNet temporalQuery). All other parameters take part identically in every channel's forward path."
+  },
+  "Weather": {
+   "shared_parameters": [
+    "channelAggregator.in_proj_weight",
+    "channelAggregator.in_proj_bias",
+    "channelAggregator.out_proj.weight",
+    "channelAggregator.out_proj.bias",
+    "input_proj.weight",
+    "input_proj.bias",
+    "model.0.weight",
+    "model.0.bias",
+    "model.2.weight",
+    "model.2.bias",
+    "output_proj.1.weight",
+    "output_proj.1.bias"
+   ],
+   "per_channel_parameters": [
+    "temporalQuery"
+   ],
+   "detail": {
+    "temporalQuery": {
+     "shape": [
+      144,
+      21
+     ],
+     "numel": 3024,
+     "class": "per_channel"
+    },
+    "channelAggregator.in_proj_weight": {
+     "shape": [
+      288,
+      96
+     ],
+     "numel": 27648,
+     "class": "shared"
+    },
+    "channelAggregator.in_proj_bias": {
+     "shape": [
+      288
+     ],
+     "numel": 288,
+     "class": "shared"
+    },
+    "channelAggregator.out_proj.weight": {
+     "shape": [
+      96,
+      96
+     ],
+     "numel": 9216,
+     "class": "shared"
+    },
+    "channelAggregator.out_proj.bias": {
+     "shape": [
+      96
+     ],
+     "numel": 96,
+     "class": "shared"
+    },
+    "input_proj.weight": {
+     "shape": [
+      512,
+      96
+     ],
+     "numel": 49152,
+     "class": "shared"
+    },
+    "input_proj.bias": {
+     "shape": [
+      512
+     ],
+     "numel": 512,
+     "class": "shared"
+    },
+    "model.0.weight": {
+     "shape": [
+      512,
+      512
+     ],
+     "numel": 262144,
+     "class": "shared"
+    },
+    "model.0.bias": {
+     "shape": [
+      512
+     ],
+     "numel": 512,
+     "class": "shared"
+    },
+    "model.2.weight": {
+     "shape": [
+      512,
+      512
+     ],
+     "numel": 262144,
+     "class": "shared"
+    },
+    "model.2.bias": {
+     "shape": [
+      512
+     ],
+     "numel": 512,
+     "class": "shared"
+    },
+    "output_proj.1.weight": {
+     "shape": [
+      96,
+      512
+     ],
+     "numel": 49152,
+     "class": "shared"
+    },
+    "output_proj.1.bias": {
+     "shape": [
+      96
+     ],
+     "numel": 96,
+     "class": "shared"
+    }
+   },
+   "n_shared_scalars": 661472,
+   "rule": "A parameter is per-channel when it carries an explicit enc_in axis that indexes output variables (TQNet temporalQuery). All other parameters take part identically in every channel's forward path."
+  }
+ },
+ "checkpoints": {
+  "ETTm1/seed2026090601/early": {
+   "dataset": "ETTm1",
+   "seed": 2026090601,
+   "checkpoint_tag": "early",
+   "n_tasks": 7,
+   "tasks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 1344,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.8046875,
+   "exact_harm_rate_random_subset": 0.609375,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.23684210526315788,
+    "false_negative_rate": 0.7184466019417476,
+    "flag_rate": 0.296875
+   },
+   "auprc_same_batch_cosine": 0.7891477065589577,
+   "auprc_cross_probe_affinity": 0.9986369171693361,
+   "mean_cos_same_batch": 0.191557468656226,
+   "frac_negative_cosine": 0.27529761904761907,
+   "cos_quantiles": [
+    -0.22646005004644393,
+    -0.010930980322882533,
+    0.08816270902752876,
+    0.3385910913348198,
+    0.9022235512733457
+   ],
+   "affinity_quantiles": [
+    -0.256464971601963,
+    -0.10203068144619465,
+    -0.0044021522626280785,
+    0.09771045856177807,
+    0.25309266895055726
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.2094892106103784,
+   "control_random_task_pairing_auprc": 0.8751234463045585,
+   "control_gradient_sign_randomised_auprc": 0.8206115193707565
+  },
+  "ETTm1/seed2026090601/middle": {
+   "dataset": "ETTm1",
+   "seed": 2026090601,
+   "checkpoint_tag": "middle",
+   "n_tasks": 7,
+   "tasks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 1344,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.7578125,
+   "exact_harm_rate_random_subset": 0.515625,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.35294117647058826,
+    "false_negative_rate": 0.7731958762886598,
+    "flag_rate": 0.265625
+   },
+   "auprc_same_batch_cosine": 0.6913212917871664,
+   "auprc_cross_probe_affinity": 0.9995726150263988,
+   "mean_cos_same_batch": 0.18163360230530434,
+   "frac_negative_cosine": 0.2976190476190476,
+   "cos_quantiles": [
+    -0.2004486426711082,
+    -0.020297836512327194,
+    0.09084447100758553,
+    0.32872167229652405,
+    0.8692319035530081
+   ],
+   "affinity_quantiles": [
+    -0.2287905491888523,
+    -0.07613405212759972,
+    0.0012526384089142084,
+    0.08049852401018143,
+    0.23474897667765618
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.30825132323923243,
+   "control_random_task_pairing_auprc": 0.7692422523458278,
+   "control_gradient_sign_randomised_auprc": 0.7996305099114106
+  },
+  "ETTm1/seed2026090601/best": {
+   "dataset": "ETTm1",
+   "seed": 2026090601,
+   "checkpoint_tag": "best",
+   "n_tasks": 7,
+   "tasks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 1344,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.7578125,
+   "exact_harm_rate_random_subset": 0.515625,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.28125,
+    "false_negative_rate": 0.7628865979381443,
+    "flag_rate": 0.25
+   },
+   "auprc_same_batch_cosine": 0.7307700179822486,
+   "auprc_cross_probe_affinity": 0.9942816466150898,
+   "mean_cos_same_batch": 0.1768718871700176,
+   "frac_negative_cosine": 0.30357142857142855,
+   "cos_quantiles": [
+    -0.197684920579195,
+    -0.018729128874838352,
+    0.0838841050863266,
+    0.3271365463733673,
+    0.868966609239578
+   ],
+   "affinity_quantiles": [
+    -0.2154342047870159,
+    -0.07506020180881023,
+    -0.0026396176544949412,
+    0.07728872820734978,
+    0.21859092041850067
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.26351162863284117,
+   "control_random_task_pairing_auprc": 0.7465524381220354,
+   "control_gradient_sign_randomised_auprc": 0.7957184720007501
+  },
+  "ETTm1/seed2026090602/early": {
+   "dataset": "ETTm1",
+   "seed": 2026090602,
+   "checkpoint_tag": "early",
+   "n_tasks": 7,
+   "tasks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 1344,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.78125,
+   "exact_harm_rate_random_subset": 0.5625,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.23076923076923078,
+    "false_negative_rate": 0.6,
+    "flag_rate": 0.40625
+   },
+   "auprc_same_batch_cosine": 0.794628393136489,
+   "auprc_cross_probe_affinity": 0.9935711278676593,
+   "mean_cos_same_batch": 0.15699154320524636,
+   "frac_negative_cosine": 0.34970238095238093,
+   "cos_quantiles": [
+    -0.2189351439476013,
+    -0.036672500893473625,
+    0.07239018753170967,
+    0.24215342104434967,
+    0.8868731886148448
+   ],
+   "affinity_quantiles": [
+    -0.3164755910634994,
+    -0.1092371828854084,
+    -0.01288935448974371,
+    0.08356686308979988,
+    0.275589933991432
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.1989427347311703,
+   "control_random_task_pairing_auprc": 0.7652779891713221,
+   "control_gradient_sign_randomised_auprc": 0.8320574335012225
+  },
+  "ETTm1/seed2026090602/middle": {
+   "dataset": "ETTm1",
+   "seed": 2026090602,
+   "checkpoint_tag": "middle",
+   "n_tasks": 7,
+   "tasks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 1344,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.703125,
+   "exact_harm_rate_random_subset": 0.40625,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.25,
+    "false_negative_rate": 0.6666666666666666,
+    "flag_rate": 0.3125
+   },
+   "auprc_same_batch_cosine": 0.7361416559508657,
+   "auprc_cross_probe_affinity": 0.9940055631327395,
+   "mean_cos_same_batch": 0.1552685203212258,
+   "frac_negative_cosine": 0.3333333333333333,
+   "cos_quantiles": [
+    -0.1874233894050121,
+    -0.033728246577084064,
+    0.06253712438046932,
+    0.22972897812724113,
+    0.8775573611259456
+   ],
+   "affinity_quantiles": [
+    -0.2828864440321922,
+    -0.0940689705312252,
+    -0.015943842008709908,
+    0.07370457611978054,
+    0.2374350666999813
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.2578639071818738,
+   "control_random_task_pairing_auprc": 0.7006004528557985,
+   "control_gradient_sign_randomised_auprc": 0.7844658116843558
+  },
+  "ETTm1/seed2026090602/best": {
+   "dataset": "ETTm1",
+   "seed": 2026090602,
+   "checkpoint_tag": "best",
+   "n_tasks": 7,
+   "tasks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 1344,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.703125,
+   "exact_harm_rate_random_subset": 0.40625,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.25,
+    "false_negative_rate": 0.6666666666666666,
+    "flag_rate": 0.3125
+   },
+   "auprc_same_batch_cosine": 0.7361416559508657,
+   "auprc_cross_probe_affinity": 0.9940055631327395,
+   "mean_cos_same_batch": 0.1552685203212258,
+   "frac_negative_cosine": 0.3333333333333333,
+   "cos_quantiles": [
+    -0.1874233894050121,
+    -0.033728246577084064,
+    0.06253712438046932,
+    0.22972897812724113,
+    0.8775573611259456
+   ],
+   "affinity_quantiles": [
+    -0.2828864440321922,
+    -0.0940689705312252,
+    -0.015943842008709908,
+    0.07370457611978054,
+    0.2374350666999813
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.2578639071818738,
+   "control_random_task_pairing_auprc": 0.7006004528557985,
+   "control_gradient_sign_randomised_auprc": 0.7844658116843558
+  },
+  "Weather/seed2026090601/early": {
+   "dataset": "Weather",
+   "seed": 2026090601,
+   "checkpoint_tag": "early",
+   "n_tasks": 12,
+   "tasks": [
+    0,
+    1,
+    3,
+    4,
+    6,
+    8,
+    12,
+    14,
+    15,
+    17,
+    19,
+    20
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 4224,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.8125,
+   "exact_harm_rate_random_subset": 0.640625,
+   "exact_harm_rate_top_affinity": 0.984375,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.2826086956521739,
+    "false_negative_rate": 0.6826923076923077,
+    "flag_rate": 0.359375
+   },
+   "auprc_same_batch_cosine": 0.8029190876757993,
+   "auprc_cross_probe_affinity": 0.9798265933314991,
+   "mean_cos_same_batch": 0.10205305696338958,
+   "frac_negative_cosine": 0.40861742424242425,
+   "cos_quantiles": [
+    -0.34237317442893983,
+    -0.06558469496667385,
+    0.03148057498037815,
+    0.2050006128847599,
+    0.942536675930023
+   ],
+   "affinity_quantiles": [
+    -0.3898205354809761,
+    -0.10649407096207142,
+    0.005203011212870479,
+    0.10866233333945274,
+    0.3639593809843063
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.1769075056556998,
+   "control_random_task_pairing_auprc": 0.8291190488649502,
+   "control_gradient_sign_randomised_auprc": 0.8482619318732645
+  },
+  "Weather/seed2026090601/middle": {
+   "dataset": "Weather",
+   "seed": 2026090601,
+   "checkpoint_tag": "middle",
+   "n_tasks": 12,
+   "tasks": [
+    0,
+    1,
+    3,
+    4,
+    6,
+    8,
+    12,
+    14,
+    15,
+    17,
+    19,
+    20
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 4224,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.828125,
+   "exact_harm_rate_random_subset": 0.65625,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.21951219512195122,
+    "false_negative_rate": 0.6981132075471698,
+    "flag_rate": 0.3203125
+   },
+   "auprc_same_batch_cosine": 0.7941277627639359,
+   "auprc_cross_probe_affinity": 0.9917108671238373,
+   "mean_cos_same_batch": 0.10252396359561372,
+   "frac_negative_cosine": 0.3835227272727273,
+   "cos_quantiles": [
+    -0.3264660879969596,
+    -0.052080826833844185,
+    0.03500585816800594,
+    0.18195802345871925,
+    0.9615468055009841
+   ],
+   "affinity_quantiles": [
+    -0.36080203503370284,
+    -0.10205231606960297,
+    -9.807005699258298e-05,
+    0.09209134802222252,
+    0.334773513674736
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.19758310435990134,
+   "control_random_task_pairing_auprc": 0.8597685312982886,
+   "control_gradient_sign_randomised_auprc": 0.8577904223382423
+  },
+  "Weather/seed2026090601/best": {
+   "dataset": "Weather",
+   "seed": 2026090601,
+   "checkpoint_tag": "best",
+   "n_tasks": 12,
+   "tasks": [
+    0,
+    1,
+    3,
+    4,
+    6,
+    8,
+    12,
+    14,
+    15,
+    17,
+    19,
+    20
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 4224,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.8203125,
+   "exact_harm_rate_random_subset": 0.671875,
+   "exact_harm_rate_top_affinity": 0.96875,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.29411764705882354,
+    "false_negative_rate": 0.6571428571428571,
+    "flag_rate": 0.3984375
+   },
+   "auprc_same_batch_cosine": 0.8051131499819101,
+   "auprc_cross_probe_affinity": 0.9706287753979806,
+   "mean_cos_same_batch": 0.1015640045734265,
+   "frac_negative_cosine": 0.3740530303030303,
+   "cos_quantiles": [
+    -0.29546979516744615,
+    -0.050998616963624954,
+    0.03527594357728958,
+    0.1721283420920372,
+    0.9558654576539989
+   ],
+   "affinity_quantiles": [
+    -0.35613895654678346,
+    -0.10079699382185936,
+    -0.004550343379378319,
+    0.08338608033955097,
+    0.34059500396251663
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.16551562541607057,
+   "control_random_task_pairing_auprc": 0.8690801144209979,
+   "control_gradient_sign_randomised_auprc": 0.8738710559638214
+  },
+  "Weather/seed2026090602/early": {
+   "dataset": "Weather",
+   "seed": 2026090602,
+   "checkpoint_tag": "early",
+   "n_tasks": 12,
+   "tasks": [
+    0,
+    1,
+    3,
+    4,
+    6,
+    8,
+    12,
+    14,
+    15,
+    17,
+    19,
+    20
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 4224,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.796875,
+   "exact_harm_rate_random_subset": 0.59375,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.2564102564102564,
+    "false_negative_rate": 0.7156862745098039,
+    "flag_rate": 0.3046875
+   },
+   "auprc_same_batch_cosine": 0.7520387409365927,
+   "auprc_cross_probe_affinity": 0.9894426500195459,
+   "mean_cos_same_batch": 0.10880567004795866,
+   "frac_negative_cosine": 0.4100378787878788,
+   "cos_quantiles": [
+    -0.2872757688164711,
+    -0.06625036522746086,
+    0.04251741245388985,
+    0.21369576081633568,
+    0.9653302013874053
+   ],
+   "affinity_quantiles": [
+    -0.41666936725378034,
+    -0.11619630642235279,
+    -0.005324951373040676,
+    0.09413838386535645,
+    0.35474921464920034
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.23740390908295317,
+   "control_random_task_pairing_auprc": 0.8026134163907892,
+   "control_gradient_sign_randomised_auprc": 0.8184883780214677
+  },
+  "Weather/seed2026090602/middle": {
+   "dataset": "Weather",
+   "seed": 2026090602,
+   "checkpoint_tag": "middle",
+   "n_tasks": 12,
+   "tasks": [
+    0,
+    1,
+    3,
+    4,
+    6,
+    8,
+    12,
+    14,
+    15,
+    17,
+    19,
+    20
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 4224,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.7734375,
+   "exact_harm_rate_random_subset": 0.546875,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.2631578947368421,
+    "false_negative_rate": 0.7171717171717171,
+    "flag_rate": 0.296875
+   },
+   "auprc_same_batch_cosine": 0.7526646852372358,
+   "auprc_cross_probe_affinity": 0.9813557898061575,
+   "mean_cos_same_batch": 0.09613695614186299,
+   "frac_negative_cosine": 0.4228219696969697,
+   "cos_quantiles": [
+    -0.2833500102162361,
+    -0.07176374457776546,
+    0.02875910885632038,
+    0.182119682431221,
+    0.9719534069299697
+   ],
+   "affinity_quantiles": [
+    -0.3527620270848274,
+    -0.10139674507081509,
+    -0.0002201921888627112,
+    0.08462745882570744,
+    0.3318520933389663
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.2286911045689216,
+   "control_random_task_pairing_auprc": 0.7235264938250427,
+   "control_gradient_sign_randomised_auprc": 0.8204030434107902
+  },
+  "Weather/seed2026090602/best": {
+   "dataset": "Weather",
+   "seed": 2026090602,
+   "checkpoint_tag": "best",
+   "n_tasks": 12,
+   "tasks": [
+    0,
+    1,
+    3,
+    4,
+    6,
+    8,
+    12,
+    14,
+    15,
+    17,
+    19,
+    20
+   ],
+   "n_pairs": 32,
+   "n_task_pairs_scored": 4224,
+   "n_exact_checked": 128,
+   "exact_harm_rate": 0.8515625,
+   "exact_harm_rate_random_subset": 0.703125,
+   "exact_harm_rate_top_affinity": 1.0,
+   "same_batch_cosine_detector": {
+    "false_positive_rate": 0.16666666666666666,
+    "false_negative_rate": 0.8165137614678899,
+    "flag_rate": 0.1875
+   },
+   "auprc_same_batch_cosine": 0.8207392279488009,
+   "auprc_cross_probe_affinity": 0.9917025141763545,
+   "mean_cos_same_batch": 0.08995327004165367,
+   "frac_negative_cosine": 0.4228219696969697,
+   "cos_quantiles": [
+    -0.2607408672571182,
+    -0.06921118684113026,
+    0.023096819408237934,
+    0.17214414104819298,
+    0.9522198557853696
+   ],
+   "affinity_quantiles": [
+    -0.32624700814485547,
+    -0.09339950978755951,
+    0.0012223352678120136,
+    0.07670696824789047,
+    0.32894420325756074
+   ],
+   "auprc_gain_cross_probe_over_cosine": 0.17096328622755352,
+   "control_random_task_pairing_auprc": 0.9089742484983752,
+   "control_gradient_sign_randomised_auprc": 0.8974373664875394
+  }
+ },
+ "note": "Per-pair rows live under runs/ and are not committed."
+}

@@ -1,0 +1,325 @@
+{
+ "clean_baselines": {
+  "ETTm1": {
+   "tqnet_test_mse": 0.3112413466432584,
+   "dlinear_test_mse": 0.33238271557640087,
+   "tqnet_over_dlinear": 0.9363944996463484,
+   "status": "OK",
+   "blocking_flags": [],
+   "shared_baseline_weak": false,
+   "note": null
+  },
+  "Weather": {
+   "tqnet_test_mse": 0.15734598135028238,
+   "dlinear_test_mse": 0.16074043870168625,
+   "tqnet_over_dlinear": 0.9788823685015346,
+   "status": "OK",
+   "blocking_flags": [],
+   "shared_baseline_weak": false,
+   "note": null
+  }
+ },
+ "track_x": {
+  "ETTm1": {
+   "baseline_spillover": 0.0,
+   "simple_reduction": {
+    "clipping": 0.0,
+    "channel_dropout": 0.0
+   },
+   "simple_solves": {
+    "clipping": false,
+    "channel_dropout": false
+   },
+   "best_simple": "clipping",
+   "quarantine": {
+    "clean_mse": 0.32191519817154457,
+    "median_offdiag_spillover": 0.0,
+    "mean_offdiag_spillover": 0.0016048305806655742,
+    "p90_offdiag_spillover": 0.008017221400566208,
+    "direct_damage_median": 0.0,
+    "detector_flag_rate_on_corrupted_channel": 0.12670510912698413,
+    "n_offdiag_samples": 3024,
+    "clean_mse_degradation": 0.472586876354416,
+    "direct_damage_degradation": 0.0,
+    "spillover_reduction_vs_clean_model": 0.0
+   },
+   "quarantine_extra_reduction_vs_best_simple": 0.0,
+   "quarantine_bootstrap": {
+    "point": 0.2662170821877178,
+    "ci_lower": -1.825486070899536,
+    "ci_upper": 0.7526805568015114,
+    "n_resamples": 1000,
+    "n_clusters": 8,
+    "block": 2,
+    "seed": 2026090699,
+    "relative": true
+   },
+   "shared_baseline_weak": false
+  },
+  "Weather": {
+   "baseline_spillover": 0.0,
+   "simple_reduction": {
+    "clipping": 0.0,
+    "channel_dropout": 0.0
+   },
+   "simple_solves": {
+    "clipping": false,
+    "channel_dropout": false
+   },
+   "best_simple": "clipping",
+   "quarantine": {
+    "clean_mse": 0.15811677818543873,
+    "median_offdiag_spillover": 0.0,
+    "mean_offdiag_spillover": 0.00020424891146058572,
+    "p90_offdiag_spillover": 0.0050309737758515195,
+    "direct_damage_median": 0.0,
+    "detector_flag_rate_on_corrupted_channel": 0.11315465856481481,
+    "n_offdiag_samples": 17280,
+    "clean_mse_degradation": -0.016626938503055334,
+    "direct_damage_degradation": 0.0,
+    "spillover_reduction_vs_clean_model": 0.0
+   },
+   "quarantine_extra_reduction_vs_best_simple": 0.0,
+   "quarantine_bootstrap": {
+    "point": -1.4997224752231073,
+    "ci_lower": -12.32330385382853,
+    "ci_upper": 25.395402072628666,
+    "n_resamples": 1000,
+    "n_clusters": 8,
+    "block": 2,
+    "seed": 2026090699,
+    "relative": true
+   },
+   "shared_baseline_weak": false
+  }
+ },
+ "track_g": {
+  "ETTm1": {
+   "macro_mse": {
+    "erm": 0.31124134497579414,
+    "pcgrad": 0.3194883728911756,
+    "norm_balanced": 0.3198415570936315,
+    "probe_gated": 0.3182816413463224
+   },
+   "gain_vs_erm": -0.022620055092859897,
+   "gain_vs_pcgrad": 0.003777074996291702,
+   "gain_vs_norm_balanced": 0.004877151554300419,
+   "bootstrap_vs_erm": {
+    "point": -0.031391303628005574,
+    "ci_lower": -0.06486523557529762,
+    "ci_upper": 0.004410157144499849,
+    "n_resamples": 1000,
+    "n_clusters": 8,
+    "block": 2,
+    "seed": 2026090699,
+    "relative": true
+   },
+   "extra_probe_cost": {
+    "erm": 0.0,
+    "pcgrad": 0.0,
+    "norm_balanced": 0.0,
+    "probe_gated": 941.5
+   },
+   "wall_s": {
+    "erm": 31.700000000000003,
+    "pcgrad": 58.6,
+    "norm_balanced": 51.05,
+    "probe_gated": 42.65
+   }
+  },
+  "Weather": {
+   "macro_mse": {
+    "erm": 0.20505496510847715,
+    "pcgrad": 0.20439486939712959,
+    "norm_balanced": 0.2052568987479182,
+    "probe_gated": 0.20402325242250663
+   },
+   "gain_vs_erm": 0.005031395779296195,
+   "gain_vs_pcgrad": 0.001818132596571799,
+   "gain_vs_norm_balanced": 0.006010255114136941,
+   "bootstrap_vs_erm": {
+    "point": 0.012154854098562878,
+    "ci_lower": -0.025259492551749623,
+    "ci_upper": 0.03988343247943336,
+    "n_resamples": 1000,
+    "n_clusters": 8,
+    "block": 2,
+    "seed": 2026090699,
+    "relative": true
+   },
+   "extra_probe_cost": {
+    "erm": 0.0,
+    "pcgrad": 0.0,
+    "norm_balanced": 0.0,
+    "probe_gated": 13326.0
+   },
+   "wall_s": {
+    "erm": 98.1,
+    "pcgrad": 477.45,
+    "norm_balanced": 207.05,
+    "probe_gated": 326.4
+   }
+  }
+ },
+ "track_f": {
+  "ETTm1": {
+   "best_existing_filter": "high_loss_removal",
+   "shift_retention_gain_pp": 8.560311284046684,
+   "corruption_removal_drop_pp": 53.30739299610895,
+   "shifted_test_gain": -0.04410475329639575,
+   "clean_test_degradation": 0.056317463402212935,
+   "coherence_aware": {
+    "corruption_removal_rate": 0.15953307392996108,
+    "legitimate_shift_removal_rate": 0.48638132295719844,
+    "clean_removal_rate": 0.16918576304241834,
+    "shift_retention": 0.5136186770428015,
+    "overall_removal_rate": 0.2
+   },
+   "best_existing": {
+    "corruption_removal_rate": 0.6926070038910506,
+    "legitimate_shift_removal_rate": 0.5719844357976653,
+    "clean_removal_rate": 0.0916626036079961,
+    "shift_retention": 0.42801556420233466,
+    "overall_removal_rate": 0.2
+   },
+   "clean_test_mse": {
+    "coherence_aware": 0.38844797015190125,
+    "high_loss_removal": 0.36773790419101715
+   },
+   "shifted_test_mse": {
+    "coherence_aware": 0.463836133480072,
+    "high_loss_removal": 0.4442429095506668
+   },
+   "bootstrap_shifted_gain": {
+    "point": -0.04482228917594136,
+    "ci_lower": -0.06180497387726345,
+    "ci_upper": -0.03178059181134304,
+    "n_resamples": 1000,
+    "n_clusters": 8,
+    "block": 2,
+    "seed": 2026090699,
+    "relative": true
+   },
+   "controls": {
+    "class_identity_shuffle": {
+     "corruption_removal_rate": 0.20233463035019456,
+     "legitimate_shift_removal_rate": 0.19455252918287938,
+     "clean_removal_rate": 0.20039005363237444,
+     "shift_retention": 0.8054474708171206,
+     "overall_removal_rate": 0.2
+    },
+    "coherence_row_shuffle": {
+     "corruption_removal_rate": 0.15953307392996108,
+     "legitimate_shift_removal_rate": 0.48638132295719844,
+     "clean_removal_rate": 0.16918576304241834,
+     "shift_retention": 0.5136186770428015,
+     "overall_removal_rate": 0.2
+    },
+    "random_filter": {
+     "corruption_removal_rate": 0.19455252918287938,
+     "legitimate_shift_removal_rate": 0.2178988326848249,
+     "clean_removal_rate": 0.1984397854705022,
+     "shift_retention": 0.7821011673151751,
+     "overall_removal_rate": 0.2
+    }
+   },
+   "removal_budget_equal": true
+  },
+  "Weather": {
+   "best_existing_filter": "high_loss_removal",
+   "shift_retention_gain_pp": 26.277372262773724,
+   "corruption_removal_drop_pp": 45.25547445255474,
+   "shifted_test_gain": 0.051387671178565714,
+   "clean_test_degradation": -0.02670237933675606,
+   "coherence_aware": {
+    "corruption_removal_rate": 0.20802919708029197,
+    "legitimate_shift_removal_rate": 0.2737226277372263,
+    "clean_removal_rate": 0.18986764034687356,
+    "shift_retention": 0.7262773722627738,
+    "overall_removal_rate": 0.20007301935012778
+   },
+   "best_existing": {
+    "corruption_removal_rate": 0.6605839416058394,
+    "legitimate_shift_removal_rate": 0.5364963503649635,
+    "clean_removal_rate": 0.10041077133728891,
+    "shift_retention": 0.46350364963503654,
+    "overall_removal_rate": 0.20007301935012778
+   },
+   "clean_test_mse": {
+    "coherence_aware": 0.16468293219804764,
+    "high_loss_removal": 0.16920100152492523
+   },
+   "shifted_test_mse": {
+    "coherence_aware": 0.21124505996704102,
+    "high_loss_removal": 0.22268850356340408
+   },
+   "bootstrap_shifted_gain": {
+    "point": 0.05152529209635643,
+    "ci_lower": 0.0378201441482422,
+    "ci_upper": 0.0633927378973418,
+    "n_resamples": 1000,
+    "n_clusters": 8,
+    "block": 2,
+    "seed": 2026090699,
+    "relative": true
+   },
+   "controls": {
+    "class_identity_shuffle": {
+     "corruption_removal_rate": 0.22627737226277372,
+     "legitimate_shift_removal_rate": 0.20072992700729927,
+     "clean_removal_rate": 0.19671382930168874,
+     "shift_retention": 0.7992700729927007,
+     "overall_removal_rate": 0.20007301935012778
+    },
+    "coherence_row_shuffle": {
+     "corruption_removal_rate": 0.20802919708029197,
+     "legitimate_shift_removal_rate": 0.2737226277372263,
+     "clean_removal_rate": 0.18986764034687356,
+     "shift_retention": 0.7262773722627738,
+     "overall_removal_rate": 0.20007301935012778
+    },
+    "random_filter": {
+     "corruption_removal_rate": 0.2116788321167883,
+     "legitimate_shift_removal_rate": 0.19343065693430658,
+     "clean_removal_rate": 0.1994523048836148,
+     "shift_retention": 0.8065693430656934,
+     "overall_removal_rate": 0.20007301935012778
+    }
+   },
+   "removal_budget_equal": true
+  }
+ },
+ "track_v": {
+  "ETTm1": {
+   "latest_origin_regret": 0.0,
+   "last4_regret": 0.021202575629734342,
+   "arw_regret": 0.0,
+   "best_alternative_reduction": 0.0,
+   "unsafe": false
+  },
+  "Weather": {
+   "latest_origin_regret": 0.025262485316498415,
+   "last4_regret": 0.025262485316498415,
+   "arw_regret": 0.025262485316498415,
+   "best_alternative_reduction": 0.0,
+   "unsafe": false
+  }
+ },
+ "ranking": {
+  "scores": {
+   "G": {
+    "eligible": false
+   },
+   "X": {
+    "eligible": false
+   },
+   "F": {
+    "eligible": false
+   }
+  },
+  "method_go_tracks": [],
+  "selected": null,
+  "final_token": "RECOMMEND_CHARACTERIZATION_ONLY",
+  "rule": "Only METHOD_GO tracks are candidates. Ranking is by the worse dataset's improvement first, then phenomenon strength, gain over the best simple baseline, functional difference from the closest work, and runtime cost. Average improvement is never used."
+ }
+}

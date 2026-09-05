@@ -1,0 +1,50 @@
+{
+ "model": "DLinear individual heads (fast model for Track F)",
+ "class_fractions": {
+  "CLEAN": 0.8,
+  "CORRUPTION": 0.1,
+  "LEGITIMATE_SHIFT": 0.1
+ },
+ "class_seed": 2026090631,
+ "window_stride": 12,
+ "corruption_kinds": [
+  "isolated_spike",
+  "block_noise"
+ ],
+ "shift_kinds": [
+  "persistent_level",
+  "coherent_trend"
+ ],
+ "shift_channel_fraction": 0.3,
+ "shift_input_tail": 48,
+ "severity_candidates": [
+  0.5,
+  1.0,
+  2.0,
+  4.0
+ ],
+ "severity_rule": "smallest median training-loss gap between the two classes, subject to both raising the median loss by at least 25% over clean; calibrated on a held-out TRAIN subset only",
+ "removal_budget": 0.2,
+ "methods": [
+  "no_filter",
+  "random_removal",
+  "high_loss_removal",
+  "rho_loss",
+  "adarho",
+  "coherence_aware"
+ ],
+ "coherence_rule": {
+  "A_min_iqr": 1.0,
+  "B_min_iqr": 1.0,
+  "channel_fraction": 0.3
+ },
+ "rho_reference_rule": "trained only on a disjoint temporal holdout block of the training interval",
+ "shifted_test_seed": 2026090641,
+ "adarho": {
+  "n_B": 256,
+  "n_b": 128,
+  "n_r": 64,
+  "reference_lr_divisor": 10.0,
+  "status": "PAPER_FAITHFUL_LOCAL_ADARHO"
+ }
+}

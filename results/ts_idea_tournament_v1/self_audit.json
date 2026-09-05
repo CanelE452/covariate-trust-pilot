@@ -1,0 +1,83 @@
+{
+ "questions": {
+  "1_tracks_are_actually_independent": {
+   "answer": true,
+   "evidence": "no gates module names another track's run stage"
+  },
+  "2_X_did_not_secretly_use_an_oracle_mask": {
+   "answer": true,
+   "evidence": {
+    "ETTm1": {
+     "oracle_mask_used": false,
+     "quarantine_calibration_split": "validation (clean)"
+    },
+    "Weather": {
+     "oracle_mask_used": false,
+     "quarantine_calibration_split": "validation (clean)"
+    }
+   }
+  },
+  "3_G_probes_contain_no_validation_or_test_data": {
+   "answer": true,
+   "evidence": "probe batches are drawn from the train split only; see rules.refresh_probe_mask"
+  },
+  "4_F_severity_was_not_matched_after_seeing_results": {
+   "answer": true,
+   "evidence": {
+    "ETTm1": {
+     "sev_corrupt": 4.0,
+     "sev_shift": 1.0,
+     "LOSS_MATCHING_WEAK": false,
+     "calibrated_on": "held-out train subset, before any test evaluation"
+    },
+    "Weather": {
+     "sev_corrupt": 4.0,
+     "sev_shift": 1.0,
+     "LOSS_MATCHING_WEAK": false,
+     "calibrated_on": "held-out train subset, before any test evaluation"
+    }
+   }
+  },
+  "5_V_did_not_change_any_other_track_verdict": {
+   "answer": true,
+   "evidence": "final_ranking() reads only the G, X and F score dictionaries"
+  },
+  "6_no_failed_track_was_rescued_by_another_track": {
+   "answer": true,
+   "evidence": {
+    "X": {
+     "phenomenon": "X_NO_SPILLOVER",
+     "role": "DIAGNOSTIC_CONTINUATION_AFTER_X_PHENOMENON_FAIL"
+    },
+    "G": {
+     "phenomenon": "G_PHENOMENON_GO",
+     "role": "CONFIRMATORY_SCREEN"
+    },
+    "F": {
+     "phenomenon": "F_SELECTION_CONFOUNDING_PRESENT",
+     "role": "CONFIRMATORY_SCREEN"
+    }
+   }
+  },
+  "7_both_primary_datasets_used_no_unjustified_fallback": {
+   "answer": true,
+   "evidence": {
+    "ETTm1": {
+     "rows": 69680,
+     "sha_ok": true
+    },
+    "Weather": {
+     "rows": 52696,
+     "sha_ok": true
+    }
+   }
+  },
+  "8_every_METHOD_GO_satisfies_all_three_conditions": {
+   "answer": true,
+   "evidence": "no track reached METHOD_GO, so there is nothing to withdraw"
+  }
+ },
+ "all_pass": true,
+ "withdrawn_method_go": [],
+ "final_token": "RECOMMEND_CHARACTERIZATION_ONLY"
+}

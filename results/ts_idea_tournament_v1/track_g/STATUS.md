@@ -1,0 +1,6 @@
+# Track G
+
+verdict: CHARACTERIZATION_ONLY
+detailed: G_CHARACTERIZATION_ONLY
+result role: CONFIRMATORY_SCREEN
+status: OK

@@ -1,0 +1,85 @@
+{
+ "TQNet": {
+  "repository_identity": "ACAT-SCUT/TQNet",
+  "resolved_commit_sha": "15e19cb23483ed52398566c4baa959168cfffa57",
+  "license": "Apache License",
+  "used_for": "clean shared cross-channel forecaster, official data provider, official configs",
+  "used_files": [
+   "models/TQNet.py",
+   "models/DLinear.py",
+   "data_provider/data_loader.py",
+   "scripts/TQNet/ettm1.sh",
+   "scripts/TQNet/weather.sh",
+   "run.py",
+   "utils/tools.py"
+  ],
+  "modified": true,
+  "modification_detail": "pandas>=2 compatibility only: the positional-axis form of DataFrame.drop was replaced by the keyword form at 4 sites in data_provider/data_loader.py. Semantically identical; touches only the time-feature columns, which neither TQNet nor DLinear consume."
+ },
+ "TSRBench": {
+  "repository_identity": "dongbeank/TSRBench",
+  "resolved_commit_sha": "7db3620f127819231a043168aaadf719bb1eea49",
+  "license": "MIT",
+  "used_for": "official corruption injection for Track X",
+  "used_files": [
+   "tsrbench/collective_noise.py"
+  ],
+  "modified": false,
+  "modification_detail": null
+ },
+ "LGA": {
+  "repository_identity": "dongbeank/LGA",
+  "resolved_commit_sha": "b6bc25c17dfa8d7f0188607c381a65b2dbbdf2da",
+  "license": "NOT_PRESENT_IN_REPO",
+  "used_for": "identity and context for the TSRBench corruption line (read-only)",
+  "used_files": [],
+  "modified": false,
+  "modification_detail": null
+ },
+ "RHO-Loss": {
+  "repository_identity": "OATML/RHO-Loss",
+  "resolved_commit_sha": "4c88851742ce5397153f4fef80abd4682958ac56",
+  "license": "Apache License",
+  "used_for": "RHO selection definition for Track F",
+  "used_files": [
+   "README.md",
+   "src"
+  ],
+  "modified": false,
+  "modification_detail": null
+ },
+ "ARW": {
+  "repository_identity": "eliselyhan/ARW",
+  "resolved_commit_sha": "c48f8303d317f143d6a203d88347c7fada9aee55",
+  "license": "NOT_PRESENT_IN_REPO",
+  "used_for": "adaptive rolling window selection rule for Track V",
+  "used_files": [],
+  "modified": false,
+  "modification_detail": null
+ },
+ "MTLinear": {
+  "repository_identity": "azencot-group/MTLinear",
+  "resolved_commit_sha": "7d0d9fb71d0e3652829ed28dda5acc558b27f528",
+  "license": "NOT_PRESENT_IN_REPO",
+  "used_for": "multi-task loss-balancing context for Track G (read-only)",
+  "used_files": [],
+  "modified": false,
+  "modification_detail": null
+ },
+ "PCGrad": {
+  "repository_identity": "tianheyu927/PCGrad is the official implementation and is TensorFlow; WeiChengTseng/Pytorch-PCGrad is an unofficial PyTorch port",
+  "resolved_commit_sha": null,
+  "license": "not vendored",
+  "used_for": "Track G intervention baseline",
+  "status": "LOCAL_REIMPLEMENTATION_FROM_PAPER",
+  "rationale": "Protocol forbids treating an unofficial PyTorch port as scientific authority. Algorithm 1 of Yu et al. 2020 (arXiv:2001.06782) is implemented locally and verified with synthetic gradient unit tests.",
+  "modified": false
+ },
+ "FAF_AdaRho": {
+  "repository_identity": "Filter, Augment, Forecast: Online Data Selection for Robust Time Series Forecasting, AISTATS 2026",
+  "resolved_commit_sha": null,
+  "status": "PAPER_FAITHFUL_LOCAL_ADARHO",
+  "used_for": "Track F adaptive-filter baseline",
+  "modified": false
+ }
+}

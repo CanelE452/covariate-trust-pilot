@@ -1,0 +1,11 @@
+{
+ "python": "3.13.9",
+ "platform": "Windows-11-10.0.26200-SP0",
+ "torch": "2.13.0+cu126",
+ "cuda": "12.6",
+ "gpu": "NVIDIA GeForce RTX 4070",
+ "gpu_total_gb": 12.88,
+ "numpy": "2.3.5",
+ "pandas": "2.3.3",
+ "captured_utc": "2026-09-05T19:03:08Z"
+}

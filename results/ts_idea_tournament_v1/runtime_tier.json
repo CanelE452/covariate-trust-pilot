@@ -1,0 +1,102 @@
+{
+ "measured_epoch_seconds": {
+  "ETTm1/TQNet": {
+   "n_batches": 134,
+   "per_batch_ms": 13.0,
+   "val_s": 0.4,
+   "epoch_s": 2.2,
+   "fit30_h": 0.02,
+   "fit_typ12_h": 0.01
+  },
+  "ETTm1/DLinear": {
+   "n_batches": 134,
+   "per_batch_ms": 14.8,
+   "val_s": 0.5,
+   "epoch_s": 2.4,
+   "fit30_h": 0.02,
+   "fit_typ12_h": 0.01
+  },
+  "Weather/TQNet": {
+   "n_batches": 573,
+   "per_batch_ms": 7.4,
+   "val_s": 0.3,
+   "epoch_s": 4.5,
+   "fit30_h": 0.04,
+   "fit_typ12_h": 0.02
+  },
+  "Weather/DLinear": {
+   "n_batches": 573,
+   "per_batch_ms": 20.4,
+   "val_s": 0.6,
+   "epoch_s": 12.3,
+   "fit30_h": 0.1,
+   "fit_typ12_h": 0.04
+  }
+ },
+ "planned_fits": [
+  {
+   "stage": "clean TQNet",
+   "model": "TQNet",
+   "fits_per_dataset": 1.0,
+   "relative_step_cost": 1.0,
+   "gpu_hours": 0.056
+  },
+  {
+   "stage": "clean DLinear",
+   "model": "DLinear",
+   "fits_per_dataset": 1.0,
+   "relative_step_cost": 1.0,
+   "gpu_hours": 0.122
+  },
+  {
+   "stage": "X channel-dropout TQNet",
+   "model": "TQNet",
+   "fits_per_dataset": 1.0,
+   "relative_step_cost": 1.0,
+   "gpu_hours": 0.056
+  },
+  {
+   "stage": "G PCGrad",
+   "model": "TQNet",
+   "fits_per_dataset": 1.0,
+   "relative_step_cost": 8.0,
+   "gpu_hours": 0.447
+  },
+  {
+   "stage": "G norm-balanced",
+   "model": "TQNet",
+   "fits_per_dataset": 1.0,
+   "relative_step_cost": 8.0,
+   "gpu_hours": 0.447
+  },
+  {
+   "stage": "G probe-gated",
+   "model": "TQNet",
+   "fits_per_dataset": 1.0,
+   "relative_step_cost": 10.0,
+   "gpu_hours": 0.558
+  },
+  {
+   "stage": "F retrain, 6 methods",
+   "model": "DLinear",
+   "fits_per_dataset": 6.0,
+   "relative_step_cost": 1.0,
+   "gpu_hours": 0.735
+  },
+  {
+   "stage": "F RHO reference models",
+   "model": "DLinear",
+   "fits_per_dataset": 2.0,
+   "relative_step_cost": 0.5,
+   "gpu_hours": 0.122
+  }
+ ],
+ "projected_total_gpu_hours": 2.54,
+ "tier": "FULL",
+ "tier_settings": {
+  "clean_seeds": 2,
+  "intervention_seeds": 2,
+  "bootstrap": 1000
+ },
+ "frozen_before_any_scientific_result": true
+}

@@ -1,0 +1,40 @@
+{
+ "tasks": {
+  "ETTm1": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "Weather": [
+   0,
+   1,
+   3,
+   4,
+   6,
+   8,
+   12,
+   14,
+   15,
+   17,
+   19,
+   20
+  ]
+ },
+ "task_definition": "one output variable is one task; loss is MSE over batch and all 96 steps",
+ "checkpoint_tags": [
+  "early",
+  "middle",
+  "best"
+ ],
+ "checkpoint_rule": "early = 25% and middle = 50% of the realised schedule, best = best validation MSE; never chosen by looking at a result",
+ "harm_threshold": 0.005,
+ "n_exact_top_affinity": 64,
+ "n_exact_random": 64,
+ "probe_seed": 2026090621,
+ "probe_rule": "optimisation and probe blocks are disjoint temporal blocks of the TRAIN split, separated by at least one full window",
+ "shared_parameter_rule": "A parameter is per-channel when it carries an explicit enc_in axis that indexes output variables (TQNet temporalQuery). All other parameters take part identically in every channel's forward path."
+}

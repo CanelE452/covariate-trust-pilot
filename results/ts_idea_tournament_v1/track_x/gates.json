@@ -1,0 +1,651 @@
+{
+ "status": "OK",
+ "phenomenon": {
+  "per_dataset": {
+   "ETTm1": {
+    "families": {
+     "combined_sev1": {
+      "family": "combined",
+      "severity": 1,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.0008197017257692384,
+      "p90_offdiag_spillover": 0.0034898401957508766,
+      "fraction_normal_channels_damage_gt_1pct": 0.0625,
+      "worst_normal_channel_damage": 0.09564339036499929,
+      "max_single_source_channel_share": 0.3421551003240512,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "combined_sev3": {
+      "family": "combined",
+      "severity": 3,
+      "direct_damage_median": 0.01753958786315572,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.002637303359401332,
+      "p90_offdiag_spillover": 0.015639325116671383,
+      "fraction_normal_channels_damage_gt_1pct": 0.13690476190476192,
+      "worst_normal_channel_damage": 0.46904426603691235,
+      "max_single_source_channel_share": 0.39868405555374176,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 2.974962330292355e-05,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "combined_sev5": {
+      "family": "combined",
+      "severity": 5,
+      "direct_damage_median": 2.7730184183868722,
+      "median_offdiag_spillover": 0.00015618697140132084,
+      "mean_offdiag_spillover": 0.008509015532755217,
+      "p90_offdiag_spillover": 0.04528084780694521,
+      "fraction_normal_channels_damage_gt_1pct": 0.29464285714285715,
+      "worst_normal_channel_damage": 0.7173326839941461,
+      "max_single_source_channel_share": 0.33068883290307916,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.00015618697140132084,
+       "ci_lower": -0.000921378926889983,
+       "ci_upper": 0.0011764976953329218,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 15618.697140132084,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": true,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "shift_sev1": {
+      "family": "shift",
+      "severity": 1,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.0004903135648849981,
+      "p90_offdiag_spillover": 0.00012454889766176343,
+      "fraction_normal_channels_damage_gt_1pct": 0.02976190476190476,
+      "worst_normal_channel_damage": 0.09531271909306503,
+      "max_single_source_channel_share": 0.43804416055322426,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "shift_sev3": {
+      "family": "shift",
+      "severity": 3,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.0017110472449777484,
+      "p90_offdiag_spillover": 0.006063758289592674,
+      "fraction_normal_channels_damage_gt_1pct": 0.0788690476190476,
+      "worst_normal_channel_damage": 0.39154701819825,
+      "max_single_source_channel_share": 0.4596797691896399,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "shift_sev5": {
+      "family": "shift",
+      "severity": 5,
+      "direct_damage_median": 2.405797419965523,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.008733470920088365,
+      "p90_offdiag_spillover": 0.04724191753685791,
+      "fraction_normal_channels_damage_gt_1pct": 0.2619047619047619,
+      "worst_normal_channel_damage": 0.7219598620502329,
+      "max_single_source_channel_share": 0.323878878496118,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "spike_sev1": {
+      "family": "spike",
+      "severity": 1,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.00042337602109699166,
+      "p90_offdiag_spillover": 7.959644139884193e-05,
+      "fraction_normal_channels_damage_gt_1pct": 0.02678571428571428,
+      "worst_normal_channel_damage": 0.04817905953415812,
+      "max_single_source_channel_share": 0.39376650870172547,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "spike_sev3": {
+      "family": "spike",
+      "severity": 3,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.00021011596283649982,
+      "p90_offdiag_spillover": 0.0011613993710304692,
+      "fraction_normal_channels_damage_gt_1pct": 0.029761904761904764,
+      "worst_normal_channel_damage": 0.055141368711968335,
+      "max_single_source_channel_share": 0.32402678413732583,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "spike_sev5": {
+      "family": "spike",
+      "severity": 5,
+      "direct_damage_median": 0.0005257847966294667,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.0008188141661421434,
+      "p90_offdiag_spillover": 0.006926768043940601,
+      "fraction_normal_channels_damage_gt_1pct": 0.06994047619047619,
+      "worst_normal_channel_damage": 0.32170676198453874,
+      "max_single_source_channel_share": 0.2929202128945831,
+      "n_offdiag_samples": 672,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     }
+    },
+    "passing_families": [],
+    "n_passing_families": 0,
+    "passes": false
+   },
+   "Weather": {
+    "families": {
+     "combined_sev1": {
+      "family": "combined",
+      "severity": 1,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.0003490762459078752,
+      "p90_offdiag_spillover": 0.004191234231362119,
+      "fraction_normal_channels_damage_gt_1pct": 0.04661458333333334,
+      "worst_normal_channel_damage": 0.11604287567332063,
+      "max_single_source_channel_share": 0.30637315743609356,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "combined_sev3": {
+      "family": "combined",
+      "severity": 3,
+      "direct_damage_median": 0.11420046986893956,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": -0.00010173239539728382,
+      "p90_offdiag_spillover": 0.008151657651816593,
+      "fraction_normal_channels_damage_gt_1pct": 0.08020833333333334,
+      "worst_normal_channel_damage": 1.232209398385057,
+      "max_single_source_channel_share": 0.2840266418856284,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "combined_sev5": {
+      "family": "combined",
+      "severity": 5,
+      "direct_damage_median": 1.4713213439451598,
+      "median_offdiag_spillover": -2.7385260095497853e-06,
+      "mean_offdiag_spillover": 0.0018423045953137411,
+      "p90_offdiag_spillover": 0.016726193374337707,
+      "fraction_normal_channels_damage_gt_1pct": 0.15703124999999998,
+      "worst_normal_channel_damage": 1.3434026565281099,
+      "max_single_source_channel_share": 0.21907339096285533,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": -2.7385260095497853e-06,
+       "ci_lower": -0.0002819470897158819,
+       "ci_upper": 7.280426023629217e-06,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": -273.8526009549785,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "shift_sev1": {
+      "family": "shift",
+      "severity": 1,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.00019504227014371575,
+      "p90_offdiag_spillover": 0.00043538748386187475,
+      "fraction_normal_channels_damage_gt_1pct": 0.023958333333333335,
+      "worst_normal_channel_damage": 0.11835179222105605,
+      "max_single_source_channel_share": 0.44535930211261227,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "shift_sev3": {
+      "family": "shift",
+      "severity": 3,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": -0.00048221910651484885,
+      "p90_offdiag_spillover": 0.004172553845446445,
+      "fraction_normal_channels_damage_gt_1pct": 0.05520833333333333,
+      "worst_normal_channel_damage": 1.2323927018712568,
+      "max_single_source_channel_share": 0.3363904777130297,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "shift_sev5": {
+      "family": "shift",
+      "severity": 5,
+      "direct_damage_median": 0.5856387605410263,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.0013507661637381378,
+      "p90_offdiag_spillover": 0.014056550380159197,
+      "fraction_normal_channels_damage_gt_1pct": 0.12942708333333333,
+      "worst_normal_channel_damage": 0.161124861936684,
+      "max_single_source_channel_share": 0.15832826787370524,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "spike_sev1": {
+      "family": "spike",
+      "severity": 1,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 3.913923402574212e-05,
+      "p90_offdiag_spillover": 0.00032013537135990565,
+      "fraction_normal_channels_damage_gt_1pct": 0.015104166666666669,
+      "worst_normal_channel_damage": 0.029567564729428484,
+      "max_single_source_channel_share": 0.2442811753125447,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "spike_sev3": {
+      "family": "spike",
+      "severity": 3,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": -0.0002450753100901709,
+      "p90_offdiag_spillover": 0.0013015975278508124,
+      "fraction_normal_channels_damage_gt_1pct": 0.025781250000000002,
+      "worst_normal_channel_damage": 0.07720245288375273,
+      "max_single_source_channel_share": 0.25143591394659554,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     },
+     "spike_sev5": {
+      "family": "spike",
+      "severity": 5,
+      "direct_damage_median": 0.0,
+      "median_offdiag_spillover": 0.0,
+      "mean_offdiag_spillover": 0.00040245773023122667,
+      "p90_offdiag_spillover": 0.0039745841370879675,
+      "fraction_normal_channels_damage_gt_1pct": 0.049218750000000006,
+      "worst_normal_channel_damage": 1.2296556475432305,
+      "max_single_source_channel_share": 0.35202852525699646,
+      "n_offdiag_samples": 3840,
+      "bootstrap": {
+       "point": 0.0,
+       "ci_lower": 0.0,
+       "ci_upper": 0.0,
+       "n_resamples": 1000,
+       "n_clusters": 8,
+       "block": 2,
+       "seed": 2026090699
+      },
+      "tqnet_over_dlinear": 0.0,
+      "checks": {
+       "median_offdiag_ge_3pct": false,
+       "bootstrap_lower_gt_0": false,
+       "tqnet_over_dlinear_ge_3x": false,
+       "no_dominant_source_channel": true
+      },
+      "passes": false
+     }
+    },
+    "passing_families": [],
+    "n_passing_families": 0,
+    "passes": false
+   }
+  },
+  "gate": {
+   "both_datasets": true,
+   "min_corruption_families": 2,
+   "median_offdiag_spillover_ge": 0.03,
+   "bootstrap_ci_lower_gt": 0.0,
+   "tqnet_over_dlinear_spillover_ge": 3.0,
+   "no_single_source_channel_share_ge": 0.5
+  },
+  "verdict": "X_NO_SPILLOVER"
+ },
+ "method": {
+  "per_dataset": {
+   "ETTm1": {
+    "baseline_spillover": 0.0,
+    "simple_reduction": {
+     "clipping": 0.0,
+     "channel_dropout": 0.0
+    },
+    "simple_solves": {
+     "clipping": false,
+     "channel_dropout": false
+    },
+    "best_simple": "clipping",
+    "quarantine": {
+     "clean_mse": 0.32191519817154457,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.0016048305806655742,
+     "p90_offdiag_spillover": 0.008017221400566208,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": 0.12670510912698413,
+     "n_offdiag_samples": 3024,
+     "clean_mse_degradation": 0.472586876354416,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    },
+    "quarantine_extra_reduction_vs_best_simple": 0.0,
+    "quarantine_bootstrap": {
+     "point": 0.2662170821877178,
+     "ci_lower": -1.825486070899536,
+     "ci_upper": 0.7526805568015114,
+     "n_resamples": 1000,
+     "n_clusters": 8,
+     "block": 2,
+     "seed": 2026090699,
+     "relative": true
+    },
+    "shared_baseline_weak": false
+   },
+   "Weather": {
+    "baseline_spillover": 0.0,
+    "simple_reduction": {
+     "clipping": 0.0,
+     "channel_dropout": 0.0
+    },
+    "simple_solves": {
+     "clipping": false,
+     "channel_dropout": false
+    },
+    "best_simple": "clipping",
+    "quarantine": {
+     "clean_mse": 0.15811677818543873,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.00020424891146058572,
+     "p90_offdiag_spillover": 0.0050309737758515195,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": 0.11315465856481481,
+     "n_offdiag_samples": 17280,
+     "clean_mse_degradation": -0.016626938503055334,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    },
+    "quarantine_extra_reduction_vs_best_simple": 0.0,
+    "quarantine_bootstrap": {
+     "point": -1.4997224752231073,
+     "ci_lower": -12.32330385382853,
+     "ci_upper": 25.395402072628666,
+     "n_resamples": 1000,
+     "n_clusters": 8,
+     "block": 2,
+     "seed": 2026090699,
+     "relative": true
+    },
+    "shared_baseline_weak": false
+   }
+  },
+  "method_checks": {
+   "ETTm1": {
+    "extra_reduction_ge_20pct": false,
+    "clean_mse_degradation_lt_1pct": false,
+    "direct_damage_degradation_lt_5pct": true,
+    "bootstrap_lower_gt_0": false,
+    "shared_baseline_not_weak": true
+   },
+   "Weather": {
+    "extra_reduction_ge_20pct": false,
+    "clean_mse_degradation_lt_1pct": true,
+    "direct_damage_degradation_lt_5pct": true,
+    "bootstrap_lower_gt_0": false,
+    "shared_baseline_not_weak": true
+   }
+  },
+  "simple_baseline_solves": false,
+  "method_go": false,
+  "verdict": "NO_PHENOMENON",
+  "result_role": "DIAGNOSTIC_CONTINUATION_AFTER_X_PHENOMENON_FAIL"
+ },
+ "verdict": "NO_PHENOMENON",
+ "detailed_verdict": "NO_PHENOMENON",
+ "result_role": "DIAGNOSTIC_CONTINUATION_AFTER_X_PHENOMENON_FAIL"
+}

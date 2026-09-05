@@ -1,0 +1,17 @@
+{
+ "scores": {
+  "G": {
+   "eligible": false
+  },
+  "X": {
+   "eligible": false
+  },
+  "F": {
+   "eligible": false
+  }
+ },
+ "method_go_tracks": [],
+ "selected": null,
+ "final_token": "RECOMMEND_CHARACTERIZATION_ONLY",
+ "rule": "Only METHOD_GO tracks are candidates. Ranking is by the worse dataset's improvement first, then phenomenon strength, gain over the best simple baseline, functional difference from the closest work, and runtime cost. Average improvement is never used."
+}

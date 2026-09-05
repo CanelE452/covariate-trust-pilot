@@ -1,0 +1,156 @@
+{
+ "status": "OK",
+ "phenomenon": {
+  "per_dataset": {
+   "ETTm1": {
+    "exact_harm_rate_mean": 0.73046875,
+    "exact_harm_rate_unbiased_random_subset": 0.4609375,
+    "bootstrap_harm_rate": {
+     "point": 0.73046875,
+     "ci_lower": 0.6600617912560194,
+     "ci_upper": 0.7929959514170041,
+     "n_resamples": 1000,
+     "n_clusters": 64,
+     "block": 2,
+     "seed": 2026090699
+    },
+    "cosine_detector_fp_mean": 0.265625,
+    "cosine_detector_fn_mean": 0.7147766323024054,
+    "auprc_same_batch_cosine_mean": 0.7334558369665571,
+    "auprc_cross_probe_mean": 0.9941436048739146,
+    "auprc_gain_mean": 0.2606877679073575,
+    "control_random_task_pairing_auprc_mean": 0.723576445488917,
+    "control_gradient_sign_randomised_auprc_mean": 0.7900921418425529,
+    "checks": {
+     "exact_harm_rate_ge_10pct": true,
+     "bootstrap_lower_ge_5pct": true,
+     "cosine_detector_fp_or_fn_ge_20pct": true,
+     "cross_probe_auprc_gain_ge_0p10": true,
+     "seed_direction_stable": true
+    },
+    "passes": true
+   },
+   "Weather": {
+    "exact_harm_rate_mean": 0.8359375,
+    "exact_harm_rate_unbiased_random_subset": 0.6875,
+    "bootstrap_harm_rate": {
+     "point": 0.8359375,
+     "ci_lower": 0.7807675438596491,
+     "ci_upper": 0.8794367750658223,
+     "n_resamples": 1000,
+     "n_clusters": 62,
+     "block": 2,
+     "seed": 2026090699
+    },
+    "cosine_detector_fp_mean": 0.2303921568627451,
+    "cosine_detector_fn_mean": 0.7368283093053736,
+    "auprc_same_batch_cosine_mean": 0.8129261889653555,
+    "auprc_cross_probe_mean": 0.9811656447871675,
+    "auprc_gain_mean": 0.16823945582181205,
+    "control_random_task_pairing_auprc_mean": 0.8890271814596865,
+    "control_gradient_sign_randomised_auprc_mean": 0.8856542112256804,
+    "checks": {
+     "exact_harm_rate_ge_10pct": true,
+     "bootstrap_lower_ge_5pct": true,
+     "cosine_detector_fp_or_fn_ge_20pct": true,
+     "cross_probe_auprc_gain_ge_0p10": true,
+     "seed_direction_stable": true
+    },
+    "passes": true
+   }
+  },
+  "gate": {
+   "exact_harm_rate_ge": 0.1,
+   "bootstrap_lower_ge": 0.05,
+   "cosine_detector_fp_or_fn_ge": 0.2,
+   "cross_probe_auprc_gain_ge": 0.1,
+   "seed_direction_stable": true
+  },
+  "verdict": "G_PHENOMENON_GO"
+ },
+ "method": {
+  "per_dataset": {
+   "ETTm1": {
+    "macro_mse": {
+     "erm": 0.31124134497579414,
+     "pcgrad": 0.3194883728911756,
+     "norm_balanced": 0.3198415570936315,
+     "probe_gated": 0.3182816413463224
+    },
+    "gain_vs_erm": -0.022620055092859897,
+    "gain_vs_pcgrad": 0.003777074996291702,
+    "gain_vs_norm_balanced": 0.004877151554300419,
+    "bootstrap_vs_erm": {
+     "point": -0.031391303628005574,
+     "ci_lower": -0.06486523557529762,
+     "ci_upper": 0.004410157144499849,
+     "n_resamples": 1000,
+     "n_clusters": 8,
+     "block": 2,
+     "seed": 2026090699,
+     "relative": true
+    },
+    "extra_probe_cost": {
+     "erm": 0.0,
+     "pcgrad": 0.0,
+     "norm_balanced": 0.0,
+     "probe_gated": 941.5
+    },
+    "wall_s": {
+     "erm": 31.700000000000003,
+     "pcgrad": 58.6,
+     "norm_balanced": 51.05,
+     "probe_gated": 42.65
+    }
+   },
+   "Weather": {
+    "macro_mse": {
+     "erm": 0.20505496510847715,
+     "pcgrad": 0.20439486939712959,
+     "norm_balanced": 0.2052568987479182,
+     "probe_gated": 0.20402325242250663
+    },
+    "gain_vs_erm": 0.005031395779296195,
+    "gain_vs_pcgrad": 0.001818132596571799,
+    "gain_vs_norm_balanced": 0.006010255114136941,
+    "bootstrap_vs_erm": {
+     "point": 0.012154854098562878,
+     "ci_lower": -0.025259492551749623,
+     "ci_upper": 0.03988343247943336,
+     "n_resamples": 1000,
+     "n_clusters": 8,
+     "block": 2,
+     "seed": 2026090699,
+     "relative": true
+    },
+    "extra_probe_cost": {
+     "erm": 0.0,
+     "pcgrad": 0.0,
+     "norm_balanced": 0.0,
+     "probe_gated": 13326.0
+    },
+    "wall_s": {
+     "erm": 98.1,
+     "pcgrad": 477.45,
+     "norm_balanced": 207.05,
+     "probe_gated": 326.4
+    }
+   }
+  },
+  "checks": {
+   "vs_erm_ge_0p7pct": false,
+   "vs_pcgrad_ge_0p3pct": false,
+   "both_datasets_positive": false,
+   "no_dataset_worse_than_minus_0p5pct": false,
+   "bootstrap_lower_gt_0": false,
+   "beats_norm_balanced_control": true
+  },
+  "method_go": false,
+  "existing_baseline_solves": false,
+  "verdict": "G_CHARACTERIZATION_ONLY",
+  "result_role": "CONFIRMATORY_SCREEN"
+ },
+ "verdict": "CHARACTERIZATION_ONLY",
+ "detailed_verdict": "G_CHARACTERIZATION_ONLY",
+ "result_role": "CONFIRMATORY_SCREEN"
+}

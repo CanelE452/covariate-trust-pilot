@@ -1,0 +1,156 @@
+{
+ "attempt": "E:\\CODING\\worktrees\\covariate-trust-pilot-ts-idea-tournament-v1\\runs\\ts_idea_tournament_v1\\track_x_mitigations\\attempt_0001",
+ "datasets": {
+  "ETTm1": {
+   "baseline_spillover": 0.0,
+   "baseline_clean_mse": 0.21860523364739493,
+   "baseline_direct_damage": 0.0,
+   "quarantine_calibration": {
+    "threshold": 1.045193076133728,
+    "achieved_fp_rate": 0.04957142857142857,
+    "n_calibration_windows": 2000,
+    "split": "validation (clean)"
+   },
+   "best_simple_for_bootstrap": "clipping",
+   "quarantine_bootstrap": {
+    "point": 0.2662170821877178,
+    "ci_lower": -1.825486070899536,
+    "ci_upper": 0.7526805568015114,
+    "n_resamples": 1000,
+    "n_clusters": 8,
+    "block": 2,
+    "seed": 2026090699,
+    "relative": true
+   },
+   "arms": {
+    "clean_model": {
+     "clean_mse": 0.21860523364739493,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.0022949174233416357,
+     "p90_offdiag_spillover": 0.011872819188923345,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": null,
+     "n_offdiag_samples": 3024,
+     "clean_mse_degradation": 0.0,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    },
+    "clipping": {
+     "clean_mse": 0.21832388429070954,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.0021870645141893654,
+     "p90_offdiag_spillover": 0.011191254272495794,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": null,
+     "n_offdiag_samples": 3024,
+     "clean_mse_degradation": -0.001287020223583483,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    },
+    "channel_dropout": {
+     "clean_mse": 0.22011271969365356,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.0034581898159278153,
+     "p90_offdiag_spillover": 0.010058789605817608,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": null,
+     "n_offdiag_samples": 3024,
+     "clean_mse_degradation": 0.006895928432757367,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    },
+    "quarantine": {
+     "clean_mse": 0.32191519817154457,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.0016048305806655742,
+     "p90_offdiag_spillover": 0.008017221400566208,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": 0.12670510912698413,
+     "n_offdiag_samples": 3024,
+     "clean_mse_degradation": 0.472586876354416,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    }
+   },
+   "dropout_rate": 0.1,
+   "clip_k": 5.0,
+   "oracle_mask_used": false
+  },
+  "Weather": {
+   "baseline_spillover": 0.0,
+   "baseline_clean_mse": 0.16079022740845134,
+   "baseline_direct_damage": 0.0,
+   "quarantine_calibration": {
+    "threshold": 1.0,
+    "achieved_fp_rate": 0.03796029970526615,
+    "n_calibration_windows": 1341,
+    "split": "validation (clean)"
+   },
+   "best_simple_for_bootstrap": "clipping",
+   "quarantine_bootstrap": {
+    "point": -1.4997224752231073,
+    "ci_lower": -12.32330385382853,
+    "ci_upper": 25.395402072628666,
+    "n_resamples": 1000,
+    "n_clusters": 8,
+    "block": 2,
+    "seed": 2026090699,
+    "relative": true
+   },
+   "arms": {
+    "clean_model": {
+     "clean_mse": 0.16079022740845134,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.0002995346580242488,
+     "p90_offdiag_spillover": 0.005247286223039554,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": null,
+     "n_offdiag_samples": 17280,
+     "clean_mse_degradation": 0.0,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    },
+    "clipping": {
+     "clean_mse": 0.15969069562543892,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 8.170863505251956e-05,
+     "p90_offdiag_spillover": 0.004724544630916966,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": null,
+     "n_offdiag_samples": 17280,
+     "clean_mse_degradation": -0.0068382998191756205,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    },
+    "channel_dropout": {
+     "clean_mse": 0.15767691650322607,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.0004347149204689017,
+     "p90_offdiag_spillover": 0.0058406860033767966,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": null,
+     "n_offdiag_samples": 17280,
+     "clean_mse_degradation": -0.01936256298286462,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    },
+    "quarantine": {
+     "clean_mse": 0.15811677818543873,
+     "median_offdiag_spillover": 0.0,
+     "mean_offdiag_spillover": 0.00020424891146058572,
+     "p90_offdiag_spillover": 0.0050309737758515195,
+     "direct_damage_median": 0.0,
+     "detector_flag_rate_on_corrupted_channel": 0.11315465856481481,
+     "n_offdiag_samples": 17280,
+     "clean_mse_degradation": -0.016626938503055334,
+     "direct_damage_degradation": 0.0,
+     "spillover_reduction_vs_clean_model": 0.0
+    }
+   },
+   "dropout_rate": 0.1,
+   "clip_k": 5.0,
+   "oracle_mask_used": false
+  }
+ },
+ "wall_s": 135.4
+}

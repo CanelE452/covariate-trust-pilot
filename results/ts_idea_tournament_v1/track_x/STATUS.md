@@ -1,0 +1,6 @@
+# Track X
+
+verdict: NO_PHENOMENON
+detailed: NO_PHENOMENON
+result role: DIAGNOSTIC_CONTINUATION_AFTER_X_PHENOMENON_FAIL
+status: OK

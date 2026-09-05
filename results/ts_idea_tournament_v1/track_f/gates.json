@@ -1,0 +1,256 @@
+{
+ "status": "OK",
+ "phenomenon": {
+  "per_dataset": {
+   "ETTm1": {
+    "filters": {
+     "high_loss_removal": {
+      "corruption_removal": 0.6926070038910506,
+      "legitimate_shift_removal": 0.5719844357976653,
+      "shift_retention": 0.42801556420233466,
+      "clean_removal": 0.0916626036079961,
+      "shifted_test_mse": 0.4442429095506668,
+      "shifted_test_degradation_vs_no_filter": 0.06216893882782977,
+      "checks": {
+       "corruption_removal_ge_50pct": true,
+       "legit_shift_removal_ge_35pct": true,
+       "legit_shift_removal_over_random_ge_15pp": true
+      },
+      "passes": true
+     },
+     "rho_loss": {
+      "corruption_removal": 0.15953307392996108,
+      "legitimate_shift_removal": 0.48638132295719844,
+      "shift_retention": 0.5136186770428015,
+      "clean_removal": 0.16918576304241834,
+      "shifted_test_mse": 0.463836133480072,
+      "shifted_test_degradation_vs_no_filter": 0.10901563783392568,
+      "checks": {
+       "corruption_removal_ge_50pct": false,
+       "legit_shift_removal_ge_35pct": true,
+       "legit_shift_removal_over_random_ge_15pp": true
+      },
+      "passes": false
+     },
+     "adarho": {
+      "corruption_removal": 0.5486381322957199,
+      "legitimate_shift_removal": 0.7937743190661478,
+      "shift_retention": 0.20622568093385218,
+      "clean_removal": 0.08191126279863481,
+      "shifted_test_mse": 0.44519709050655365,
+      "shifted_test_degradation_vs_no_filter": 0.06445035143245449,
+      "checks": {
+       "corruption_removal_ge_50pct": true,
+       "legit_shift_removal_ge_35pct": true,
+       "legit_shift_removal_over_random_ge_15pp": true
+      },
+      "passes": true
+     }
+    },
+    "passes": true,
+    "strong_evidence_shifted_test_degradation": true,
+    "no_filter_shifted_test_mse": 0.4182412922382355
+   },
+   "Weather": {
+    "filters": {
+     "high_loss_removal": {
+      "corruption_removal": 0.6605839416058394,
+      "legitimate_shift_removal": 0.5364963503649635,
+      "shift_retention": 0.46350364963503654,
+      "clean_removal": 0.10041077133728891,
+      "shifted_test_mse": 0.22268850356340408,
+      "shifted_test_degradation_vs_no_filter": 0.04290307977430476,
+      "checks": {
+       "corruption_removal_ge_50pct": true,
+       "legit_shift_removal_ge_35pct": true,
+       "legit_shift_removal_over_random_ge_15pp": true
+      },
+      "passes": true
+     },
+     "rho_loss": {
+      "corruption_removal": 0.20802919708029197,
+      "legitimate_shift_removal": 0.2737226277372263,
+      "shift_retention": 0.7262773722627738,
+      "clean_removal": 0.18986764034687356,
+      "shifted_test_mse": 0.21124505996704102,
+      "shifted_test_degradation_vs_no_filter": -0.010689280760250695,
+      "checks": {
+       "corruption_removal_ge_50pct": false,
+       "legit_shift_removal_ge_35pct": false,
+       "legit_shift_removal_over_random_ge_15pp": false
+      },
+      "passes": false
+     },
+     "adarho": {
+      "corruption_removal": 0.6131386861313869,
+      "legitimate_shift_removal": 0.7153284671532847,
+      "shift_retention": 0.2846715328467153,
+      "clean_removal": 0.08397991784573254,
+      "shifted_test_mse": 0.22601589560508728,
+      "shifted_test_degradation_vs_no_filter": 0.05848604590124672,
+      "checks": {
+       "corruption_removal_ge_50pct": true,
+       "legit_shift_removal_ge_35pct": true,
+       "legit_shift_removal_over_random_ge_15pp": true
+      },
+      "passes": true
+     }
+    },
+    "passes": true,
+    "strong_evidence_shifted_test_degradation": true,
+    "no_filter_shifted_test_mse": 0.21352751553058624
+   }
+  },
+  "gate": {
+   "corruption_removal_ge": 0.5,
+   "legit_shift_removal_ge": 0.35,
+   "legit_shift_removal_minus_random_ge_pp": 15
+  },
+  "verdict": "F_SELECTION_CONFOUNDING_PRESENT"
+ },
+ "method": {
+  "per_dataset": {
+   "ETTm1": {
+    "best_existing_filter": "high_loss_removal",
+    "shift_retention_gain_pp": 8.560311284046684,
+    "corruption_removal_drop_pp": 53.30739299610895,
+    "shifted_test_gain": -0.04410475329639575,
+    "clean_test_degradation": 0.056317463402212935,
+    "coherence_aware": {
+     "corruption_removal_rate": 0.15953307392996108,
+     "legitimate_shift_removal_rate": 0.48638132295719844,
+     "clean_removal_rate": 0.16918576304241834,
+     "shift_retention": 0.5136186770428015,
+     "overall_removal_rate": 0.2
+    },
+    "best_existing": {
+     "corruption_removal_rate": 0.6926070038910506,
+     "legitimate_shift_removal_rate": 0.5719844357976653,
+     "clean_removal_rate": 0.0916626036079961,
+     "shift_retention": 0.42801556420233466,
+     "overall_removal_rate": 0.2
+    },
+    "clean_test_mse": {
+     "coherence_aware": 0.38844797015190125,
+     "high_loss_removal": 0.36773790419101715
+    },
+    "shifted_test_mse": {
+     "coherence_aware": 0.463836133480072,
+     "high_loss_removal": 0.4442429095506668
+    },
+    "bootstrap_shifted_gain": {
+     "point": -0.04482228917594136,
+     "ci_lower": -0.06180497387726345,
+     "ci_upper": -0.03178059181134304,
+     "n_resamples": 1000,
+     "n_clusters": 8,
+     "block": 2,
+     "seed": 2026090699,
+     "relative": true
+    },
+    "controls": {
+     "class_identity_shuffle": {
+      "corruption_removal_rate": 0.20233463035019456,
+      "legitimate_shift_removal_rate": 0.19455252918287938,
+      "clean_removal_rate": 0.20039005363237444,
+      "shift_retention": 0.8054474708171206,
+      "overall_removal_rate": 0.2
+     },
+     "coherence_row_shuffle": {
+      "corruption_removal_rate": 0.15953307392996108,
+      "legitimate_shift_removal_rate": 0.48638132295719844,
+      "clean_removal_rate": 0.16918576304241834,
+      "shift_retention": 0.5136186770428015,
+      "overall_removal_rate": 0.2
+     },
+     "random_filter": {
+      "corruption_removal_rate": 0.19455252918287938,
+      "legitimate_shift_removal_rate": 0.2178988326848249,
+      "clean_removal_rate": 0.1984397854705022,
+      "shift_retention": 0.7821011673151751,
+      "overall_removal_rate": 0.2
+     }
+    },
+    "removal_budget_equal": true
+   },
+   "Weather": {
+    "best_existing_filter": "high_loss_removal",
+    "shift_retention_gain_pp": 26.277372262773724,
+    "corruption_removal_drop_pp": 45.25547445255474,
+    "shifted_test_gain": 0.051387671178565714,
+    "clean_test_degradation": -0.02670237933675606,
+    "coherence_aware": {
+     "corruption_removal_rate": 0.20802919708029197,
+     "legitimate_shift_removal_rate": 0.2737226277372263,
+     "clean_removal_rate": 0.18986764034687356,
+     "shift_retention": 0.7262773722627738,
+     "overall_removal_rate": 0.20007301935012778
+    },
+    "best_existing": {
+     "corruption_removal_rate": 0.6605839416058394,
+     "legitimate_shift_removal_rate": 0.5364963503649635,
+     "clean_removal_rate": 0.10041077133728891,
+     "shift_retention": 0.46350364963503654,
+     "overall_removal_rate": 0.20007301935012778
+    },
+    "clean_test_mse": {
+     "coherence_aware": 0.16468293219804764,
+     "high_loss_removal": 0.16920100152492523
+    },
+    "shifted_test_mse": {
+     "coherence_aware": 0.21124505996704102,
+     "high_loss_removal": 0.22268850356340408
+    },
+    "bootstrap_shifted_gain": {
+     "point": 0.05152529209635643,
+     "ci_lower": 0.0378201441482422,
+     "ci_upper": 0.0633927378973418,
+     "n_resamples": 1000,
+     "n_clusters": 8,
+     "block": 2,
+     "seed": 2026090699,
+     "relative": true
+    },
+    "controls": {
+     "class_identity_shuffle": {
+      "corruption_removal_rate": 0.22627737226277372,
+      "legitimate_shift_removal_rate": 0.20072992700729927,
+      "clean_removal_rate": 0.19671382930168874,
+      "shift_retention": 0.7992700729927007,
+      "overall_removal_rate": 0.20007301935012778
+     },
+     "coherence_row_shuffle": {
+      "corruption_removal_rate": 0.20802919708029197,
+      "legitimate_shift_removal_rate": 0.2737226277372263,
+      "clean_removal_rate": 0.18986764034687356,
+      "shift_retention": 0.7262773722627738,
+      "overall_removal_rate": 0.20007301935012778
+     },
+     "random_filter": {
+      "corruption_removal_rate": 0.2116788321167883,
+      "legitimate_shift_removal_rate": 0.19343065693430658,
+      "clean_removal_rate": 0.1994523048836148,
+      "shift_retention": 0.8065693430656934,
+      "overall_removal_rate": 0.20007301935012778
+     }
+    },
+    "removal_budget_equal": true
+   }
+  },
+  "checks": {
+   "shift_retention_gain_ge_15pp": false,
+   "corruption_removal_drop_le_5pp": false,
+   "shifted_test_gain_ge_2pct": false,
+   "clean_test_degradation_lt_1pct": false,
+   "same_direction_both_datasets": false,
+   "bootstrap_lower_gt_0": false
+  },
+  "method_go": false,
+  "existing_adaptive_filter_solves": false,
+  "verdict": "F_SELECTION_CHARACTERIZATION",
+  "result_role": "CONFIRMATORY_SCREEN"
+ },
+ "verdict": "CHARACTERIZATION_ONLY",
+ "detailed_verdict": "F_SELECTION_CHARACTERIZATION",
+ "result_role": "CONFIRMATORY_SCREEN"
+}

@@ -1,0 +1,136 @@
+{
+ "seq_len": 96,
+ "pred_len": 96,
+ "features": "M",
+ "normalization": "StandardScaler fit on the train split only (official TQNet provider)",
+ "metric_space": "scaled space, matching the official TQNet test(), whose inverse_transform lines are disabled upstream",
+ "checkpoint_selection": "validation MSE only; test is never used for selection",
+ "clean_seeds": [
+  2026090601,
+  2026090602
+ ],
+ "splits": {
+  "ETTm1": {
+   "train": {
+    "n_rows": 34560,
+    "n_windows": 34369,
+    "first_stamp": "[7, 1, 4, 0, 0]"
+   },
+   "val": {
+    "n_rows": 11616,
+    "n_windows": 11425,
+    "first_stamp": "[6, 25, 6, 0, 0]"
+   },
+   "test": {
+    "n_rows": 11616,
+    "n_windows": 11425,
+    "first_stamp": "[10, 23, 0, 0, 0]"
+   },
+   "source": "Dataset_ETT_minute borders, 12/4/4 months at 15-minute resolution"
+  },
+  "Weather": {
+   "train": {
+    "n_rows": 36887,
+    "n_windows": 36696,
+    "first_stamp": "[1, 1, 2, 0]"
+   },
+   "val": {
+    "n_rows": 5366,
+    "n_windows": 5175,
+    "first_stamp": "[9, 12, 5, 13]"
+   },
+   "test": {
+    "n_rows": 10635,
+    "n_windows": 10444,
+    "first_stamp": "[10, 19, 0, 3]"
+   },
+   "source": "Dataset_Custom, 0.7 / 0.1 / 0.2 of rows"
+  }
+ },
+ "resolved_configs": {
+  "ETTm1": {
+   "TQNet": {
+    "model": "TQNet",
+    "seq_len": 96,
+    "pred_len": 96,
+    "label_len": 0,
+    "enc_in": 7,
+    "cycle": 96,
+    "d_model": 512,
+    "dropout": 0.5,
+    "model_type": "mlp",
+    "use_revin": 1,
+    "individual": 0,
+    "features": "M",
+    "learning_rate": 0.001,
+    "batch_size": 256,
+    "train_epochs": 30,
+    "patience": 5,
+    "lradj": "type3",
+    "random_seed": 2026090601
+   },
+   "DLinear": {
+    "model": "DLinear",
+    "seq_len": 96,
+    "pred_len": 96,
+    "label_len": 0,
+    "enc_in": 7,
+    "cycle": 96,
+    "d_model": 512,
+    "dropout": 0.5,
+    "model_type": "mlp",
+    "use_revin": 1,
+    "individual": 1,
+    "features": "M",
+    "learning_rate": 0.001,
+    "batch_size": 256,
+    "train_epochs": 30,
+    "patience": 5,
+    "lradj": "type3",
+    "random_seed": 2026090601
+   }
+  },
+  "Weather": {
+   "TQNet": {
+    "model": "TQNet",
+    "seq_len": 96,
+    "pred_len": 96,
+    "label_len": 0,
+    "enc_in": 21,
+    "cycle": 144,
+    "d_model": 512,
+    "dropout": 0.5,
+    "model_type": "mlp",
+    "use_revin": 1,
+    "individual": 0,
+    "features": "M",
+    "learning_rate": 0.001,
+    "batch_size": 64,
+    "train_epochs": 30,
+    "patience": 5,
+    "lradj": "type3",
+    "random_seed": 2026090601
+   },
+   "DLinear": {
+    "model": "DLinear",
+    "seq_len": 96,
+    "pred_len": 96,
+    "label_len": 0,
+    "enc_in": 21,
+    "cycle": 144,
+    "d_model": 512,
+    "dropout": 0.5,
+    "model_type": "mlp",
+    "use_revin": 1,
+    "individual": 1,
+    "features": "M",
+    "learning_rate": 0.001,
+    "batch_size": 64,
+    "train_epochs": 30,
+    "patience": 5,
+    "lradj": "type3",
+    "random_seed": 2026090601
+   }
+  }
+ }
+}

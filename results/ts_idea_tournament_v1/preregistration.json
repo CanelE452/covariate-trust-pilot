@@ -1,0 +1,120 @@
+{
+ "experiment": "TS-IDEA-TOURNAMENT-v1",
+ "base_commit_origin_main": "2fe2443b2d24c09ad184387b7f7287f32e0f4cd6",
+ "branch": "ts-idea-tournament-v1",
+ "top_question": "Independent of temporal structure, Point/Hurdle, Tweedie or teacher routing, is there a real failure mode of modern multivariate time-series forecasters that simple existing remedies do not already solve?",
+ "tracks": {
+  "G": "Harmful gradient interference, probe-validated rather than cosine-only",
+  "X": "Cross-channel corruption spillover",
+  "F": "Corruption versus legitimate-shift data-selection confounding",
+  "V": "Validation stability audit, auxiliary and never promoting a method"
+ },
+ "independence_rule": "Each track verdict is a pure function of that track's own artifacts. No feature, threshold or architecture crosses tracks.",
+ "datasets": {
+  "primary": [
+   "ETTm1",
+   "Weather"
+  ],
+  "fallback": "Electricity, permitted only for source availability"
+ },
+ "forecasting_contract": {
+  "lookback": 96,
+  "horizon": 96,
+  "features": "multivariate-to-multivariate"
+ },
+ "clean_seeds": [
+  2026090601,
+  2026090602
+ ],
+ "bootstrap_seed": 2026090699,
+ "bootstrap": "moving-block or origin-cluster bootstrap over evaluation origins; iid row bootstrap is forbidden",
+ "gates": {
+  "X_phenomenon": {
+   "both_datasets": true,
+   "min_corruption_families": 2,
+   "median_offdiag_spillover_ge": 0.03,
+   "bootstrap_ci_lower_gt": 0.0,
+   "tqnet_over_dlinear_spillover_ge": 3.0,
+   "no_single_source_channel_share_ge": 0.5
+  },
+  "X_simple_solves": {
+   "spillover_reduction_ge": 0.3,
+   "clean_mse_degradation_lt": 0.01,
+   "same_direction_both_datasets": true
+  },
+  "X_method_go": {
+   "extra_spillover_reduction_vs_best_simple_ge": 0.2,
+   "clean_mse_degradation_lt": 0.01,
+   "direct_damage_degradation_lt": 0.05,
+   "positive_on_both_datasets": true,
+   "bootstrap_lower_gt": 0.0
+  },
+  "G_phenomenon": {
+   "exact_harm_rate_ge": 0.1,
+   "bootstrap_lower_ge": 0.05,
+   "cosine_detector_fp_or_fn_ge": 0.2,
+   "cross_probe_auprc_gain_ge": 0.1,
+   "seed_direction_stable": true
+  },
+  "G_method_go": {
+   "vs_erm_macro_mse_gain_ge": 0.007,
+   "vs_pcgrad_gain_ge": 0.003,
+   "both_datasets_positive": true,
+   "no_dataset_worse_than": -0.005,
+   "bootstrap_lower_gt": 0.0,
+   "random_control_below_frac": 0.5
+  },
+  "F_phenomenon": {
+   "corruption_removal_ge": 0.5,
+   "legit_shift_removal_ge": 0.35,
+   "legit_shift_removal_minus_random_ge_pp": 15
+  },
+  "F_method_go": {
+   "shift_retention_gain_pp_ge": 15,
+   "corruption_removal_drop_le_pp": 5,
+   "shifted_test_mse_gain_ge": 0.02,
+   "clean_test_mse_degradation_lt": 0.01,
+   "same_direction_both_datasets": true
+  },
+  "V": {
+   "latest_origin_regret_ge": 0.02,
+   "last4_or_arw_regret_reduction_ge": 0.3
+  }
+ },
+ "borderline_seed2_rule": "A second intervention seed is added only when the effect lands between 70% and 130% of the METHOD threshold. Effects at or below zero never receive a rescue seed.",
+ "forbidden_after_seeing_results": [
+  "threshold relaxation",
+  "seed cherry-picking",
+  "dataset swap",
+  "corruption severity change",
+  "dropout rate change",
+  "PCGrad rule change",
+  "F selection budget change",
+  "model selection on test",
+  "dropping bad origins"
+ ],
+ "excluded_prior_work": [
+  "Point/Hurdle",
+  "Tweedie",
+  "NB/HSNB",
+  "distribution distillation",
+  "teacher CDF pooling",
+  "temporal rho_I and rho_M",
+  "prior expert routing",
+  "prior online-memory tuning"
+ ],
+ "verdict_tokens": [
+  "METHOD_GO",
+  "CHARACTERIZATION_ONLY",
+  "SIMPLE_BASELINE_SOLVES",
+  "NO_PHENOMENON",
+  "NOT_EVALUATED"
+ ],
+ "final_tokens": [
+  "RECOMMEND_G_HARMFUL_INTERFERENCE",
+  "RECOMMEND_X_CORRUPTION_SPILLOVER",
+  "RECOMMEND_F_SELECTION_CONFOUNDING",
+  "RECOMMEND_CHARACTERIZATION_ONLY",
+  "NO_NEW_TOPIC_PASSED"
+ ]
+}

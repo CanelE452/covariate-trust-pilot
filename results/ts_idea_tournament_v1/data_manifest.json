@@ -1,0 +1,66 @@
+{
+ "ETTm1": {
+  "source": "https://github.com/zhouhaoyi/ETDataset (ETT-small)",
+  "acquisition": "present locally with a matching sha256; no download needed",
+  "sha256": "6ce1759b1a18e3328421d5d75fadcb316c449fcd7cec32820c8dafda71986c9e",
+  "sha256_matches_contract": true,
+  "bytes": 10360719,
+  "row_count": 69680,
+  "column_names": [
+   "date",
+   "HUFL",
+   "HULL",
+   "MUFL",
+   "MULL",
+   "LUFL",
+   "LULL",
+   "OT"
+  ],
+  "timestamp_range": [
+   "2016-07-01 00:00:00",
+   "2018-06-26 19:45:00"
+  ],
+  "frequency_inferred": "0 days 00:15:00",
+  "missing_count": 0,
+  "n_channels": 7
+ },
+ "Weather": {
+  "source": "https://huggingface.co/datasets/thuml/Time-Series-Library (weather/weather.csv)",
+  "acquisition": "present locally with a matching sha256; no download needed",
+  "sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+  "sha256_matches_contract": true,
+  "bytes": 7235425,
+  "row_count": 52696,
+  "column_names": [
+   "date",
+   "p (mbar)",
+   "T (degC)",
+   "Tpot (K)",
+   "Tdew (degC)",
+   "rh (%)",
+   "VPmax (mbar)",
+   "VPact (mbar)",
+   "VPdef (mbar)",
+   "sh (g/kg)",
+   "H2OC (mmol/mol)",
+   "rho (g/m**3)",
+   "wv (m/s)",
+   "max. wv (m/s)",
+   "wd (deg)",
+   "rain (mm)",
+   "raining (s)",
+   "SWDR (W/m\ufffd)",
+   "PAR (\ufffdmol/m\ufffd/s)",
+   "max. PAR (\ufffdmol/m\ufffd/s)",
+   "Tlog (degC)",
+   "OT"
+  ],
+  "timestamp_range": [
+   "2020-01-01 00:10:00",
+   "2021-01-01 00:00:00"
+  ],
+  "frequency_inferred": "0 days 00:10:00",
+  "missing_count": 0,
+  "n_channels": 21
+ }
+}
