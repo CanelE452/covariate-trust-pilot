@@ -59,6 +59,14 @@ class HardIntegrityFailure(RuntimeError):
     """An integrity contract broke; the branch or the whole run must stop."""
 
 
+class StageNotImplemented(RuntimeError):
+    """The stage has no implementation yet.
+
+    It is deliberately left without a completion marker so a later run reserves a fresh
+    attempt and executes it, instead of resuming a placeholder forever.
+    """
+
+
 class ResourceCapReached(RuntimeError):
     """The frozen wall-clock cap was reached at an atomic stage boundary."""
 
@@ -198,6 +206,16 @@ def run_pipeline(
         shared["attempt"] = attempt
         try:
             payload = dict(function(shared) or {})
+        except StageNotImplemented as error:
+            # No completion marker: the stage stays incomplete and will be retried.
+            results.append(
+                StageResult(
+                    stage=stage,
+                    status="NOT_IMPLEMENTED",
+                    payload={"status": "STAGE_NOT_IMPLEMENTED", "reason": str(error)},
+                ).as_dict()
+            )
+            continue
         except HardIntegrityFailure as error:
             status = HARD_STOP_STATUS
             stop_reason = str(error)
@@ -232,6 +250,7 @@ __all__ = [
     "ExecutionLedger",
     "HardIntegrityFailure",
     "ResourceCapReached",
+    "StageNotImplemented",
     "StageResult",
     "run_pipeline",
     "stage_slug",

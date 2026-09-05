@@ -36,7 +36,7 @@ from .routing import (
     regret_spearman,
     select_inner_origins,
 )
-from .run import HardIntegrityFailure
+from .run import HardIntegrityFailure, StageNotImplemented
 from .sensor import (
     SensorGeometryBlocked,
     disagreement_components,
@@ -829,8 +829,10 @@ def stage_r2_complementarity(context: dict[str, Any]) -> dict[str, Any]:
 
 
 def _blocked(token: str, reason: str) -> Callable[[dict[str, Any]], dict[str, Any]]:
+    """Mark a stage unimplemented without sealing it, so a later run can execute it."""
+
     def stage(context: dict[str, Any]) -> dict[str, Any]:
-        return {"status": token, "reason": reason, "stage": context["stage"]}
+        raise StageNotImplemented(f"{token}: {reason}")
 
     return stage
 
