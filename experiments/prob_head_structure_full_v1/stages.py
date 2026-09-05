@@ -523,8 +523,12 @@ def stage_csyn(context: dict[str, Any]) -> dict[str, Any]:
 
 
 def stage_real_audit(context: dict[str, Any]) -> dict[str, Any]:
+    """Load M5 through its hash-verified sources and seal the full provenance chain."""
+    from . import integrity as integrity_module
+
     root = context["repository_root"]
-    snapshot = root / "runs/prob_head_structure_full_v1/source_snapshots/m5"
+    snapshot_relative = "runs/prob_head_structure_full_v1/source_snapshots/m5"
+    snapshot = root / snapshot_relative
     exclusion = data_module.load_m5_stage_a_exclusion(
         snapshot, expected_sha256=data_module.M5_STAGE_A_EXPECTED_SHA256
     )
@@ -533,63 +537,165 @@ def stage_real_audit(context: dict[str, Any]) -> dict[str, Any]:
         expected_source_hashes=data_module.M5_EXPECTED_SOURCE_SHA256,
         stage_a_exclusion=exclusion,
     )
-    y = np.asarray(panel["y"], dtype=np.float64)
-    available = np.asarray(panel["available_from"], dtype=np.int64)
-    split = data_module.REAL_SPLITS["m5"]
-    positives = np.array(
-        [(y[index, available[index] : split.train[1]] > 0).sum() for index in range(y.shape[0])]
+    expected = {
+        f"{snapshot_relative}/{name}": digest
+        for name, digest in data_module.M5_EXPECTED_SOURCE_SHA256.items()
+    }
+    expected[f"{snapshot_relative}/series.parquet"] = data_module.M5_STAGE_A_EXPECTED_SHA256
+    source_manifest = integrity_module.build_source_manifest(
+        root, expected, repository_root_identity="prob-head-structure-full-v1-worktree"
     )
-    eligible = np.flatnonzero(positives >= 20)
-    _store(context, "m5", {"y": y, "available_from": available, "series_id": panel["series_id"], "eligible": eligible})
-    _store(context, "dataset_support", [{"dataset": "m5", "panel_shape": str(list(y.shape)),
-        "eligible": int(eligible.size), "candidates": int(y.shape[0])}])
+    dataset_audit = data_module.seal_count_primary_dataset_audit(
+        panel, source_manifest=source_manifest
+    )
+    tier_name = context["runtime_decision"]["runtime_tier"]
+    sample_manifest = data_module.seal_train_only_sample_manifest(
+        panel, dataset_audit=dataset_audit, runtime_tier=tier_name
+    )
+
+    values = np.asarray(panel["y"], dtype=np.float64)
+    _store(
+        context,
+        "m5",
+        {
+            "panel": panel,
+            "dataset_audit": dataset_audit,
+            "sample_manifest": sample_manifest,
+            "source_manifest": source_manifest,
+        },
+    )
+    _store(
+        context,
+        "dataset_support",
+        [
+            {
+                "dataset": "m5",
+                "panel_shape": str(dataset_audit["panel_shape"]),
+                "eligible_pool": int(sample_manifest.get("eligible_pool_n", -1)),
+                "sampled": int(sample_manifest.get("actual_n", -1)),
+                "runtime_tier": tier_name,
+            }
+        ],
+    )
     return {
         "dataset": "m5",
-        "panel_shape": list(y.shape),
-        "series_length_1941": bool(y.shape[1] == 1941),
-        "eligible": int(eligible.size),
-        "candidates": int(y.shape[0]),
+        "panel_shape": list(dataset_audit["panel_shape"]),
+        "series_length_1941": bool(values.shape[1] == 1941),
+        "count_primary_eligible": dataset_audit["count_primary_eligible"],
+        "confirmatory_eligible": dataset_audit["confirmatory_eligible"],
+        "canonical_source_attested": dataset_audit["canonical_source_attested"],
+        "eligible_pool_n": sample_manifest.get("eligible_pool_n"),
+        "sampled_n": sample_manifest.get("actual_n"),
+        "sampling": "train-only stratified quantile bins under the preregistered seed",
+        "source_manifest_aggregate_sha256": source_manifest["aggregate_sha256"],
         "excluded_stage_a": int(exclusion["n_series"]),
-        "count_support": bool(np.all(np.abs(y - np.round(y)) <= 1e-6) and np.all(y >= 0)),
     }
 
 
 def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
+    """Fit the three real teachers on the sealed stratified sample and its frozen split."""
     tier = _tier(context)
     seed = int(tier["teacher_model_seeds"][0])
-    sample_size = int(tier["real_series_per_dataset"])
     store = _m5_store(context)
     if store is None:
         return {"status": "SKIPPED_NO_REAL_PANEL"}
-    y, available, eligible = store["y"], store["available_from"], store["eligible"]
-    series_ids = np.asarray(store["series_id"]).astype(str)
+    panel = store["panel"]
+    dataset_audit = store["dataset_audit"]
+    sample_manifest = store["sample_manifest"]
     split = data_module.REAL_SPLITS["m5"]
+    length = int(dataset_audit["panel_shape"][1])
 
-    generator = np.random.default_rng(2026090521)
-    index = np.sort(generator.choice(eligible, size=min(sample_size, eligible.size), replace=False))
-    train_origins = list(range(LOOKBACK, split.train[1] - HORIZON + 1, REAL_TRAIN_STRIDE))
-    train_windows, _ = _windows_from_panel(y, available, index, train_origins, train_end=split.train[1])
-    validation_windows, _ = _windows_from_panel(
-        y, available, index, [split.validation[0]], train_end=split.train[1]
-    )
-    evaluation_windows, keys = _windows_from_panel(
-        y, available, index, list(split.origins), train_end=split.train[1]
-    )
+    def batch_for(role, origins):
+        request = data_module.build_window_request(
+            dataset_id="m5",
+            split=split,
+            panel_length=length,
+            role=role,
+            origins=tuple(int(origin) for origin in origins),
+            panel=panel,
+            dataset_audit=dataset_audit,
+            sample_manifest=sample_manifest,
+        )
+        return data_module.make_history_windows(
+            panel, request=request, dataset_audit=dataset_audit
+        )
+
+    train_origins = tuple(range(LOOKBACK, split.train[1] - HORIZON + 1, REAL_TRAIN_STRIDE))
+    train_batch = batch_for("teacher_train", train_origins)
+    validation_batch = batch_for("teacher_validation", (split.validation[0],))
+    evaluation_batch = batch_for("evaluation", split.origins)
+
+    def to_windows(batch):
+        return TrainingWindows(
+            history=np.asarray(batch.history, dtype=np.float64),
+            target=np.asarray(batch.target, dtype=np.float64),
+            target_mask=np.asarray(batch.target_mask).astype(bool),
+            scale=np.asarray(batch.scale, dtype=np.float64),
+        )
+
+    train_windows = to_windows(train_batch)
+    validation_windows = to_windows(validation_batch)
+    evaluation_windows = to_windows(evaluation_batch)
+
     fitted = _fit_heads(train_windows, validation_windows, seed=seed, max_epochs=30)
+    # Row-level keys come straight from the sealed step-level key frame.
+    row_keys = (
+        evaluation_batch.key_frame.loc[evaluation_batch.key_frame["step"] == 0]
+        .reset_index(drop=True)
+    )
+    if len(row_keys) != evaluation_windows.row_count:
+        raise HardIntegrityFailure(
+            "sealed evaluation keys do not cover every forecast row exactly once"
+        )
+    keys = pd.DataFrame(
+        {
+            "series_position": np.arange(evaluation_windows.row_count),
+            "origin": row_keys["origin"].to_numpy(dtype=np.int64),
+        }
+    )
+    series_ids = row_keys["series_id"].astype(str).to_numpy()
     frame, predictions = _long_frame(
-        fitted, evaluation_windows, keys, dataset_id="m5", series_ids=series_ids
+        fitted,
+        evaluation_windows,
+        keys,
+        dataset_id="m5",
+        series_ids=series_ids,
+        extra={"model_seed": seed},
     )
     frame.to_parquet(Path(context["attempt"]) / "real_panel.parquet", index=False)
     _store(context, "real_panel", frame)
-    _store(context, "real_head_means", [{"head": h, "sCRPS": float(v)} for h, v in frame.groupby("head")["sCRPS"].mean().items()])
+    _store(
+        context,
+        "real_head_means",
+        [
+            {"head": head, "sCRPS": float(value)}
+            for head, value in frame.groupby("head")["sCRPS"].mean().items()
+        ],
+    )
     _store(context, "real_predictions", predictions)
-    _store(context, "real_windows", evaluation_windows)
-    _store(context, "real_keys", keys)
+    _store(context, "real_evaluation_batch", evaluation_batch)
+    _store(
+        context,
+        "teacher_runtime",
+        [
+            {
+                "dataset": "m5",
+                "head": head,
+                "seconds": entry["seconds"],
+                "parameter_count": entry["parameter_count"],
+                "best_epoch": entry["best_epoch"],
+            }
+            for head, entry in fitted.items()
+        ],
+    )
     return {
         "dataset": "m5",
-        "sampled_series": int(index.size),
+        "sampled_series": int(sample_manifest.get("actual_n", -1)),
         "train_rows": int(train_windows.row_count),
+        "validation_rows": int(validation_windows.row_count),
         "evaluation_rows": int(evaluation_windows.row_count),
+        "window_roles": ["teacher_train", "teacher_validation", "evaluation"],
+        "sample_manifest_sha256": sample_manifest.get("manifest_sha256"),
         "head_mean_sCRPS": frame.groupby("head")["sCRPS"].mean().to_dict(),
         "parameter_count": {head: entry["parameter_count"] for head, entry in fitted.items()},
         "seconds": {head: entry["seconds"] for head, entry in fitted.items()},
@@ -604,8 +710,13 @@ def stage_r2_complementarity(context: dict[str, Any]) -> dict[str, Any]:
         if not cached.exists():
             return {"status": "SKIPPED_NO_REAL_PANEL"}
         frame = pd.read_parquet(cached)
+    tier = _tier(context)
     unit = ("dataset_id", "series_id", "origin")
-    winners = summarize_practical_winners(frame, unit_columns=unit)
+    winners = summarize_practical_winners(
+        frame,
+        unit_columns=unit,
+        expected_model_seeds=[int(value) for value in tier["teacher_model_seeds"]],
+    )
     shares = dict(winners.get("practical_winner_shares", {}))
     means = frame.groupby("head")["sCRPS"].mean()
     # Real panels carry no d/rho cell identity, so the synthetic ladder does not apply.
