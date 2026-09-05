@@ -152,13 +152,20 @@ best_global_loss   oracle_family  origin_oracle_gain    origin_oracle_loss  seri
 ## 11. CDF pooling
 
 ```
-NOT_PRODUCED
+P0    P2_weights       outer_pool_sCRPS   outer_best_single_sCRPS  relative_improvement
+───────────────────────────────────────────────────────────────────────────────────────
+HSNB  [0.0, 1.0, 0.0]  9.777219965477425  7.5328171985417125       -0.29794998441887177
 ```
 
 ## 12. A distillation
 
 ```
-NOT_PRODUCED
+variant  outer_sCRPS        validation_sCRPS    selected_lambda
+───────────────────────────────────────────────────────────────
+A0       7.26697084615988   6.0806401906364265  0.0            
+A1       7.389259989518947  6.080394814191408   0.25           
+A2       7.362743665425956  6.080006349962915   0.5            
+A3       7.389259989518947  6.080394814191408   0.25           
 ```
 
 ## 13. B structure-conditioned routing
@@ -210,21 +217,21 @@ NOT_PRODUCED
 ## 17. Confirmatory vs diagnostic evidence
 
 ```
-branch                  upstream_required_gates            upstream_gate_status                                                        confirmatory_eligible  scientific_role                          
-───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-HEAD_SPECIALIZATION     ['DGP_BALANCE', 'S1', 'S2', 'S3']  {'DGP_BALANCE': 'FAIL', 'S1': 'PASS', 'S2': 'FAIL', 'S3': 'PASS'}           False                  DIAGNOSTIC_CONTINUATION_AFTER_DGP_BALANCE
-REAL_DISTRIBUTION_POOL  ['R1', 'R2', 'R3']                 {'R1': 'FAIL', 'R2': 'FAIL', 'R3': 'FAIL'}                                  False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
-A_DISTILLATION          ['R2', 'R3', 'A1', 'A2']           {'R2': 'FAIL', 'R3': 'FAIL', 'A1': 'NOT_EVALUATED', 'A2': 'NOT_EVALUATED'}  False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
-B_STRUCTURE_ROUTING     ['R2', 'B1', 'B2']                 {'R2': 'FAIL', 'B1': 'NOT_EVALUATED', 'B2': 'NOT_EVALUATED'}                False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
-C_DISAGREEMENT_SENSOR   ['R1', 'C1']                       {'R1': 'FAIL', 'C1': 'NOT_EVALUATED'}                                       False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
+branch                  upstream_required_gates            upstream_gate_status                                               confirmatory_eligible  scientific_role                          
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+HEAD_SPECIALIZATION     ['DGP_BALANCE', 'S1', 'S2', 'S3']  {'DGP_BALANCE': 'FAIL', 'S1': 'PASS', 'S2': 'FAIL', 'S3': 'PASS'}  False                  DIAGNOSTIC_CONTINUATION_AFTER_DGP_BALANCE
+REAL_DISTRIBUTION_POOL  ['R1', 'R2', 'R3']                 {'R1': 'FAIL', 'R2': 'FAIL', 'R3': 'FAIL'}                         False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
+A_DISTILLATION          ['R2', 'R3', 'A1', 'A2']           {'R2': 'FAIL', 'R3': 'FAIL', 'A1': 'FAIL', 'A2': 'FAIL'}           False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
+B_STRUCTURE_ROUTING     ['R2', 'B1', 'B2']                 {'R2': 'FAIL', 'B1': 'NOT_EVALUATED', 'B2': 'NOT_EVALUATED'}       False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
+C_DISAGREEMENT_SENSOR   ['R1', 'C1']                       {'R1': 'FAIL', 'C1': 'NOT_EVALUATED'}                              False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
 ```
 
 ## 18. Gate table
 
 ```
-S1    S2    S3    R1    R2    R3    DGP_BALANCE
-───────────────────────────────────────────────
-PASS  FAIL  PASS  FAIL  FAIL  FAIL  FAIL       
+S1    S2    S3    R1    R2    R3    A1    A2    DGP_BALANCE
+───────────────────────────────────────────────────────────
+PASS  FAIL  PASS  FAIL  FAIL  FAIL  FAIL  FAIL  FAIL       
 ```
 
 ## 19. Final recommendation

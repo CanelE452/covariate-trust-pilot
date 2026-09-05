@@ -773,15 +773,52 @@
   },
   "K": {
     "id": "K",
-    "note": "NOT_PRODUCED",
-    "rows": [],
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "P0": "HSNB",
+        "P2_weights": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "outer_best_single_sCRPS": 7.5328171985417125,
+        "outer_pool_sCRPS": 9.777219965477425,
+        "relative_improvement": -0.29794998441887177
+      }
+    ],
     "source_key": "cdf_pool",
     "title": "CDF pool result"
   },
   "L": {
     "id": "L",
-    "note": "NOT_PRODUCED",
-    "rows": [],
+    "note": "from persisted payload",
+    "rows": [
+      {
+        "outer_sCRPS": 7.26697084615988,
+        "selected_lambda": 0.0,
+        "validation_sCRPS": 6.0806401906364265,
+        "variant": "A0"
+      },
+      {
+        "outer_sCRPS": 7.389259989518947,
+        "selected_lambda": 0.25,
+        "validation_sCRPS": 6.080394814191408,
+        "variant": "A1"
+      },
+      {
+        "outer_sCRPS": 7.362743665425956,
+        "selected_lambda": 0.5,
+        "validation_sCRPS": 6.080006349962915,
+        "variant": "A2"
+      },
+      {
+        "outer_sCRPS": 7.389259989518947,
+        "selected_lambda": 0.25,
+        "validation_sCRPS": 6.080394814191408,
+        "variant": "A3"
+      }
+    ],
     "source_key": "distillation",
     "title": "distillation result and recovery"
   },
@@ -832,6 +869,8 @@
     "note": "from persisted payload",
     "rows": [
       {
+        "A1": "FAIL",
+        "A2": "FAIL",
         "DGP_BALANCE": "FAIL",
         "R1": "FAIL",
         "R2": "FAIL",

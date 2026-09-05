@@ -5,11 +5,11 @@ C verdict: DISAGREEMENT_SENSOR_NO_GO
 HEAD specialization verdict: HEAD_SPECIALIZATION_NO_GO
 synthetic core effect: 5.951
 real oracle headroom: 0.008793
-best teacher pool gain: NOT_PRODUCED
-student recovery: NOT_PRODUCED
+best teacher pool gain: -0.29794998441887177
+student recovery: -0.06396232046120877
 disagreement sensor AUPRC: NOT_PRODUCED
 total GPU/wall time: NOT_PRODUCED GPU-h / NOT_PRODUCED wall-h
-scientific FAIL list: S2, R1, R2, R3, DGP_BALANCE
+scientific FAIL list: S2, R1, R2, R3, A1, A2, DGP_BALANCE
 diagnostic continuation list: DIAGNOSTIC_CONTINUATION_AFTER_DGP_BALANCE, DIAGNOSTIC_CONTINUATION_AFTER_R1, DIAGNOSTIC_CONTINUATION_AFTER_R2, DIAGNOSTIC_CONTINUATION_AFTER_R2, DIAGNOSTIC_CONTINUATION_AFTER_R1
 commit SHA: NOT_PRODUCED
 push status: NOT_PRODUCED

@@ -1568,6 +1568,8 @@ def _report_payload(context: dict[str, Any]) -> dict[str, Any]:
     r2 = _sealed_payload(context, "stage_r2_real_complementarity")
     tweedie = _sealed_payload(context, "likelihood_numerical_unit_test")
     gate_stage = _sealed_payload(context, "final_gate_calculation")
+    pool = _sealed_payload(context, "cdf_pool")
+    distil = _sealed_payload(context, "stage_a_student_distillation")
 
     contrasts = list(s2.get("structure_contrasts", []) or [])
     strongest = max((abs(float(row["effect"])) for row in contrasts), default=0.0)
@@ -1639,11 +1641,32 @@ def _report_payload(context: dict[str, Any]) -> dict[str, Any]:
             for head, value in (r2.get("head_mean_sCRPS") or {}).items()
         ],
         "real_oracle": [oracle] if oracle else [],
+        "cdf_pool": [
+            {
+                "P0": pool.get("P0_best_single_teacher"),
+                "P2_weights": pool.get("P2_weights"),
+                "outer_pool_sCRPS": pool.get("outer_pool_sCRPS"),
+                "outer_best_single_sCRPS": pool.get("outer_best_single_sCRPS"),
+                "relative_improvement": pool.get(
+                    "relative_improvement_pool_over_best_single"
+                ),
+            }
+        ]
+        if pool
+        else [],
+        "distillation": [
+            {"variant": name, "outer_sCRPS": value,
+             "validation_sCRPS": (distil.get("validation_sCRPS") or {}).get(name),
+             "selected_lambda": (distil.get("selected_lambda") or {}).get(name)}
+            for name, value in (distil.get("outer_sCRPS") or {}).items()
+        ],
         "observations": {
             "synthetic_effect": round(strongest, 4),
             "real_oracle_headroom": round(float(oracle.get("origin_oracle_gain", 0.0)), 6),
-            "teacher_pool_gain": "NOT_PRODUCED",
-            "student_recovery": "NOT_PRODUCED",
+            "teacher_pool_gain": pool.get(
+                "relative_improvement_pool_over_best_single", "NOT_PRODUCED"
+            ),
+            "student_recovery": distil.get("recovery", "NOT_PRODUCED"),
             "sensor_auprc": "NOT_PRODUCED",
         },
         "runtime": context.get("runtime_totals", {}),
