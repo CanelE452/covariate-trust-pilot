@@ -377,14 +377,21 @@ def load_teacher_checkpoint(path: Path):
 
 
 def _completed_attempt(runs_root: Path, slug: str) -> Path | None:
-    """Return the sealed attempt for a stage, whatever its attempt number turned out to be."""
+    """Return a stage's most recent sealed attempt.
+
+    A re-rendering stage such as the CDF pool seals more than one attempt, and an early
+    one can hold a superseded payload, so readers must take the latest rather than the
+    first: reading the stale one silently fed a degenerate teacher weight vector.
+    """
     stage_root = Path(runs_root) / slug
     if not stage_root.is_dir():
         return None
-    for attempt in sorted(stage_root.glob("attempt_*")):
-        if (attempt / "completion.json").exists():
-            return attempt
-    return None
+    sealed = [
+        attempt
+        for attempt in sorted(stage_root.glob("attempt_*"))
+        if (attempt / "completion.json").exists()
+    ]
+    return sealed[-1] if sealed else None
 
 
 def _synthetic_blocks(context: dict[str, Any]) -> dict[str, Any]:
@@ -1252,19 +1259,32 @@ def _role_windows(
 
 
 def _teacher_soft_targets(
-    checkpoints: Path, windows: TrainingWindows
+    checkpoints: Path, windows: TrainingWindows, *, cache: Path | None = None
 ) -> dict[str, np.ndarray]:
-    """Teacher zero mass and quantiles on one window set, in canonical head order."""
+    """Teacher zero mass and quantiles on one window set, in canonical head order.
+
+    Teacher forecasts are a deterministic function of the frozen checkpoints and the
+    sealed windows, so they are cached: Tweedie alone costs about 37 minutes here and a
+    retry should not pay it twice.
+    """
+    if cache is not None and Path(cache).exists():
+        stored = np.load(Path(cache))
+        if stored["rows"].item() == windows.row_count:
+            return {"p_zero": stored["p_zero"], "quantiles": stored["quantiles"]}
     p_zero, quantiles = [], []
     for head in HEADS:
         model, _ = load_teacher_checkpoint(Path(checkpoints) / f"teacher_m5_{head}.pt")
         prediction = _predict(model, windows)
         p_zero.append(prediction["p_zero"])
         quantiles.append(prediction["quantiles"])
-    return {
+    targets = {
         "p_zero": np.stack(p_zero, axis=-1),
         "quantiles": np.stack(quantiles, axis=-2),
     }
+    if cache is not None:
+        Path(cache).parent.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(Path(cache), rows=np.asarray(windows.row_count), **targets)
+    return targets
 
 
 def _student_validation_scrps(model, windows: TrainingWindows) -> float:
@@ -1370,7 +1390,11 @@ def stage_a_distillation(context: dict[str, Any]) -> dict[str, Any]:
     validation_windows, _ = _role_windows(context, "student_validation", (split.validation[0],))
     outer_windows, outer_batch = _role_windows(context, "evaluation", split.origins)
 
-    soft_train = _teacher_soft_targets(checkpoints, train_windows)
+    soft_train = _teacher_soft_targets(
+        checkpoints,
+        train_windows,
+        cache=Path(context["runs_root"]) / "_cache" / "stage_a_teacher_soft_targets.npz",
+    )
     p0_weights = {
         "A1": [1.0 if head == pool["P0_best_single_teacher"] else 0.0 for head in HEADS],
         "A2": [1.0 / len(HEADS)] * len(HEADS),
