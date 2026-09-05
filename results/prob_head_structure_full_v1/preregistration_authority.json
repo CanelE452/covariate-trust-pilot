@@ -1,0 +1,101 @@
+{
+  "audited_items": {
+    "1_scientific_quantile_source": "PASS - native deterministic or exact/numerical CDF inversion only",
+    "2_empirical_sample_cdf": "PASS - forbidden for scientific comparison, diagnostic sample/moment stability only",
+    "3_p2_p3_postprocess": "PASS - cumulative maximum, then q<=p0 zeroing, then cumulative maximum; penalty grid [0,0.01,0.1,1.0]",
+    "4_router_inner_origin_boundary": "PASS - fit origins 1..k-1, evaluate origin k, outer_evaluation_target_use forbidden",
+    "5_c_sensor_index_boundary": "PASS - feature_time_boundary is current and earlier forecasts only; all targets are next-origin",
+    "6_online_retail_c_sensor": "PASS - REAL_C_SENSOR_GEOMETRY_BLOCKED is frozen in the specification",
+    "7_priorities_thresholds_seeds": "PASS - see threshold_traceability",
+    "8_runtime_tier": "PASS - FULL/COMPACT/MINIMAL-COMPLETE selected once from the pre-result projection"
+  },
+  "candidate_provenance": {
+    "builder": "experiments.prob_head_structure_full_v1.preregistration.build_preregistered_spec_v4",
+    "candidate_payload_sha256": "473d7c3b4450455f4198cc0c4e8371b4190674d1ea4c324d5adc1ab131531027",
+    "deterministic_from": [
+      "preregistration.json",
+      "preregistered_spec.json",
+      "preregistered_spec_v3.json"
+    ],
+    "no_result_dependence": "the payload is a pure function of the three prior frozen specs and the module source; zero model fits and zero scientific stages had completed at freeze time",
+    "stale_candidate_rejected": {
+      "path": "runs/prob_head_structure_full_v1/preregistration_v4_review_final/attempt_0003/preregistered_spec_v4_candidate.json",
+      "payload_sha256": "4c1bdc8b5536bfebfa91f55171344285fb8a21065431e30cfbf8f7f7e8f144b2",
+      "reason": "written at 04:58 before later audited builder edits; it no longer reproduces from the test-covered builder, so it was not promoted"
+    }
+  },
+  "created_at_utc": "2026-09-05T00:15:11Z",
+  "execution_authority": {
+    "authority_status": "AUTHORITATIVE_FROZEN_BEFORE_ANY_MODEL_FIT",
+    "companion_file_sha256": "d60ec3dad19b882110241b94afdc19f6c78d094b130630887833aef8016732cf",
+    "companion_path": "preregistered_spec_v4.json.sha256.json",
+    "file_sha256": "365253f889cfe5e61eab7bdff158d69c095ff69790db8605c8a77a2030301145",
+    "path": "preregistered_spec_v4.json",
+    "sole_execution_authority": true
+  },
+  "model_fits_completed_at_freeze": 0,
+  "resolved_conflict": {
+    "description": "v3 and implementation_plan ruling 6 disagreed about how scientific quantiles are produced.",
+    "implementation_plan_ruling_6": [
+      "scientific metrics use deterministic native head quantiles or numerical inversion of a linear CDF pool",
+      "no scientific metric uses an empirical sample CDF",
+      "256/1024 draws are diagnostic sample/moment-stability checks only"
+    ],
+    "v3_stated": [
+      "numerical_inverse_empirical_CDF",
+      "256/1024 draws readable as scientific validation/evaluation reductions"
+    ],
+    "v4_resolution": {
+      "metrics.scientific_distribution_evaluation.P1_P2": "deterministic numerical inverse of the linear CDF pool",
+      "metrics.scientific_distribution_evaluation.diagnostic_sample_moment_stability_draws": {
+        "evaluation": 1024,
+        "validation": 256
+      },
+      "metrics.scientific_distribution_evaluation.empirical_samples_in_checkpoint_gate_or_pool_selection": "forbidden",
+      "metrics.scientific_distribution_evaluation.student_and_P3": "deterministic monotone quantile representation",
+      "metrics.scientific_distribution_evaluation.teachers": "deterministic native head quantiles",
+      "resolution_direction": "implementation_plan ruling 6 wins; the v3 alias is removed, not reinterpreted"
+    }
+  },
+  "schema_version": 1,
+  "scientific_results_observed_at_freeze": false,
+  "superseded": [
+    {
+      "path": "preregistration.json",
+      "role": "historical record",
+      "status": "INVALID_BEFORE_ANY_MODEL_FIT",
+      "version": 1
+    },
+    {
+      "path": "preregistered_spec.json",
+      "role": "historical record",
+      "status": "INVALID_BEFORE_ANY_MODEL_FIT",
+      "version": 2
+    },
+    {
+      "path": "preregistered_spec_v3.json",
+      "role": "historical record",
+      "status": "INVALID_BEFORE_ANY_MODEL_FIT",
+      "version": 3
+    }
+  ],
+  "threshold_traceability": {
+    "count_primary_priority": "identical to v3: M5, Auto, Carparts, RAF, OnlineRetail",
+    "seeds": "identical to v3",
+    "tracked_changes": [
+      {
+        "change": "v3 duplicated the A2 recovery block (0.005 improvement, macro CI>0, 2 positive datasets, 1 dataset CI>0) into A3 and A4; v4 keeps it only in A2",
+        "gate": "A2/A3/A4",
+        "source": "user protocol sections 41, 42 and 43 place recovery in A2, trade-off in A3 and compression in A4",
+        "threshold_effect": "none - every numeric value is preserved"
+      },
+      {
+        "change": "best-head identity criterion moved from 'best head changes in at least 10% of series-origin rows' to 'at least two distinct dataset-level best-head identities'",
+        "gate": "R2",
+        "source": "user protocol section 33 item 5 literally requires that the best head identity is not fixed to one across datasets; the 10% row rule was a v3 operationalization not present in the protocol",
+        "threshold_effect": "operationalization only; 0.15 share, 0.02 macro oracle, 1% dataset oracle and 0.99 correlation bound are preserved"
+      }
+    ],
+    "unchanged_numeric_thresholds": "every v3 gate threshold is preserved in v4 under percent-or-fraction re-expression"
+  }
+}

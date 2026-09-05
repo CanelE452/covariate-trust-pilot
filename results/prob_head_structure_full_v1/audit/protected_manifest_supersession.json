@@ -1,0 +1,33 @@
+{
+  "created_at_utc": "2026-09-05T00:15:32Z",
+  "model_fits_completed": 0,
+  "new": {
+    "aggregate_sha256": "c7d33e8b4e9bdc21362a96f5af44c2bd31059e686064c8c6d213ccd2f653d7e8",
+    "companion_file_sha256": "bdc50969e4de791988dd2d2576da9dd15f8bca9fab84d42780f4ae81bae11847",
+    "file_sha256": "70ac8fe235c5b810162dfb6de1f369a9c0a6003a06996f6756bd6a4b93be0e0b",
+    "path": "protected_manifest_before_v2.json",
+    "role": "execution comparison baseline",
+    "schema_version": 2
+  },
+  "old": {
+    "aggregate_sha256": "7c14d927e4ca2acf89e39d34717c8bf751aef385e6e1eb0a5d473f1a4b7dc01d",
+    "file_sha256": "b2b01c4631d62b8b59d06c323318f68a0dc88eab68c985765a49ac03835d04de",
+    "path": "protected_manifest_before.json",
+    "role": "historical record; preserved unmodified",
+    "schema_version": 1
+  },
+  "protected_directories_git_unchanged": true,
+  "protected_directory_count": 14,
+  "protected_file_count": 412,
+  "record_type": "PROTECTED_MANIFEST_SCHEMA_SUPERSESSION",
+  "repository_root_identity": {
+    "label": "prob-head-structure-full-v1-worktree",
+    "resolved_path": "E:/CODING/worktrees/covariate-trust-pilot-prob-head-structure-full-v1"
+  },
+  "schema_change_reason": "integrity.py was hardened to schema 2, which binds a protected baseline to a resolved repository root identity so a baseline cannot be replayed against a different tree. The 02:07 baseline predates that change and is schema 1, so verify_protected_manifest_path raised EXISTING_ARTIFACT_MUTATION_HARD_STOP even though nothing had been mutated.",
+  "schema_version": 1,
+  "verification_at_creation": {
+    "all_unchanged": true,
+    "status": "PASS"
+  }
+}

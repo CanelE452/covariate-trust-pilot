@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "algorithm": "SHA-256",
+  "relative_filename": "preregistration_invalidations_v3.json",
+  "sha256": "4a82e9bc337098d5be75ef478bd477853d7105086926d4eeac16cedbf0f4145e",
+  "hash_contract": "SHA-256 of complete immutable v3-invalidation file bytes"
+}

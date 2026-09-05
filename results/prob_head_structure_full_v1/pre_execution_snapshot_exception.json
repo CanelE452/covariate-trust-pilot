@@ -1,0 +1,17 @@
+{
+  "branch": "prob-head-structure-full-v1",
+  "commit": "ca717f0b5565a142ac415ad5554923d90e767c87",
+  "created_at_utc": "2026-09-05T00:14:14Z",
+  "does_not_authorize_execution": true,
+  "explanation": "implementation_plan forbids commits before the final manifest verification, but commit ca717f0 was created to preserve the interrupted implementation and the Task 4 repair (test_evaluation P2 fixture zero-mass invariant, gates.from_selection_audit field contract, and the unreachable three-dataset test_gates fixture). No model had been fit, no stage had run, and no scientific number had been observed at that commit, so the snapshot cannot have been influenced by results and is not reverted. It records implementation state only and grants no execution authority; execution authority comes solely from the authoritative preregistration named in preregistration_authority.json.",
+  "model_fits_completed": 0,
+  "record_type": "IMPLEMENTATION_RECOVERY_SNAPSHOT",
+  "schema_version": 1,
+  "scientific_results_observed": false,
+  "scientific_stages_completed": 0,
+  "task_4_repair_summary": [
+    "tests/prob_head_structure_full_v1/test_evaluation.py: added the paired p_zero monkeypatch so the pooled CDF keeps F(0)==p_zero",
+    "experiments/prob_head_structure_full_v1/gates.py: accept and verify manifest_type plus selection_manifest_sha256",
+    "tests/prob_head_structure_full_v1/test_gates.py: build the three-dataset ordering fixture at the gates layer"
+  ]
+}

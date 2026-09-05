@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "AUTHORITATIVE_V4_PROMOTION_COMPLETE",
+  "paths": {
+    "official_v4": "E:/CODING/worktrees/covariate-trust-pilot-prob-head-structure-full-v1/results/prob_head_structure_full_v1/preregistered_spec_v4.json",
+    "official_v4_companion": "E:/CODING/worktrees/covariate-trust-pilot-prob-head-structure-full-v1/results/prob_head_structure_full_v1/preregistered_spec_v4.json.sha256.json",
+    "promotion_terminal_marker": "E:/CODING/worktrees/covariate-trust-pilot-prob-head-structure-full-v1/results/prob_head_structure_full_v1/preregistered_spec_v4.json.promotion_complete.json",
+    "review_candidate": "E:/CODING/worktrees/covariate-trust-pilot-prob-head-structure-full-v1/runs/prob_head_structure_full_v1/preregistration_v4_authority/preregistration_v4_authority/attempt_0001/preregistered_spec_v4_candidate.json",
+    "review_completion": "E:/CODING/worktrees/covariate-trust-pilot-prob-head-structure-full-v1/runs/prob_head_structure_full_v1/preregistration_v4_authority/preregistration_v4_authority/attempt_0001/completion.json",
+    "v3_invalidation": "E:/CODING/worktrees/covariate-trust-pilot-prob-head-structure-full-v1/results/prob_head_structure_full_v1/preregistration_invalidations_v3.json",
+    "v3_invalidation_companion": "E:/CODING/worktrees/covariate-trust-pilot-prob-head-structure-full-v1/results/prob_head_structure_full_v1/preregistration_invalidations_v3.json.sha256.json"
+  },
+  "hashes": {
+    "official_v4_payload_sha256": "e35130ed5711e1135f639788627dfd6d0088edcea48eded157480ea18b15cf0f",
+    "official_v4_file_sha256": "365253f889cfe5e61eab7bdff158d69c095ff69790db8605c8a77a2030301145",
+    "official_v4_companion_file_sha256": "d60ec3dad19b882110241b94afdc19f6c78d094b130630887833aef8016732cf",
+    "candidate_payload_sha256": "473d7c3b4450455f4198cc0c4e8371b4190674d1ea4c324d5adc1ab131531027",
+    "candidate_file_sha256": "24f648151ec5cf0e02ebd46271c3d5fad07bec5686693b7fdafc85e43413eae7",
+    "candidate_companion_file_sha256": "9d37f65cb480a676a875cf686aa52ed1dfe0e890139088b329f60c66be71fe8c",
+    "completion_file_sha256": "7a25baa110ace407de5067c0b53c6d1a79479e66ba968cf94f9657c72058b632",
+    "completion_payload_sha256": "c2829635bcb684ac112e4bb28c6c587cbe3b49f35d22cef153a5a341531d4131",
+    "v3_invalidation_file_sha256": "4a82e9bc337098d5be75ef478bd477853d7105086926d4eeac16cedbf0f4145e",
+    "v3_invalidation_companion_file_sha256": "e6820dbf300097e2147dc5888e13f4f958f31db2b92ac175d9661bc4a1c9caf7"
+  },
+  "publication_order": [
+    "verified_existing_v3_invalidation_and_companion",
+    "official_v4_envelope",
+    "official_v4_companion",
+    "promotion_terminal_marker"
+  ],
+  "promotion_payload_sha256": "d99a131a6044417fc3553630dd1032ed9090b4e31dc97ce8f7763758a647b53f"
+}
