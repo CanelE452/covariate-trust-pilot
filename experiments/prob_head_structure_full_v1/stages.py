@@ -1469,6 +1469,271 @@ def stage_a_distillation(context: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _inner_origin_panel(context: dict[str, Any], checkpoints: Path) -> dict[str, Any]:
+    """Teacher losses and origin-bounded features at every inner routing origin."""
+    from .temporal_features import (
+        BASELINE_FEATURE_NAMES,
+        TEMPORAL_FEATURE_NAMES,
+        build_feature_matrix,
+        temporal_features_for_series,
+        train_descriptors_for_series,
+    )
+
+    cache = Path(context["runs_root"]) / "_cache" / "stage_b_inner_panel.npz"
+    store = _m5_store(context)
+    split = data_module.REAL_SPLITS["m5"]
+    origins = select_inner_origins(
+        lookback=LOOKBACK, horizon=HORIZON, model_train_end=split.train[1]
+    )
+    if cache.exists():
+        stored = np.load(cache, allow_pickle=True)
+        return {
+            "origins": [int(value) for value in stored["origins"]],
+            "losses": stored["losses"],
+            "baseline": stored["baseline"],
+            "temporal": stored["temporal"],
+            "baseline_names": [str(name) for name in stored["baseline_names"]],
+            "temporal_names": [str(name) for name in stored["temporal_names"]],
+        }
+
+    panel = store["panel"]
+    values = np.asarray(panel["y"], dtype=np.float64)
+    available = np.asarray(panel["available_from"], dtype=np.int64)
+    sample_ids = set(str(item) for item in store["sample_manifest"]["selected_series_id"]) if (
+        "selected_series_id" in store["sample_manifest"]
+    ) else None
+    series_ids = np.asarray(panel["series_id"]).astype(str)
+    index = (
+        np.array([i for i, sid in enumerate(series_ids) if sid in sample_ids], dtype=np.int64)
+        if sample_ids
+        else None
+    )
+    if index is None:
+        # Fall back to the sealed evaluation batch order so the sample stays identical.
+        _, batch = _role_windows(context, "evaluation", split.origins)
+        wanted = set(np.asarray(batch.series_id).astype(str).tolist())
+        index = np.array([i for i, sid in enumerate(series_ids) if sid in wanted], dtype=np.int64)
+
+    losses, baseline_rows, temporal_rows = [], [], []
+    for origin in origins:
+        windows, _ = _windows_from_panel(
+            values, available, index, [origin], train_end=split.train[1]
+        )
+        per_head = []
+        for head in HEADS:
+            model, _ = load_teacher_checkpoint(Path(checkpoints) / f"teacher_m5_{head}.pt")
+            per_head.append(_scrps_rows(_predict(model, windows), windows))
+        losses.append(np.stack(per_head, axis=-1))
+        baseline_rows.append(
+            build_feature_matrix(
+                [
+                    train_descriptors_for_series(
+                        values[position],
+                        available_from=int(available[position]),
+                        train_end=split.train[1],
+                    )
+                    for position in index
+                ],
+                feature_set="baseline",
+            )[0]
+        )
+        temporal_rows.append(
+            build_feature_matrix(
+                [
+                    temporal_features_for_series(
+                        values[position],
+                        origin=int(origin),
+                        available_from=int(available[position]),
+                        train_end=split.train[1],
+                        dataset_id="m5",
+                    )
+                    for position in index
+                ],
+                feature_set="temporal",
+            )[0]
+        )
+
+    result = {
+        "origins": [int(value) for value in origins],
+        "losses": np.stack(losses),
+        "baseline": np.stack(baseline_rows),
+        "temporal": np.stack(temporal_rows),
+        "baseline_names": list(BASELINE_FEATURE_NAMES),
+        "temporal_names": list(TEMPORAL_FEATURE_NAMES),
+    }
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(cache, **{k: np.asarray(v) for k, v in result.items()})
+    return result
+
+
+def stage_b_regret(context: dict[str, Any]) -> dict[str, Any]:
+    """B1: can origin-bounded structure predict which teacher will be least wrong?"""
+    checkpoints = _load(context, "real_checkpoint_dir")
+    if checkpoints is None:
+        attempt = _completed_attempt(context["runs_root"], "stage_r1_real_teacher_training")
+        checkpoints = None if attempt is None else str(attempt)
+    if checkpoints is None:
+        raise StageInputUnavailable("STAGE_INPUT_UNAVAILABLE: Stage B needs sealed teachers")
+
+    panel = _inner_origin_panel(context, Path(checkpoints))
+    _store(context, "b_inner_panel", panel)
+
+    def crossfit(features: np.ndarray, names: Sequence[str]) -> dict[str, Any]:
+        records = [
+            {
+                "origin": panel["origins"][index],
+                "features": features[index],
+                "losses": panel["losses"][index],
+            }
+            for index in range(len(panel["origins"]))
+        ]
+        return expanding_crossfit_weights(records, feature_names=list(names))
+
+    outcomes: dict[str, Any] = {}
+    for label, matrix, names in (
+        ("baseline", panel["baseline"], panel["baseline_names"]),
+        ("extended", panel["temporal"], panel["temporal_names"]),
+    ):
+        folds = crossfit(matrix, names)["folds"]
+        weights = np.concatenate([fold["weights"] for fold in folds])
+        regret = np.concatenate([fold["regret"] for fold in folds])
+        try:
+            statistic = regret_spearman(weights, regret)
+        except Exception as error:  # constant predictor or undefined correlation
+            outcomes[label] = {"status": "INSUFFICIENT_VARIATION", "reason": str(error)}
+            continue
+        outcomes[label] = {
+            "regret_spearman": statistic,
+            "rows": int(weights.shape[0]),
+            "folds": [fold["origin"] for fold in folds],
+            "temperatures": [fold["temperature"] for fold in folds],
+        }
+        _store(context, f"b_weights_{label}", [fold["weights"] for fold in folds])
+        _store(context, f"b_folds_{label}", folds)
+
+    if any("regret_spearman" not in value for value in outcomes.values()):
+        context["ledger"].record_gate("B1", passed=False)
+        return {
+            "status": "INSUFFICIENT_VARIATION",
+            "outcomes": outcomes,
+            "gates": {"B1": False},
+            "scientific_role": "DIAGNOSTIC_CONTINUATION_AFTER_R2",
+            "confirmatory_eligible": False,
+        }
+
+    delta = outcomes["extended"]["regret_spearman"] - outcomes["baseline"]["regret_spearman"]
+    b1_pass = outcomes["extended"]["regret_spearman"] >= 0.20 and delta >= 0.08
+    context["ledger"].record_gate("B1", passed=bool(b1_pass))
+    return {
+        "outcomes": outcomes,
+        "extended_minus_baseline": delta,
+        "thresholds": {"spearman_min": 0.20, "extended_delta_min": 0.08},
+        "datasets_available": 1,
+        "note": "the two-dataset requirement cannot be met: OnlineRetail is geometry-blocked",
+        "gates": {"B1": bool(b1_pass)},
+        "scientific_role": "DIAGNOSTIC_CONTINUATION_AFTER_R2",
+        "confirmatory_eligible": False,
+    }
+
+
+def stage_b_structure(context: dict[str, Any]) -> dict[str, Any]:
+    """B0/B1/B2 students on identical heldout cross-fit rows."""
+    tier = _tier(context)
+    seed = int(tier["student_model_seeds"][0])
+    checkpoints = _load(context, "real_checkpoint_dir")
+    if checkpoints is None:
+        attempt = _completed_attempt(context["runs_root"], "stage_r1_real_teacher_training")
+        checkpoints = None if attempt is None else str(attempt)
+    panel = _load(context, "b_inner_panel")
+    pool = _sealed_payload(context, "cdf_pool")
+    if checkpoints is None or panel is None or not pool:
+        raise StageInputUnavailable(
+            "STAGE_INPUT_UNAVAILABLE: Stage B students need the inner panel and the pool"
+        )
+
+    store = _m5_store(context)
+    split = data_module.REAL_SPLITS["m5"]
+    values = np.asarray(store["panel"]["y"], dtype=np.float64)
+    available = np.asarray(store["panel"]["available_from"], dtype=np.int64)
+    _, batch = _role_windows(context, "evaluation", split.origins)
+    wanted = set(np.asarray(batch.series_id).astype(str).tolist())
+    series_ids = np.asarray(store["panel"]["series_id"]).astype(str)
+    index = np.array([i for i, sid in enumerate(series_ids) if sid in wanted], dtype=np.int64)
+
+    heldout_origins = panel["origins"][1:]
+    windows, _ = _windows_from_panel(
+        values, available, index, heldout_origins, train_end=split.train[1]
+    )
+    soft = _teacher_soft_targets(
+        Path(checkpoints),
+        windows,
+        cache=Path(context["runs_root"]) / "_cache" / "stage_b_heldout_soft_targets.npz",
+    )
+    validation_windows, _ = _role_windows(context, "student_validation", (split.validation[0],))
+    outer_windows, _ = _role_windows(context, "evaluation", split.origins)
+
+    rows = windows.row_count
+    global_weights = np.broadcast_to(
+        np.asarray(pool["P2_weights"], dtype=np.float64), (rows, HORIZON, len(HEADS))
+    ).copy()
+
+    def fold_weights(label: str) -> np.ndarray | None:
+        folds = _load(context, f"b_folds_{label}")
+        if folds is None:
+            return None
+        stacked = np.concatenate([fold["weights"] for fold in folds])
+        if stacked.shape[0] != rows:
+            return None
+        return np.repeat(stacked[:, None, :], HORIZON, axis=1)
+
+    variants = {"B0": global_weights}
+    for label, name in (("baseline", "B1"), ("extended", "B2")):
+        weights = fold_weights(label)
+        if weights is not None:
+            variants[name] = weights
+
+    fitted: dict[str, Any] = {}
+    for name, weights in variants.items():
+        best = None
+        for lambda_value in LAMBDA_GRID:
+            fit = _train_student(
+                windows,
+                validation_windows,
+                seed=seed,
+                soft=soft,
+                weights=weights,
+                lambda_value=lambda_value,
+            )
+            if best is None or fit["validation_sCRPS"] < best["validation_sCRPS"]:
+                best = {**fit, "lambda": lambda_value}
+        fitted[name] = best
+
+    outer = {
+        name: _student_validation_scrps(entry["model"], outer_windows)
+        for name, entry in fitted.items()
+    }
+    b2_pass = False
+    if "B2" in outer and "B0" in outer:
+        improvement = 1.0 - outer["B2"] / outer["B0"]
+        b2_pass = improvement >= 0.005
+    else:
+        improvement = float("nan")
+    context["ledger"].record_gate("B2", passed=bool(b2_pass))
+
+    return {
+        "student_rows": int(rows),
+        "heldout_origins": [int(value) for value in heldout_origins],
+        "selected_lambda": {name: entry["lambda"] for name, entry in fitted.items()},
+        "validation_sCRPS": {name: entry["validation_sCRPS"] for name, entry in fitted.items()},
+        "outer_sCRPS": outer,
+        "B2_over_B0": improvement,
+        "threshold": 0.005,
+        "gates": {"B2": bool(b2_pass)},
+        "scientific_role": "DIAGNOSTIC_CONTINUATION_AFTER_R2",
+        "confirmatory_eligible": False,
+    }
+
+
 # --------------------------------------------------------------------- blocked stages
 
 
@@ -1725,8 +1990,8 @@ STAGE_FUNCTIONS: dict[str, Callable[[dict[str, Any]], Mapping[str, Any]]] = {
     # 66-state P2 search costs about 20 minutes: affordable, not prohibitive.
     "CDF pool": stage_cdf_pool,
     "Stage A student distillation": stage_a_distillation,
-    "Stage B regret predictability": _blocked("STAGE_NOT_IMPLEMENTED", "B1 regret fit is not wired into this run"),
-    "Stage B structure-conditioned distillation": _blocked("STAGE_NOT_IMPLEMENTED", "B0-B2 students are not wired into this run"),
+    "Stage B regret predictability": stage_b_regret,
+    "Stage B structure-conditioned distillation": stage_b_structure,
     "Stage C failure sensor": _blocked("STAGE_NOT_IMPLEMENTED", "C0-C3 sensor fit is not wired into this run"),
     "Stage C actionable policy": _blocked("STAGE_NOT_IMPLEMENTED", "C-A0..A3 actions are not wired into this run"),
     "all negative controls": _blocked("STAGE_NOT_IMPLEMENTED", "controls need the A/B/C fits"),
