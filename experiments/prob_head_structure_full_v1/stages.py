@@ -1217,6 +1217,234 @@ def stage_cdf_pool(context: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+LAMBDA_GRID = (0.25, 0.50, 0.75)
+STUDENT_MAX_EPOCHS = 30
+STUDENT_PATIENCE = 5
+
+
+def _role_windows(
+    context: dict[str, Any], role: str, origins: Sequence[int]
+) -> tuple[TrainingWindows, Any]:
+    """Build one sealed window batch for the real panel and its training view."""
+    store = _m5_store(context)
+    panel = store["panel"]
+    dataset_audit = store["dataset_audit"]
+    request = data_module.build_window_request(
+        dataset_id="m5",
+        split=data_module.REAL_SPLITS["m5"],
+        panel_length=int(dataset_audit["panel_shape"][1]),
+        role=role,
+        origins=tuple(int(origin) for origin in origins),
+        panel=panel,
+        dataset_audit=dataset_audit,
+        sample_manifest=store["sample_manifest"],
+    )
+    batch = data_module.make_history_windows(
+        panel, request=request, dataset_audit=dataset_audit
+    )
+    windows = TrainingWindows(
+        history=np.asarray(batch.history, dtype=np.float64),
+        target=np.asarray(batch.target, dtype=np.float64),
+        target_mask=np.asarray(batch.target_mask).astype(bool),
+        scale=np.asarray(batch.scale, dtype=np.float64),
+    )
+    return windows, batch
+
+
+def _teacher_soft_targets(
+    checkpoints: Path, windows: TrainingWindows
+) -> dict[str, np.ndarray]:
+    """Teacher zero mass and quantiles on one window set, in canonical head order."""
+    p_zero, quantiles = [], []
+    for head in HEADS:
+        model, _ = load_teacher_checkpoint(Path(checkpoints) / f"teacher_m5_{head}.pt")
+        prediction = _predict(model, windows)
+        p_zero.append(prediction["p_zero"])
+        quantiles.append(prediction["quantiles"])
+    return {
+        "p_zero": np.stack(p_zero, axis=-1),
+        "quantiles": np.stack(quantiles, axis=-2),
+    }
+
+
+def _student_validation_scrps(model, windows: TrainingWindows) -> float:
+    """Checkpoint score: the student's own deterministic monotone quantiles."""
+    device = model.trend.weight.device.type
+    history = torch.as_tensor(windows.history, dtype=torch.float32, device=device)
+    scale = torch.as_tensor(windows.scale, dtype=torch.float32, device=device)
+    with torch.no_grad():
+        output = model(history, scale)
+        quantiles = output["evaluation_quantiles"].detach().cpu().numpy().astype(np.float64)
+    crps = approximate_crps(windows.target, quantiles)
+    return float(np.mean(crps / windows.scale[:, None]))
+
+
+def _train_student(
+    train_windows: TrainingWindows,
+    validation_windows: TrainingWindows,
+    *,
+    seed: int,
+    soft: Mapping[str, np.ndarray] | None,
+    weights: Sequence[float] | None,
+    lambda_value: float,
+) -> dict[str, Any]:
+    """Fit one student variant under the same budget as every other variant."""
+    from .losses import student_loss_from_sums, student_loss_sums
+    from .student import build_student
+
+    torch.manual_seed(int(seed))
+    device = _device()
+    model = build_student(lookback=LOOKBACK, horizon=HORIZON).to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=0.0)
+    generator = np.random.default_rng(int(seed))
+
+    history = torch.as_tensor(train_windows.history, dtype=torch.float32, device=device)
+    target = torch.as_tensor(train_windows.target, dtype=torch.float32, device=device)
+    mask = torch.as_tensor(train_windows.target_mask, dtype=torch.bool, device=device)
+    scale = torch.as_tensor(train_windows.scale, dtype=torch.float32, device=device)
+    teacher_p0 = teacher_q = teacher_w = None
+    if soft is not None:
+        teacher_p0 = torch.as_tensor(soft["p_zero"], dtype=torch.float32, device=device)
+        teacher_q = torch.as_tensor(soft["quantiles"], dtype=torch.float32, device=device)
+        weight_vector = np.asarray(weights, dtype=np.float64)
+        teacher_w = torch.as_tensor(
+            np.broadcast_to(weight_vector, soft["p_zero"].shape).copy(),
+            dtype=torch.float32,
+            device=device,
+        )
+
+    best_score, best_state, best_epoch, stale = None, None, None, 0
+    for epoch in range(1, STUDENT_MAX_EPOCHS + 1):
+        model.train()
+        order = generator.permutation(train_windows.row_count)
+        for start in range(0, order.size, 256):
+            rows = torch.as_tensor(order[start : start + 256], dtype=torch.long, device=device)
+            optimizer.zero_grad(set_to_none=True)
+            output = model(history[rows], scale[rows])
+            sums = student_loss_sums(
+                p0_student=output["p0"],
+                quantiles_student=output["quantiles"],
+                target=target[rows],
+                target_mask=mask[rows],
+                scale=scale[rows],
+                teacher_p0=None if teacher_p0 is None else teacher_p0[rows],
+                teacher_quantiles=None if teacher_q is None else teacher_q[rows],
+                teacher_weights=None if teacher_w is None else teacher_w[rows],
+            )
+            loss = student_loss_from_sums(sums, lambda_soft=float(lambda_value))["loss"]
+            if not bool(torch.isfinite(loss)):
+                raise NumericalBranchBlocked("NUMERICAL_BRANCH_BLOCKED: student loss is nonfinite")
+            loss.backward()
+            optimizer.step()
+        if epoch % 2 == 0 or epoch == STUDENT_MAX_EPOCHS:
+            score = _student_validation_scrps(model, validation_windows)
+            if best_score is None or score < best_score:
+                best_score, best_epoch, stale = score, epoch, 0
+                best_state = {k: v.detach().clone() for k, v in model.state_dict().items()}
+            else:
+                stale += 1
+                if stale >= STUDENT_PATIENCE:
+                    break
+    if best_state:
+        model.load_state_dict(best_state)
+    return {"model": model, "validation_sCRPS": best_score, "best_epoch": best_epoch}
+
+
+def stage_a_distillation(context: dict[str, Any]) -> dict[str, Any]:
+    """A0-A3 students; A4 needs the quantile-specific pool, which was never selected."""
+    tier = _tier(context)
+    seed = int(tier["student_model_seeds"][0])
+    checkpoints = _load(context, "real_checkpoint_dir")
+    if checkpoints is None:
+        attempt = _completed_attempt(context["runs_root"], "stage_r1_real_teacher_training")
+        checkpoints = None if attempt is None else str(attempt)
+    pool = _sealed_payload(context, "cdf_pool")
+    if checkpoints is None or not pool:
+        raise StageInputUnavailable(
+            "STAGE_INPUT_UNAVAILABLE: Stage A needs sealed teachers and a sealed pool"
+        )
+
+    split = data_module.REAL_SPLITS["m5"]
+    train_origins = tuple(range(LOOKBACK, split.train[1] - HORIZON + 1, STUDENT_STRIDE))
+    train_windows, _ = _role_windows(context, "student_train", train_origins)
+    validation_windows, _ = _role_windows(context, "student_validation", (split.validation[0],))
+    outer_windows, outer_batch = _role_windows(context, "evaluation", split.origins)
+
+    soft_train = _teacher_soft_targets(checkpoints, train_windows)
+    p0_weights = {
+        "A1": [1.0 if head == pool["P0_best_single_teacher"] else 0.0 for head in HEADS],
+        "A2": [1.0 / len(HEADS)] * len(HEADS),
+        "A3": [float(value) for value in pool["P2_weights"]],
+    }
+
+    variants: dict[str, dict[str, Any]] = {}
+    variants["A0"] = {
+        "lambda": 0.0,
+        **_train_student(
+            train_windows, validation_windows, seed=seed, soft=None, weights=None, lambda_value=0.0
+        ),
+    }
+    for name, weights in p0_weights.items():
+        best = None
+        for lambda_value in LAMBDA_GRID:
+            fit = _train_student(
+                train_windows,
+                validation_windows,
+                seed=seed,
+                soft=soft_train,
+                weights=weights,
+                lambda_value=lambda_value,
+            )
+            if best is None or fit["validation_sCRPS"] < best["validation_sCRPS"]:
+                best = {**fit, "lambda": lambda_value}
+        variants[name] = {**best, "weights": weights}
+
+    outer_scrps = {
+        name: _student_validation_scrps(entry["model"], outer_windows)
+        for name, entry in variants.items()
+    }
+    teacher_outer = {
+        head: float(value) for head, value in (pool.get("outer_head_sCRPS") or {}).items()
+    }
+    best_single_outer = float(pool["outer_best_single_sCRPS"])
+    pool_outer = float(pool["outer_pool_sCRPS"])
+
+    primary = min(("A3",), key=lambda name: variants[name]["validation_sCRPS"])
+    improvement_over_a0 = 1.0 - outer_scrps[primary] / outer_scrps["A0"]
+    denominator = best_single_outer - pool_outer
+    recovery = (
+        (best_single_outer - outer_scrps[primary]) / denominator
+        if abs(denominator) > 1e-12
+        else float("nan")
+    )
+    a1_pass = pool_outer <= best_single_outer * 0.99
+    a2_pass = bool(recovery >= 0.5) and improvement_over_a0 >= 0.005
+    context["ledger"].record_gate("A1", passed=bool(a1_pass))
+    context["ledger"].record_gate("A2", passed=bool(a2_pass))
+
+    return {
+        "student_train_rows": int(train_windows.row_count),
+        "outer_rows": int(outer_windows.row_count),
+        "lambda_grid": list(LAMBDA_GRID),
+        "selected_lambda": {name: entry.get("lambda") for name, entry in variants.items()},
+        "validation_sCRPS": {
+            name: entry["validation_sCRPS"] for name, entry in variants.items()
+        },
+        "outer_sCRPS": outer_scrps,
+        "teacher_outer_sCRPS": teacher_outer,
+        "best_single_teacher_outer": best_single_outer,
+        "pool_outer": pool_outer,
+        "primary_student": primary,
+        "improvement_over_A0": improvement_over_a0,
+        "recovery": recovery,
+        "A4": "NOT_RUN: the quantile-specific P3 pool was never selected",
+        "A3_equals_A1": p0_weights["A3"] == p0_weights["A1"],
+        "gates": {"A1": bool(a1_pass), "A2": bool(a2_pass)},
+        "scientific_role": "DIAGNOSTIC_CONTINUATION_AFTER_R2",
+        "confirmatory_eligible": False,
+    }
+
+
 # --------------------------------------------------------------------- blocked stages
 
 
@@ -1449,7 +1677,7 @@ STAGE_FUNCTIONS: dict[str, Callable[[dict[str, Any]], Mapping[str, Any]]] = {
     # Measured at 18.1s per simplex state over the 28000 validation cases, so the full
     # 66-state P2 search costs about 20 minutes: affordable, not prohibitive.
     "CDF pool": stage_cdf_pool,
-    "Stage A student distillation": _blocked("STAGE_NOT_IMPLEMENTED", "A0-A4 students are not wired into this run"),
+    "Stage A student distillation": stage_a_distillation,
     "Stage B regret predictability": _blocked("STAGE_NOT_IMPLEMENTED", "B1 regret fit is not wired into this run"),
     "Stage B structure-conditioned distillation": _blocked("STAGE_NOT_IMPLEMENTED", "B0-B2 students are not wired into this run"),
     "Stage C failure sensor": _blocked("STAGE_NOT_IMPLEMENTED", "C0-C3 sensor fit is not wired into this run"),
