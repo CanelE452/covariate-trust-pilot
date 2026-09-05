@@ -1524,13 +1524,16 @@ def _inner_origin_panel(context: dict[str, Any], checkpoints: Path) -> dict[str,
             model, _ = load_teacher_checkpoint(Path(checkpoints) / f"teacher_m5_{head}.pt")
             per_head.append(_scrps_rows(_predict(model, windows), windows))
         losses.append(np.stack(per_head, axis=-1))
+        # Inner origins sit inside model_train, so descriptors must be recomputed on the
+        # origin-bounded prefix [available_from, o). Using model_train_end here would let
+        # observations the router cannot yet see leak into its own features.
         baseline_rows.append(
             build_feature_matrix(
                 [
                     train_descriptors_for_series(
                         values[position],
                         available_from=int(available[position]),
-                        train_end=split.train[1],
+                        train_end=int(origin),
                     )
                     for position in index
                 ],
@@ -1544,7 +1547,7 @@ def _inner_origin_panel(context: dict[str, Any], checkpoints: Path) -> dict[str,
                         values[position],
                         origin=int(origin),
                         available_from=int(available[position]),
-                        train_end=split.train[1],
+                        train_end=int(origin),
                         dataset_id="m5",
                     )
                     for position in index
