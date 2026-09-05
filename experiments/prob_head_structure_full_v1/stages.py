@@ -42,7 +42,12 @@ from .sensor import (
     disagreement_components,
     select_inner_pair_origins,
 )
-from .training import TrainingConfig, TrainingWindows, train_teacher
+from .training import (
+    NumericalBranchBlocked,
+    TrainingConfig,
+    TrainingWindows,
+    train_teacher,
+)
 
 HEADS = model_module.HEAD_NAMES
 LOOKBACK = 96
@@ -96,6 +101,20 @@ def _windows_from_panel(
     )
     key_frame = pd.DataFrame(keys, columns=["series_position", "origin"])
     return windows, key_frame
+
+
+NUMERICAL_GUARD_SIGNATURES = (
+    "resource guard",
+    "summation exceeded",
+)
+
+
+def _is_numerical_guard(error: BaseException) -> bool:
+    """Recognise the frozen exact-CDF resource guard rather than any RuntimeError."""
+    message = str(error).lower()
+    return isinstance(error, RuntimeError) and any(
+        signature in message for signature in NUMERICAL_GUARD_SIGNATURES
+    )
 
 
 def _predict(model, windows: TrainingWindows) -> dict[str, np.ndarray]:
@@ -171,12 +190,22 @@ def _long_frame(
     dataset_id: str,
     series_ids: Sequence[str],
     extra: Mapping[str, Any] | None = None,
-) -> tuple[pd.DataFrame, dict[str, dict[str, np.ndarray]]]:
+) -> tuple[pd.DataFrame, dict[str, dict[str, np.ndarray]], list[dict[str, str]]]:
     """One row per (dataset, series, origin, head) with its scaled CRPS."""
     rows: list[pd.DataFrame] = []
     predictions: dict[str, dict[str, np.ndarray]] = {}
+    blocked: list[dict[str, str]] = []
     for head, entry in fitted.items():
-        prediction = _predict(entry["model"], windows)
+        try:
+            prediction = _predict(entry["model"], windows)
+        except RuntimeError as error:
+            if not _is_numerical_guard(error):
+                raise
+            # Section 64: block this head, keep every other head running.
+            blocked.append(
+                {"head": head, "token": "NUMERICAL_BRANCH_BLOCKED", "reason": str(error)}
+            )
+            continue
         predictions[head] = prediction
         frame = key_frame.copy()
         frame["dataset_id"] = dataset_id
@@ -186,7 +215,11 @@ def _long_frame(
         for key, value in dict(extra or {}).items():
             frame[key] = value
         rows.append(frame)
-    return pd.concat(rows, ignore_index=True), predictions
+    if not rows:
+        raise NumericalBranchBlocked(
+            "NUMERICAL_BRANCH_BLOCKED: every head tripped the exact-CDF resource guard"
+        )
+    return pd.concat(rows, ignore_index=True), predictions, blocked
 
 
 def _payload(attempt: Path, payload: Mapping[str, Any]) -> Path:
@@ -384,6 +417,7 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
     frames: list[pd.DataFrame] = []
     runtimes: list[dict[str, Any]] = []
     checkpoints: list[dict[str, Any]] = []
+    blocked_heads: list[dict[str, Any]] = []
 
     for cell_id, block in blocks.items():
         y = np.asarray(block["y"], dtype=np.float64)
@@ -401,7 +435,7 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
         )
         fitted = _fit_heads(train_windows, validation_windows, seed=seed, max_epochs=30)
         d, rho_i, rho_m = block["d"], block["rho_I"], block["rho_M"]
-        frame, _ = _long_frame(
+        frame, _, cell_blocked = _long_frame(
             fitted,
             evaluation_windows,
             keys,
@@ -418,6 +452,8 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
         )
         innovation = np.asarray(block["base_innovation_id"]).astype(str)
         frame["base_innovation_id"] = [innovation[pos] for pos in frame["series_position"]]
+        for record in cell_blocked:
+            blocked_heads.append({"cell_id": cell_id, **record})
         checkpoints.extend(
             _save_teacher_checkpoints(fitted, context["attempt"], scope=cell_id, seed=seed)
         )
@@ -440,8 +476,10 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
     )
     _store(context, "synthetic_cell_means", cell_means.to_dict(orient="records"))
     _store(context, "synthetic_checkpoints", checkpoints)
+    _store(context, "synthetic_blocked_heads", blocked_heads)
     return {
         "checkpoints": len(checkpoints),
+        "numerically_blocked_heads": blocked_heads,
         "cells": int(panel["cell_id"].nunique()),
         "rows": int(len(panel)),
         "runtime": runtimes,
@@ -472,6 +510,17 @@ def stage_s2_analysis(context: dict[str, Any]) -> dict[str, Any]:
         upstream_required_gates=("DGP_BALANCE", "S1"),
         upstream_gate_status=(("DGP_BALANCE", "PASS"), ("S1", "PASS")),
     )
+    available = set(panel["head"].unique())
+    if available != set(HEADS):
+        context["ledger"].record_gate("S1", passed=False)
+        context["ledger"].record_gate("S2", passed=False)
+        context["ledger"].record_gate("S3", passed=False)
+        return {
+            "status": "NUMERICAL_BRANCH_BLOCKED",
+            "available_heads": sorted(available),
+            "missing_heads": sorted(set(HEADS) - available),
+            "reason": "the confirmatory three-family ladder needs every head",
+        }
     ladder = summarize_oracle_ladder(
         panel,
         unit_columns=unit,
@@ -698,7 +747,7 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
         }
     )
     series_ids = row_keys["series_id"].astype(str).to_numpy()
-    frame, predictions = _long_frame(
+    frame, predictions, blocked = _long_frame(
         fitted,
         evaluation_windows,
         keys,
@@ -709,9 +758,16 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
     checkpoints = _save_teacher_checkpoints(
         fitted, context["attempt"], scope="m5", seed=seed
     )
-    validation_predictions = {
-        head: _predict(entry["model"], validation_windows) for head, entry in fitted.items()
-    }
+    validation_predictions = {}
+    for head, entry in fitted.items():
+        try:
+            validation_predictions[head] = _predict(entry["model"], validation_windows)
+        except RuntimeError as error:
+            if not _is_numerical_guard(error):
+                raise
+            blocked.append(
+                {"head": head, "token": "NUMERICAL_BRANCH_BLOCKED", "scope": "validation"}
+            )
     np.savez_compressed(
         Path(context["attempt"]) / "validation_predictions.npz",
         **{
@@ -723,6 +779,7 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
         validation_scale=validation_windows.scale,
     )
     _store(context, "real_checkpoints", checkpoints)
+    _store(context, "real_checkpoint_dir", str(context["attempt"]))
     _store(context, "real_validation_predictions", validation_predictions)
     _store(context, "real_validation_windows", validation_windows)
     _store(context, "real_validation_batch", validation_batch)
@@ -752,8 +809,10 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
             for head, entry in fitted.items()
         ],
     )
+    _store(context, "real_blocked_heads", blocked)
     return {
         "dataset": "m5",
+        "numerically_blocked_heads": blocked,
         "checkpoints": checkpoints,
         "validation_prediction_rows": int(validation_windows.row_count),
         "sampled_series": int(sample_manifest.get("actual_n", -1)),
@@ -822,6 +881,186 @@ def stage_r2_complementarity(context: dict[str, Any]) -> dict[str, Any]:
         "practical_winner_share": shares,
         "origin_oracle_gain": origin_gain,
         "gates": {"R1": r1_pass, "R2": r2_pass},
+    }
+
+
+def _teacher_distributions(model, windows: TrainingWindows):
+    """Forward one fitted teacher and keep its native [batch, horizon] distribution."""
+    device = model.trend.weight.device.type
+    history = torch.as_tensor(windows.history, dtype=torch.float32, device=device)
+    scale = torch.as_tensor(windows.scale, dtype=torch.float32, device=device)
+    with torch.no_grad():
+        return model(history, scale)["distribution"]
+
+
+def _step_level_components(distribution) -> dict[str, np.ndarray]:
+    """Flatten a native distribution to the sealed step-level prediction components."""
+    probabilities = torch.as_tensor(
+        np.asarray(CRPS_QUANTILE_GRID, dtype=np.float64),
+        dtype=distribution.mu.dtype,
+        device=distribution.mu.device,
+    )
+    with torch.no_grad():
+        quantiles = distribution.quantile(probabilities).detach().cpu().numpy().astype(np.float64)
+        p_zero = distribution.p_zero().detach().cpu().numpy().astype(np.float64)
+        mean = distribution.mean().detach().cpu().numpy().astype(np.float64)
+    return {
+        "quantiles": np.moveaxis(quantiles, 0, -1).reshape(-1, len(CRPS_QUANTILE_GRID)),
+        "p_zero": p_zero.reshape(-1),
+        "mean": mean.reshape(-1),
+    }
+
+
+def stage_cdf_pool(context: dict[str, Any]) -> dict[str, Any]:
+    """Select P0/P1/P2 on the frozen validation split only, then apply to the outer rows."""
+    from .evaluation import SealedEvaluationTarget
+    from .pooling import (
+        SealedValidationArtifact,
+        cdf_callable_for_distribution,
+        equal_pool_weights,
+        select_best_single_teacher,
+        select_global_cdf_pool,
+    )
+    from . import preregistration as preregistration_module
+
+    tier = _tier(context)
+    seed = int(tier["teacher_model_seeds"][0])
+    store = _m5_store(context)
+    checkpoints = _load(context, "real_checkpoint_dir")
+    if store is None or checkpoints is None:
+        raise StageNotImplemented(
+            "STAGE_NOT_IMPLEMENTED: the CDF pool needs sealed R1 teacher checkpoints"
+        )
+
+    panel = store["panel"]
+    dataset_audit = store["dataset_audit"]
+    sample_manifest = store["sample_manifest"]
+    source_manifest = store["source_manifest"]
+    split = data_module.REAL_SPLITS["m5"]
+    length = int(dataset_audit["panel_shape"][1])
+    preregistration_sha256 = preregistration_module.verify_preregistration(
+        Path(context["repository_root"])
+        / "results/prob_head_structure_full_v1/preregistered_spec_v4.json"
+    )["payload_sha256"]
+
+    request = data_module.build_window_request(
+        dataset_id="m5",
+        split=split,
+        panel_length=length,
+        role="validation",
+        origins=(split.validation[0],),
+        panel=panel,
+        dataset_audit=dataset_audit,
+        sample_manifest=sample_manifest,
+    )
+    batch = data_module.make_history_windows(
+        panel, request=request, dataset_audit=dataset_audit
+    )
+    target_artifact = SealedEvaluationTarget.seal(
+        window_batch=batch,
+        window_request=request,
+        panel=panel,
+        dataset_audit=dataset_audit,
+        source_manifest=source_manifest,
+        sample_manifest=sample_manifest,
+        preregistration_sha256=preregistration_sha256,
+        dataset_manifest_sha256=dataset_audit["audit_sha256"],
+    )
+    windows = TrainingWindows(
+        history=np.asarray(batch.history, dtype=np.float64),
+        target=np.asarray(batch.target, dtype=np.float64),
+        target_mask=np.asarray(batch.target_mask).astype(bool),
+        scale=np.asarray(batch.scale, dtype=np.float64),
+    )
+
+    native_parameters = {
+        "NB": ("mu", "r"),
+        "HSNB": ("pi", "mu", "r"),
+        "TWEEDIE_FULL": ("mu", "phi", "p"),
+    }
+    distributions: dict[str, Any] = {}
+    components: dict[str, dict[str, np.ndarray]] = {}
+    for head in HEADS:
+        model, _ = load_teacher_checkpoint(Path(checkpoints) / f"teacher_m5_{head}.pt")
+        distribution = _teacher_distributions(model, windows)
+        distributions[head] = distribution
+        # The CDF adapter re-verifies the native parameters, so seal them alongside.
+        step = _step_level_components(distribution)
+        # Sealed components carry the leading model-seed axis the selectors slice on.
+        components[head] = {
+            "quantiles": step["quantiles"][None, ...],
+            "p_zero": step["p_zero"][None, ...],
+            "mean": step["mean"][None, ...],
+            f"cdf_parameters_seed_{seed}": {
+                name: getattr(distribution, name).detach().cpu().numpy()
+                for name in native_parameters[head]
+            },
+        }
+
+    rows = target_artifact.as_dict()["payload"]["rows"]
+    case_keys = [
+        [row["dataset_id"], row["series_id"], row["origin"], row["step"]] for row in rows
+    ]
+    validation_artifact = SealedValidationArtifact.seal(
+        target_artifact=target_artifact,
+        head_order=HEADS,
+        teacher_predictions=components,
+        teacher_case_keys={head: case_keys for head in HEADS},
+        teacher_model_seeds={head: [seed] for head in HEADS},
+        validation_group_ids=[row["series_id"] for row in rows],
+        sample_manifest_sha256=sample_manifest["manifest_sha256"],
+        source_manifest_sha256=source_manifest["aggregate_sha256"],
+        preregistration_sha256=preregistration_sha256,
+        dataset_manifest_sha256=dataset_audit["audit_sha256"],
+    )
+
+    bound: list[list[Any]] = []
+    uppers: list[np.ndarray] = []
+    for head in HEADS:
+        artifact, flat_mean, _ = cdf_callable_for_distribution(
+            distributions[head],
+            head=head,
+            model_seed=seed,
+            validation_artifact=validation_artifact,
+        )
+        bound.append([artifact])
+        uppers.append(np.asarray(flat_mean, dtype=np.float64))
+    initial_upper = np.maximum.reduce(uppers)
+    bound_rows = [[bound[index][0] for index in range(len(HEADS))]]
+
+    validation_y = np.asarray([row["y"] for row in rows], dtype=np.float64)
+    validation_scale = np.asarray([row["scale"] for row in rows], dtype=np.float64)
+
+    single = select_best_single_teacher(
+        validation_teacher_quantiles=np.stack(
+            [components[head]['quantiles'][0] for head in HEADS]
+        )[None, ...],
+        validation_teacher_p_zero=np.stack(
+            [components[head]['p_zero'][0] for head in HEADS]
+        )[None, ...],
+        validation_y=validation_y,
+        validation_scale=validation_scale,
+        validation_case_keys=case_keys,
+        validation_artifact=validation_artifact,
+    )
+    selection = select_global_cdf_pool(
+        validation_y=validation_y,
+        validation_scale=validation_scale,
+        validation_case_keys=case_keys,
+        validation_artifact=validation_artifact,
+        validation_cdf_functions=bound_rows,
+        initial_upper=initial_upper,
+    )
+    _store(context, "pool_selection", selection)
+    _store(context, "pool_single", single)
+    _store(context, "pool_validation_artifact", validation_artifact)
+    return {
+        "validation_rows": len(rows),
+        "P0_best_single_teacher": single.get("head", single.get("best_head")),
+        "P1_equal_weights": [float(value) for value in equal_pool_weights()],
+        "P2_weights": selection.get("weights"),
+        "P2_candidate_count": selection.get("candidate_count"),
+        "selection_scope": "frozen validation interval only",
     }
 
 
@@ -963,7 +1202,13 @@ STAGE_FUNCTIONS: dict[str, Callable[[dict[str, Any]], Mapping[str, Any]]] = {
     "real count dataset audit/download": stage_real_audit,
     "Stage R1 real teacher training": stage_r1_real_training,
     "Stage R2 real complementarity": stage_r2_complementarity,
-    "CDF pool": _blocked("STAGE_NOT_IMPLEMENTED", "P0-P3 pooling is not wired into this run"),
+    # stage_cdf_pool is implemented and reaches P0, but the 66-state P2 search over
+    # 28000 validation cases has not been cost-bounded yet, so it stays deferred
+    # rather than risking a multi-hour stall inside the pipeline.
+    "CDF pool": _blocked(
+        "STAGE_NOT_IMPLEMENTED",
+        "P2 selection cost is not bounded yet; stage_cdf_pool is wired but deferred",
+    ),
     "Stage A student distillation": _blocked("STAGE_NOT_IMPLEMENTED", "A0-A4 students are not wired into this run"),
     "Stage B regret predictability": _blocked("STAGE_NOT_IMPLEMENTED", "B1 regret fit is not wired into this run"),
     "Stage B structure-conditioned distillation": _blocked("STAGE_NOT_IMPLEMENTED", "B0-B2 students are not wired into this run"),
