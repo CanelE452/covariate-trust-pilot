@@ -300,6 +300,44 @@ def stage_synthetic_dgp_audit(context: dict[str, Any]) -> dict[str, Any]:
     return {"cells": summaries, "balance": balance, "unbalanced_cells": failed}
 
 
+def _save_teacher_checkpoints(
+    fitted: Mapping[str, Any], attempt: Path, *, scope: str, seed: int
+) -> list[dict[str, Any]]:
+    """Write one checkpoint per head so pools, students and sensors never refit."""
+    records: list[dict[str, Any]] = []
+    for head, entry in fitted.items():
+        path = Path(attempt) / f"teacher_{scope}_{head}.pt"
+        torch.save(
+            {
+                "head": head,
+                "scope": scope,
+                "seed": int(seed),
+                "lookback": LOOKBACK,
+                "horizon": HORIZON,
+                "state_dict": entry["model"].state_dict(),
+                "best_epoch": entry["best_epoch"],
+                "parameter_count": entry["parameter_count"],
+            },
+            path,
+        )
+        records.append(
+            {"head": head, "scope": scope, "path": path.name, "bytes": path.stat().st_size}
+        )
+    return records
+
+
+def load_teacher_checkpoint(path: Path):
+    """Restore one fitted teacher from its checkpoint onto the current device."""
+    payload = torch.load(Path(path), map_location="cpu")
+    model = model_module.build_teacher(
+        str(payload["head"]), lookback=int(payload["lookback"]), horizon=int(payload["horizon"])
+    )
+    model.load_state_dict(payload["state_dict"])
+    model.to(_device())
+    model.eval()
+    return model, payload
+
+
 def _synthetic_blocks(context: dict[str, Any]) -> dict[str, Any]:
     """Return the generated blocks, regenerating them when an earlier attempt resumed.
 
@@ -345,6 +383,7 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
     validation_origins = [split.validation[0]]
     frames: list[pd.DataFrame] = []
     runtimes: list[dict[str, Any]] = []
+    checkpoints: list[dict[str, Any]] = []
 
     for cell_id, block in blocks.items():
         y = np.asarray(block["y"], dtype=np.float64)
@@ -379,6 +418,9 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
         )
         innovation = np.asarray(block["base_innovation_id"]).astype(str)
         frame["base_innovation_id"] = [innovation[pos] for pos in frame["series_position"]]
+        checkpoints.extend(
+            _save_teacher_checkpoints(fitted, context["attempt"], scope=cell_id, seed=seed)
+        )
         frames.append(frame)
         runtimes.append(
             {
@@ -397,7 +439,9 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
         panel.groupby(["cell_id", "d", "rho_I", "rho_M", "head"])["sCRPS"].mean().reset_index()
     )
     _store(context, "synthetic_cell_means", cell_means.to_dict(orient="records"))
+    _store(context, "synthetic_checkpoints", checkpoints)
     return {
+        "checkpoints": len(checkpoints),
         "cells": int(panel["cell_id"].nunique()),
         "rows": int(len(panel)),
         "runtime": runtimes,
@@ -662,6 +706,26 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
         series_ids=series_ids,
         extra={"model_seed": seed},
     )
+    checkpoints = _save_teacher_checkpoints(
+        fitted, context["attempt"], scope="m5", seed=seed
+    )
+    validation_predictions = {
+        head: _predict(entry["model"], validation_windows) for head, entry in fitted.items()
+    }
+    np.savez_compressed(
+        Path(context["attempt"]) / "validation_predictions.npz",
+        **{
+            f"{head}__{name}": value
+            for head, components in validation_predictions.items()
+            for name, value in components.items()
+        },
+        validation_y=validation_windows.target,
+        validation_scale=validation_windows.scale,
+    )
+    _store(context, "real_checkpoints", checkpoints)
+    _store(context, "real_validation_predictions", validation_predictions)
+    _store(context, "real_validation_windows", validation_windows)
+    _store(context, "real_validation_batch", validation_batch)
     frame.to_parquet(Path(context["attempt"]) / "real_panel.parquet", index=False)
     _store(context, "real_panel", frame)
     _store(
@@ -690,6 +754,8 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
     )
     return {
         "dataset": "m5",
+        "checkpoints": checkpoints,
+        "validation_prediction_rows": int(validation_windows.row_count),
         "sampled_series": int(sample_manifest.get("actual_n", -1)),
         "train_rows": int(train_windows.row_count),
         "validation_rows": int(validation_windows.row_count),
