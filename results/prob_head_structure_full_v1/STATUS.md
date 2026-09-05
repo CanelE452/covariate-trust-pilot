@@ -210,21 +210,21 @@ NOT_PRODUCED
 ## 17. Confirmatory vs diagnostic evidence
 
 ```
-branch                  upstream_required_gates            upstream_gate_status                                                                 confirmatory_eligible  scientific_role                          
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-HEAD_SPECIALIZATION     ['DGP_BALANCE', 'S1', 'S2', 'S3']  {'DGP_BALANCE': 'FAIL', 'S1': 'PASS', 'S2': 'FAIL', 'S3': 'PASS'}                    False                  DIAGNOSTIC_CONTINUATION_AFTER_DGP_BALANCE
-REAL_DISTRIBUTION_POOL  ['R1', 'R2', 'R3']                 {'R1': 'FAIL', 'R2': 'FAIL', 'R3': 'NOT_EVALUATED'}                                  False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
-A_DISTILLATION          ['R2', 'R3', 'A1', 'A2']           {'R2': 'FAIL', 'R3': 'NOT_EVALUATED', 'A1': 'NOT_EVALUATED', 'A2': 'NOT_EVALUATED'}  False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
-B_STRUCTURE_ROUTING     ['R2', 'B1', 'B2']                 {'R2': 'FAIL', 'B1': 'NOT_EVALUATED', 'B2': 'NOT_EVALUATED'}                         False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
-C_DISAGREEMENT_SENSOR   ['R1', 'C1']                       {'R1': 'FAIL', 'C1': 'NOT_EVALUATED'}                                                False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
+branch                  upstream_required_gates            upstream_gate_status                                                        confirmatory_eligible  scientific_role                          
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+HEAD_SPECIALIZATION     ['DGP_BALANCE', 'S1', 'S2', 'S3']  {'DGP_BALANCE': 'FAIL', 'S1': 'PASS', 'S2': 'FAIL', 'S3': 'PASS'}           False                  DIAGNOSTIC_CONTINUATION_AFTER_DGP_BALANCE
+REAL_DISTRIBUTION_POOL  ['R1', 'R2', 'R3']                 {'R1': 'FAIL', 'R2': 'FAIL', 'R3': 'FAIL'}                                  False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
+A_DISTILLATION          ['R2', 'R3', 'A1', 'A2']           {'R2': 'FAIL', 'R3': 'FAIL', 'A1': 'NOT_EVALUATED', 'A2': 'NOT_EVALUATED'}  False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
+B_STRUCTURE_ROUTING     ['R2', 'B1', 'B2']                 {'R2': 'FAIL', 'B1': 'NOT_EVALUATED', 'B2': 'NOT_EVALUATED'}                False                  DIAGNOSTIC_CONTINUATION_AFTER_R2         
+C_DISAGREEMENT_SENSOR   ['R1', 'C1']                       {'R1': 'FAIL', 'C1': 'NOT_EVALUATED'}                                       False                  DIAGNOSTIC_CONTINUATION_AFTER_R1         
 ```
 
 ## 18. Gate table
 
 ```
-S1    S2    S3    R1    R2    DGP_BALANCE
-─────────────────────────────────────────
-PASS  FAIL  PASS  FAIL  FAIL  FAIL       
+S1    S2    S3    R1    R2    R3    DGP_BALANCE
+───────────────────────────────────────────────
+PASS  FAIL  PASS  FAIL  FAIL  FAIL  FAIL       
 ```
 
 ## 19. Final recommendation

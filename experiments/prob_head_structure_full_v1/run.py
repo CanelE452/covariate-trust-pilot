@@ -54,6 +54,9 @@ STAGE_ORDER: tuple[str, ...] = (
 # re-render every run. Resuming it would replay an older run's report.
 ALWAYS_RERUN_STAGES: frozenset[str] = frozenset(
     {
+        # The frozen P2 weights stay sealed and are reused, never re-searched; the stage
+        # re-runs only to attach its diagnostic outer application and the R3 gate.
+        "CDF pool",
         "final gate calculation",
         "figures",
         "STATUS",

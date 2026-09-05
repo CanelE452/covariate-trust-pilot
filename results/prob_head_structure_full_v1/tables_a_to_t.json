@@ -835,6 +835,7 @@
         "DGP_BALANCE": "FAIL",
         "R1": "FAIL",
         "R2": "FAIL",
+        "R3": "FAIL",
         "S1": "PASS",
         "S2": "FAIL",
         "S3": "PASS"
