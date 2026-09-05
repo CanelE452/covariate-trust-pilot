@@ -300,13 +300,46 @@ def stage_synthetic_dgp_audit(context: dict[str, Any]) -> dict[str, Any]:
     return {"cells": summaries, "balance": balance, "unbalanced_cells": failed}
 
 
+def _synthetic_blocks(context: dict[str, Any]) -> dict[str, Any]:
+    """Return the generated blocks, regenerating them when an earlier attempt resumed.
+
+    Generation is a pure function of (d, n_series, data seed, rho pair), so restoring
+    them after a resume reproduces byte-identical panels rather than new data.
+    """
+    blocks = _load(context, "synthetic_blocks")
+    if blocks:
+        return blocks
+    tier = _tier(context)
+    per_cell = int(tier["synthetic_series_per_cell"])
+    data_seed = int(tier["synthetic_data_seeds"][0])
+    blocks = {}
+    for d in synthetic_module.SUPPORTED_D:
+        base = synthetic_module.build_common_base(d=d, n_series=per_cell, seed=data_seed)
+        for rho_i in synthetic_module.RHO_VALUES:
+            for rho_m in synthetic_module.RHO_VALUES:
+                blocks[f"d{d}_rI{rho_i}_rM{rho_m}"] = synthetic_module.transform_common_base(
+                    base, rho_interval=rho_i, rho_magnitude=rho_m
+                )
+    _store(context, "synthetic_blocks", blocks)
+    return blocks
+
+
+def _m5_store(context: dict[str, Any]) -> dict[str, Any]:
+    """Return the hash-verified M5 panel, reloading it when an earlier attempt resumed."""
+    store = _load(context, "m5")
+    if store is not None:
+        return store
+    stage_real_audit(context)
+    return _load(context, "m5")
+
+
 # ------------------------------------------------------------------- synthetic stages
 
 
 def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
     tier = _tier(context)
     seed = int(tier["teacher_model_seeds"][0])
-    blocks = _load(context, "synthetic_blocks")
+    blocks = _synthetic_blocks(context)
     split = synthetic_module.SYNTHETIC_SPLIT
     train_origins = list(range(LOOKBACK, split.train[1] - HORIZON + 1))
     validation_origins = [split.validation[0]]
@@ -357,6 +390,7 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
         )
 
     panel = pd.concat(frames, ignore_index=True)
+    panel.to_parquet(Path(context["attempt"]) / "synthetic_panel.parquet", index=False)
     _store(context, "synthetic_panel", panel)
     _store(context, "teacher_runtime", runtimes)
     cell_means = (
@@ -374,7 +408,10 @@ def stage_s1_synthetic_training(context: dict[str, Any]) -> dict[str, Any]:
 def stage_s2_analysis(context: dict[str, Any]) -> dict[str, Any]:
     panel = _load(context, "synthetic_panel")
     if panel is None:
-        return {"status": "SKIPPED_NO_SYNTHETIC_PANEL"}
+        cached = Path(context["runs_root"]) / "stage_s1_synthetic_18_cell_teacher_training/attempt_0001/synthetic_panel.parquet"
+        if not cached.exists():
+            return {"status": "SKIPPED_NO_SYNTHETIC_PANEL"}
+        panel = pd.read_parquet(cached)
     from .integrity import BranchEligibility, GateStatus
 
     tier = _tier(context)
@@ -521,7 +558,7 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
     tier = _tier(context)
     seed = int(tier["teacher_model_seeds"][0])
     sample_size = int(tier["real_series_per_dataset"])
-    store = _load(context, "m5")
+    store = _m5_store(context)
     if store is None:
         return {"status": "SKIPPED_NO_REAL_PANEL"}
     y, available, eligible = store["y"], store["available_from"], store["eligible"]
@@ -542,6 +579,7 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
     frame, predictions = _long_frame(
         fitted, evaluation_windows, keys, dataset_id="m5", series_ids=series_ids
     )
+    frame.to_parquet(Path(context["attempt"]) / "real_panel.parquet", index=False)
     _store(context, "real_panel", frame)
     _store(context, "real_head_means", [{"head": h, "sCRPS": float(v)} for h, v in frame.groupby("head")["sCRPS"].mean().items()])
     _store(context, "real_predictions", predictions)
@@ -562,7 +600,10 @@ def stage_r1_real_training(context: dict[str, Any]) -> dict[str, Any]:
 def stage_r2_complementarity(context: dict[str, Any]) -> dict[str, Any]:
     frame = _load(context, "real_panel")
     if frame is None:
-        return {"status": "SKIPPED_NO_REAL_PANEL"}
+        cached = Path(context["runs_root"]) / "stage_r1_real_teacher_training/attempt_0001/real_panel.parquet"
+        if not cached.exists():
+            return {"status": "SKIPPED_NO_REAL_PANEL"}
+        frame = pd.read_parquet(cached)
     unit = ("dataset_id", "series_id", "origin")
     winners = summarize_practical_winners(frame, unit_columns=unit)
     shares = dict(winners.get("practical_winner_shares", {}))
@@ -626,16 +667,32 @@ def stage_final_gates(context: dict[str, Any]) -> dict[str, Any]:
         ledger.branch_record("B_STRUCTURE_ROUTING", ["R2", "B1"]),
         ledger.branch_record("C_DISAGREEMENT_SENSOR", ["R1", "C1"]),
     ]
+
+
+    def _verdict(gate: str, go_token: str, no_go_token: str) -> str:
+        """A branch that never ran is NOT_EVALUATED; NO_GO means it ran and failed."""
+        status = ledger.status(gate)
+        if status == "NOT_EVALUATED":
+            return f"NOT_EVALUATED_{gate}_NOT_RUN"
+        return go_token if status == "PASS" else no_go_token
+
     verdicts = {
-        "HEAD": "HEAD_SPECIALIZATION_GO" if ledger.status("S1") == "PASS" else "HEAD_SPECIALIZATION_NO_GO",
-        "REAL": "REAL_DISTRIBUTION_POOL_GO" if ledger.status("R3") == "PASS" else "REAL_DISTRIBUTION_POOL_NO_GO",
-        "A": "DISTRIBUTION_SPACE_DISTILLATION_NO_GO",
-        "B": "STRUCTURE_CONDITIONED_ROUTING_NO_GO",
-        "C": "DISAGREEMENT_SENSOR_NO_GO",
+        "HEAD": _verdict("S1", "HEAD_SPECIALIZATION_GO", "HEAD_SPECIALIZATION_NO_GO"),
+        "REAL": _verdict("R3", "REAL_DISTRIBUTION_POOL_GO", "REAL_DISTRIBUTION_POOL_NO_GO"),
+        "A": _verdict("A2", "DISTRIBUTION_SPACE_DISTILLATION_GO", "DISTRIBUTION_SPACE_DISTILLATION_NO_GO"),
+        "B": _verdict("B2", "STRUCTURE_CONDITIONED_ROUTING_GO", "STRUCTURE_CONDITIONED_ROUTING_NO_GO"),
+        "C": _verdict("C1", "DISAGREEMENT_SENSOR_GO", "DISAGREEMENT_SENSOR_NO_GO"),
     }
-    recommendation = "ALL_NEW_METHOD_BRANCHES_NO_GO"
-    if ledger.status("S3") == "PASS" or ledger.status("R2") == "PASS":
+    method_branches_evaluated = any(
+        ledger.status(gate) != "NOT_EVALUATED" for gate in ("A2", "B2", "C1")
+    )
+    if not method_branches_evaluated:
+        # No method branch was executed, so no method verdict may be asserted.
+        recommendation = "INTEGRITY_BLOCKED_NO_SCIENTIFIC_VERDICT"
+    elif ledger.status("S3") == "PASS" or ledger.status("R2") == "PASS":
         recommendation = "RECOMMEND_CHARACTERIZATION_ONLY"
+    else:
+        recommendation = "ALL_NEW_METHOD_BRANCHES_NO_GO"
     _store(context, "branches", branches)
     _store(context, "verdicts", verdicts)
     _store(context, "recommendation", recommendation)
